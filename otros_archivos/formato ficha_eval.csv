@@ -1,0 +1,51 @@
+ID,DESCRIPCION,TIPO_COLUMNA,PADRE,PUNTAJE MAX. CRITERIO,RANGO_INICIO_ID,RANGO_FIN_ID,TIPO_INPUT,ETIQUETA_INPUT,MULTIPLICADOR,ESTADO,ID_FICHA
+1,Formación Académica y Profesional,RUBRO,0,45,1,14,,,0,1,1
+2,Estudios de pregrado,CRITERIO,1,0,0,0,,,0,1,1
+3,Otro Título Profesional Pedagógico o Título de Segunda Especialidad en Educación* no afín al nivel o ciclo de la especialidad que postula,SUBCRITERIO,2,5,3,3,checkbox,,5,1,1
+4,Título Profesional Universitario no Pedagógico* afín al nivel o ciclo de la especialidad que postula,SUBCRITERIO,2,5,4,4,checkbox,,5,1,1
+5,Título Profesional Técnico,SUBCRITERIO,2,4,5,5,checkbox,,4,1,1
+6,Estudios de pregrado en educación financiados a través de PRONABEC,SUBCRITERIO,2,3,6,6,checkbox,,3,1,1
+7,Constancia de quinto superior de su promoción en sus estudios pedagógicos.,SUBCRITERIO,2,3,7,7,checkbox,,3,1,1
+8,Constancia de tercio superior de su promoción en sus estudios pedagógicos.,SUBCRITERIO,2,2,8,8,checkbox,,2,1,1
+9,Estudios de posgrado,CRITERIO,1,0,0,0,,,0,1,1
+10,Grado de Doctor registrado en SUNEDU,SUBCRITERIO,9,10,10,10,checkbox,,10,1,1
+11,Estudios concluidos de Doctorado,SUBCRITERIO,9,6,11,11,checkbox,,6,1,1
+12,Grado de Maestro/Magister registrado en SUNEDU en área,SUBCRITERIO,9,6,12,12,checkbox,,6,1,1
+13,Estudios concluidos de Maestría,SUBCRITERIO,9,4,13,13,checkbox,,4,1,1
+14,Diplomado de Posgrado (hasta un máximo de tres (3) diplomados) - 3 puntos c/u,SUBCRITERIO,9,9,14,14,select+,,3,1,1
+15,Formación Continua,RUBRO,0,30,16,24,,,0,1,1
+16,Programas de Formación Docente* Actualización* Especialización o Segunda Especialización* afín al área curricular o campo de conocimiento que postula,CRITERIO,15,0,0,0,,,0,1,1
+17,"- Realizado en los últimos cinco (5) años.
+- Presenciales* virtuales o semipresenciales.
+- Duración mínima de 126 horas cronológicas o 7 créditos.
+- Dos (2) puntos por cada certificación hasta un máximo de seis (6).",SUBCRITERIO,16,12,17,17,select+,# de cetificados,6,1,1
+18,Cursos o Módulos de Formación Docente* afín al área curricular o campo de conocimiento que postula,CRITERIO,15,0,0,0,,,0,1,1
+19,"- Realizado en los últimos cinco (05) años.
+- Presenciales* virtuales o semipresenciales.
+- Duración mínima de 36 horas cronológicas.
+- Dos (2) puntos por cada certificación hasta un máximo de cuatro (4).",SUBCRITERIO,18,8,19,19,select+,# de cetificados,4,1,1
+20,Talleres de capacitación* seminarios y congresos,CRITERIO,15,0,0,0,,,0,1,1
+21,"- Realizado en los últimos cinco (5) años.
+- Duración mínima de 16 horas cronológicas.
+- Presenciales* virtuales o semipresenciales.
+- Dos (2) puntos por cada certificación hasta un máximo de tres (3)",SUBCRITERIO,20,6,21,21,select+,# de cetificados,3,1,1
+22,Otros programas de formación continua* incluyendo temas de pedagogía,CRITERIO,15,0,0,0,,,0,1,1
+23,- Cursos de Ofimática igual o mayores a 24 horas o su equivalente en créditos.,SUBCRITERIO,22,2,23,23,checkbox,,2,1,1
+24,"- Certificación de dominio de idioma extranjero.
+– Mínimo Nivel Intermedio Certificación emitida por un centro de idiomas certificado.",SUBCRITERIO,22,2,24,24,checkbox,,2,1,1
+25,Experiencia Laboral,RUBRO,0,20,26,35,,,0,1,1
+26,,PRE_SUBCRITERIO,25,20,27,33,,,0,1,1
+27,Experiencia Laboral docente* en la modalidad educativa o el nivel educativo o ciclo al que postula* durante los meses de marzo a diciembre* teniendo en cuenta,CRITERIO,26,0,0,0,,,0,1,1
+28,- Corresponde 0.20 puntos por cada mes acreditado de labor en IE ubicada en zona urbana.,POST_SUBCRITERIO,27,0,0,0,text,# de meses,0.2,1,1
+29,- Corresponde 0.30 puntos por cada mes acreditado de labor en IE ubicada en zona de frontera.,POST_SUBCRITERIO,27,0,0,0,text,# de meses,0.3,1,1
+30,- Corresponde 0.30 puntos por cada mes acreditado de labor en IE ubicada en zona rural.,POST_SUBCRITERIO,27,0,0,0,text,# de meses,0.3,1,1
+31,- Corresponde 0.40 puntos por cada mes acreditado de labor en IE ubicada en zona VRAEM.,POST_SUBCRITERIO,27,0,0,0,text,# de meses,0.4,1,1
+32,Experiencia laboral como PEC,CRITERIO,26,0,0,0,,,0,1,1
+33,Corresponde 0.20 puntos por cada mes acreditado de labor.,SUBCRITERIO,32,0,0,0,text,# de meses,0.2,1,1
+34,Experiencia profesional como practicante,CRITERIO,25,0,0,0,,,0,1,1
+35,Corresponde 0.20 puntos por cada mes acreditado de labor.,SUBCRITERIO,34,2,35,35,text,# de meses,0.2,1,1
+36,Méritos,RUBRO,0,5,37,40,,,0,1,1
+37,Felicitación por desempeño o trabajo destacado en el campo pedagógico,CRITERIO,36,0,0,0,,,0,1,1
+38,- Resolución Ministerial o Directoral emitida por MINEDU (3 puntos).,POST_SUBCRITERIO,37,0,0,0,text,# de resoluciones,3,1,1
+39,- Resolución Directoral Regional o de UGEL (2 puntos).,POST_SUBCRITERIO,37,0,0,0,text,# de resoluciones,2,1,1
+40,- Resolución Institucional (1 punto).,POST_SUBCRITERIO,37,0,0,0,text,# de resoluciones,1,1,1

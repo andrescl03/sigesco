@@ -1,0 +1,442 @@
+
+
+html, body{
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto Condensed', Calibri, Arial, sans-serif;
+  /*font-size: 0.92rem*/
+/*color:  red !important*/
+}
+
+h1,h2,h3,h4,h5,h6{
+  margin:0;        
+}
+
+ul, ol, label, p{
+  margin:0;
+  padding:0;
+}
+
+/*
+* ==========================================
+*                 MENU (INICIO)
+* ==========================================
+*/
+.cabecera_menu, ul.stepper li.active a .circle, ul.stepper li.completed a .circle{ 
+  background-color: #DE1F29 !important;   
+}
+
+.primary-color, ul.stepper li.active a .circle, ul.stepper li.completed a .circle {
+    background-color: #4285f4!important;
+}
+
+.dropdown .dropdown-menu.dropdown-primary .dropdown-item.active, .dropdown .dropdown-menu.dropdown-primary .dropdown-item:active, .dropdown .dropdown-menu.dropdown-primary .dropdown-item:hover, .dropleft .dropdown-menu.dropdown-primary .dropdown-item.active, .dropleft .dropdown-menu.dropdown-primary .dropdown-item:active, .dropleft .dropdown-menu.dropdown-primary .dropdown-item:hover, .dropright .dropdown-menu.dropdown-primary .dropdown-item.active, .dropright .dropdown-menu.dropdown-primary .dropdown-item:active, .dropright .dropdown-menu.dropdown-primary .dropdown-item:hover, .dropup .dropdown-menu.dropdown-primary .dropdown-item.active, .dropup .dropdown-menu.dropdown-primary .dropdown-item:active, .dropup .dropdown-menu.dropdown-primary .dropdown-item:hover {
+  background-color: #F15150!important;
+  color: #FFFFFF;
+  border-radius: .3rem;
+ // box-shadow: 0 5px 11px 0 rgba(0,0,0,.18), 0 4px 15px 0 rgba(0,0,0,.15);
+}
+.nav-item.dropdown.active.show, .nav-item.dropdown:hover{
+  background-color: #F15150!important;
+  border-radius: .3rem;
+ // box-shadow: 0 5px 11px 0 rgba(0,0,0,.18), 0 4px 15px 0 rgba(0,0,0,.15);
+}
+/*
+* ==========================================
+*                 MENU (FIN)
+* ==========================================
+*/
+
+
+/*
+* ==========================================
+*                 LOGIN (INICIO)
+* ==========================================
+*/
+
+.login,
+.image {
+  min-height: 100vh;
+}
+
+.bg-image {
+  background-image: url('../images/rojo.jpg');
+  background-size: cover;
+  background-position: center center;
+}
+
+.custom-control-input:checked {
+    background-color: #DC3545;
+}
+
+/*
+* ==========================================
+*                 LOGIN (FIN)
+* ==========================================
+*/
+
+
+/*
+* ==========================================
+*             JQUERYVALIDATE (INICIO)
+* ==========================================
+*/
+label.error {
+  display: block;
+  margin-top: 0rem;
+  font-size: 0rem;
+  color: #dc3545; 
+  margin-bottom: 0rem;
+}
+
+input.error, select.error, textarea.error, div.error {
+ /*border-color: #dc3545; */
+  border: 1px solid #dc3545 !important;
+}
+
+input.valid, select.valid, textarea.valid {
+  /*border-color: #28A745; 
+  border: 1px solid #28A745 !important;*/
+}
+
+
+/* VALIDAR CON JQUERYVALIDATE-- SELECT2*/
+select.error +label.error + span.select2-container--bootstrap4 {
+  border: 1px solid #dc3545 !important;
+  border-radius: .35rem ! important;
+}
+
+/*label.valid + span.select2-container--bootstrap4 {
+  border-color: #28A745; 
+  border: 1px solid #28A745 !important;
+}*/
+
+
+
+/*
+* ==========================================
+*             JQUERYVALIDATE (FIN)
+* ==========================================
+*/
+
+
+.jumbotron {
+  padding: 10rem 2rem;
+  padding-right: 2rem;
+  padding-left: 2rem;
+  margin-bottom: 0rem !important;
+}
+
+
+#tb_constancia_pdf_wrapper, #tb_constancia_pdf {
+  line-height: 1rem; }
+
+.cajafirma {
+  width: 100%;
+  height: 180px;
+  line-height: 1.2rem; }
+
+.parrafo {
+  width: 100%;
+  height: 100px;
+  color: #000;
+  padding: 20px;
+  text-align: center; }
+
+.linea_firma {
+  height: 1px;
+  width: 100%;
+  background-color: #c8c8c8; }
+
+.fecha {
+  text-align: right; }
+
+.nombre_firma {
+  font-size: 0.8rem;
+  text-align: center; }
+
+.comentarios {
+  width: 100%;
+  min-height: 100px;
+  font-size: 8px;
+  text-align: left; }
+
+.graf_body {
+  background: url(../images/marca_6.png);
+  background-repeat: no-repeat;
+  min-height: 800px; }
+
+@media screen and (max-width: 1800px) {
+  .tresponsive {
+    display: block;
+    overflow-x: auto; } }
+.btn-xs {
+  padding: 0.1rem 0.4rem 0.04rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.2rem;
+
+}
+/*
+.modal-content {
+  border-radius: 0rem;
+  border: 1px solid #fff; }
+
+.modal-header {
+  padding: 8px;
+  background-color: #157ED8;
+  border-bottom: 0px solid #e9ecef; }
+
+.modal-title {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold; }
+
+.modal-header .close {
+  color: #fff;
+  opacity: 1; }
+
+.modal-body {
+  border-left: 4px solid #157ED8;
+  border-right: 4px solid #157ED8; }
+
+.modal-footer {
+  padding: 8px;
+  border-left: 4px solid #157ED8;
+  border-right: 4px solid #157ED8;
+  border-bottom: 4px solid #157ED8;
+  border-top: 0px solid #157ED8; }
+
+.modal-acho {
+  max-width: 1000px; }
+*/
+
+/*.cabecera_tabla{
+  font-size: 12px;
+  background-color: #6C757D;
+  color: #fff;
+}*/
+
+/*.cabecera_tabla{
+  font-size: 12px;
+  background-color:        #566573   ;
+  color: #fff;
+  vertical-align: middle;
+}*/
+/*background-color:        #cee5fb   ;*/
+.cabecera_tabla{
+  font-size: 12px;
+
+  background-color: #F8F9FA;
+  color: #0f0e0e;
+  vertical-align: middle;
+}
+
+
+.cabecera_tabla_2{
+  font-size: 12px;
+  background-color:       #68798a    ;
+  color: #fff;
+  vertical-align: middle;
+}
+
+.cabecera_tabla_3{
+  font-size: 12px;
+  background-color: #8e9cab;
+  color: #fff;
+  vertical-align: middle;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+.cabecera_tabla_2{
+  font-size: 12px;
+  background-color: #dc3545;
+  color: #fff;
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+#tablacontent .tcabecera {
+  display: none; }
+
+.dataTables_scrollHead .dataTables_scrollHeadInner, .dataTable > thead {
+  background-color: #ECECEC; }
+
+.table-bordered {
+  border: 1px solid #CFD8DC; }
+
+.table-bordered th, .table-bordered td {
+  border: 1px solid #CFD8DC; }
+
+.table-hover tbody tr:hover {
+  color: #0075A7;  
+ /* font-weight: bolder;*/
+}
+
+
+.dataTables_length {
+  padding-top: 1rem; }
+
+table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable td:last-child, table.table-bordered.dataTable td:last-child {
+  border-right-width: 1px !important; }
+
+.link-dark:hover, .link-dark:focus {
+  color: #0075A7;
+}
+
+
+
+/*#chk_meses > label {
+  margin-bottom: 0rem;
+  font-size: 0.85rem !important; }
+
+#chk_meses .custom-control-indicator {
+  top: 0.15rem; }
+
+#chk_meses .custom-control {
+  min-height: 0rem; }
+
+#chk_meses .dropdown-divider {
+  margin: 0.1rem 0; }
+
+#chk_meses .custom-control-input:checked ~ .custom-control-indicator {
+  background-color: #DC3545; }
+*/
+
+ #chk_meses .custom-control-label:before{
+  background-color:#FFFFFF;
+  border-color: #DE1F29;
+
+}
+#chk_meses .custom-checkbox .custom-control-input:checked~.custom-control-label::before{
+  background-color:#DE1F29;
+  border-color: #DE1F29;
+  
+}
+
+.opciones {
+  border: 2px solid #1897f5;
+  border-radius: 5px;
+  background-color: rgba(212, 241, 255, 0.6); 
+}
+
+.enlace label {
+  display: block;
+  width: 98%;
+  height: 98%;
+  color: #505253;
+  font-weight: bold;
+  margin-bottom: 0rem; }
+
+.enlace > label:hover {
+  text-decoration: none;
+}
+
+#tb_buscador > tbody tr:hover {
+  background-color: #007BFF !important; 
+}
+
+.enlace > .btn-link:focus, .btn-link:hover {
+  color: #fff !important; 
+}
+
+#tb_buscador, #tb_buscador td {
+  border: 0px !important;  
+}
+
+
+
+
+/*
+* ==========================================
+*             ALERTYFLY (INICIO)
+* ==========================================
+*/
+
+.ajs-ok{
+  color:#fff;
+  padding: .25rem .5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .2rem;
+  background-color: #007bff;
+  border-color: #007bff;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid;
+}
+.ajs-ok:hover {
+  color: #fff;
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+.ajs-ok:hover {
+  box-shadow: 0 0 0 .2rem rgba(0,123,255,.5);
+}
+
+.ajs-cancel{
+  color:#fff;
+  padding: .25rem .5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .2rem;
+  background-color: #dc3545; 
+  border-color: #dc3545;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid;
+}
+
+.ajs-cancel:hover {
+  color: #fff;
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+.ajs-cancel:hover {
+  box-shadow: 0 0 0 .2rem rgba(220,53,69,.5);
+}
+
+/*
+* ==========================================
+*             ALERTYFLY (FIN)
+* ==========================================
+*/
+
+
+.swal-button, .swal-button--confirm{ 
+  background-color: #007bff; 
+}
+
+.swal-button:not([disabled]):hover {
+    background-color: #0069D9;
+}

@@ -1,0 +1,139 @@
+.sb-sidenav-danger {
+  background-color: #de1f29;
+  color: #fff;
+ 
+}
+.sb-sidenav-danger .sb-sidenav-menu .sb-sidenav-menu-heading {
+  color: #fff;  
+  font-size: 1rem !important;
+}
+.sb-sidenav-danger .sb-sidenav-menu .nav-link {
+  color: #fff;
+
+}
+.sb-sidenav-danger .sb-sidenav-menu .nav-link .sb-nav-link-icon {
+  color: #fff;
+ 
+}
+.sb-sidenav-danger .sb-sidenav-menu .nav-link .sb-sidenav-collapse-arrow {
+  color: #fff;
+
+}
+.sb-sidenav-danger .sb-sidenav-menu .nav-link:hover {
+  color:  #343A40;
+  background-color: #F15150 ;
+  font-weight: bolder;
+}
+.sb-sidenav-danger .sb-sidenav-menu .nav-link.active {
+  color: #fff;
+}
+.sb-sidenav-danger .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
+  color: #fff;
+}
+.sb-sidenav-danger .sb-sidenav-footer {
+  background-color: #343a40;
+}
+
+/*
+===============================
+*/
+
+.sb-sidenav-azul {
+  background-color: #0075A7;
+  color: #fff;
+ 
+}
+.sb-sidenav-azul .sb-sidenav-menu .sb-sidenav-menu-heading {
+  color: #fff;  
+  font-size: 1rem !important;
+}
+.sb-sidenav-azul .sb-sidenav-menu .nav-link {
+  color: #fff;
+
+}
+.sb-sidenav-azul .sb-sidenav-menu .nav-link .sb-nav-link-icon {
+  color: #fff;
+ 
+}
+.sb-sidenav-azul .sb-sidenav-menu .nav-link .sb-sidenav-collapse-arrow {
+  color: #fff;
+
+}
+.sb-sidenav-azul .sb-sidenav-menu .nav-link:hover {
+  color:  #fff;
+  background-color: #343A40 ;
+  font-weight: bolder;
+}
+.sb-sidenav-azul .sb-sidenav-menu .nav-link.active {
+  color: #fff;
+}
+.sb-sidenav-azul .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
+  color: #fff;
+}
+.sb-sidenav-azul .sb-sidenav-footer {
+  background-color: #343a40;
+}
+
+/*
+===============================
+*/
+
+.bg-rojo {
+  --bs-bg-opacity: 1;
+  background-color: #de1f29 !important;
+}
+
+.bg-plomo {
+  --bs-bg-opacity: 1;
+  background-color: #F7F7F7 !important;
+}
+
+.bg-azul {
+  --bs-bg-opacity: 1;
+  background-color: #0075A7 !important;
+}
+
+/*
+===============================
+*//*
+===============================
+*//*
+===============================
+*/
+.bd-callout-info {
+    border-left-color: #0dcaf0 !important; 
+}
+
+.bd-callout-warning {
+  border-left-color: #ffc107 !important;
+
+}
+.bd-callout-danger {
+  border-left-color: #dc3545 !important;
+
+}
+
+.bd-callout-primary {
+  border-left-color: #0d6efd !important;
+
+}
+
+.bd-callout-success {
+  border-left-color: #198754 !important;
+
+}
+
+
+.bd-callout {
+    padding: 1.25rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid #e9ecef;
+        border-left-color: rgb(233, 236, 239);
+        border-left-width: 1px;
+    border-left-width: .25rem;
+    border-radius: .25rem;
+}
+
+
+
