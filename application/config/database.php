@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => 'localhost:3307',
 	'username' => 'root',
 	'password' => '',
-	'database' => 'bdsigesco',
+	'database' => 'sigesco',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -97,7 +97,7 @@ $db['default'] = array(
 
 $db['bd_mpv'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => 'localhost:3307',
 	'username' => 'root',
 	'password' => '',
 	'database' => 'bdmpv2023',

@@ -61,7 +61,7 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="<?php echo base_url()?>configurar/usuarios"><i class="fas fa-user-cog"></i> Configuración</a></li>
-                        <li><a class="dropdown-item" href="#!"><i class="fas fa-user"></i> Perfil</a></li>
+                        <li><a class="dropdown-item" href="<?php echo base_url()?>inicio/perfil"><i class="fas fa-user"></i> Perfil</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="<?php echo base_url()?>login/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
                     </ul>
