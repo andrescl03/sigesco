@@ -33,9 +33,8 @@ class Inicio extends CI_Controller
             $data['usu_nombre'] = $usuario['usu_nombre'];
             $data['usu_apellidos'] = $usuario['usu_apellidos'];
             $data['usu_tipo'] = $usuario['tus_usuariodescrip']; // Añadir el tipo de usuario
-
-            $this->layout->setLayout("template");
-            $this->load->view("perfil", $data);
+            $this->layout->view("perfil", $data);
+        
         } else {
             echo "Usuario no encontrado";
         }

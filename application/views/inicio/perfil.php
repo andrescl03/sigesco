@@ -21,10 +21,12 @@
                 </div>
                 <div class="form-group row">
                     <label for="txt_apellidos" class="col-sm-3 col-form-label"><b>Apellidos:</b></label>
-                    <div class="col-sm-8"> value="<?php echo $usu_apelli
-                        <input type="text" class="form-control form-control-sm" id="txt_apellidos" name="txt_apellidos" onkeypress="return soloLetras(event)" onblur="limpiaLetras(this)" onkeyup="mayus(this)"dos; ?>" readonly>
+                    <div class="col-sm-8">   
+                        <input type="text" class="form-control form-control-sm" id="txt_apellidos" name="txt_apellidos" onkeypress="return soloLetras(event)" onblur="limpiaLetras(this)" onkeyup="mayus(this)"   value="<?php echo $usu_apellidos;?>" readonly>
                     </div>
                 </div>
+
+                <?php  echo $usu_tipo ?>
                 <!-- Resto de tu código HTML -->
             </div>            
         </div>
