@@ -1,0 +1,37 @@
+.scrollTop {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background-color: #3699FF;
+    padding: 7px 10px;
+    opacity: 0;
+    transition: all 0.4s ease-in-out 0s;
+}
+.scrollTop a {
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+html, body{ 
+    font-size: 13px !important;
+}
+
+.custom-file-input:focus~.custom-file-label{
+    box-shadow: none;
+}
+
+.custom-file-label::after{
+    content: "Buscar";
+}
+
+.dt-buttons{
+    display:none;
+}
+
+.dataTables_filter label,
+.dataTables_filter label input
+{
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+}

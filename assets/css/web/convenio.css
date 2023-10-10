@@ -1,0 +1,45 @@
+.tab-list>div>ul>li a {
+    display: block;
+    padding-left: 5px;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    border-bottom: 1px solid #EAEAEA;
+    text-decoration: none;
+    color: #555555;
+}
+
+.tab-list>div>ul>li {
+    list-style: none;
+    border-left: 3px solid #EAEAEA;
+    padding-left: 20px;
+    transition: border-color 0.2s ease;
+}
+
+.tab-list>div>ul {
+    margin: 0;
+    padding: 0;
+}
+
+.tab-list {
+    margin-right: 30px;
+    top: 40px;
+}
+
+.tab-list>div>ul>li.active, 
+.tab-list>div>ul>li:hover {
+    border-left: 3px solid #3699ff;
+}
+
+.custom-file-input:focus~.custom-file-label{
+    box-shadow: none;
+}
+
+.custom-file-label::after{
+    content: "Buscar";
+}
+
+@media screen and (max-width: 1200px) {
+    .tab-list{
+        display: none;
+    }
+}

@@ -218,8 +218,20 @@ class Convocatorias_model extends CI_Model {
        // echo $this->db->last_query(); exit(); 
        return $sql->result_array();  
     }
+    
+    //TEMPORAl
+    public function obtenerDatosDocentePUN($dni){
+      $sql=$this->db
+        ->select("*")      
+        ->from("cuadro_pun_exp cpe")      
+        ->where(array("cpe.cpe_estado"=>1, "cpe_documento" => $dni))       
+        ->get();
+       // echo $this->db->last_query(); exit(); 
 
-
+       
+       return $sql->result_array();  
+    }
+    
     public function buscarDocentesExp($idGin){
       $sql=$this->db
         ->select("cpe.cpe_id, cpe.cpe_documento")
@@ -235,14 +247,5 @@ class Convocatorias_model extends CI_Model {
         return $this->db->insert_id(); // para saber el id ingresado
     } 
     
-
-    
-    
-    
-
-
-
-
-
 
 }

@@ -36,6 +36,46 @@ class Convocatorias extends CI_Controller {
 		$this->layout->view("listar/listar", compact('periodos', 'procesos')); 
 	}
 
+
+
+    public function VListarConvocatoriasActivas(){
+        $tipoCarga  = $this->input->post("tipoCarga",true); 
+        if ($tipoCarga == 0){ // carga default
+            $idPer = $this->session->userdata("sigesco_default_periodo");
+            $idPro = $this->session->userdata("sigesco_default_proceso");
+        }else{
+            $idPer  = $this->input->post("idPer",true);  
+            $idPro  = $this->input->post("idPro",true);  
+        }
+        $datos  = $this->convocatorias_model->listarConvocatoriasActivas($idPer, $idPro); 
+        $this->layout->setLayout("template_ajax");
+        $this->layout->view('cargarexpedientes/VListarConvocatoriasActivas', compact('datos'));
+    }
+
+    public function listarConvocatoriasAjax(){   // TIENE SOLO 2 SEGMENTOS
+
+        $tipoCarga  = $this->input->post("tipoCarga",true); 
+        if ($tipoCarga == 0){ // carga default
+            $idPer = $this->session->userdata("sigesco_default_periodo");
+            $idPro = $this->session->userdata("sigesco_default_proceso");
+        }else{
+            $idPer  = $this->input->post("idPer",true);  
+            $idPro  = $this->input->post("idPro",true);  
+        }
+
+        $response = array(
+            'status' => 200,
+            'message' => 'Success',
+            'convocatorias' => $this->convocatorias_model->listarConvocatoriasActivas($idPer,$idPro),
+        );
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response));
+
+	}
+
+
     public function VListarConvocatorias(){
         $tipoCarga  = $this->input->post("tipoCarga",true);       
 
@@ -178,22 +218,7 @@ class Convocatorias extends CI_Controller {
         }
 	}
 
-    public function VListarConvocatoriasActivas(){
-        $tipoCarga  = $this->input->post("tipoCarga",true); 
-        if ($tipoCarga == 0){ // carga default
-            $idPer = $this->session->userdata("sigesco_default_periodo");
-            $idPro = $this->session->userdata("sigesco_default_proceso");
-        }else{
-            $idPer  = $this->input->post("idPer",true);  
-            $idPro  = $this->input->post("idPro",true);  
-        }
-        $datos  = $this->convocatorias_model->listarConvocatoriasActivas($idPer, $idPro); 
-              
-        $this->layout->setLayout("template_ajax");
-        $this->layout->view('cargarexpedientes/VListarConvocatoriasActivas', compact('datos'));
-    }
-
-
+ 
 
     public function VListarCargarExpedientesControlesPun(){       
         $idGin      = $this->input->post("idGin",true);             

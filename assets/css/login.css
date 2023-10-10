@@ -1,0 +1,48 @@
+body{
+    background: #ffffff;
+}
+.cover{
+     /* The image used */
+    background-color: #cccccc; /* Used if the image is unavailable */
+    height: 100vh; /* You must set a specified height */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+    padding: 60px 50px;
+}
+.cover-title{
+    line-height: 0px;
+}
+.cover-title h1{
+    font-size: 70px;
+    text-shadow: 2px 2px rgba(241, 203, 203, 0.6);
+}
+.cover-title span{
+    color: gray;
+    font-size: 24px;
+}
+.form-panel{
+    display: block;
+    padding-top: 100px;
+}
+.form-title{
+    display: block;
+    margin-bottom: 50px;
+}
+.form-title-movil{
+    display: none;
+    text-align: center;
+    margin-bottom: 50px;
+    line-height: 15px;
+}
+@media screen and (max-width: 992px)  {
+    .cover{
+        display: none;
+    }
+    .form-title-movil{
+        display: block;
+    }
+    .form-panel{
+        padding-top: 100px;
+    }
+}
