@@ -24,7 +24,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'http://10.6.226/sigesco/';
-$config['base_url'] = 'http://localhost/sigesco/';
+// $config['base_url'] = 'http://localhost/sigesco/';
+$config['base_url'] = 'http://sigescou05.test/'; 
 //$config['base_url'] = 'https://mesadepartesvirtual.ugel05.gob.pe';
 
 /*
@@ -37,7 +38,7 @@ $config['base_url'] = 'http://localhost/sigesco/';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = ''; // 'index.php';
 
 /*
 |--------------------------------------------------------------------------
