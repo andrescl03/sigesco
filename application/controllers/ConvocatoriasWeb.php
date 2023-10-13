@@ -2,7 +2,7 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Convocatoria extends CI_Controller {
+class ConvocatoriasWeb extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -13,14 +13,14 @@ class Convocatoria extends CI_Controller {
 
     public function index() {
         $dato = 1;
+        $this->layout->js(array(base_url()."public/web/js/convocatorias/index.js"));
         $this->layout->view("/web/convocatoria/index", compact('dato'));
-        $this->layout->js(array(base_url()."public/web/convocatorias/index.js"));
     }
 
     public function show() {
         $dato = 1;
+        $this->layout->js(array(base_url()."public/web/js/convocatorias/show.js"));
         $this->layout->view("/web/convocatoria/show", compact('dato'));
-        $this->layout->js(array(base_url()."public/web/convocatorias/show.js"));
     }
 
     public function obtenerDatosPostulante() {

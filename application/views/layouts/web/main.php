@@ -95,6 +95,9 @@
 
     <script src="<?php echo base_url() ?>/assets/js/web/main.js"></script>
     <script src='<?php echo base_url() ?>/public/js/sha1/sha1.js'></script>
+
+    <?php echo $this->layout->js ?>    
+
     <!-- <script src='<?php echo base_url() ?>/assets/js/web/convenios.js'></script> -->
     <script>
         // $(document).ready(AppConvenio.insert());
