@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/bundle.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/web/main.css">
     <script>
-        localStorage.setItem("BASE_URL", "<?php echo base_url() ?>");
+        window.AppMain = {
+            url: "<?php echo base_url() ?>"
+        };
     </script>
     <style>
         .container-page::before {
@@ -91,7 +93,6 @@
 
     <script src="<?php echo base_url() ?>/public/js/utilities/helper.js"></script>
     <script src="<?php echo base_url() ?>/public/js/utilities/sweetalert2.js"></script>
-    <script src="<?php echo base_url() ?>/public/js/utilities/vue.js"></script>
 
     <script src="<?php echo base_url() ?>/assets/js/web/main.js"></script>
     <script src='<?php echo base_url() ?>/public/js/sha1/sha1.js'></script>
@@ -132,50 +133,6 @@
                 }
             });
 
-
-            $('#department').change(function() {
-                var departmentId = $(this).val();
-
-                // Llamada AJAX para obtener provincias basadas en el ID del departamento
-                $.ajax({
-                    url: '<?php echo base_url("ubigeo/obtenerProvincias"); ?>',
-                    type: 'POST',
-                    data: {
-                        department_id: departmentId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        // Llenar el select de provincias con los datos recibidos
-                        $('#province').empty();
-                        $.each(response.provincias, function(index, provincia) {
-                            $('#province').append('<option value="' + provincia.id + '">' + provincia.name + '</option>');
-                        });
-                    }
-                });
-            });
-
-
-            // Evento cuando se selecciona una provincia
-            $('#province').change(function() {
-                var provinceId = $(this).val();
-
-                // Llamada AJAX para obtener distritos basados en el ID de la provincia
-                $.ajax({
-                    url: '<?php echo base_url("ubigeo/obtenerDistritos"); ?>',
-                    type: 'POST',
-                    data: {
-                        province_id: provinceId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        // Llenar el select de distritos con los datos recibidos
-                        $('#district').empty();
-                        $.each(response.distritos, function(index, distrito) {
-                            $('#district').append('<option value="' + distrito.id + '">' + distrito.name + '</option>');
-                        });
-                    }
-                });
-            });
             $('#postulation_type').change(function() {
                 $.ajax({
                     url: '<?php echo base_url("convocatorias/listarConvocatoriasAjax"); ?>',
