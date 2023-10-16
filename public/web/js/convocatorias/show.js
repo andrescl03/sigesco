@@ -2,6 +2,10 @@ const AppConvovatoriaWeb = () => {
     const { data, methods, mounted, utilities, el } = {
         el: 'AppConvocatoriaWeb',
         mounted: () => {
+            self.convocatoriaId = dom.getAttribute('data-id');
+            dom.removeAttribute('data-id');
+            self.convocatoriaType = dom.getAttribute('data-type');
+            dom.removeAttribute('data-type');
             self.modalWorkExperience = self.modal('modalWorkExperience');
             self.modalSpecialization = self.modal('modalSpecialization');
             self.modalAcademicTraining = self.modal('modalAcademicTraining');
@@ -10,6 +14,10 @@ const AppConvovatoriaWeb = () => {
         },
         data: () => { 
             return {
+                numberDocument: 0,
+                typeDocument: 1,
+                convocatoriaId: 0,
+                convocatoriaType: 1, // 1 Expediente - 2 PUN
                 convocatoria: {},
                 workExperiences: [],
                 academicTrainings: [],
@@ -20,7 +28,10 @@ const AppConvovatoriaWeb = () => {
                 index: -1,
                 user: {},
                 postulant: {},
-                formData: {}
+                formData: {},
+                nameDepartamnt: '',
+                nameProvince: '',
+                nameDistrict: ''
             }
         },
         methods: {
@@ -35,7 +46,6 @@ const AppConvovatoriaWeb = () => {
                         e.preventDefault();
                         self.formData = new FormData(e.target);
                         self.postulant = helper.formSerialize(e.target);
-                        console.log(self.postulant);
                         self.renderPreviewPostulant({el: 'previewPostulant', postulant: self.postulant, toString: false});
                         self.modalPreviewPostulant.show();
                     });
@@ -44,7 +54,8 @@ const AppConvovatoriaWeb = () => {
                 self.eventClick('btn-save', () => {
                     sweet2.show({
                         type: 'question',
-                        text: '¿Estás seguro de guardar?',
+                        text: '¿Estás seguro de enviar sus datos?',
+                        showCancelButton: true,
                         onOk: () => {
                             sweet2.loading();
                             self.modalPreviewPostulant.hide();
@@ -55,6 +66,11 @@ const AppConvovatoriaWeb = () => {
                             }, 2000);
                         }
                     });
+                });
+
+                self.eventClick('btn-documento-cancel', () => {
+                    self.formInputDocument(true);
+                    self.formInputEvent(true);
                 });
 
                 self.eventClick('btn-work-experience', () => {
@@ -92,14 +108,19 @@ const AppConvovatoriaWeb = () => {
                         })
                         .done(function ({success, data, message}) {
                             if (success) {
-                                const postulant = data.postulante;
-                                dom.querySelector('input[name="nombre"]').value = postulant.cpe_nombres;
-                                dom.querySelector('input[name="apellido_paterno"]').value = postulant.cpe_apaterno;
-                                dom.querySelector('input[name="apellido_materno"]').value = postulant.cpe_amaterno;
-                                sweet2.loading(false);    
+                                self.numberDocument = dom.querySelector('input[name="numero_documento"]').value;
+                                self.typeDocument = dom.querySelector('input[name="tipo_documento"]').value;
+                                self.user = data.postulante;
+                                dom.querySelector('input[name="nombre"]').value = self.user.cpe_nombres;
+                                dom.querySelector('input[name="apellido_paterno"]').value = self.user.cpe_apaterno;
+                                dom.querySelector('input[name="apellido_materno"]').value = self.user.cpe_amaterno;
+                                sweet2.loading(false);
                             } else {
+                                self.numberDocument = 0;
                                 sweet2.show({type:'error', html: message});
                             }
+                            self.formInputEvent(!success);
+                            self.formInputDocument(!success);
                         })
                         .fail(function (xhr, status, error) {
                             sweet2.show({type:'error', html: error});
@@ -122,12 +143,37 @@ const AppConvovatoriaWeb = () => {
                     self.modalSpecialization.hide();
                 });
 
+                self.formInputEvent(self.convocatoriaType == 2);
                 self.renderDepartments();
                 self.renderUbigeo();
                 self.renderWorkExperiences();
                 self.renderSpecialization();
                 self.renderAcademicTraining();
 
+            },
+            formInputDocument: (valid) => {
+                const btns2 = dom.querySelectorAll('.btn-documento-cancel');
+                btns2.forEach(btn => {
+                    btn.style.display = valid == true ? 'none' :  'inline-block';
+                });
+                const btns1 = dom.querySelectorAll('.btn-documento');
+                btns1.forEach(btn => {
+                    btn.style.display = valid == true ? 'inline-block' :  'none';
+                });
+                const inputs = dom.querySelectorAll('.form-input-document');
+                inputs.forEach(input => {
+                    input.readOnly = !valid;
+                });
+                const radios = dom.querySelectorAll('.form-radio-document');
+                radios.forEach(radio => {
+                    radio.disabled = !valid;
+                });
+            },
+            formInputEvent: (valid) => {
+                const inputs = dom.querySelectorAll('.form-input-validate');
+                inputs.forEach(input => {
+                    input.disabled = valid == true;
+                });
             },
             renderWorkExperiences: () => {
                 self.tableCrudRender({
@@ -164,6 +210,25 @@ const AppConvovatoriaWeb = () => {
                     }
                 });
             },
+            renderAcademicTraining: () => {
+                self.tableCrudRender({
+                    el: 'table-academic-training',
+                    name: 'academicTrainings',
+                    columns: [
+                        'nivel_educativo',
+                        'grado_academico',
+                        'universidad',
+                        'carrera_profesional',
+                        'registro_titulo',
+                        'rd_titulo',
+                        'obtencion_grado'
+                    ],
+                    actions: {
+                        edit: () => { self.modalAcademicTraining.show(); },
+                        delete: () => { self.renderAcademicTraining(); }
+                    }
+                });
+            },
             renderDepartments: () => {
                 $.ajax({
                     url: window.AppMain.url + 'ubigeo/obtenerDepartamentos',
@@ -185,30 +250,12 @@ const AppConvovatoriaWeb = () => {
                     swal2.show({type:'error', html: error});
                 });
             },
-            renderAcademicTraining: () => {
-                self.tableCrudRender({
-                    el: 'table-academic-training',
-                    name: 'academicTrainings',
-                    columns: [
-                        'nivel_educativo',
-                        'grado_academico',
-                        'universidad',
-                        'carrera_profesional',
-                        'registro_titulo',
-                        'rd_titulo',
-                        'obtencion_grado'
-                    ],
-                    actions: {
-                        edit: () => { self.modalWorkExperience.show(); },
-                        delete: () => { self.renderAcademicTraining(); }
-                    }
-                });
-            },
             renderUbigeo: () => {
                 const selectDepartments = dom.querySelectorAll('.select-department');
                 selectDepartments.forEach(select => {
                     select.addEventListener('change', (e) => {
-                        const departmentId = e.target.value;                       
+                        self.nameDepartamnt = select.options[e.target.selectedIndex].text;
+                        const departmentId = e.target.value;           
                         // Llamada AJAX para obtener provincias basadas en el ID del departamento
                         $.ajax({
                             url: window.AppMain.url + 'ubigeo/obtenerProvincias',
@@ -242,6 +289,7 @@ const AppConvovatoriaWeb = () => {
                 const selectProvinces = dom.querySelectorAll('.select-province');
                 selectProvinces.forEach(select => {
                     select.addEventListener('change', (e) => {
+                        self.nameProvince = select.options[e.target.selectedIndex].text;
                         const provinceId = e.target.value;                       
                         // Llamada AJAX para obtener provincias basadas en el ID del departamento
                         $.ajax({
@@ -268,6 +316,12 @@ const AppConvovatoriaWeb = () => {
                         });
                     });
                 });
+                const selectDistricts = dom.querySelectorAll('.select-district');
+                selectDistricts.forEach(select => {
+                    select.addEventListener('change', (e) => {     
+                        self.nameDistrict = select.options[e.target.selectedIndex].text;
+                    });
+                });
             },
             renderPreviewPostulant: ({el, postulant, toString = false}) => {
                 let html = `<div class="card mb-3">
@@ -277,11 +331,11 @@ const AppConvovatoriaWeb = () => {
                                 <div class="card-body">
                                     <div class="row mb-1">
                                         <div class="col-lg-5"><label class="label">Tipo de Documento </label></div>
-                                        <div class="col-lg-7"><span>DNI</span></div>
+                                        <div class="col-lg-7"><span>${ self.typeDocument == 2 ? 'Carnet de Extranjería': 'DNI' }</span></div>
                                     </div>
                                     <div class="row mb-1">
                                         <div class="col-lg-5"><label class="label">Número de Documento </label></div>
-                                        <div class="col-lg-7"><span>${postulant.documento}</span></div>
+                                        <div class="col-lg-7"><span>${postulant.numero_documento}</span></div>
                                     </div>
                                     <div class="row mb-1">
                                         <div class="col-lg-5"><label class="label">Modalidad </label></div>
@@ -351,15 +405,15 @@ const AppConvovatoriaWeb = () => {
                                 <div class="card-body">
                                     <div class="row mb-1">
                                         <div class="col-lg-5"><label class="label">Departamento </label></div>
-                                        <div class="col-lg-7"><span>${postulant.departmento}</span></div>
+                                        <div class="col-lg-7"><span>${self.nameDepartamnt}</span></div>
                                     </div>
                                     <div class="row mb-1">
                                         <div class="col-lg-5"><label class="label">Provincia </label></div>
-                                        <div class="col-lg-7"><span>${postulant.provincia}</span></div>
+                                        <div class="col-lg-7"><span>${self.nameProvince}</span></div>
                                     </div>
                                     <div class="row mb-1">
                                         <div class="col-lg-5"><label class="label">Distrito </label></div>
-                                        <div class="col-lg-7"><span>${postulant.distrito}</span></div>
+                                        <div class="col-lg-7"><span>${self.nameDistrict}</span></div>
                                     </div>
                                     <div class="row mb-1">
                                         <div class="col-lg-5"><label class="label">Vía </label></div>
@@ -505,6 +559,12 @@ const AppConvovatoriaWeb = () => {
                                     </div>
                                     <div class="card-body">
                                         <div class="row justify-content-center">
+                                            <div class="alert alert-success d-flex align-items-center" role="alert">
+                                                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                                                <div>
+                                                    Estimado ${ self.postulant.nombre }, se ha enviado un correo electrónico a ${ self.postulant.correo } con la información registrada.
+                                                </div>
+                                            </div>
                                             ${ self.renderPreviewPostulant({postulant: self.postulant, toString: true}) }
                                         </div>
                                     </div>

@@ -48,3 +48,11 @@
 .label {
     font-weight: 500;
 }
+
+.form-input-validate[disabled] {
+    opacity: 0.5;
+}
+
+.form-input-readonly[readonly] {
+    opacity: 0.5;
+ }

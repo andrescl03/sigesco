@@ -261,9 +261,18 @@ class Convocatorias_model extends CI_Model {
           show_404();
         }
 
-        $convocatoria->tipo_postulacion = 2;
-        if ($convocatoria->con_id == 5) {
-          $convocatoria->tipo_postulacion = 1;
+        $now_unix = strtotime($this->tools->getDateHour());
+        $con_fechainicio_unix = strtotime($convocatoria->con_fechainicio);
+        $con_fechafin_unix = strtotime($convocatoria->con_fechafin);
+        
+        if (!($now_unix >= $con_fechainicio_unix  
+           && $now_unix <= $con_fechafin_unix)) {
+          show_404();
+        }
+
+        $convocatoria->con_type_postulacion = 2; // PUN
+        if ($convocatoria->con_id == 7) {
+          $convocatoria->con_type_postulacion = 1;
         }
 
         $response['success'] = true;
