@@ -10,7 +10,7 @@
                 </ul>
             </div>
             <div class="col-lg-6">
-                <div class="text-right">
+                <div class="text-end">
                     <a href="https://www.facebook.com/UGEL05" class="ml-3" style="font-size:32px; color:#fff;"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
                 </div>
             </div>

@@ -23,22 +23,18 @@ class ConvocatoriasWeb extends CI_Controller {
         $this->layout->view("/web/convocatoria/index", compact('dato','datos'));
     }
 
-    public function show() {
-        $dato = 1;
-        $this->layout->js(array(base_url()."public/web/js/convocatorias/show.js"));
-        $this->layout->view("/web/convocatoria/show", compact('dato'));
+    public function show($id) {
+        if (is_numeric($id)) {
+            $this->layout->js(array(base_url()."public/web/js/convocatorias/show.js"));
+            $this->layout->view("/web/convocatoria/show", $this->convocatorias_model->showConvocatoria(compact('id')));    
+		} else {
+			show_404();
+		}
     }
 
-    public function obtenerDatosPostulante() {
-
-        $document = $this->input->post('document');
-        $response = array(
-            'status' => 200,
-            'message' => 'Success',
-            'datos' => $this->convocatorias_model->obtenerDatosDocentePUN($document),
-        );
+    public function postulant($numero) {
         $this->output
             ->set_content_type('application/json')
-            ->set_output(json_encode($response));
+            ->set_output(json_encode($this->convocatorias_model->showPostulant(compact('numero'))));
     }
 }

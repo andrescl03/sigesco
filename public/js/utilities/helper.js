@@ -1,7 +1,7 @@
 var helper = {
-    post: function (url, formData) {
+    post: function (url, data, headers) {
         return new Promise(function (resolve, reject) {
-            fetch(url, {method: "POST", body: formData})
+            fetch(url, {method: "POST", body: data, headers: headers})
             .then(function(res){ return res.json(); })
             .then(function(rsp){
                 if (rsp.status !== undefined) {
@@ -58,6 +58,16 @@ var helper = {
                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
         }
+    },
+    formSerialize: formElement => {
+        const values = {};
+        const inputs = formElement.elements;
+        for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i].name) {
+                values[inputs[i].name] = inputs[i].value;
+            }
+        }
+        return values;
     },
     date: {
         getDayText: (key) => {

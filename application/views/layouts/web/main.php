@@ -7,15 +7,16 @@
     <link rel="shortcut icon" href="<?php echo base_url() ?>/assets/image/favicon/favicon.ico">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"> -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/public/css/bootstrapv5.0.2/bootstrap.css">
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/bundle.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/web/main.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
     <script>
-        localStorage.setItem("BASE_URL", "<?php echo base_url() ?>");
+        window.AppMain = {
+            url: "<?php echo base_url() ?>"
+        };
     </script>
     <style>
         .container-page::before {
@@ -36,6 +37,17 @@
 </head>
 
 <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        </symbol>
+        <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+        </symbol>
+        <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </symbol>
+    </svg>
     <?php $this->load->view('layouts/web/partials/header'); ?>
     <section class="d-flex flex-column-fluid container-page py-4">
         <div class="content">
@@ -83,307 +95,17 @@
         </div>
     </div>
     <?php $this->load->view('layouts/web/partials/footer'); ?>
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
     <script src="<?php echo base_url()?>public/js/jquery/jquery-3.6.0.min.js"></script>           
     <script src="<?php echo base_url()?>public/css/bootstrapv5.0.2/bootstrap.bundle.js" crossorigin="anonymous"></script>
     <script src="<?php echo base_url()?>public/css/bootstrapv5.0.2/popper.min.js" crossorigin="anonymous"></script>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-
+    <!-- <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script> -->
     <script src="<?php echo base_url() ?>/public/js/utilities/helper.js"></script>
     <script src="<?php echo base_url() ?>/public/js/utilities/sweetalert2.js"></script>
-    <script src="<?php echo base_url() ?>/public/js/utilities/vue.js"></script>
-
     <script src="<?php echo base_url() ?>/assets/js/web/main.js"></script>
     <script src='<?php echo base_url() ?>/public/js/sha1/sha1.js'></script>
-
-    
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <?php echo $this->layout->js ?>    
-
-    <!-- <script src='<?php echo base_url() ?>/assets/js/web/convenios.js'></script> -->
-    <script>
-        // $(document).ready(AppConvenio.insert());
-    </script>
-    <script>
-        $(document).ready(function() {
-            // $("#miModal").modal('show');
-
-            $('#postulation_type').on('change', function() {
-                var selectedOption = $(this).val();
-                if (selectedOption != 0) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'IMPORTANTE',
-                        text: "Estimado postulante usted está seleccionado el tipo de postulación:" + selectedOption
-                    });
-
-                }
-            });
-
-
-
-            $.ajax({
-                url: '<?php echo base_url("ubigeo/obtenerDepartamentos"); ?>', // Ruta del controlador que lista departamentos
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    // Llenar el select de departamentos con los datos recibidos
-                    $.each(response.departamentos, function(index, departamento) {
-                        $('#department').append('<option value="' + departamento.id + '">' + departamento.name + '</option>');
-                    });
-                }
-            });
-
-
-            $('#department').change(function() {
-                var departmentId = $(this).val();
-
-                // Llamada AJAX para obtener provincias basadas en el ID del departamento
-                $.ajax({
-                    url: '<?php echo base_url("ubigeo/obtenerProvincias"); ?>',
-                    type: 'POST',
-                    data: {
-                        department_id: departmentId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        // Llenar el select de provincias con los datos recibidos
-                        $('#province').empty();
-                        $.each(response.provincias, function(index, provincia) {
-                            $('#province').append('<option value="' + provincia.id + '">' + provincia.name + '</option>');
-                        });
-                    }
-                });
-            });
-
-
-            // Evento cuando se selecciona una provincia
-            $('#province').change(function() {
-                var provinceId = $(this).val();
-
-                // Llamada AJAX para obtener distritos basados en el ID de la provincia
-                $.ajax({
-                    url: '<?php echo base_url("ubigeo/obtenerDistritos"); ?>',
-                    type: 'POST',
-                    data: {
-                        province_id: provinceId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        // Llenar el select de distritos con los datos recibidos
-                        $('#district').empty();
-                        $.each(response.distritos, function(index, distrito) {
-                            $('#district').append('<option value="' + distrito.id + '">' + distrito.name + '</option>');
-                        });
-                    }
-                });
-            });
-            $('#postulation_type').change(function() {
-                $.ajax({
-                    url: '<?php echo base_url("convocatorias/listarConvocatoriasAjax"); ?>',
-                    type: 'POST',
-                    data: {
-                        "a": "a"
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        // Llenar el select de distritos con los datos recibidos
-                        let arrUnicos = [];
-
-                        $.each(response.convocatorias, function(index, convocatoria) {
-
-                            if (!arrUnicos.includes(convocatoria['con_id'])) {
-                                arrUnicos.push(convocatoria['con_id']);
-
-
-                                var convocatoriaNumero = convocatoria['con_numero'].toString().padStart(4, '0');
-
-                                var convocatoriaAnio = convocatoria['con_anio'];
-
-                                var optionValue = "CONV-" + convocatoriaNumero + "-" + convocatoriaAnio;
-
-                                var optionText = '<option value="' + optionValue + '">' + optionValue + '</option>';
-
-                                $('#announcement').append(optionText);
-                            }
-
-                        });
-                    }
-                });
-            });
-
-            // Manejar el clic en el botón "Agregar Registro"
-            $("#agregarRegistroBtn").click(function() {
-                // Obtener los valores del formulario
-                var nivelEducativo = $("select[name='management_institution_public']:eq(0)").val();
-                var gradoAcademico = $("select[name='management_institution_public']:eq(1)").val();
-                var universidad = $("select[name='management_institution_public']:eq(2)").val();
-                var carreraProfesional = $("select[name='management_institution_public']:eq(3)").val();
-                var numRegistroTitulo = $("input[name='email_entity']:eq(0)").val();
-                var rdNumTitulo = $("input[name='email_entity']:eq(1)").val();
-                var obtencionGrado = $("input[name='email_entity']:eq(2)").val();
-
-                // Crear una nueva fila en la tabla y agregar los datos
-                var newRow = "<tr><td>" + nivelEducativo + "</td><td>" + gradoAcademico + "</td><td>" + universidad + "</td><td>" + carreraProfesional + "</td><td>" + numRegistroTitulo + "</td><td>" + rdNumTitulo + "</td><td>" + obtencionGrado + "</td><td><button class='btn btn-danger eliminarRegistroBtn'>Eliminar</button></td></tr>";
-
-                // Agregar la nueva fila a la tabla
-                $("#tablaRegistros").append(newRow);
-
-                // Limpiar el formulario después de agregar el registro
-                $("form")[0].reset();
-            });
-
-            // Manejar clics en los botones "Eliminar"
-            $(document).on("click", ".eliminarRegistroBtn", function() {
-                $(this).closest("tr").remove();
-            });
-
-            $(document).ready(function() {
-                // Función para agregar una nueva fila a la tabla
-                $("#agregarRegistroBtnExperienciaLaboral").click(function() {
-                    var institucion = $("input[name='institucion_educativa']").val();
-                    var sector = $("select[name='sector']").val();
-                    var puesto = $("select[name='puesto']").val();
-                    var numeroRD = $("input[name='numero_rd']").val();
-                    var numeroContrato = $("input[name='numero_contrato']").val();
-
-                    // Validar que los campos no estén vacíos
-                    if (institucion && sector && puesto && numeroRD && numeroContrato) {
-                        // Construir la fila de la tabla con los datos del formulario
-                        var fila = "<tr><td>" + institucion + "</td><td>" + sector + "</td><td>" + puesto + "</td><td>" + numeroRD + "</td><td>" + numeroContrato + "</td><td><button class='btn btn-danger eliminarFila'>Eliminar</button></td></tr>";
-
-                        // Agregar la fila a la tabla
-                        $("#tablaRegistrosExperienciaLaboral tbody").append(fila);
-
-                        // Limpiar los campos del formulario
-                        $("input[name='institucion_educativa']").val("");
-                        $("select[name='sector']").val("1");
-                        $("select[name='puesto']").val("1");
-                        $("input[name='numero_rd']").val("");
-                        $("input[name='numero_contrato']").val("");
-                    } else {
-                        alert("Por favor, complete todos los campos antes de agregar el registro.");
-                    }
-                });
-                // Función para eliminar una fila
-                $(document).on("click", ".eliminarFila", function() {
-                    $(this).closest("tr").remove();
-                });
-            });
-
-
-            $(document).ready(function() {
-                // Función para agregar una nueva fila a la tabla
-                $("#agregarRegistroBtnEspecializacion").click(function() {
-                    var tipoEspecializacion = $("#tipoEspecializacion").val();
-                    var temaEspecializacion = $("#temaEspecializacion").val();
-                    var nombreEntidad = $("#nombreEntidad").val();
-                    var fechaInicio = $("#fechaInicio").val();
-                    var fechaTermino = $("#fechaTermino").val();
-                    var numeroHoras = $("#numeroHoras").val();
-
-                    // Validar que los campos no estén vacíos
-
-                    // Construir la fila de la tabla con los datos del formulario
-                    var fila = "<tr><td>" + tipoEspecializacion + "</td><td>" + temaEspecializacion + "</td><td>" + nombreEntidad + "</td><td>" + fechaInicio + "</td><td>" + fechaTermino + "</td><td>" + numeroHoras + "</td><td><button class='btn btn-danger eliminarFila'>Eliminar</button></td></tr>";
-
-                    // Agregar la fila a la tabla
-                    $("#tablaRegistrosEspecializacion tbody").append(fila);
-
-                    // Limpiar los campos del formulario
-                    $("#tipoEspecializacion").val("0");
-                    $("#temaEspecializacion").val("");
-                    $("#nombreEntidad").val("");
-                    $("#fechaInicio").val("");
-                    $("#fechaTermino").val("");
-                    $("#numeroHoras").val("");
-                });
-
-                // Función para eliminar una fila
-                $(document).on("click", ".eliminarFila", function() {
-                    $(this).closest("tr").remove();
-
-                });
-            });
-
-
-        });
-
-        $(document).ready(function() {
-            $("#button-addon2").click(function() {
-
-                let document = $('input[name="dni_applicant"]').val();
-
-
-                if (document == '') {
-                    Swal.fire(
-                        'Error',
-                        'Por favor ingrese el número de documento y tipo de postulación',
-                        'error'
-                    )
-                } else {
-                    $.ajax({
-                        url: '<?php echo base_url("registro/obtenerDatosPostulante"); ?>',
-                        type: 'POST',
-                        data: {
-                            document: document
-                        },
-                        dataType: 'json',
-                        success: function(response) {
-                            if (response.status === 200) {
-                                if (response.datos && response.datos.length > 0) {
-
-                                    let nombre = response.datos['cpe_nombres'];
-                                    let apaterno = response.datos['cpe_apaterno'];
-                                    let amaterno = response.datos['cpe_amaterno'];
-                                    $('#first_name').val("Danilo Andrés");
-                                    $('#last_name').val("Carrión");
-                                    $('#mothers_last_name').val("Lava");
-
-                                    Swal.fire(
-                                        'Contrato docente',
-                                        'Bienvenido al proceso de contratación docente - PUN',
-                                        'success'
-                                    );
-                                } else {
-                                    Swal.fire(
-                                        'Error',
-                                        'El postulante no está en el cuadro de mérito de la PUN',
-                                        'error'
-                                    );
-                                }
-                            } else {
-                                Swal.fire(
-                                    'Error',
-                                    'Error en la solicitud',
-                                    'error'
-                                );
-                            }
-                        }
-                    });
-
-                    $("#").prop("readonly", false);
-
-                    $("input[readonly]").prop("readonly", false);
-
-                }
-
-            });
-
-            $('#buttonguardar').click(function() {
-                Swal.fire(
-                    'Contrato docente',
-                    'Registro exitoso por favor, revise su bandeja de correo',
-                    'success'
-                )
-            })
-
-        });
-    </script>
+    <?php echo $this->layout->js ?>
 </body>
 
 </html>

@@ -1,8 +1,8 @@
 <div class="container">
-    <div class="card card-custom">
-        <div class="card-header">
-            <div class="card-title">
-                <h3 class="card-label">Lista de convocatorias</h3>
+    <div class="card card-custom ">
+        <div class="card-header ">
+            <div class="card-title ">
+                <h1 class="card-label ">Lista de convocatorias para el proceso de contratación docente - 2023</h1>
             </div>
         </div>
         <div class="card-body">
@@ -49,7 +49,7 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a type="button" class="btn btn-danger" title="Ingresar a postular" href="<?= base_url() ?>convocatorias/<?= $dato['con_id'] ?>"><b><i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i>POSTULAR </b></a>
+                                            <a type="button" class="btn btn-danger" title="Ingresar a postular" href="<?= base_url() ?>web/convocatorias/<?= $dato['con_id'] ?>"><b><i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i>POSTULAR </b></a>
                                         </div>
                                     </td>
                                 </tr>
