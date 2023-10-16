@@ -67,8 +67,10 @@ class Convocatorias_model extends CI_Model {
         ->join("grupo_inscripcion gin", "esp.esp_id = gin.especialidades_esp_id", "inner")
         ->join("convocatorias_detalle cde", "gin.gin_id = cde.grupo_inscripcion_gin_id", "inner")
         ->join("convocatorias con", "con.con_id = cde.convocatorias_con_id", "inner")
-        ->where(array("cde.cde_estado"=>1, "con.con_estado"=>1, "gin.periodos_per_id"=>$idPer, "gin.procesos_pro_id"=>$idPro))
-        ->order_by("con.con_id desc, mod.mod_id asc, niv.niv_id asc, esp.esp_id asc") 
+       // ->where(array("cde.cde_estado"=>1, "con.con_estado"=>1, "gin.periodos_per_id"=>$idPer, "gin.procesos_pro_id"=>$idPro))
+        ->where(array("cde.cde_estado"=>1, "gin.periodos_per_id"=>$idPer, "gin.procesos_pro_id"=>$idPro))
+      ->order_by("con.con_id desc, mod.mod_id asc, niv.niv_id asc, esp.esp_id asc") 
+
         ->get();
         // echo $this->db->last_query(); exit(); 
       return $sql->result_array();

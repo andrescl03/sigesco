@@ -45,7 +45,7 @@
                                         </ul>
                                     </td>
                                     <td class="text-center">
-                                        <span class="">ABIERTO</span>
+                                        <span class=""><?php echo $dato['con_estado'] ? 'ABIERTO' : 'CERRADO' ?> </span>
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
