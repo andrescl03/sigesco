@@ -10,6 +10,7 @@ const AppConvovatoriaWeb = () => {
             self.modalSpecialization = self.modal('modalSpecialization');
             self.modalAcademicTraining = self.modal('modalAcademicTraining');
             self.modalPreviewPostulant = self.modal('modalPreviewPostulant');
+            self.modalAttachedFile = self.modal('modalAttachedFile');
             self.initialize();
         },
         data: () => { 
@@ -22,9 +23,12 @@ const AppConvovatoriaWeb = () => {
                 workExperiences: [],
                 academicTrainings: [],
                 specializations: [],
+                attachedFiles: [],
                 modalWorkExperience: {},
                 modalSpecialization: {},
                 modalAcademicTraining: {},
+                modalPreviewPostulant: {},
+                modalAttachedFile: {},
                 index: -1,
                 user: {},
                 postulant: {},
@@ -71,6 +75,10 @@ const AppConvovatoriaWeb = () => {
                 self.eventClick('btn-documento-cancel', () => {
                     self.formInputDocument(true);
                     self.formInputEvent(true);
+                });
+
+                self.eventClick('btn-attached-file', () => {
+                    self.modalAttachedFile.show();
                 });
 
                 self.eventClick('btn-work-experience', () => {
@@ -128,6 +136,11 @@ const AppConvovatoriaWeb = () => {
                     }
                 });
 
+                self.formSubmit('form-attached-file', 'attachedFiles', () => {
+                    self.renderAttachedFile();
+                    self.modalAttachedFile.hide();
+                });
+
                 self.formSubmit('form-work-experience', 'workExperiences', () => {
                     self.renderWorkExperiences();
                     self.modalWorkExperience.hide();
@@ -149,7 +162,7 @@ const AppConvovatoriaWeb = () => {
                 self.renderWorkExperiences();
                 self.renderSpecialization();
                 self.renderAcademicTraining();
-
+                self.renderAttachedFile();
             },
             formInputDocument: (valid) => {
                 const btns2 = dom.querySelectorAll('.btn-documento-cancel');
@@ -207,6 +220,20 @@ const AppConvovatoriaWeb = () => {
                     actions: {
                         edit: () => { self.modalSpecialization.show(); },
                         delete: () => { self.renderSpecialization(); }
+                    }
+                });
+            },
+            renderAttachedFile: () => {
+                self.tableCrudRender({
+                    el: 'table-attached-file',
+                    name: 'attachedFiles',
+                    columns: [
+                        'tipo',
+                        'archivo',
+                    ],
+                    actions: {
+                        edit: () => { self.modalAttachedFile.show(); },
+                        delete: () => { self.renderAttachedFile(); }
                     }
                 });
             },
@@ -543,6 +570,35 @@ const AppConvovatoriaWeb = () => {
                                         </table>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="m-0">Archivos Adjuntos</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead class="text-center">
+                                                <tr>
+                                                    <th>Tipo</th>
+                                                    <th>Archivo</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>`;
+                                            if (self.attachedFiles.length == 0) {
+                                                html += `<tr><td colspan="2" class="text-center">No hay registros para mostrar</td></tr>`;
+                                            } else {
+                                                self.attachedFiles.forEach(item => {
+                                                    html += `<tr>
+                                                                <td>${item.tipo}</td>
+                                                                <td>${item.archivo}</td>
+                                                            </tr>`;
+                                                });
+                                            }
+                                    html += `</tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>`;
                 if (toString) {
                     return html;
@@ -562,7 +618,7 @@ const AppConvovatoriaWeb = () => {
                                             <div class="alert alert-success d-flex align-items-center" role="alert">
                                                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                                                 <div>
-                                                    Estimado ${ self.postulant.nombre }, se ha enviado un correo electrónico a ${ self.postulant.correo } con la información registrada.
+                                                    Estimado <b>${ self.postulant.nombre }</b>, se ha enviado un correo electrónico a <b>${ self.postulant.correo }</b> con la información registrada.
                                                 </div>
                                             </div>
                                             ${ self.renderPreviewPostulant({postulant: self.postulant, toString: true}) }
@@ -617,7 +673,7 @@ const AppConvovatoriaWeb = () => {
                             });
                             html += `<td class="text-center">
                                         <button class="btn btn-danger mb-1 btn-delete">Eliminar</button>
-                                        <button class="btn btn-warning mb-1 btn-edit">Editar</button>
+                                        <!--button class="btn btn-warning mb-1 btn-edit">Editar</button-->
                                     </td>`;
                             tr.innerHTML = html;
                             tr.querySelectorAll('.btn-delete').forEach(btn => {
@@ -629,8 +685,8 @@ const AppConvovatoriaWeb = () => {
                                         showCancelButton: true,
                                         onOk: () => {
                                             self[name].splice(index, 1);
-                                            if (actions.edit) {
-                                                actions.edit();
+                                            if (actions.delete) {
+                                                actions.delete();
                                             }
                                         }
                                     });
@@ -640,8 +696,8 @@ const AppConvovatoriaWeb = () => {
                                 btn.addEventListener('click', (e) => {
                                     e.preventDefault();
                                     self.index = index;
-                                    if (actions.delete) {
-                                        actions.delete();
+                                    if (actions.edit) {
+                                        actions.edit();
                                     }
                                 });
                             });

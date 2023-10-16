@@ -296,19 +296,24 @@
                             </table>
                         </div>
                         <div class="form-group row mt-5 section" data-scrolled="6">
-                            <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label">
-                                <h5>Archivos adjuntos:</h5>
+                            <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label d-flex justify-content-between">
+                                <h5 class="my-auto">Archivos adjuntos:</h5>
+                                <button type="button" class="btn btn-primary btn-attached-file float-end form-input-validate">Agregar</button>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-xl-12 col-lg-12" id="panel-file">
-                                <div class="d-flex mb-4">
-                                    <div class="custom-file">
-                                        <input type="file" name="files[]" class="custom-file-input" id="customFile" multiple>
-                                        <label class="custom-file-label" for="customFile">Seleccionar</label>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="table-responsive">
+                            <table class="table table-attached-file">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Archivo</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Las filas se agregarán dinámicamente aquí -->
+                                </tbody>
+                            </table>
                         </div>
                     </form>
                 </div>
@@ -505,6 +510,41 @@
                                 <label class="col-xl-4 col-lg-4 col-form-label">Obtención del grado</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="text" name="obtencion_grado" class="form-control form-control-solid" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal fade" id="modalAttachedFile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <form class="form-attached-file">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Formación Académica</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group row">
+                                <label class="col-xl-4 col-lg-4 col-form-label">Tipo de Documento</label>
+                                <div class="col-xl-8 col-lg-8">
+                                    <select class="form-control form-control-solid" name="tipo" required>
+                                        <option value="" hidden>[SELECCIONE]</option>
+                                        <option value="Anexo 1">Anexo 1</option>
+                                        <option value="Anexo 2">Anexo 2</option>
+                                        <option value="Anexo 3">Anexo 3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-xl-4 col-lg-4 col-form-label" id="formFile">Seleccione Archivo</label>
+                                <div class="col-xl-8 col-lg-8">
+                                    <input class="form-control form-control-solid" name="archivo" type="file" id="formFile" accept="application/pdf" required>
                                 </div>
                             </div>
                         </div>
