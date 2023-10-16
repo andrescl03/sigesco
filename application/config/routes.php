@@ -50,8 +50,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
-$route['convocatorias'] = 'ConvocatoriasWeb/index';
-$route['convocatorias/(:any)'] = 'ConvocatoriasWeb/show/$1';
+$route['web/convocatorias'] = 'ConvocatoriasWeb/index';
+$route['web/convocatorias/(:any)'] = 'ConvocatoriasWeb/show/$1';
+$route['web/postulantes/(:any)'] = 'ConvocatoriasWeb/postulant/$1';
 
 $route['default_controller'] = 'index';
 $route['404_override'] = '';

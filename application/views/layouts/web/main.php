@@ -7,9 +7,8 @@
     <link rel="shortcut icon" href="<?php echo base_url() ?>/assets/image/favicon/favicon.ico">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"> -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/public/css/bootstrapv5.0.2/bootstrap.css">
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/bundle.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/web/main.css">
     <script>
@@ -83,187 +82,19 @@
         </div>
     </div>
     <?php $this->load->view('layouts/web/partials/footer'); ?>
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script> -->
     <script src="<?php echo base_url()?>public/js/jquery/jquery-3.6.0.min.js"></script>           
     <script src="<?php echo base_url()?>public/css/bootstrapv5.0.2/bootstrap.bundle.js" crossorigin="anonymous"></script>
     <script src="<?php echo base_url()?>public/css/bootstrapv5.0.2/popper.min.js" crossorigin="anonymous"></script>
-           
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-
+    <!-- <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script> -->
     <script src="<?php echo base_url() ?>/public/js/utilities/helper.js"></script>
     <script src="<?php echo base_url() ?>/public/js/utilities/sweetalert2.js"></script>
-
     <script src="<?php echo base_url() ?>/assets/js/web/main.js"></script>
     <script src='<?php echo base_url() ?>/public/js/sha1/sha1.js'></script>
-
-    <?php echo $this->layout->js ?>    
-
-    <!-- <script src='<?php echo base_url() ?>/assets/js/web/convenios.js'></script> -->
+    <?php echo $this->layout->js ?>
     <script>
         // $(document).ready(AppConvenio.insert());
     </script>
     <script>
-        $(document).ready(function() {
-            // $("#miModal").modal('show');
-
-            $('#postulation_type').on('change', function() {
-                var selectedOption = $(this).val();
-                if (selectedOption != 0) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'IMPORTANTE',
-                        text: "Estimado postulante usted está seleccionado el tipo de postulación:" + selectedOption
-                    });
-
-                }
-            });
-
-
-
-            $.ajax({
-                url: '<?php echo base_url("ubigeo/obtenerDepartamentos"); ?>', // Ruta del controlador que lista departamentos
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    // Llenar el select de departamentos con los datos recibidos
-                    $.each(response.departamentos, function(index, departamento) {
-                        $('#department').append('<option value="' + departamento.id + '">' + departamento.name + '</option>');
-                    });
-                }
-            });
-
-            $('#postulation_type').change(function() {
-                $.ajax({
-                    url: '<?php echo base_url("convocatorias/listarConvocatoriasAjax"); ?>',
-                    type: 'POST',
-                    data: {
-                        "a": "a"
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        // Llenar el select de distritos con los datos recibidos
-                        let arrUnicos = [];
-
-                        $.each(response.convocatorias, function(index, convocatoria) {
-
-                            if (!arrUnicos.includes(convocatoria['con_id'])) {
-                                arrUnicos.push(convocatoria['con_id']);
-
-
-                                var convocatoriaNumero = convocatoria['con_numero'].toString().padStart(4, '0');
-
-                                var convocatoriaAnio = convocatoria['con_anio'];
-
-                                var optionValue = "CONV-" + convocatoriaNumero + "-" + convocatoriaAnio;
-
-                                var optionText = '<option value="' + optionValue + '">' + optionValue + '</option>';
-
-                                $('#announcement').append(optionText);
-                            }
-
-                        });
-                    }
-                });
-            });
-
-            // Manejar el clic en el botón "Agregar Registro"
-            $("#agregarRegistroBtn").click(function() {
-                // Obtener los valores del formulario
-                var nivelEducativo = $("select[name='management_institution_public']:eq(0)").val();
-                var gradoAcademico = $("select[name='management_institution_public']:eq(1)").val();
-                var universidad = $("select[name='management_institution_public']:eq(2)").val();
-                var carreraProfesional = $("select[name='management_institution_public']:eq(3)").val();
-                var numRegistroTitulo = $("input[name='email_entity']:eq(0)").val();
-                var rdNumTitulo = $("input[name='email_entity']:eq(1)").val();
-                var obtencionGrado = $("input[name='email_entity']:eq(2)").val();
-
-                // Crear una nueva fila en la tabla y agregar los datos
-                var newRow = "<tr><td>" + nivelEducativo + "</td><td>" + gradoAcademico + "</td><td>" + universidad + "</td><td>" + carreraProfesional + "</td><td>" + numRegistroTitulo + "</td><td>" + rdNumTitulo + "</td><td>" + obtencionGrado + "</td><td><button class='btn btn-danger eliminarRegistroBtn'>Eliminar</button></td></tr>";
-
-                // Agregar la nueva fila a la tabla
-                $("#tablaRegistros").append(newRow);
-
-                // Limpiar el formulario después de agregar el registro
-                $("form")[0].reset();
-            });
-
-            // Manejar clics en los botones "Eliminar"
-            $(document).on("click", ".eliminarRegistroBtn", function() {
-                $(this).closest("tr").remove();
-            });
-
-            $(document).ready(function() {
-                // Función para agregar una nueva fila a la tabla
-                $("#agregarRegistroBtnExperienciaLaboral").click(function() {
-                    var institucion = $("input[name='institucion_educativa']").val();
-                    var sector = $("select[name='sector']").val();
-                    var puesto = $("select[name='puesto']").val();
-                    var numeroRD = $("input[name='numero_rd']").val();
-                    var numeroContrato = $("input[name='numero_contrato']").val();
-
-                    // Validar que los campos no estén vacíos
-                    if (institucion && sector && puesto && numeroRD && numeroContrato) {
-                        // Construir la fila de la tabla con los datos del formulario
-                        var fila = "<tr><td>" + institucion + "</td><td>" + sector + "</td><td>" + puesto + "</td><td>" + numeroRD + "</td><td>" + numeroContrato + "</td><td><button class='btn btn-danger eliminarFila'>Eliminar</button></td></tr>";
-
-                        // Agregar la fila a la tabla
-                        $("#tablaRegistrosExperienciaLaboral tbody").append(fila);
-
-                        // Limpiar los campos del formulario
-                        $("input[name='institucion_educativa']").val("");
-                        $("select[name='sector']").val("1");
-                        $("select[name='puesto']").val("1");
-                        $("input[name='numero_rd']").val("");
-                        $("input[name='numero_contrato']").val("");
-                    } else {
-                        alert("Por favor, complete todos los campos antes de agregar el registro.");
-                    }
-                });
-                // Función para eliminar una fila
-                $(document).on("click", ".eliminarFila", function() {
-                    $(this).closest("tr").remove();
-                });
-            });
-
-
-            $(document).ready(function() {
-                // Función para agregar una nueva fila a la tabla
-                $("#agregarRegistroBtnEspecializacion").click(function() {
-                    var tipoEspecializacion = $("#tipoEspecializacion").val();
-                    var temaEspecializacion = $("#temaEspecializacion").val();
-                    var nombreEntidad = $("#nombreEntidad").val();
-                    var fechaInicio = $("#fechaInicio").val();
-                    var fechaTermino = $("#fechaTermino").val();
-                    var numeroHoras = $("#numeroHoras").val();
-
-                    // Validar que los campos no estén vacíos
-
-                    // Construir la fila de la tabla con los datos del formulario
-                    var fila = "<tr><td>" + tipoEspecializacion + "</td><td>" + temaEspecializacion + "</td><td>" + nombreEntidad + "</td><td>" + fechaInicio + "</td><td>" + fechaTermino + "</td><td>" + numeroHoras + "</td><td><button class='btn btn-danger eliminarFila'>Eliminar</button></td></tr>";
-
-                    // Agregar la fila a la tabla
-                    $("#tablaRegistrosEspecializacion tbody").append(fila);
-
-                    // Limpiar los campos del formulario
-                    $("#tipoEspecializacion").val("0");
-                    $("#temaEspecializacion").val("");
-                    $("#nombreEntidad").val("");
-                    $("#fechaInicio").val("");
-                    $("#fechaTermino").val("");
-                    $("#numeroHoras").val("");
-                });
-
-                // Función para eliminar una fila
-                $(document).on("click", ".eliminarFila", function() {
-                    $(this).closest("tr").remove();
-
-                });
-            });
-
-
-        });
-
         $(document).ready(function() {
             $("#button-addon2").click(function() {
 

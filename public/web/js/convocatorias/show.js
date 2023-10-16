@@ -5,6 +5,7 @@ const AppConvovatoriaWeb = () => {
             self.modalWorkExperience = self.modal('modalWorkExperience');
             self.modalSpecialization = self.modal('modalSpecialization');
             self.modalAcademicTraining = self.modal('modalAcademicTraining');
+            self.modalPreviewPostulant = self.modal('modalPreviewPostulant');
             self.initialize();
         },
         data: () => { 
@@ -16,7 +17,10 @@ const AppConvovatoriaWeb = () => {
                 modalWorkExperience: {},
                 modalSpecialization: {},
                 modalAcademicTraining: {},
-                index: -1
+                index: -1,
+                user: {},
+                postulant: {},
+                formData: {}
             }
         },
         methods: {
@@ -25,16 +29,82 @@ const AppConvovatoriaWeb = () => {
             },
             events: () => {
 
-                self.eventClickCrudModal('btn-work-experience', () => {
+                const formPostulants = dom.querySelectorAll('.form-postulant');
+                formPostulants.forEach(form => {
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        self.formData = new FormData(e.target);
+                        self.postulant = helper.formSerialize(e.target);
+                        console.log(self.postulant);
+                        self.renderPreviewPostulant({el: 'previewPostulant', postulant: self.postulant, toString: false});
+                        self.modalPreviewPostulant.show();
+                    });
+                });
+
+                self.eventClick('btn-save', () => {
+                    sweet2.show({
+                        type: 'question',
+                        text: '¿Estás seguro de guardar?',
+                        onOk: () => {
+                            sweet2.loading();
+                            self.modalPreviewPostulant.hide();
+                            dom.querySelector('#formPostulant').reset();
+                            setTimeout(() => {
+                                sweet2.loading(false);
+                                self.renderCompletedPostulant();
+                            }, 2000);
+                        }
+                    });
+                });
+
+                self.eventClick('btn-work-experience', () => {
+                    self.index = -1;
                     self.modalWorkExperience.show();
                 });
 
-                self.eventClickCrudModal('btn-academic-training', () => {
+                self.eventClick('btn-academic-training', () => {
+                    self.index = -1;
                     self.modalAcademicTraining.show();
                 });
 
-                self.eventClickCrudModal('btn-specialization', () => {
+                self.eventClick('btn-specialization', () => {
+                    self.index = -1;
                     self.modalSpecialization.show();
+                });
+
+                self.eventClick('btn-documento', (e) => {
+                    const input = dom.querySelector('#inputDocumento');
+                    if (input) {
+                        const value = input.value.trim();
+                        if (value == 0) {
+                            sweet2.show({
+                                type: 'info',
+                                html: 'Por favor ingrese el número de documento'
+                            });
+                            return;
+                        }
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + 'web/postulantes/' + value,
+                            method: 'GET',
+                            dataType: 'json',
+                            cache: 'false'
+                        })
+                        .done(function ({success, data, message}) {
+                            if (success) {
+                                const postulant = data.postulante;
+                                dom.querySelector('input[name="nombre"]').value = postulant.cpe_nombres;
+                                dom.querySelector('input[name="apellido_paterno"]').value = postulant.cpe_apaterno;
+                                dom.querySelector('input[name="apellido_materno"]').value = postulant.cpe_amaterno;
+                                sweet2.loading(false);    
+                            } else {
+                                sweet2.show({type:'error', html: message});
+                            }
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', html: error});
+                        });
+                    }
                 });
 
                 self.formSubmit('form-work-experience', 'workExperiences', () => {
@@ -52,10 +122,12 @@ const AppConvovatoriaWeb = () => {
                     self.modalSpecialization.hide();
                 });
 
+                self.renderDepartments();
                 self.renderUbigeo();
                 self.renderWorkExperiences();
                 self.renderSpecialization();
                 self.renderAcademicTraining();
+
             },
             renderWorkExperiences: () => {
                 self.tableCrudRender({
@@ -90,6 +162,27 @@ const AppConvovatoriaWeb = () => {
                         edit: () => { self.modalSpecialization.show(); },
                         delete: () => { self.renderSpecialization(); }
                     }
+                });
+            },
+            renderDepartments: () => {
+                $.ajax({
+                    url: window.AppMain.url + 'ubigeo/obtenerDepartamentos',
+                    method: 'GET',
+                    dataType: 'json',
+                    cache: 'false'
+                })
+                .done(function ({departamentos}) {
+                    const selectDepartments = dom.querySelectorAll('.select-department');
+                    selectDepartments.forEach(select => {
+                        let html = `<option value="" hidden>[SELECCIONE]</option>`;
+                        departamentos.forEach(department => {
+                            html += `<option value="${ department.id }"> ${ department.name }</option>`;
+                        });
+                        select.innerHTML = html;
+                    });
+                })
+                .fail(function (xhr, status, error) {
+                    swal2.show({type:'error', html: error});
                 });
             },
             renderAcademicTraining: () => {
@@ -163,7 +256,7 @@ const AppConvovatoriaWeb = () => {
                         .done(function ({distritos}) {
                             const selectDistricts = dom.querySelectorAll('.select-district');
                             selectDistricts.forEach(select => {
-                                let html = `<option value="">[SELECCIONE]</option>`;
+                                let html = `<option value="" hidden>[SELECCIONE]</option>`;
                                 distritos.forEach(distrito => {
                                     html += `<option value="${ distrito.id }"> ${ distrito.name }</option>`;
                                 });
@@ -174,6 +267,259 @@ const AppConvovatoriaWeb = () => {
                             swal2.show({type:'error', html: error});
                         });
                     });
+                });
+            },
+            renderPreviewPostulant: ({el, postulant, toString = false}) => {
+                let html = `<div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="m-0">Datos de postulación</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Tipo de Documento </label></div>
+                                        <div class="col-lg-7"><span>DNI</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Número de Documento </label></div>
+                                        <div class="col-lg-7"><span>${postulant.documento}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Modalidad </label></div>
+                                        <div class="col-lg-7"><span>${postulant.modalidad}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Nivel </label></div>
+                                        <div class="col-lg-7"><span>${postulant.nivel}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Especialidad </label></div>
+                                        <div class="col-lg-7"><span>${postulant.especialidad}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="m-0">Datos personales del postulante</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Nombres </label></div>
+                                        <div class="col-lg-7"><span>${postulant.nombre}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Apellido Paterno </label></div>
+                                        <div class="col-lg-7"><span>${postulant.apellido_paterno}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Apellido Materno </label></div>
+                                        <div class="col-lg-7"><span>${postulant.apellido_materno}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Género </label></div>
+                                        <div class="col-lg-7"><span>${postulant.genero}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Estado Civil </label></div>
+                                        <div class="col-lg-7"><span>${postulant.estado_civil}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Nacionalidad </label></div>
+                                        <div class="col-lg-7"><span>${postulant.nacionalidad}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Fecha de Nacimiento </label></div>
+                                        <div class="col-lg-7"><span>${postulant.fecha_nacimiento}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Correo Electrónico </label></div>
+                                        <div class="col-lg-7"><span>${postulant.correo}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Número de Celular </label></div>
+                                        <div class="col-lg-7"><span>${postulant.numero_celular}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Número de Teléfono </label></div>
+                                        <div class="col-lg-7"><span>${postulant.numero_telefono}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="m-0">Datos de Ubicación</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Departamento </label></div>
+                                        <div class="col-lg-7"><span>${postulant.departmento}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Provincia </label></div>
+                                        <div class="col-lg-7"><span>${postulant.provincia}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Distrito </label></div>
+                                        <div class="col-lg-7"><span>${postulant.distrito}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Vía </label></div>
+                                        <div class="col-lg-7"><span>${postulant.via}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Nombre de la Vía </label></div>
+                                        <div class="col-lg-7"><span>${postulant.nombre_via}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Nombre de la Zona </label></div>
+                                        <div class="col-lg-7"><span>${postulant.zona}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Dirección </label></div>
+                                        <div class="col-lg-7"><span>${postulant.direccion}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="m-0">Formación Académica</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead class="text-center">
+                                                <tr>
+                                                    <th>Nivel Educativo</th>
+                                                    <th>Grado Académico</th>
+                                                    <th>Universidad</th>
+                                                    <th>Carrera Profesional</th>
+                                                    <th>N° de Registro de Título</th>
+                                                    <th>RD de Título N°</th>
+                                                    <th>Obtención del Grado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>`;
+                                            if (self.academicTrainings.length == 0) {
+                                                html += `<tr><td colspan="7" class="text-center">No hay registros para mostrar</td></tr>`;
+                                            } else {
+                                                self.academicTrainings.forEach(item => {
+                                                    html += `<tr>
+                                                                <td>${item.nivel_educativo}</td>
+                                                                <td>${item.grado_academico}</td>
+                                                                <td>${item.universidad}</td>
+                                                                <td>${item.carrera_profesional}</td>
+                                                                <td>${item.registro_titulo}</td>
+                                                                <td>${item.rd_titulo}</td>
+                                                                <td>${item.obtencion_grado}</td>
+                                                            </tr>`;
+                                                });
+                                            }
+                                    html += `</tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="m-0">Experiencia laboral</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead class="text-center">
+                                                <tr>
+                                                    <th>Institución educativa</th>
+                                                    <th>Sector</th>
+                                                    <th>Puesto</th>
+                                                    <th>N° RD</th>
+                                                    <th>N° Contrato</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>`;
+                                            if (self.workExperiences.length == 0) {
+                                                html += `<tr><td colspan="5" class="text-center">No hay registros para mostrar</td></tr>`;
+                                            } else {
+                                                self.workExperiences.forEach(item => {
+                                                    html += `<tr>
+                                                                <td>${item.institucion_educativa}</td>
+                                                                <td>${item.sector}</td>
+                                                                <td>${item.puesto}</td>
+                                                                <td>${item.numero_rd}</td>
+                                                                <td>${item.numero_contrato}</td>
+                                                            </tr>`;
+                                                }); 
+                                            }
+                                    html += `</tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="m-0">Especialización</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead class="text-center">
+                                                <tr>
+                                                    <th>Tipo de especialización</th>
+                                                    <th>Tema</th>
+                                                    <th>Nombre de la entidad</th>
+                                                    <th>Fecha de inicio</th>
+                                                    <th>Fecha de termino</th>
+                                                    <th>Número de horas</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>`;
+                                            if (self.specializations.length == 0) {
+                                                html += `<tr><td colspan="6" class="text-center">No hay registros para mostrar</td></tr>`;
+                                            } else {
+                                                self.specializations.forEach(item => {
+                                                    html += `<tr>
+                                                                <td>${item.tipo_especializacion}</td>
+                                                                <td>${item.tema_especializacion}</td>
+                                                                <td>${item.nombre_entidad}</td>
+                                                                <td>${item.fecha_inicio}</td>
+                                                                <td>${item.fecha_termino}</td>
+                                                                <td>${item.numero_horas}</td>
+                                                            </tr>`;
+                                                });
+                                            }
+                                    html += `</tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>`;
+                if (toString) {
+                    return html;
+                } else {
+                    return dom.querySelector('#' + el).innerHTML = html;
+                }
+            },
+            renderCompletedPostulant: () => {
+                dom.innerHTML = `<div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="card-title mx-auto">
+                                            <h3 class="card-label">SE REGISTRO COMPLETAMENTE</h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row justify-content-center">
+                                            ${ self.renderPreviewPostulant({postulant: self.postulant, toString: true}) }
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button type="button" class="btn btn-primary btn-print">Inprimir</button>
+                                    </div>
+                                </div>`;
+
+                self.eventClick('btn-print', () => {
+                    var html = self.renderPreviewPostulant({postulant: self.postulant, toString: true});
+                    var newWin = window.open('','Print-Window');
+                    newWin.document.open();
+                    newWin.document.write('<html><body onload="window.print()">' + html + '</body></html>');
+                    newWin.document.close();
+                    setTimeout(function(){newWin.close();},5);
                 });
             }
         },
@@ -246,12 +592,12 @@ const AppConvovatoriaWeb = () => {
                     }
                 });
             },
-            eventClickCrudModal: (el, _callback) => {
+            eventClick: (el, _callback) => {
                 const btns = dom.querySelectorAll('.' + el);
                 btns.forEach(btn => {
                     btn.addEventListener('click', (e) => {
-                        self.index = -1;
-                        _callback();
+                        e.preventDefault();
+                        _callback(e);
                     });
                 });
             }

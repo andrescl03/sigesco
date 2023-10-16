@@ -3,6 +3,7 @@ class Convocatorias_model extends CI_Model {
 
     public function __construct(){
         parent::__construct();
+        $this->load->library('tools');
     }
 
     public function listarConvocatoriasTodas($idPer, $idPro){
@@ -247,5 +248,56 @@ class Convocatorias_model extends CI_Model {
         return $this->db->insert_id(); // para saber el id ingresado
     } 
     
+    public function showConvocatoria($args)
+    {
+      $response = $this->tools->responseDefault();
+      try {
 
+        $id = isset($args['id']) ? $args['id'] : 0;
+
+        $sql = "SELECT * FROM convocatorias WHERE con_estado = 1 AND con_id = ?";
+        $convocatoria = $this->db->query($sql, compact('id'))->row();
+        if (!$convocatoria) {
+          show_404();
+        }
+
+        $convocatoria->tipo_postulacion = 2;
+        if ($convocatoria->con_id == 5) {
+          $convocatoria->tipo_postulacion = 1;
+        }
+
+        $response['success'] = true;
+        $response['data']  = compact('convocatoria');
+        $response['status']  = 200;
+        $response['message'] = 'show';
+
+      } catch (\Exception $e) {
+          $response['message'] = $e->getMessage();
+      }
+      return $response;
+    }
+
+    public function showPostulant($args) {
+      $response = $this->tools->responseDefault();
+      try {
+        
+        $numero = isset($args['numero']) ? $args['numero'] : 0;
+
+        $sql = "SELECT * FROM cuadro_pun_exp WHERE cpe_estado = 1 AND cpe_documento = ?";
+        $postulante = $this->db->query($sql, compact('numero'))->row();
+
+        if (!$postulante) {
+            throw new Exception("No se encontro el postulante");
+        }
+
+        $response['success'] = true;
+        $response['data']  = compact('postulante');
+        $response['status']  = 200;
+        $response['message'] = 'showPostulant';
+
+      } catch (\Exception $e) {
+          $response['message'] = $e->getMessage();
+      }
+      return $response; 
+    }
 }
