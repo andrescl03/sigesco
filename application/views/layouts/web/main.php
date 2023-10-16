@@ -12,6 +12,8 @@
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/bundle.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/web/main.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
     <script>
         localStorage.setItem("BASE_URL", "<?php echo base_url() ?>");
     </script>
@@ -86,7 +88,8 @@
     <script src="<?php echo base_url()?>public/js/jquery/jquery-3.6.0.min.js"></script>           
     <script src="<?php echo base_url()?>public/css/bootstrapv5.0.2/bootstrap.bundle.js" crossorigin="anonymous"></script>
     <script src="<?php echo base_url()?>public/css/bootstrapv5.0.2/popper.min.js" crossorigin="anonymous"></script>
-           
+
+
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
     <script src="<?php echo base_url() ?>/public/js/utilities/helper.js"></script>
@@ -96,6 +99,9 @@
     <script src="<?php echo base_url() ?>/assets/js/web/main.js"></script>
     <script src='<?php echo base_url() ?>/public/js/sha1/sha1.js'></script>
 
+    
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <?php echo $this->layout->js ?>    
 
     <!-- <script src='<?php echo base_url() ?>/assets/js/web/convenios.js'></script> -->

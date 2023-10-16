@@ -13,8 +13,14 @@ class ConvocatoriasWeb extends CI_Controller {
 
     public function index() {
         $dato = 1;
+
+            $idPer  =true;  
+            $idPro  = true;  
+   
+        $datos  = $this->convocatorias_model->listarConvocatoriasActivas($idPer, $idPro); 
+
         $this->layout->js(array(base_url()."public/web/js/convocatorias/index.js"));
-        $this->layout->view("/web/convocatoria/index", compact('dato'));
+        $this->layout->view("/web/convocatoria/index", compact('dato','datos'));
     }
 
     public function show() {

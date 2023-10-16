@@ -1,1 +1,3 @@
-console.log('index');
+  $(document).ready(function() {
+        $('.table').DataTable(); 
+    });
