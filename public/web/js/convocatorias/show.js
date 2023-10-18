@@ -562,7 +562,7 @@ const AppConvovatoriaWeb = () => {
                 let html = `${ 
                     Object.keys(self.response).length > 0 ? 
                                 `<div class="text-center mb-3">
-                                    <img src="${window.AppMain.url}assets/image/logo-ugel05.jpg" style="height: 90px;">
+                                    <img src="https://www.ugel05.gob.pe/sites/default/files/inline-images/WhatsApp%20Image%202022-12-23%20at%208.52.58%20AM_1.jpeg" style="height: 90px;max-width: 100%;">
                                 </div>
                                 <div class="card mb-3">
                                     <div class="card-body">
