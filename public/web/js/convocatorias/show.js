@@ -122,7 +122,7 @@ const AppConvovatoriaWeb = () => {
                                 sweet2.loading(false);
                             })
                             .fail(function (xhr, status, error) {
-                                sweet2.show({icon:'error', text:error});
+                                sweet2.show({type:'error', text:error});
                             });
                         }
                     });

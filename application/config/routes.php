@@ -56,6 +56,8 @@ $route['web/convocatorias/(:any)'] = 'ConvocatoriasWeb/show/$1';
 $route['web/postulantes/(:any)'] = 'ConvocatoriasWeb/postulant/$1';
 $route['web/postulaciones/store'] = 'PostulacionesWeb/store';
 $route['web/postulaciones/find'] = 'PostulacionesWeb/find';
+$route['web/postulaciones/(:any)/update'] = 'PostulacionesWeb/update/$1';
+$route['web/postulaciones/(:any)'] = 'PostulacionesWeb/edit/$1';
 
 $route['default_controller'] = 'index';
 $route['404_override'] = '';

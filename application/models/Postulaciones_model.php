@@ -4,6 +4,7 @@ class Postulaciones_model extends CI_Model {
     public function __construct(){
         parent::__construct();
         $this->load->library('tools');
+        $this->load->model('email_model');
     }
 
     public function store() 
@@ -171,9 +172,9 @@ class Postulaciones_model extends CI_Model {
 
             /*if ($email_solicitant) {
                 $receivers = array();
-                $subtitle = 'SE ACABA DE REGISTRAR MANERA EXITOSA SU PROPUESTA DE CONVENIO';
+                $subtitle = 'SE ACABA DE REGISTRAR MANERA EXITOSA';
                 array_push($receivers, $email_solicitant);
-                $url = $_ENV['BASE_URL'].'/convenio/'.$code;
+                $url = $_ENV['BASE_URL'].'/postulaciones/'.$code;
                 $message = $this->twig->render('/mail/convenio/notify.twig', compact('title','subtitle','code','name_agreement','fullname_solicitant', 'url'));
                 $result = $this->email_model->mail(compact('receivers', 'message', 'subject'));
             }*/
@@ -265,4 +266,127 @@ class Postulaciones_model extends CI_Model {
       }
       return $response; 
     }
+
+    public function edit($args) {
+        $response = $this->tools->responseDefault();
+        try {
+  
+            $uid = isset($args['uid']) ? $args['uid'] : 0;
+    
+            $sql = "SELECT * FROM postulaciones WHERE deleted_at IS NULL AND uid = ?";
+            $postulante = $this->db->query($sql, compact('uid'))->row();
+    
+            if (!$postulante) {
+                show_404();
+            }
+
+            $convocatoria_id = $postulante->convocatoria_id;
+            $postulacion_id = $postulante->id;
+
+            $sql = "SELECT * FROM convocatorias WHERE con_estado = 1 AND con_id = ?";
+            $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
+            if (!$convocatoria) {
+                show_404();
+            }
+
+            $sql = "SELECT * FROM postulacion_especializaciones WHERE postulacion_id = ?";
+            $postulacion_especializaciones = $this->db->query($sql, compact('postulacion_id'))->result_object();
+            
+            $sql = "SELECT * FROM postulacion_formaciones_academicas WHERE postulacion_id = ?";
+            $postulacion_formaciones_academicas = $this->db->query($sql, compact('postulacion_id'))->result_object();
+    
+            $sql = "SELECT * FROM postulacion_experiencias_laborales WHERE postulacion_id = ?";
+            $postulacion_experiencias_laborales = $this->db->query($sql, compact('postulacion_id'))->result_object();
+
+            $sql = "SELECT * FROM postulacion_archivos WHERE postulacion_id = ?";
+            $postulacion_archivos = $this->db->query($sql, compact('postulacion_id'))->result_object();
+
+            /*$now_unix = strtotime($this->tools->getDateHour());
+            $con_fechainicio_unix = strtotime($convocatoria->con_fechainicio);
+            $con_fechafin_unix = strtotime($convocatoria->con_fechafin);
+            
+            if (!($now_unix >= $con_fechainicio_unix  
+                && $now_unix <= $con_fechafin_unix)) {
+                show_404();
+            }*/
+    
+            $convocatoria->con_type_postulacion = 2; // PUN
+            if ($convocatoria->con_id == 7) {
+                $convocatoria->con_type_postulacion = 1;
+            }
+    
+            $response['success'] = true;
+            $response['data']  = compact('convocatoria', 'uid', 'postulante', 'postulacion_archivos', 'postulacion_experiencias_laborales', 'postulacion_formaciones_academicas', 'postulacion_especializaciones');
+            $response['status']  = 200;
+            $response['message'] = 'show';
+  
+        } catch (\Exception $e) {
+            $response['message'] = $e->getMessage();
+        }
+        return $response;
+      }
+
+      public function update($args) {
+        $response = $this->tools->responseDefault();
+        try {
+  
+            $uid = isset($args['uid']) ? $args['uid'] : 0;
+    
+            $sql = "SELECT * FROM postulaciones WHERE deleted_at IS NULL AND uid = ?";
+            $postulacion = $this->db->query($sql, compact('uid'))->row();
+    
+            if (!$postulacion) {
+                throw new Exception("No se encontro el registro");
+            }
+
+            $convocatoria_id = $postulacion->convocatoria_id;
+            $postulacion_id = $postulacion->id;
+
+            $sql = "SELECT * FROM convocatorias WHERE con_estado = 1 AND con_id = ?";
+            $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
+            if (!$convocatoria) {
+                throw new Exception("No se encontro la convocatoria");
+            }
+
+            $any = isset($_POST['any']) ? $_POST['any'] : '';
+            switch ($any) {
+                case 'archivos_adjuntos_guardar':
+                    if (isset($_FILES['archivo'])) {
+                        $path = __DIR__."/../../public/uploads/";
+                        if (!is_dir($path)) {
+                            mkdir($path, 0777,true);
+                        }
+                        $file = $_FILES['archivo'];
+                        if ($file['error'] == UPLOAD_ERR_OK) {
+                            $filename = uniqid(time())."-".$file['name'];
+                            $fullpath = $path.$filename;
+                            $filepath = "/uploads/".$filename;
+                            $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+                            move_uploaded_file($file['tmp_name'], $fullpath);
+                            $data = [
+                                'nombre'  => $file['name'], 
+                                'url'     => $filepath, 
+                                'formato' => $extension, 
+                                'peso'    => $file['size'],
+                                'tipo_id' => $_POST['tipo'],
+                                'postulacion_id' => $postulacion_id 
+                            ];
+                            $this->db->insert('postulacion_archivos', $data);
+                        }
+                    }
+                break;
+                default:
+                    # code...
+                    break;
+            }
+    
+            $response['success'] = true;
+            $response['status']  = 200;
+            $response['message'] = 'Se guardo correctamente';
+  
+        } catch (\Exception $e) {
+            $response['message'] = $e->getMessage();
+        }
+        return $response;
+      }
 }
