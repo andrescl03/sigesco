@@ -205,24 +205,42 @@ class Postulaciones_model extends CI_Model {
         $convocatoria_id = isset($_POST['convocatoria_id']) ? $_POST['convocatoria_id'] : 0;
 
         $sql = "SELECT 
-                  CPE.*,
-                  ESP.esp_id AS especialidad_id,
-                  ESP.esp_descripcion AS especialidad_descripcion,
-                  NIV.niv_id AS nivel_id,
-                  NIV.niv_descripcion AS nivel_descripcion,
-                  MDD.mod_id AS modalidad_id,
-                  MDD.mod_nombre AS modalidad_descripcion
-                FROM cuadro_pun_exp AS CPE 
-                INNER JOIN grupo_inscripcion AS GIN ON CPE.grupo_inscripcion_gin_id = GIN.gin_id
-                INNER JOIN especialidades AS ESP ON ESP.esp_id = GIN.especialidades_esp_id
-                INNER JOIN niveles AS NIV ON NIV.niv_id = ESP.niveles_niv_id
-                INNER JOIN modalidades AS MDD ON MDD.mod_id = NIV.modalidad_mod_id
-                WHERE CPE.cpe_estado = 1 
-                AND CPE.cpe_documento = ?";
-        $postulante = $this->db->query($sql, compact('documento'))->row();
+                    C.*
+                FROM convocatorias AS C
+                WHERE C.con_estado = 1
+                AND C.con_id = ?";
+        $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
+        if (!$convocatoria) {
+            throw new Exception("No se encontro la convocatoria");
+        }
 
-        if (!$postulante) {
-            throw new Exception("No se encontro el postulante");
+        $convocatoria->con_type_postulacion = 2; // PUN
+        if ($convocatoria->con_id == 7) {
+          $convocatoria->con_type_postulacion = 1;
+        }
+
+        $postulante = NULL;
+        if ($convocatoria->con_type_postulacion == 2) { // PUN
+            $sql = "SELECT 
+                        CPE.*,
+                        ESP.esp_id AS especialidad_id,
+                        ESP.esp_descripcion AS especialidad_descripcion,
+                        NIV.niv_id AS nivel_id,
+                        NIV.niv_descripcion AS nivel_descripcion,
+                        MDD.mod_id AS modalidad_id,
+                        MDD.mod_nombre AS modalidad_descripcion
+                    FROM cuadro_pun_exp AS CPE 
+                    INNER JOIN grupo_inscripcion AS GIN ON CPE.grupo_inscripcion_gin_id = GIN.gin_id
+                    INNER JOIN especialidades AS ESP ON ESP.esp_id = GIN.especialidades_esp_id
+                    INNER JOIN niveles AS NIV ON NIV.niv_id = ESP.niveles_niv_id
+                    INNER JOIN modalidades AS MDD ON MDD.mod_id = NIV.modalidad_mod_id
+                    WHERE CPE.cpe_estado = 1 
+                    AND CPE.cpe_documento = ?";
+            $postulante = $this->db->query($sql, compact('documento'))->row();
+
+            if (!$postulante) {
+                throw new Exception("No se encontro el postulante");
+            }
         }
 
         $sql = "SELECT 

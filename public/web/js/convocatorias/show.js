@@ -190,10 +190,10 @@ const AppConvovatoriaWeb = () => {
                                 self.numberDocument = dom.querySelector('input[name="numero_documento"]').value;
                                 self.typeDocument = dom.querySelector('input[name="tipo_documento"]').value;
                                 self.formPostulant = data.postulante;
-                                dom.querySelector('input[name="nombre"]').value = self.formPostulant.cpe_nombres;
-                                dom.querySelector('input[name="apellido_paterno"]').value = self.formPostulant.cpe_apaterno;
-                                dom.querySelector('input[name="apellido_materno"]').value = self.formPostulant.cpe_amaterno;
                                 if (self.isPUN()) {
+                                    dom.querySelector('input[name="nombre"]').value = self.formPostulant.cpe_nombres;
+                                    dom.querySelector('input[name="apellido_paterno"]').value = self.formPostulant.cpe_apaterno;
+                                    dom.querySelector('input[name="apellido_materno"]').value = self.formPostulant.cpe_amaterno;    
                                     dom.querySelector('select[name="modalidad_id"]').innerHTML = `<option value="${self.formPostulant.modalidad_id}">${self.formPostulant.modalidad_descripcion}</option>`;
                                     dom.querySelector('select[name="nivel_id"]').innerHTML = `<option value="${self.formPostulant.nivel_id}">${self.formPostulant.nivel_descripcion}</option>`;
                                     dom.querySelector('select[name="especialidad_id"]').innerHTML = `<option value="${self.formPostulant.especialidad_id}">${self.formPostulant.especialidad_descripcion}</option>`;
@@ -281,6 +281,9 @@ const AppConvovatoriaWeb = () => {
                 const inputs = dom.querySelectorAll('.form-input-validate');
                 inputs.forEach(input => {
                     input.disabled = valid == true;
+                    if (!self.isPUN()) {
+                        input.readOnly = false;
+                    }
                 });
             },
             listAttachedFile: () => {
@@ -360,18 +363,6 @@ const AppConvovatoriaWeb = () => {
                     });
                     tbody.appendChild(tr);
                 });
-                /*self.eventTag('btn-delete-attached-file', (e) => {
-                    const uid = e.target.getAttribute('uid');
-                    sweet2.show({
-                        type: 'question',
-                        html: '¿Estás seguro de eliminar este elemento?',
-                        showCancelButton: true,
-                        onOk: () => {
-                            const parent = dom.querySelector('#tr-attached-file-' + uid).parentNode;            
-                            dom.querySelector('#tr-attached-file-' + uid).remove();
-                        }
-                    });
-                });*/
             },
             renderWorkExperiences: () => {
                 self.tableCrudRender({
@@ -855,7 +846,11 @@ const AppConvovatoriaWeb = () => {
                     let html = `<div class="alert alert-primary d-flex align-items-center" role="alert">
                                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
                                     <div>
-                                        El número de su documento debe de estar registrado en la PUN para continuar con la postulación
+                                        ${
+                                            self.isPUN() ? 
+                                            'El número de su documento debe de estar registrado en la PUN para continuar con la postulación' : 
+                                            'Tenemos que validar su número de documento si esta disponible para esta convocatoria'
+                                        }
                                     </div>
                                 </div>`; 
                     if (valid) {

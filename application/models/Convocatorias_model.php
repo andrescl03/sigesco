@@ -250,8 +250,7 @@ class Convocatorias_model extends CI_Model {
         return $this->db->insert_id(); // para saber el id ingresado
     } 
     
-    public function showConvocatoria($args)
-    {
+    public function showConvocatoria($args) {
       $response = $this->tools->responseDefault();
       try {
 

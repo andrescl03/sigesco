@@ -1,4 +1,6 @@
-<?php $convocatoria = $data['convocatoria'];  ?>
+<?php 
+    $convocatoria = $data['convocatoria'];  
+?>
 <div class="container" id="AppConvocatoriaWeb" data-id="<?php echo $convocatoria->con_id ?>" data-type="<?php echo $convocatoria->con_type_postulacion ?>">
     <div class="card card-custom">
         <div class="card-header">
@@ -51,9 +53,6 @@
                                         <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
                                     </div>
                                 </div>
-                                <div class="alert-postulant">
-                                    
-                                </div>
                                 <?php } else { ?>
                                     <div class="input-group mb-3">
                                         <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid" placeholder="Ingrese su número de documento" required>
@@ -62,6 +61,8 @@
                                         </div>
                                     </div>
                                 <?php } ?>
+                                <div class="alert-postulant">
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
