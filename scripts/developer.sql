@@ -10,7 +10,7 @@ CREATE TABLE `postulaciones` (
 	`nacionalidad` VARCHAR(255) NULL DEFAULT NULL,
 	`fecha_nacimiento` DATE NULL DEFAULT NULL,
 	`correo` VARCHAR(255) NULL DEFAULT NULL,
-	`numero_celular` DATE NULL DEFAULT NULL,
+	`numero_celular` VARCHAR(255) NULL DEFAULT NULL,
 	`numero_telefono` VARCHAR(255) NULL DEFAULT NULL,
 	`via` VARCHAR(255) NULL DEFAULT NULL,
 	`nombre_via` VARCHAR(255) NULL DEFAULT NULL,

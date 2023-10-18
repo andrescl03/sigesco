@@ -289,16 +289,16 @@ class Postulaciones_model extends CI_Model {
                 show_404();
             }
 
-            $sql = "SELECT * FROM postulacion_especializaciones WHERE postulacion_id = ?";
+            $sql = "SELECT * FROM postulacion_especializaciones WHERE deleted_at IS NULL AND postulacion_id = ?";
             $postulacion_especializaciones = $this->db->query($sql, compact('postulacion_id'))->result_object();
             
-            $sql = "SELECT * FROM postulacion_formaciones_academicas WHERE postulacion_id = ?";
+            $sql = "SELECT * FROM postulacion_formaciones_academicas WHERE deleted_at IS NULL AND postulacion_id = ?";
             $postulacion_formaciones_academicas = $this->db->query($sql, compact('postulacion_id'))->result_object();
     
-            $sql = "SELECT * FROM postulacion_experiencias_laborales WHERE postulacion_id = ?";
+            $sql = "SELECT * FROM postulacion_experiencias_laborales WHERE deleted_at IS NULL AND postulacion_id = ?";
             $postulacion_experiencias_laborales = $this->db->query($sql, compact('postulacion_id'))->result_object();
 
-            $sql = "SELECT * FROM postulacion_archivos WHERE postulacion_id = ?";
+            $sql = "SELECT * FROM postulacion_archivos WHERE deleted_at IS NULL AND postulacion_id = ?";
             $postulacion_archivos = $this->db->query($sql, compact('postulacion_id'))->result_object();
 
             /*$now_unix = strtotime($this->tools->getDateHour());
@@ -375,9 +375,63 @@ class Postulaciones_model extends CI_Model {
                         }
                     }
                 break;
+                case 'experiencia_laboral_guardar' :
+                    $data = [
+                        'institucion_educativa' => $_POST['institucion_educativa'],
+                        'sector'                => $_POST['sector'],
+                        'puesto'                => $_POST['puesto'],
+                        'numero_rd'             => $_POST['numero_rd'],
+                        'numero_contrato'       => $_POST['numero_contrato'],
+                        'postulacion_id'        => $postulacion_id
+                    ];
+                    $this->db->insert('postulacion_experiencias_laborales', $data);
+                break;
+                case 'formacion_academica_guardar' :
+                    $data = [
+                        'nivel_educativo'     => $_POST['nivel_educativo'],
+                        'grado_academico'     => $_POST['grado_academico'],
+                        'universidad'         => $_POST['universidad'],
+                        'carrera_profesional' => $_POST['carrera_profesional'],
+                        'registro_titulo'     => $_POST['registro_titulo'],
+                        'rd_titulo'           => $_POST['rd_titulo'],
+                        'obtencion_grado'     => $_POST['obtencion_grado'],
+                        'postulacion_id'      => $postulacion_id
+                    ];
+                    $this->db->insert('postulacion_formaciones_academicas', $data);
+                break;
+                case 'especializacion_guardar' :
+                    $data = [
+                        'tipo_especializacion' => $_POST['tipo_especializacion'],
+                        'tema_especializacion' => $_POST['tema_especializacion'],
+                        'nombre_entidad'       => $_POST['nombre_entidad'],
+                        'fecha_inicio'         => $_POST['fecha_inicio'],
+                        'fecha_termino'        => $_POST['fecha_termino'],
+                        'numero_horas'         => $_POST['numero_horas'],
+                        'postulacion_id'       => $postulacion_id
+                    ];
+                    $this->db->insert('postulacion_especializaciones', $data);
+                break;
+                case 'datos_postulante': 
+                
+                break;
+                case 'datos_ubicacion': 
+
+                break;
+                case 'archivos_adjuntos_eliminar': 
+                    $this->db->update('postulacion_archivos', ['deleted_at' => $this->tools->getDateHour()], array('id' => $_POST['id']));
+                break;
+                case 'experiencia_laboral_eliminar': 
+                    $this->db->update('postulacion_experiencias_laborales', ['deleted_at' => $this->tools->getDateHour()], array('id' => $_POST['id']));
+                break;
+                case 'formacion_academica_eliminar': 
+                    $this->db->update('postulacion_formaciones_academicas', ['deleted_at' => $this->tools->getDateHour()], array('id' => $_POST['id']));
+                break;
+                case 'especializacion_eliminar': 
+                    $this->db->update('postulacion_especializaciones', ['deleted_at' => $this->tools->getDateHour()], array('id' => $_POST['id']));
+                break;
                 default:
                     # code...
-                    break;
+                break;
             }
     
             $response['success'] = true;

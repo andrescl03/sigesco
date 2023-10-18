@@ -303,8 +303,14 @@ class Convocatorias_model extends CI_Model {
         $sql = "SELECT * FROM modalidades WHERE mod_estado = 1";
         $modalidades = $this->db->query($sql)->result_object();
 
+        $sql = "SELECT * FROM ubigeo_peru_provinces";
+        $provincias = $this->db->query($sql)->result_object();
+
+        $sql = "SELECT * FROM ubigeo_peru_districts";
+        $distritos = $this->db->query($sql)->result_object();
+
         $response['success'] = true;
-        $response['data']  = compact('modalidades', 'niveles', 'especialidades', 'departamentos');
+        $response['data']  = compact('modalidades', 'niveles', 'especialidades', 'departamentos', 'distritos', 'provincias');
         $response['status']  = 200;
         $response['message'] = 'detail';
 

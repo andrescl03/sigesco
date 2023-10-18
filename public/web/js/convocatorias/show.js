@@ -906,7 +906,7 @@ const AppConvovatoriaWeb = () => {
                             const tr = document.createElement("tr");
                             let html = ``;
                             columns.forEach(col => {
-                                html += `<td>${item[col]}</td>`; 
+                                html += `<td class="text-center">${item[col]}</td>`; 
                             });
                             html += `<td class="text-center">
                                         <button class="btn btn-sm btn-danger mb-1 btn-delete">Eliminar</button>

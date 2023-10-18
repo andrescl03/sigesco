@@ -4,7 +4,11 @@
     $postulacion_archivos = $data['postulacion_archivos'];  
     $postulacion_experiencias_laborales = $data['postulacion_experiencias_laborales'];  
     $postulacion_formaciones_academicas = $data['postulacion_formaciones_academicas'];  
-    $postulacion_especializaciones = $data['postulacion_especializaciones'];  
+    $postulacion_especializaciones = $data['postulacion_especializaciones'];
+    $anexos    = [];
+    $anexos[1] = 'Anexo 1';
+    $anexos[2] = 'Anexo 2';  
+    $anexos[3] = 'Anexo 3';  
 ?>
 <div class="container" id="AppConvovatoriaEditWeb"  data-uid="<?php echo $data['uid'] ?>" data-id="<?php echo $convocatoria->con_id ?>" data-type="<?php echo $convocatoria->con_type_postulacion ?>">
     <div class="card card-custom">
@@ -21,9 +25,9 @@
                     <div class="tab-list sticky-top">
                         <div class="side-nav">
                             <ul>
-                                <li><a href="" data-scroll="0">Datos de postulación</a></li>
+                                <!-- <li><a href="" data-scroll="0">Datos de postulación</a></li>
                                 <li><a href="" data-scroll="1">Datos personales del postulante</a></li>
-                                <li><a href="" data-scroll="2">Datos de ubicación</a></li>
+                                <li><a href="" data-scroll="2">Datos de ubicación</a></li> -->
                                 <li><a href="" data-scroll="3">Formación académica</a></li>
                                 <li><a href="" data-scroll="4">Experiencia laboral</a></li>
                                 <li><a href="" data-scroll="5">Especialización</a></li>
@@ -35,7 +39,7 @@
                 <div class="col-xl-9">
                     <!-- <form class="form-postulant needs-validation" id="formPostulant" novalidate> -->
                         <?php if ($convocatoria->con_type_postulacion == 1) { ?>
-                        <div class="card mb-5 section" data-scrolled="0">
+                        <!-- <div class="card mb-5 section" data-scrolled="0">
                             <form class="form-postulant needs-validation" novalidate>
                                 <div class="card-header">
                                     <h5 class="my-2">Datos de Postulación</h5>
@@ -72,10 +76,11 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
+                        </div> -->
                         <?php } ?>
-                        <div class="card mb-5 section" data-scrolled="1">
+                        <!-- <div class="card mb-5 section" data-scrolled="1">
                             <form class="form-postulant needs-validation" novalidate>
+                                <input type="hidden" name="any" value="datos_postulante" required>
                                 <div class="card-header">
                                     <h5 class="my-2">Datos personales del postulante</h5>
                                 </div>
@@ -166,6 +171,7 @@
                        
                         <div class="card mb-5 section" data-scrolled="2">
                             <form class="form-postulant needs-validation" novalidate>
+                                <input type="hidden" name="any" value="datos_ubicacion" required>
                                 <div class="card-header">
                                     <h5 class="my-2">Datos de Ubicación</h5>
                                 </div>
@@ -225,7 +231,7 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
+                        </div> -->
 
                         <div class="card mb-5 section" data-scrolled="3">
                             <div class="card-header d-flex justify-content-between">
@@ -250,14 +256,16 @@
                                         <tbody>
                                         <?php foreach ($postulacion_formaciones_academicas as $key => $item) { ?>
                                             <tr>
-                                                <td><?php echo $item->nivel_educativo ?></td>
-                                                <td><?php echo $item->grado_academico ?></td>
-                                                <td><?php echo $item->universidad ?></td>
-                                                <td><?php echo $item->carrera_profesional ?></td>
-                                                <td><?php echo $item->registro_titulo ?></td>
-                                                <td><?php echo $item->rd_titulo ?></td>
-                                                <td><?php echo $item->obtencion_grado ?></td>
-                                                <td>-</td>
+                                                <td class="text-center"><?php echo $item->nivel_educativo ?></td>
+                                                <td class="text-center"><?php echo $item->grado_academico ?></td>
+                                                <td class="text-center"><?php echo $item->universidad ?></td>
+                                                <td class="text-center"><?php echo $item->carrera_profesional ?></td>
+                                                <td class="text-center"><?php echo $item->registro_titulo ?></td>
+                                                <td class="text-center"><?php echo $item->rd_titulo ?></td>
+                                                <td class="text-center"><?php echo $item->obtencion_grado ?></td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-danger btn-delete" data-id="<?php echo $item->id ?>" data-any="formacion_academica_eliminar">Eliminar</button>
+                                                </td>
                                             </tr>
                                         <?php } ?>
                                         </tbody>
@@ -287,12 +295,14 @@
                                         <tbody>
                                         <?php foreach ($postulacion_experiencias_laborales as $key => $item) { ?>
                                             <tr>
-                                                <td><?php echo $item->institucion_educativa ?></td>
-                                                <td><?php echo $item->sector ?></td>
-                                                <td><?php echo $item->puesto ?></td>
-                                                <td><?php echo $item->numero_rd ?></td>
-                                                <td><?php echo $item->numero_contrato ?></td>
-                                                <td>-</td>
+                                                <td class="text-center"><?php echo $item->institucion_educativa ?></td>
+                                                <td class="text-center"><?php echo $item->sector ?></td>
+                                                <td class="text-center"><?php echo $item->puesto ?></td>
+                                                <td class="text-center"><?php echo $item->numero_rd ?></td>
+                                                <td class="text-center"><?php echo $item->numero_contrato ?></td>
+                                                <td class="text-center">
+                                                    <button type="button" class="btn btn-sm btn-danger btn-delete" data-id="<?php echo $item->id ?>" data-any="experiencia_laboral_eliminar">Eliminar</button>
+                                                </td>
                                             </tr>
                                         <?php } ?>
                                         </tbody>
@@ -308,7 +318,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-specialization mb-0">
+                                    <table class="table mb-0">
                                         <thead class="text-center">
                                             <tr>
                                                 <th>Tipo de especialización</th>
@@ -323,13 +333,15 @@
                                         <tbody>
                                         <?php foreach ($postulacion_especializaciones as $key => $item) { ?>
                                             <tr>
-                                                <td><?php echo $item->tipo_especializacion ?></td>
-                                                <td><?php echo $item->tema_especializacion ?></td>
-                                                <td><?php echo $item->nombre_entidad ?></td>
-                                                <td><?php echo $item->fecha_inicio ?></td>
-                                                <td><?php echo $item->fecha_termino ?></td>
-                                                <td><?php echo $item->numero_horas ?></td>
-                                                <td>-</td>
+                                                <td class="text-center"><?php echo $item->tipo_especializacion ?></td>
+                                                <td class="text-center"><?php echo $item->tema_especializacion ?></td>
+                                                <td class="text-center"><?php echo $item->nombre_entidad ?></td>
+                                                <td class="text-center"><?php echo $item->fecha_inicio ?></td>
+                                                <td class="text-center"><?php echo $item->fecha_termino ?></td>
+                                                <td class="text-center"><?php echo $item->numero_horas ?></td>
+                                                <td class="text-center">
+                                                    <button type="button" class="btn btn-sm btn-danger btn-delete" data-id="<?php echo $item->id ?>" data-any="especializacion_eliminar">Eliminar</button>
+                                                </td>
                                             </tr>
                                         <?php } ?>
                                         </tbody>
@@ -356,9 +368,11 @@
                                         <tbody>
                                         <?php foreach ($postulacion_archivos as $key => $item) { ?>
                                             <tr>
-                                                <td><?php echo $item->nombre ?></td>
-                                                <td><a href="<?php echo base_url() ?>public<?php echo $item->url ?>" target="_blank"><?php echo $item->url ?></a></td>
-                                                <td>-</td>
+                                                <td class="text-center"><?php echo $anexos[$item->tipo_id] ?></td>
+                                                <td class="text-center"><a href="<?php echo base_url() ?>public<?php echo $item->url ?>" target="_blank"><?php echo $item->nombre ?></a></td>
+                                                <td class="text-center">
+                                                    <button type="button" class="btn btn-sm btn-danger btn-delete" data-id="<?php echo $item->id ?>" data-any="archivos_adjuntos_eliminar">Eliminar</button>
+                                                </td>
                                             </tr>
                                         <?php } ?>
                                         </tbody>
@@ -378,6 +392,7 @@
         <div class="modal fade" id="modalWorkExperience" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <form class="form-postulant needs-validation" novalidate>
+                    <input type="hidden" value="experiencia_laboral_guardar" name="any" required>
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Experiencia Laboral</h5>
@@ -433,6 +448,7 @@
         <div class="modal fade" id="modalSpecialization" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <form class="form-postulant needs-validation" novalidate>
+                    <input type="hidden" value="especializacion_guardar" name="any" required>
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Especialización</h5>
@@ -491,6 +507,7 @@
         <div class="modal fade" id="modalAcademicTraining" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <form class="form-postulant needs-validation" novalidate>
+                    <input type="hidden" value="formacion_academica_guardar" name="any" required>
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Formación Académica</h5>
@@ -574,7 +591,7 @@
         <div class="modal fade" id="modalAttachedFile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <form class="form-postulant needs-validation" novalidate>
-                    <input type="hidden" value="archivos_adjuntos_guardar" name="any">
+                    <input type="hidden" value="archivos_adjuntos_guardar" name="any" required>
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Archivo Adjunto</h5>
