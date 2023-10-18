@@ -447,7 +447,7 @@ class Postulaciones_model extends CI_Model {
         return $response;
     }
 
-    public function messageMail($uid, $fullname) {
+    public function messageMail($uid) {
         return '
         <!DOCTYPE html PUBLIC "-//W3C//DTDXHTML1.0Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
