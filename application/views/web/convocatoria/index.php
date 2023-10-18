@@ -49,7 +49,9 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a type="button" class="btn btn-danger" title="Ingresar a postular" href="<?= base_url() ?>web/convocatorias/<?= $dato['con_id'] ?>"><b><i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i>POSTULAR </b></a>
+                                        <a type="button" class="btn btn-danger <?= $dato['con_estado'] ? '' : 'disabled' ?>" title="Ingresar a postular" href="<?= base_url() ?>web/convocatorias/<?= $dato['con_id'] ?>">
+    <b><i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i>POSTULAR</b>
+</a>
                                         </div>
                                     </td>
                                 </tr>

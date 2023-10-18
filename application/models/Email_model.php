@@ -41,14 +41,14 @@ class Email_model extends CI_Model {
                 'charset' => 'utf-8',
                 'smtp_crypto' => 'tls',
                 // '_smtp_auth' => TRUE,
-                'smtp_user' => $_ENV['SMTP_USER'],
-                'smtp_pass' => $_ENV['SMTP_PASSWORD'],
+                'smtp_user' => 'postulacioncdocenteugel05@gmail.com',
+                'smtp_pass' => 'wiyhzxibhbfmjcou',
                 'wordwrap' => TRUE,
                 'newline' => "\r\n"
             );
 
             $this->email->initialize($config);
-            $this->email->from($_ENV['SMTP_USER'], 'PLATAFORMA CONVERSA');
+            $this->email->from('postulacioncdocenteugel05@gmail.com', 'PLATAFORMA REGISTRO DE CONTRATACIÓN DOCENTE');
             // $this->email->to('josearchivo01@gmail.com');
             $this->email->subject($subject);
             $this->email->message($message);

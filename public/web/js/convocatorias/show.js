@@ -41,8 +41,12 @@ const AppConvovatoriaWeb = () => {
                 formAttachedFiles: [],
                 attachedFileTypes: [
                     { id: 1, nombre: 'Anexo 1' },
-                    { id: 2, nombre: 'Anexo 2' },
-                    { id: 3, nombre: 'Anexo 3' }
+                    { id: 2, nombre: 'Anexo 8' },
+                    { id: 3, nombre: 'Anexo 9' },
+                    { id: 3, nombre: 'Anexo 10' },
+                    { id: 3, nombre: 'Anexo 11' },
+                    { id: 3, nombre: 'Anexo 12' },
+                    { id: 3, nombre: 'Anexo 19' }                    
                 ]
             }
         },
@@ -73,6 +77,13 @@ const AppConvovatoriaWeb = () => {
                     form.addEventListener('submit', (e) => {
                         e.preventDefault();
                         if (!form.checkValidity()) {
+                           
+                            sweet2.show({
+                                type: 'error',
+                                title: 'IMPORTANTE',
+                                html: 'Por favor ingrese todos los campos solicitados'
+                            });
+
                             e.stopPropagation()
                         }
                         form.classList.add('was-validated');
@@ -201,7 +212,20 @@ const AppConvovatoriaWeb = () => {
                                 formPostulants.forEach(form => {
                                     form.classList.add('was-validated');
                                 });
-                                sweet2.loading(false);
+
+                                if (self.isPUN()) {
+                                    sweet2.show({
+                                        type: 'info',
+                                        html: 'Bienvenido al proceso de Contratación por resultados de la Prueba Única Nacional (PUN). </br> <b>Por favor, ingrese todos los campos solicitados.'
+                                    });
+                                }
+                                else{
+                                    sweet2.show({
+                                        type: 'info',
+                                        html: 'Bienvenido al proceso de Contratación por Evaluación de Expediente. </br> <b>Por favor, ingrese todos los campos solicitados.'
+                                    });
+                                }
+                                //sweet2.loading(false);
                             } else {
                                 self.numberDocument = 0;
                                 sweet2.show({type:'error', html: message});
@@ -793,7 +817,7 @@ const AppConvovatoriaWeb = () => {
                 dom.innerHTML = `<div class="card card-custom">
                                     <div class="card-header">
                                         <div class="card-title mx-auto">
-                                            <h3 class="card-label">SE REGISTRO COMPLETAMENTE</h3>
+                                            <h3 class="card-label">SE REGISTRO CORRECTAMENTE PARA EL PROCESO DE CONTRATACIÓN DOCENTE</h3>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -809,7 +833,7 @@ const AppConvovatoriaWeb = () => {
                                     </div>
                                     <div class="card-footer text-center">
                                         <a href="${window.AppMain.url + 'web/convocatorias'}" type="button" class="btn btn-primary me-3">Inicio</a>
-                                        <button type="button" class="btn btn-dark btn-print">Inprimir</button>
+                                        <button type="button" class="btn btn-dark btn-print">Imprimir</button>
                                     </div>
                                 </div>`;
 
@@ -848,8 +872,8 @@ const AppConvovatoriaWeb = () => {
                                     <div>
                                         ${
                                             self.isPUN() ? 
-                                            'El número de su documento debe de estar registrado en la PUN para continuar con la postulación' : 
-                                            'Tenemos que validar su número de documento si esta disponible para esta convocatoria'
+                                            'El número de su documento debe de estar registrado en el examen de la Prueba Única Nacional (PUN) para continuar con la postulación' : 
+                                            'Ingresar su número de documento para continuar el registro.'
                                         }
                                     </div>
                                 </div>`; 

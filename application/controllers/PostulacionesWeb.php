@@ -8,6 +8,7 @@ class PostulacionesWeb extends CI_Controller {
         parent::__construct();
         $this->layout->setLayout("/web/main");
         $this->load->model("postulaciones_model");
+        $this->load->model("email_model");
         date_default_timezone_set('America/Lima');
     }
 
