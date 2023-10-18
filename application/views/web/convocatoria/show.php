@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="row justify-content-center">
+            <div class="row justify-content-center py-4">
                 <div class="col-xl-3 p-0">
                     <div class="tab-list sticky-top">
                         <div class="side-nav">
@@ -51,11 +51,8 @@
                                         <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
                                     </div>
                                 </div>
-                                <div class="alert alert-primary d-flex align-items-center" role="alert">
-                                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
-                                    <div>
-                                        El número de su documento debe de estar registrado en la PUN para continuar con la postulación
-                                    </div>
+                                <div class="alert-postulant">
+                                    
                                 </div>
                                 <?php } else { ?>
                                     <div class="input-group mb-3">
@@ -511,41 +508,6 @@
                                 <label class="col-xl-4 col-lg-4 col-form-label">Obtención del grado</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="text" name="obtencion_grado" class="form-control form-control-solid" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="modal fade" id="modalAttachedFile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <form class="form-attached-file">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Formación Académica</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group row">
-                                <label class="col-xl-4 col-lg-4 col-form-label">Tipo de Documento</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <select class="form-control form-control-solid" name="tipo" required>
-                                        <option value="" hidden>[SELECCIONE]</option>
-                                        <option value="Anexo 1">Anexo 1</option>
-                                        <option value="Anexo 2">Anexo 2</option>
-                                        <option value="Anexo 3">Anexo 3</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-xl-4 col-lg-4 col-form-label" id="formFile">Seleccione Archivo</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input class="form-control form-control-solid" name="archivo" type="file" id="formFile" accept="application/pdf" required>
                                 </div>
                             </div>
                         </div>
