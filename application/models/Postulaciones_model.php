@@ -170,14 +170,15 @@ class Postulaciones_model extends CI_Model {
                 $this->db->insert_batch('postulacion_archivos', $insert_archivos);
             }
 
-            /*if ($email_solicitant) {
+            if ($data['correo']) {
                 $receivers = array();
                 $subtitle = 'SE ACABA DE REGISTRAR MANERA EXITOSA';
-                array_push($receivers, $email_solicitant);
-                $url = $_ENV['BASE_URL'].'/postulaciones/'.$code;
-                $message = $this->twig->render('/mail/convenio/notify.twig', compact('title','subtitle','code','name_agreement','fullname_solicitant', 'url'));
+                array_push($receivers, $data['correo']);
+                $url = '/postulaciones/'. '1';
+                $message ="a";
+                $subject="prueba";
                 $result = $this->email_model->mail(compact('receivers', 'message', 'subject'));
-            }*/
+            }
             
             $sql = "SELECT
                         P.id,

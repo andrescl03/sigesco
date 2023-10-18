@@ -1,11 +1,12 @@
-<?php 
-    $convocatoria = $data['convocatoria'];  
+<?php
+$convocatoria = $data['convocatoria'];
 ?>
 <div class="container" id="AppConvocatoriaWeb" data-id="<?php echo $convocatoria->con_id ?>" data-type="<?php echo $convocatoria->con_type_postulacion ?>">
     <div class="card card-custom">
         <div class="card-header">
             <div class="card-title mx-auto">
-                <h3 class="card-label text-center my-2"><p>CONVOCATORIA REGISTRO DE DOCENTE <?php echo $convocatoria->con_anio ?></p>
+                <h3 class="card-label text-center my-2">
+                    <p>CONVOCATORIA REGISTRO DE DOCENTE <?php echo $convocatoria->con_anio ?></p>
                     DESDE <?php echo $convocatoria->con_fechainicio ?> AL <?php echo $convocatoria->con_fechafin ?>
                 </h3>
             </div>
@@ -46,13 +47,13 @@
                             <label class="col-xl-4 col-lg-4 col-form-label">Número de Documento</label>
                             <div class="col-xl-8 col-lg-8">
                                 <?php if ($convocatoria->con_type_postulacion == 2) { ?>
-                                <div class="input-group mb-3">
-                                    <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid form-input-document" placeholder="Ingrese su número de documento" required>
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary btn-documento" type="button">Validar</button>
-                                        <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
+                                    <div class="input-group mb-3">
+                                        <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid form-input-document" placeholder="Ingrese su número de documento" required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary btn-documento" type="button">Validar</button>
+                                            <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
+                                        </div>
                                     </div>
-                                </div>
                                 <?php } else { ?>
                                     <div class="input-group mb-3">
                                         <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid" placeholder="Ingrese su número de documento" required>
@@ -127,8 +128,12 @@
                             <div class="col-xl-8 col-lg-8">
                                 <select class="form-control form-control-solid form-input-validate" name="estado_civil" required>
                                     <option value="" hidden>[SELECCIONE]</option>
-                                    <option value="soltero">Soltero</option>
-                                    <option value="casado">Casado</option>
+                                    <option value="soltero">Soltero(a)</option>
+                                    <option value="casado">Casado(a)</option>
+                                    <option value="divorciado">Divorciado(a)</option>
+                                    <option value="viudo">Viudo(a)</option>
+                                    <option value="casado">Casado(a)</option>
+
                                 </select>
                             </div>
                         </div>
@@ -319,7 +324,7 @@
         </div>
         <div class="card-footer">
             <div class="card-toolbar d-flex justify-content-between">
-                <a href="/web/convocatorias" type="button" class="btn btn-secondary me-3">Regresar</a>
+                <a href="<?php echo base_url(); ?>web/convocatorias" type="button" class="btn btn-secondary me-3">Regresar</a>
                 <button type="submit" class="btn btn-primary px-4 py-2 form-input-validate" form="formPostulant">PROCESAR INFORMACIÓN</button>
             </div>
         </div>
@@ -464,6 +469,9 @@
                                         <option value="Estudiante">Estudiante</option>
                                         <option value="Egresado">Egresado</option>
                                         <option value="Titulado">Titulado</option>
+                                        <option value="Maestria">Maestría</option>
+                                        <option value="Doctorado">Doctorado</option>
+
                                     </select>
                                 </div>
                             </div>
@@ -528,7 +536,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-4" id="previewPostulant">
-                        
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>

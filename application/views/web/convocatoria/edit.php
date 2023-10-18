@@ -6,9 +6,12 @@
     $postulacion_formaciones_academicas = $data['postulacion_formaciones_academicas'];  
     $postulacion_especializaciones = $data['postulacion_especializaciones'];
     $anexos    = [];
-    $anexos[1] = 'Anexo 1';
-    $anexos[2] = 'Anexo 2';  
-    $anexos[3] = 'Anexo 3';  
+    $anexos[1] = 'Anexo 8';
+    $anexos[2] = 'Anexo 9';  
+    $anexos[3] = 'Anexo 10';  
+    $anexos[4] = 'Anexo 11';  
+    $anexos[5] = 'Anexo 12';  
+    $anexos[6] = 'Anexo 19';
 ?>
 <div class="container" id="AppConvovatoriaEditWeb"  data-uid="<?php echo $data['uid'] ?>" data-id="<?php echo $convocatoria->con_id ?>" data-type="<?php echo $convocatoria->con_type_postulacion ?>">
     <div class="card card-custom">
