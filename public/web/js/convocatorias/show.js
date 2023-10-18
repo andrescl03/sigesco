@@ -43,7 +43,8 @@ const AppConvovatoriaWeb = () => {
                     { id: 1, nombre: 'Anexo 1' },
                     { id: 2, nombre: 'Anexo 2' },
                     { id: 3, nombre: 'Anexo 3' }
-                ]
+                ],
+                response: {}
             }
         },
         methods: {
@@ -117,6 +118,7 @@ const AppConvovatoriaWeb = () => {
                                     sweet2.show({type:'error', html: message});
                                     return;
                                 }
+                                self.response = data.postulante;
                                 dom.querySelector('#formPostulant').reset();
                                 self.renderCompletedPostulant();
                                 sweet2.loading(false);
@@ -534,7 +536,32 @@ const AppConvovatoriaWeb = () => {
                 });
             },
             renderPreviewPostulant: ({el, postulant, toString = false}) => {
-                let html = `<div class="card mb-3">
+                let html = `${ 
+                    Object.keys(self.response).length > 0 ? 
+                                `<div class="text-center mb-3">
+                                    <img src="${window.AppMain.url}assets/image/logo-ugel05.jpg" style="height: 90px;">
+                                </div>
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="row mb-1">
+                                            <div class="col-lg-5"><label class="label">Código</label></div>
+                                            <div class="col-lg-7"><span>${self.response.uid}</span></div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <div class="col-lg-5"><label class="label">Fecha </label></div>
+                                            <div class="col-lg-7"><span>${self.response.fecha_registro}</span></div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <div class="col-lg-5"><label class="label">URL </label></div>
+                                            <div class="col-lg-7">
+                                                <a target="_blank" href="${ window.AppMain.url + 'web/postulaciones/' + self.response.uid}">${ window.AppMain.url + 'web/postulaciones/' + self.response.uid}</a>
+                                                <small>Conserve esta URL si es necesario</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>` 
+                                : `` 
+                            } <div class="card mb-3">
                                 <div class="card-header">
                                     <h5 class="m-0">Datos de postulación</h5>
                                 </div>
@@ -667,13 +694,13 @@ const AppConvovatoriaWeb = () => {
                                             } else {
                                                 self.academicTrainings.forEach(item => {
                                                     html += `<tr>
-                                                                <td>${item.nivel_educativo}</td>
-                                                                <td>${item.grado_academico}</td>
-                                                                <td>${item.universidad}</td>
-                                                                <td>${item.carrera_profesional}</td>
-                                                                <td>${item.registro_titulo}</td>
-                                                                <td>${item.rd_titulo}</td>
-                                                                <td>${item.obtencion_grado}</td>
+                                                                <td class="text-center">${item.nivel_educativo}</td>
+                                                                <td class="text-center">${item.grado_academico}</td>
+                                                                <td class="text-center">${item.universidad}</td>
+                                                                <td class="text-center">${item.carrera_profesional}</td>
+                                                                <td class="text-center">${item.registro_titulo}</td>
+                                                                <td class="text-center">${item.rd_titulo}</td>
+                                                                <td class="text-center">${item.obtencion_grado}</td>
                                                             </tr>`;
                                                 });
                                             }
@@ -704,11 +731,11 @@ const AppConvovatoriaWeb = () => {
                                             } else {
                                                 self.workExperiences.forEach(item => {
                                                     html += `<tr>
-                                                                <td>${item.institucion_educativa}</td>
-                                                                <td>${item.sector}</td>
-                                                                <td>${item.puesto}</td>
-                                                                <td>${item.numero_rd}</td>
-                                                                <td>${item.numero_contrato}</td>
+                                                                <td class="text-center">${item.institucion_educativa}</td>
+                                                                <td class="text-center">${item.sector}</td>
+                                                                <td class="text-center">${item.puesto}</td>
+                                                                <td class="text-center">${item.numero_rd}</td>
+                                                                <td class="text-center">${item.numero_contrato}</td>
                                                             </tr>`;
                                                 }); 
                                             }
@@ -740,12 +767,12 @@ const AppConvovatoriaWeb = () => {
                                             } else {
                                                 self.specializations.forEach(item => {
                                                     html += `<tr>
-                                                                <td>${item.tipo_especializacion}</td>
-                                                                <td>${item.tema_especializacion}</td>
-                                                                <td>${item.nombre_entidad}</td>
-                                                                <td>${item.fecha_inicio}</td>
-                                                                <td>${item.fecha_termino}</td>
-                                                                <td>${item.numero_horas}</td>
+                                                                <td class="text-center">${item.tipo_especializacion}</td>
+                                                                <td class="text-center">${item.tema_especializacion}</td>
+                                                                <td class="text-center">${item.nombre_entidad}</td>
+                                                                <td class="text-center">${item.fecha_inicio}</td>
+                                                                <td class="text-center">${item.fecha_termino}</td>
+                                                                <td class="text-center">${item.numero_horas}</td>
                                                             </tr>`;
                                                 });
                                             }
@@ -773,8 +800,8 @@ const AppConvovatoriaWeb = () => {
                                             } else {
                                                 self.formAttachedFiles.forEach(item => {
                                                     html += `<tr>
-                                                                <td>${item.tipo}</td>
-                                                                <td>${item.archivo}</td>
+                                                                <td class="text-center">${item.tipo}</td>
+                                                                <td class="text-center">${item.archivo}</td>
                                                             </tr>`;
                                                 });
                                             }
