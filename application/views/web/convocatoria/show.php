@@ -10,7 +10,7 @@
         </div>
         <div class="card-body">
             <div class="row justify-content-center">
-                <div class="col-xl-3">
+                <div class="col-xl-3 p-0">
                     <div class="tab-list sticky-top">
                         <div class="side-nav">
                             <ul>
@@ -25,8 +25,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-8">
-                    <form class="form-postulant" id="formPostulant">
+                <div class="col-xl-9">
+                    <form class="form-postulant needs-validation" id="formPostulant" novalidate>
                         <div class="form-group row section" data-scrolled="0">
                             <label class="col-xl-4 col-lg-4 col-form-label">Tipo de Documento</label>
                             <div class="col-xl-8 col-lg-8">
@@ -45,7 +45,7 @@
                             <div class="col-xl-8 col-lg-8">
                                 <?php if ($convocatoria->con_type_postulacion == 2) { ?>
                                 <div class="input-group mb-3">
-                                    <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid form-input-document" placeholder="Ingrese su número de documento" aria-describedby="button-addon2" required>
+                                    <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid form-input-document" placeholder="Ingrese su número de documento" required>
                                     <div class="input-group-append">
                                         <button class="btn btn-primary btn-documento" type="button">Validar</button>
                                         <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
@@ -54,12 +54,15 @@
                                 <div class="alert alert-primary d-flex align-items-center" role="alert">
                                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
                                     <div>
-                                        El número de su documento debe de estar registrado en la PUN, es un campo obligatorio para poder validar y habilitar los campos para el registro
+                                        El número de su documento debe de estar registrado en la PUN para continuar con la postulación
                                     </div>
                                 </div>
                                 <?php } else { ?>
-                                    <div class="mb-3">
-                                        <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid" placeholder="Ingrese su número de documento" aria-describedby="button-addon2" required>
+                                    <div class="input-group mb-3">
+                                        <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid" placeholder="Ingrese su número de documento" required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary btn-documento" type="button">Validar</button>
+                                        </div>
                                     </div>
                                 <?php } ?>
                             </div>
@@ -67,29 +70,25 @@
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Modalidad</label>
                             <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid form-input-validate" name="modalidad" required>
+                                <select class="form-control form-control-solid select-modalidad form-input-validate" name="modalidad_id" required readonly>
                                     <option value="" hidden>[SELECCIONE]</option>
-                                    <option value="EBR">Educación Básica Regular</option>
-                                    <option value="EBA">Educación Básica Alternativa</option>
-                                    <option value="EBE">Educación Básica Especial</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Nivel</label>
                             <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid form-input-validate" name="nivel" required>
+                                <select class="form-control form-control-solid select-nivel form-input-validate" name="nivel_id" required readonly>
                                     <option value="" hidden>[SELECCIONE]</option>
-                                    <option value="Inicial">Inicial</option>
-                                    <option value="Primaria">Primaria</option>
-                                    <option value="Secundaria">Secundaria</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Especialidad</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" id="applicant_name" name="especialidad" class="form-control form-control-solid form-input-validate" required>
+                                <select class="form-control form-control-solid select-especialidad form-input-validate" name="especialidad_id" required readonly>
+                                    <option value="" hidden>[SELECCIONE]</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row mt-5 section" data-scrolled="1">
@@ -100,19 +99,19 @@
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Nombres</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" id="first_name" name="nombre" class="form-control form-control-solid form-input-validate" required readonly>
+                                <input type="text" name="nombre" class="form-control form-control-solid form-input-validate" required readonly>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Apellido Paterno</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" id="last_name" name="apellido_paterno" class="form-control form-control-solid form-input-validate" required readonly>
+                                <input type="text" name="apellido_paterno" class="form-control form-control-solid form-input-validate" required readonly>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Apellido Materno</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" id="mothers_last_name" name="apellido_materno" class="form-control form-control-solid form-input-validate" required readonly>
+                                <input type="text" name="apellido_materno" class="form-control form-control-solid form-input-validate" required readonly>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -120,8 +119,8 @@
                             <div class="col-xl-8 col-lg-8">
                                 <select class="form-control form-control-solid form-input-validate" name="genero" required>
                                     <option value="" hidden>[SELECCIONE]</option>
-                                    <option value="Masculino">Masculino</option>
-                                    <option value="Femenino">Femenino</option>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
                                 </select>
                             </div>
                         </div>
@@ -130,8 +129,8 @@
                             <div class="col-xl-8 col-lg-8">
                                 <select class="form-control form-control-solid form-input-validate" name="estado_civil" required>
                                     <option value="" hidden>[SELECCIONE]</option>
-                                    <option value="Soltero">Soltero</option>
-                                    <option value="Casado">Casado</option>
+                                    <option value="soltero">Soltero</option>
+                                    <option value="casado">Casado</option>
                                 </select>
                             </div>
                         </div>
@@ -178,7 +177,7 @@
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Departamento</label>
                             <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid select-department form-input-validate" name="departmento" required>
+                                <select class="form-control form-control-solid select-department form-input-validate" name="departmento_id" required>
                                     <option value="" hidden>[SELECCIONE]</option>
                                 </select>
                             </div>
@@ -186,7 +185,7 @@
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Provincia</label>
                             <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid select-province form-input-validate" name="provincia" required>
+                                <select class="form-control form-control-solid select-province form-input-validate" name="provincia_id" required>
                                     <option value="" hidden>[SELECCIONE]</option>
                                 </select>
                             </div>
@@ -194,7 +193,7 @@
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Distrito</label>
                             <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid select-district form-input-validate" name="distrito" required>
+                                <select class="form-control form-control-solid select-district form-input-validate" name="distrito_id" required>
                                     <option value="" hidden>[SELECCIONE]</option>
                                 </select>
                             </div>
@@ -230,7 +229,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-academic-training">
+                            <table class="table table-academic-training mb-0">
                                 <thead class="text-center">
                                     <tr>
                                         <th>Nivel Educativo</th>
@@ -255,7 +254,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-work-experience">
+                            <table class="table table-work-experience mb-0">
                                 <thead class="text-center">
                                     <tr>
                                         <th>Institución educativa</th>
@@ -278,7 +277,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-specialization">
+                            <table class="table table-specialization mb-0">
                                 <thead class="text-center">
                                     <tr>
                                         <th>Tipo de especialización</th>
@@ -298,11 +297,12 @@
                         <div class="form-group row mt-5 section" data-scrolled="6">
                             <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label d-flex justify-content-between">
                                 <h5 class="my-auto">Archivos adjuntos:</h5>
+                                <!-- <button type="button" class="btn btn-primary btn-attached-file float-end form-input-validate">Agregar</button> -->
                                 <button type="button" class="btn btn-primary btn-attached-file float-end form-input-validate">Agregar</button>
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-attached-file">
+                            <table class="table table-attached-file mb-0">
                                 <thead class="text-center">
                                     <tr>
                                         <th>Tipo</th>
@@ -320,13 +320,14 @@
             </div>
         </div>
         <div class="card-footer">
-            <div class="card-toolbar text-end">
+            <div class="card-toolbar d-flex justify-content-between">
+                <a href="/web/convocatorias" type="button" class="btn btn-secondary me-3">Regresar</a>
                 <button type="submit" class="btn btn-primary px-4 py-2 form-input-validate" form="formPostulant">PROCESAR INFORMACIÓN</button>
             </div>
         </div>
         <div class="modal fade" id="modalWorkExperience" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
-                <form class="form-work-experience">
+                <form class="form-work-experience needs-validation" novalidate>
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Experiencia Laboral</h5>
@@ -381,7 +382,7 @@
         </div>
         <div class="modal fade" id="modalSpecialization" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
-                <form class="form-specialization">
+                <form class="form-specialization needs-validation" novalidate>
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Especialización</h5>
@@ -439,7 +440,7 @@
         </div>
         <div class="modal fade" id="modalAcademicTraining" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
-                <form class="form-academic-training">
+                <form class="form-academic-training needs-validation" novalidate>
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Formación Académica</h5>

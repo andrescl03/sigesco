@@ -288,23 +288,26 @@ class Convocatorias_model extends CI_Model {
       return $response;
     }
 
-    public function showPostulant($args) {
+    public function detailConvocatoria() {
       $response = $this->tools->responseDefault();
       try {
         
-        $numero = isset($args['numero']) ? $args['numero'] : 0;
+        $sql = "SELECT * FROM ubigeo_peru_departments";
+        $departamentos = $this->db->query($sql)->result_object();
 
-        $sql = "SELECT * FROM cuadro_pun_exp WHERE cpe_estado = 1 AND cpe_documento = ?";
-        $postulante = $this->db->query($sql, compact('numero'))->row();
+        $sql = "SELECT * FROM especialidades WHERE esp_estado = 1";
+        $especialidades = $this->db->query($sql)->result_object();
+        
+        $sql = "SELECT * FROM niveles WHERE niv_estado = 1";
+        $niveles = $this->db->query($sql)->result_object();
 
-        if (!$postulante) {
-            throw new Exception("No se encontro el postulante");
-        }
+        $sql = "SELECT * FROM modalidades WHERE mod_estado = 1";
+        $modalidades = $this->db->query($sql)->result_object();
 
         $response['success'] = true;
-        $response['data']  = compact('postulante');
+        $response['data']  = compact('modalidades', 'niveles', 'especialidades', 'departamentos');
         $response['status']  = 200;
-        $response['message'] = 'showPostulant';
+        $response['message'] = 'detail';
 
       } catch (\Exception $e) {
           $response['message'] = $e->getMessage();

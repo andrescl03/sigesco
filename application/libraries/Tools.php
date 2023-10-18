@@ -12,7 +12,7 @@ class Tools {
         return crypt($string, '$2a$09$tARm1a9A9N7q1W9T9n5LqR$');
     }
 
-    public function getFieldArray($files, $fields, $index) {
+    public function getFieldArray($files = [], $fields = [], $index) {
         $file = array();
         foreach ($fields as $key => $field) {
             $file[$field] = $files[$field][$index];

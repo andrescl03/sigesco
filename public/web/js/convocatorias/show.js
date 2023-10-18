@@ -1,5 +1,5 @@
 const AppConvovatoriaWeb = () => {
-    const { data, methods, mounted, utilities, el } = {
+    const { data, methods, mounted, computed, utilities, el } = {
         el: 'AppConvocatoriaWeb',
         mounted: () => {
             self.convocatoriaId = dom.getAttribute('data-id');
@@ -30,17 +30,42 @@ const AppConvovatoriaWeb = () => {
                 modalPreviewPostulant: {},
                 modalAttachedFile: {},
                 index: -1,
-                user: {},
+                formPostulant: {},
                 postulant: {},
                 formData: {},
                 nameDepartamnt: '',
                 nameProvince: '',
-                nameDistrict: ''
+                nameDistrict: '',
+                formSpecialties: [],
+                formLevels: [],
+                formModalities: [],
+                departments: []
             }
         },
         methods: {
             initialize: () => {
-                self.events();
+                self.detail()
+                .then(data => {
+                    console.log(data);
+                    console.log(123);
+                    self.renders();
+                    self.events();
+                })
+                .catch(error => {
+                    sweet2.show({type:'error', html: error});
+                });
+            },
+            renders: () => {
+                if (self.isPUN()) {
+                    console.log('pun');
+                }
+                self.renderModalities();
+                self.renderDepartments();
+                self.renderUbigeo();
+                self.renderWorkExperiences();
+                self.renderSpecialization();
+                self.renderAcademicTraining();
+                // self.renderAttachedFile();
             },
             events: () => {
 
@@ -48,14 +73,27 @@ const AppConvovatoriaWeb = () => {
                 formPostulants.forEach(form => {
                     form.addEventListener('submit', (e) => {
                         e.preventDefault();
-                        self.formData = new FormData(e.target);
-                        self.postulant = helper.formSerialize(e.target);
-                        self.renderPreviewPostulant({el: 'previewPostulant', postulant: self.postulant, toString: false});
-                        self.modalPreviewPostulant.show();
+                        if (!form.checkValidity()) {
+                            e.stopPropagation()
+                        }
+                        form.classList.add('was-validated');
+                        if (form.checkValidity()) {
+                            self.formData = new FormData(e.target);
+                            self.postulant = helper.formSerialize(e.target);
+                            self.renderPreviewPostulant({el: 'previewPostulant', postulant: self.postulant, toString: false});
+                            self.modalPreviewPostulant.show();
+                        }
+                        
                     });
                 });
 
-                self.eventClick('btn-save', () => {
+                self.eventTag('btn-save', () => {
+                    self.formData.append('convocatoria_id', self.convocatoriaId);
+                    self.formData.append('tipo_documento', self.typeDocument);
+                    self.formData.append('archivos_adjuntos', self.attachedFiles);
+                    self.formData.append('experiencias_laborales', JSON.stringify(self.workExperiences));
+                    self.formData.append('formaciones_academicas', JSON.stringify(self.academicTrainings));
+                    self.formData.append('especializaciones', JSON.stringify(self.specializations));
                     sweet2.show({
                         type: 'question',
                         text: '¿Estás seguro de enviar sus datos?',
@@ -63,40 +101,66 @@ const AppConvovatoriaWeb = () => {
                         onOk: () => {
                             sweet2.loading();
                             self.modalPreviewPostulant.hide();
-                            dom.querySelector('#formPostulant').reset();
-                            setTimeout(() => {
-                                sweet2.loading(false);
+                            $.ajax({
+                                url: window.AppMain.url + 'web/postulaciones/store',
+                                method: 'POST',
+                                dataType: 'json',
+                                data: self.formData,
+                                processData: false,
+                                contentType: false,
+                            })
+                            .done(function ({success, data, message}) {
+                                if (!success) {
+                                    sweet2.show({type:'error', html: message});
+                                    return;
+                                }
+                                dom.querySelector('#formPostulant').reset();
                                 self.renderCompletedPostulant();
-                            }, 2000);
+                                sweet2.loading(false);
+                            })
+                            .fail(function (xhr, status, error) {
+                                sweet2.show({icon:'error', text:error});
+                            });
                         }
                     });
                 });
 
-                self.eventClick('btn-documento-cancel', () => {
+                self.eventTag('btn-documento-cancel', () => {
+                    self.numberDocument = 0;
                     self.formInputDocument(true);
                     self.formInputEvent(true);
                 });
 
-                self.eventClick('btn-attached-file', () => {
-                    self.modalAttachedFile.show();
+                self.eventTag('btn-attached-file', () => {
+                    self.renderFormAttachedFile();
+                    // self.modalAttachedFile.show();
                 });
 
-                self.eventClick('btn-work-experience', () => {
+                self.eventTag('btn-work-experience', () => {
                     self.index = -1;
                     self.modalWorkExperience.show();
                 });
 
-                self.eventClick('btn-academic-training', () => {
+                self.eventTag('btn-academic-training', () => {
                     self.index = -1;
                     self.modalAcademicTraining.show();
                 });
 
-                self.eventClick('btn-specialization', () => {
+                self.eventTag('btn-specialization', () => {
                     self.index = -1;
                     self.modalSpecialization.show();
                 });
 
-                self.eventClick('btn-documento', (e) => {
+                self.eventTag('select-nivel', (e) => {
+                    self.renderSpecialties(e.target.value);
+                }, 'change');
+                
+                self.eventTag('select-modalidad', (e) => {
+                    self.renderLevels(e.target.value);
+                    self.renderSpecialties();
+                }, 'change');
+
+                self.eventTag('btn-documento', (e) => {
                     const input = dom.querySelector('#inputDocumento');
                     if (input) {
                         const value = input.value.trim();
@@ -108,20 +172,33 @@ const AppConvovatoriaWeb = () => {
                             return;
                         }
                         sweet2.loading();
+                        const formData = new FormData();
+                        formData.append('documento', value);
+                        formData.append('convocatoria_id', self.convocatoriaId);
                         $.ajax({
-                            url: window.AppMain.url + 'web/postulantes/' + value,
-                            method: 'GET',
+                            url: window.AppMain.url + 'web/postulaciones/find',
+                            method: 'POST',
                             dataType: 'json',
-                            cache: 'false'
+                            data: formData,
+                            processData: false,
+                            contentType: false,
                         })
                         .done(function ({success, data, message}) {
                             if (success) {
                                 self.numberDocument = dom.querySelector('input[name="numero_documento"]').value;
                                 self.typeDocument = dom.querySelector('input[name="tipo_documento"]').value;
-                                self.user = data.postulante;
-                                dom.querySelector('input[name="nombre"]').value = self.user.cpe_nombres;
-                                dom.querySelector('input[name="apellido_paterno"]').value = self.user.cpe_apaterno;
-                                dom.querySelector('input[name="apellido_materno"]').value = self.user.cpe_amaterno;
+                                self.formPostulant = data.postulante;
+                                dom.querySelector('input[name="nombre"]').value = self.formPostulant.cpe_nombres;
+                                dom.querySelector('input[name="apellido_paterno"]').value = self.formPostulant.cpe_apaterno;
+                                dom.querySelector('input[name="apellido_materno"]').value = self.formPostulant.cpe_amaterno;
+                                if (self.isPUN()) {
+                                    dom.querySelector('select[name="modalidad_id"]').innerHTML = `<option value="${self.formPostulant.modalidad_id}">${self.formPostulant.modalidad_descripcion}</option>`;
+                                    dom.querySelector('select[name="nivel_id"]').innerHTML = `<option value="${self.formPostulant.nivel_id}">${self.formPostulant.nivel_descripcion}</option>`;
+                                    dom.querySelector('select[name="especialidad_id"]').innerHTML = `<option value="${self.formPostulant.especialidad_id}">${self.formPostulant.especialidad_descripcion}</option>`;
+                                }
+                                formPostulants.forEach(form => {
+                                    form.classList.add('was-validated');
+                                });
                                 sweet2.loading(false);
                             } else {
                                 self.numberDocument = 0;
@@ -156,13 +233,34 @@ const AppConvovatoriaWeb = () => {
                     self.modalSpecialization.hide();
                 });
 
-                self.formInputEvent(self.convocatoriaType == 2);
-                self.renderDepartments();
-                self.renderUbigeo();
-                self.renderWorkExperiences();
-                self.renderSpecialization();
-                self.renderAcademicTraining();
-                self.renderAttachedFile();
+                self.formInputEvent(true);
+
+            },
+            detail: () => {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        url: window.AppMain.url + 'web/convocatorias/detail',
+                        method: 'POST',
+                        dataType: 'json',
+                        cache: 'false'
+                    })
+                    .done(function ({success, data, message}) {
+                        console.log({success, data, message});
+                        if (success) {
+                            self.formSpecialties = data.especialidades;
+                            self.formLevels = data.niveles;
+                            self.formModalities = data.modalidades;
+                            self.departments = data.departamentos;
+                            resolve(data);
+                        } else {
+                            reject(error);
+                        }
+                    })
+                    .fail(function (xhr, status, error) {
+                        reject(error);
+                    });
+
+                });
             },
             formInputDocument: (valid) => {
                 const btns2 = dom.querySelectorAll('.btn-documento-cancel');
@@ -186,6 +284,42 @@ const AppConvovatoriaWeb = () => {
                 const inputs = dom.querySelectorAll('.form-input-validate');
                 inputs.forEach(input => {
                     input.disabled = valid == true;
+                });
+            },
+            renderFormAttachedFile: () => {
+                const uid = (new Date()).getTime();
+                const html = `<tr id="tr-attached-file-${uid}">
+                                <td>
+                                    <select class="form-control form-control-solid" name="tipo_archivos[]" required="">
+                                        <option value="" hidden="">[SELECCIONE]</option>
+                                        <option value="1">Anexo 1</option>
+                                        <option value="2">Anexo 2</option>
+                                        <option value="3">Anexo 3</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input class="form-control form-control-solid" name="archivos[]" type="file" accept="application/pdf" required="">
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger btn-delete-attached-file" uid="${uid}">Eliminar</button>
+                                </td>
+                            </tr>`;
+                const tables = dom.querySelectorAll('.table-attached-file');
+                tables.forEach(table => {
+                    const tbody = table.querySelector('tbody');
+                    tbody.innerHTML += html;
+                });
+                self.eventTag('btn-delete-attached-file', (e) => {
+                    const uid = e.target.getAttribute('uid');
+                    sweet2.show({
+                        type: 'question',
+                        html: '¿Estás seguro de eliminar este elemento?',
+                        showCancelButton: true,
+                        onOk: () => {
+                            const parent = dom.querySelector('#tr-attached-file-' + uid).parentNode;            
+                            dom.querySelector('#tr-attached-file-' + uid).remove();
+                        }
+                    });
                 });
             },
             renderWorkExperiences: () => {
@@ -256,25 +390,46 @@ const AppConvovatoriaWeb = () => {
                     }
                 });
             },
-            renderDepartments: () => {
-                $.ajax({
-                    url: window.AppMain.url + 'ubigeo/obtenerDepartamentos',
-                    method: 'GET',
-                    dataType: 'json',
-                    cache: 'false'
-                })
-                .done(function ({departamentos}) {
-                    const selectDepartments = dom.querySelectorAll('.select-department');
-                    selectDepartments.forEach(select => {
-                        let html = `<option value="" hidden>[SELECCIONE]</option>`;
-                        departamentos.forEach(department => {
-                            html += `<option value="${ department.id }"> ${ department.name }</option>`;
-                        });
-                        select.innerHTML = html;
+            renderSpecialties: (nivel_id = 0) => {
+                const items = self.formSpecialties.filter(o => o.niveles_niv_id === nivel_id);
+                const selects = dom.querySelectorAll('.select-especialidad');
+                selects.forEach(select => {
+                    let html = `<option value="" hidden>[SELECCIONE]</option>`;
+                    items.forEach(item => {
+                        html += `<option value="${ item.esp_id }"> ${ item.esp_descripcion }</option>`;
                     });
-                })
-                .fail(function (xhr, status, error) {
-                    swal2.show({type:'error', html: error});
+                    select.innerHTML = html;
+                });
+            },
+            renderLevels: (modalidad_id = 0) => {
+                const items = self.formLevels.filter(o => o.modalidad_mod_id === modalidad_id);
+                const selects = dom.querySelectorAll('.select-nivel');
+                selects.forEach(select => {
+                    let html = `<option value="" hidden>[SELECCIONE]</option>`;
+                    items.forEach(item => {
+                        html += `<option value="${ item.niv_id }"> ${ item.niv_descripcion }</option>`;
+                    });
+                    select.innerHTML = html;
+                });
+            },
+            renderModalities: () => {
+                const selects = dom.querySelectorAll('.select-modalidad');
+                selects.forEach(select => {
+                    let html = `<option value="" hidden>[SELECCIONE]</option>`;
+                    self.formModalities.forEach(item => {
+                        html += `<option value="${ item.mod_id }"> ${ item.mod_nombre }</option>`;
+                    });
+                    select.innerHTML = html;
+                });
+            },
+            renderDepartments: () => {
+                const selects = dom.querySelectorAll('.select-department');
+                selects.forEach(select => {
+                    let html = `<option value="" hidden>[SELECCIONE]</option>`;
+                    self.departments.forEach(department => {
+                        html += `<option value="${ department.id }"> ${ department.name }</option>`;
+                    });
+                    select.innerHTML = html;
                 });
             },
             renderUbigeo: () => {
@@ -625,18 +780,42 @@ const AppConvovatoriaWeb = () => {
                                         </div>
                                     </div>
                                     <div class="card-footer text-center">
-                                        <button type="button" class="btn btn-primary btn-print">Inprimir</button>
+                                        <a href="${window.AppMain.url + 'web/convocatorias'}" type="button" class="btn btn-primary me-3">Inicio</a>
+                                        <button type="button" class="btn btn-dark btn-print">Inprimir</button>
                                     </div>
                                 </div>`;
 
-                self.eventClick('btn-print', () => {
+                self.eventTag('btn-print', () => {
                     var html = self.renderPreviewPostulant({postulant: self.postulant, toString: true});
                     var newWin = window.open('','Print-Window');
                     newWin.document.open();
-                    newWin.document.write('<html><body onload="window.print()">' + html + '</body></html>');
+                    newWin.document.write(`
+                        <html>
+                            <header>
+                                <link rel="stylesheet" type="text/css" href="${window.AppMain.url}/public/css/bootstrapv5.0.2/bootstrap.css">
+                                <style>
+                                    .col-lg-5 {
+                                        flex: 0 0 auto;
+                                        width: 41.66666667%;
+                                    }
+                                    .col-lg-7 {
+                                        flex: 0 0 auto;
+                                        width: 58.33333333%;
+                                    }
+                                </style>
+                            </header>
+                            <body onload="window.print()" style="padding: 60px;">
+                                ${html}
+                            </body>
+                        </html>`);
                     newWin.document.close();
-                    setTimeout(function(){newWin.close();},5);
+                    setTimeout(function(){newWin.close();}, 5);
                 });
+            }
+        },
+        computed: {
+            isPUN: () => {
+                return self.convocatoriaType == 2;
             }
         },
         utilities: {
@@ -648,14 +827,20 @@ const AppConvovatoriaWeb = () => {
                 forms.forEach(form => {
                     form.addEventListener('submit', (e) => {
                         e.preventDefault();
-                        const item = helper.formSerialize(e.target);
-                        if (self.index === -1) {
-                            self[name].push(item);
-                        } else {
-                            self[specializations][self.index] = item;
+                        if (!form.checkValidity()) {
+                            e.stopPropagation()
                         }
-                        e.target.reset();
-                        _callback();
+                        form.classList.add('was-validated');
+                        if (form.checkValidity()) {
+                            const item = helper.formSerialize(e.target);
+                            if (self.index === -1) {
+                                self[name].push(item);
+                            } else {
+                                self[specializations][self.index] = item;
+                            }
+                            e.target.reset();
+                            _callback();
+                        }
                     });
                 });
             },
@@ -672,7 +857,7 @@ const AppConvovatoriaWeb = () => {
                                 html += `<td>${item[col]}</td>`; 
                             });
                             html += `<td class="text-center">
-                                        <button class="btn btn-danger mb-1 btn-delete">Eliminar</button>
+                                        <button class="btn btn-sm btn-danger mb-1 btn-delete">Eliminar</button>
                                         <!--button class="btn btn-warning mb-1 btn-edit">Editar</button-->
                                     </td>`;
                             tr.innerHTML = html;
@@ -708,10 +893,10 @@ const AppConvovatoriaWeb = () => {
                     }
                 });
             },
-            eventClick: (el, _callback) => {
+            eventTag: (el, _callback, evt = 'click') => {
                 const btns = dom.querySelectorAll('.' + el);
                 btns.forEach(btn => {
-                    btn.addEventListener('click', (e) => {
+                    btn.addEventListener(evt, (e) => {
                         e.preventDefault();
                         _callback(e);
                     });
@@ -722,6 +907,7 @@ const AppConvovatoriaWeb = () => {
     const self = {
         ...data(),
         ...methods,
+        ...computed,
         ...utilities
     }, dom = document.getElementById(el);
     return mounted();

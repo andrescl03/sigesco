@@ -51,8 +51,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 $route['web/convocatorias'] = 'ConvocatoriasWeb/index';
+$route['web/convocatorias/detail'] = 'ConvocatoriasWeb/detail';
 $route['web/convocatorias/(:any)'] = 'ConvocatoriasWeb/show/$1';
 $route['web/postulantes/(:any)'] = 'ConvocatoriasWeb/postulant/$1';
+$route['web/postulaciones/store'] = 'PostulacionesWeb/store';
+$route['web/postulaciones/find'] = 'PostulacionesWeb/find';
 
 $route['default_controller'] = 'index';
 $route['404_override'] = '';

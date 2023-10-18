@@ -32,9 +32,9 @@ class ConvocatoriasWeb extends CI_Controller {
 		}
     }
 
-    public function postulant($numero) {
+    public function detail() {
         $this->output
             ->set_content_type('application/json')
-            ->set_output(json_encode($this->convocatorias_model->showPostulant(compact('numero'))));
+            ->set_output(json_encode($this->convocatorias_model->detailConvocatoria()));
     }
 }

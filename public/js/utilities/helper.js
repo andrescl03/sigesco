@@ -11,7 +11,7 @@ var helper = {
                         setTimeout(() => {
                             window.location.reload();  
                         }, 3000);
-                        return;
+                        return; 
                     }
                 }
                 resolve(rsp);
