@@ -598,6 +598,10 @@ class Postulaciones_model extends CI_Model {
                                                                         <p style="word-break: break-word; text-align: center; mso-line-height-alt: 17px; margin: 0;">
                                                                             <span>CONVOCATORIA DE DOCENTES</span>
                                                                         </p>
+
+                                                                        <p style="word-break: break-word; text-align: center; mso-line-height-alt: 17px; margin: 0;">
+                                                                        <span>Esta URL es válida durante el transcurso de la convocatoria</span>
+                                                                    </p>
                                                                     </div>
                                                                 </div>
                                                                 <div style="color:#000000; margin-bottom:25px;">

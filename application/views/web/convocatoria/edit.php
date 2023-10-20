@@ -373,9 +373,9 @@
                                             <tr>
                                                 <td class="text-center"><?php echo $anexos[$item->tipo_id] ?></td>
                                                 <td class="text-center"><a href="<?php echo base_url() ?>public<?php echo $item->url ?>" target="_blank"><?php echo $item->nombre ?></a></td>
-                                                <td class="text-center">
+                                             <!--<td class="text-center">
                                                     <button type="button" class="btn btn-sm btn-danger btn-delete" data-id="<?php echo $item->id ?>" data-any="archivos_adjuntos_eliminar">Eliminar</button>
-                                                </td>
+                                                </td>-->
                                             </tr>
                                         <?php } ?>
                                         </tbody>
