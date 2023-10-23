@@ -48,7 +48,7 @@ $convocatoria = $data['convocatoria'];
                             <div class="col-xl-8 col-lg-8">
                                 <?php if ($convocatoria->con_type_postulacion == 2) { ?>
                                     <div class="input-group mb-3">
-                                        <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid form-input-document" placeholder="Ingrese su número de documento" required>
+                                        <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document form-input-document" placeholder="Ingrese su número de documento" required>
                                         <div class="input-group-append">
                                             <button class="btn btn-primary btn-documento" type="button">Validar</button>
                                             <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
@@ -56,7 +56,7 @@ $convocatoria = $data['convocatoria'];
                                     </div>
                                 <?php } else { ?>
                                     <div class="input-group mb-3">
-                                        <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid" placeholder="Ingrese su número de documento" required>
+                                        <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document" placeholder="Ingrese su número de documento" required>
                                         <div class="input-group-append">
                                             <button class="btn btn-primary btn-documento" type="button">Validar</button>
                                         </div>
@@ -163,13 +163,13 @@ $convocatoria = $data['convocatoria'];
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Número de Celular</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="numero_celular" class="form-control form-control-solid form-input-validate" required>
+                                <input type="text" name="numero_celular" class="form-control form-control-solid input-phone form-input-validate" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Número de Teléfono</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="numero_telefono" class="form-control form-control-solid form-input-validate" required>
+                                <input type="text" name="numero_telefono" class="form-control form-control-solid input-number form-input-validate" required>
                             </div>
                         </div>
                         <div class="form-group row mt-5 section" data-scrolled="2">

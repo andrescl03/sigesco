@@ -170,9 +170,7 @@ class Postulaciones_model extends CI_Model {
                 $this->db->insert_batch('postulacion_archivos', $insert_archivos);
             }
             $sql = "SELECT
-                        P.id,
-                        P.uid,
-                        P.fecha_registro
+                        P.*
                     FROM postulaciones AS P
                     WHERE P.deleted_at IS NULL
                     AND P.id = ?";
@@ -184,7 +182,7 @@ class Postulaciones_model extends CI_Model {
                 array_push($receivers, $data['correo']);
                 // $url = '/postulaciones/'. '1';
                 // $fullnameMail = $nombre . ' ' . $apellido_paterno .' '. $apellido_materno;
-                $message = $this->messageMail($uid);
+                $message = $this->messageMail($uid, $postulante);
                 $subject="prueba";
                 $result = $this->email_model->mail(compact('receivers', 'message', 'subject'));
             }
@@ -447,7 +445,7 @@ class Postulaciones_model extends CI_Model {
         return $response;
     }
 
-    public function messageMail($uid) {
+    public function messageMail($uid, $postulante) {
         return '
         <!DOCTYPE html PUBLIC "-//W3C//DTDXHTML1.0Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
@@ -606,12 +604,21 @@ class Postulaciones_model extends CI_Model {
                                                                         <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
                                                                             <span>Código: <br>'.$uid.'</span>
                                                                         </p>
-                                                                        <p style=" word-break: break-word; margin:0px; margin-bottom: 15px;">
-                                                                            <span>Url: <br>'.base_url().'web/postulaciones/'.$uid.'</span>
+                                                                        <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
+                                                                            <span>Postulante: <br>'.$postulante->nombre .' '. $postulante->apellido_paterno .' '. $postulante->apellido_materno.'</span>
                                                                         </p>
+                                                                        <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
+                                                                            <span>Número de Documento: <br>'.$postulante->numero->documento.'</span>
+                                                                        </p>
+                                                                        <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
+                                                                            <span>Fecha de Registro: <br>'.$postulante->fecha_registro.'</span>
+                                                                        </p>
+                                                                        <!--p style=" word-break: break-word; margin:0px; margin-bottom: 15px;">
+                                                                            <span>Url: <br>'.base_url().'web/postulaciones/'.$uid.'</span>
+                                                                        </p-->
                                                                     </div>
                                                                 </div>
-                                                                <div style="color:#000000; margin-bottom:25px;margin-top:15px;">
+                                                                <!--div style="color:#000000; margin-bottom:25px;margin-top:15px;">
                                                                     <div style="font-size: 16px;color: #000000;text-align:center">
                                                                         <a href="'.base_url().'web/postulaciones/'.$uid.'" type="button" style="color: #ffffff;
                                                                             background-color: #de1f29;
@@ -625,7 +632,7 @@ class Postulaciones_model extends CI_Model {
                                                                             border-radius: 0.25rem;
                                                                             text-decoration: none;">MI POSTULACIÓN</a>
                                                                     </div>
-                                                                </div>
+                                                                </div-->
 
                                                             </div>
                                                             <!--[if mso]></td></tr></table><![endif]-->

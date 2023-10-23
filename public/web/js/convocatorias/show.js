@@ -174,6 +174,18 @@ const AppConvovatoriaWeb = () => {
                     self.renderSpecialties();
                 }, 'change');
 
+                self.eventTag('input-number', (e) => {
+                    return self.onNumberOnly(e);
+                }, 'keypress', false);
+
+                self.eventTag('input-document', (e) => {
+                    self.onValidateDocument(e);
+                }, 'keypress', false);
+
+                self.eventTag('form-radio-document', (e) => {
+                    self.typeDocument = Number(e.target.value);
+                }, 'change');
+
                 self.eventTag('btn-documento', (e) => {
                     const input = dom.querySelector('#inputDocumento');
                     if (input) {
@@ -574,13 +586,13 @@ const AppConvovatoriaWeb = () => {
                                             <div class="col-lg-5"><label class="label">Fecha </label></div>
                                             <div class="col-lg-7"><span>${self.response.fecha_registro}</span></div>
                                         </div>
-                                        <div class="row mb-1">
+                                        <!--div class="row mb-1">
                                             <div class="col-lg-5"><label class="label">URL </label></div>
                                             <div class="col-lg-7">
                                                 <a target="_blank" href="${ window.AppMain.url + 'web/postulaciones/' + self.response.uid}">${ window.AppMain.url + 'web/postulaciones/' + self.response.uid}</a>
                                                 <small>Conserve esta URL si es necesario</small>
                                             </div>
-                                        </div>
+                                        </div-->
                                     </div>
                                 </div>` 
                                 : `` 
@@ -913,7 +925,22 @@ const AppConvovatoriaWeb = () => {
                     }
                     alert.innerHTML = html;
                 });
-            }
+            },
+            onValidateDocument: (e) => {
+                if (self.typeDocument == 1) {
+                    if (self.onNumberOnly(e)) {
+                        if (e.target.value.length == 8) {
+                            e.preventDefault();
+                        }
+                    }        
+                } else if (self.typeDocument == 2) {
+                    if (e.target.value.length == 12) {
+                        e.preventDefault();
+                    }
+                } else {
+                    return false;
+                }
+            },
         },
         computed: {
             isPUN: () => {
@@ -995,14 +1022,30 @@ const AppConvovatoriaWeb = () => {
                     }
                 });
             },
-            eventTag: (el, _callback, evt = 'click') => {
+            eventTag: (el, _callback, evt = 'click', prevent = true) => {
                 const btns = dom.querySelectorAll('.' + el);
                 btns.forEach(btn => {
                     btn.addEventListener(evt, (e) => {
-                        e.preventDefault();
+                        if (prevent) {
+                            e.preventDefault();
+                        }
                         _callback(e);
                     });
                 });
+            },
+            onNumberOnly: (evt) => {
+                evt = (evt) ? evt : window.event;
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+                  evt.preventDefault();
+                } else {
+                  return true;
+                }
+            },
+            onLetterOnly: (e) => {
+                const regEx1 = /[^a-zA-Z\s]+/;
+                const value = regEx1.test(e.target.value);
+                console.log(value);
             }
         }
     };
