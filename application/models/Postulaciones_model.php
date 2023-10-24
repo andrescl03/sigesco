@@ -608,7 +608,7 @@ class Postulaciones_model extends CI_Model {
                                                                             <span>Postulante: <br>'.$postulante->nombre .' '. $postulante->apellido_paterno .' '. $postulante->apellido_materno.'</span>
                                                                         </p>
                                                                         <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
-                                                                            <span>Número de Documento: <br>'.$postulante->numero->documento.'</span>
+                                                                            <span>Número de Documento: <br>'.$postulante->numero_documento.'</span>
                                                                         </p>
                                                                         <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
                                                                             <span>Fecha de Registro: <br>'.$postulante->fecha_registro.'</span>
