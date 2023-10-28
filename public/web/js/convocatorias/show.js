@@ -10,6 +10,7 @@ const AppConvovatoriaWeb = () => {
             self.modalSpecialization = self.modal('modalSpecialization');
             self.modalAcademicTraining = self.modal('modalAcademicTraining');
             self.modalPreviewPostulant = self.modal('modalPreviewPostulant');
+            self.dateAdult = self.onDateAdut();
             self.initialize();
         },
         data: () => { 
@@ -47,7 +48,8 @@ const AppConvovatoriaWeb = () => {
                     { id: 5, nombre: 'Anexo 12' },
                     { id: 6, nombre: 'Anexo 19' } 
                 ],
-                response: {}
+                response: {},
+                dateAdult: ''
             }
         },
         methods: {
@@ -185,6 +187,34 @@ const AppConvovatoriaWeb = () => {
                 self.eventTag('form-radio-document', (e) => {
                     self.typeDocument = Number(e.target.value);
                 }, 'change');
+
+                self.eventTag('form-input-email', ({target}) => {
+                    const {valid} = target.validity;
+                    const value = target.value;
+                    const inputs = dom.querySelectorAll('.form-input-confirm-email');
+                    inputs.forEach(input => {
+                        input.setAttribute('pattern', (valid ? value : ''));
+                    });
+                }, 'keyup', false);
+                
+                self.eventTag('form-control-validate', (e) => {
+                    const nextElementSibling = e.target.nextElementSibling;
+                    if (nextElementSibling) {
+                        nextElementSibling.innerHTML = e.target.validationMessage;
+                    }
+                }, 'keyup', false);
+
+                self.eventTag('form-control-validate', (e) => {
+                    const nextElementSibling = e.target.nextElementSibling;
+                    if (nextElementSibling) {
+                        nextElementSibling.innerHTML = e.target.validationMessage;
+                    }
+                }, 'change', false);
+
+                const dateAdults = dom.querySelectorAll('.form-input-age');
+                dateAdults.forEach(element => {
+                    element.setAttribute('max', self.dateAdult);
+                });
 
                 self.eventTag('btn-documento', (e) => {
                     const input = dom.querySelector('#inputDocumento');
@@ -1042,11 +1072,28 @@ const AppConvovatoriaWeb = () => {
                   return true;
                 }
             },
+            addZero: (num) => {
+                if (Number(num) < 10) {
+                    num = '0' + num;
+                }
+                return num;
+            },
             onLetterOnly: (e) => {
                 const regEx1 = /[^a-zA-Z\s]+/;
                 const value = regEx1.test(e.target.value);
                 console.log(value);
-            }
+            },
+            onDateAdut: () => {
+                let dateNow = new Date();
+                let resta = 1000 * 60 * 60 * 24 * 6570; // 18 years
+                let timeOld = dateNow.getTime() - resta;
+                let dateObj = new Date(timeOld);
+                /*let dateObj = new Date();**/
+                let month = dateObj.getUTCMonth() + 1; //months from 1-12
+                let day = dateObj.getUTCDate();
+                let year = dateObj.getUTCFullYear();
+                return year + "-" + self.addZero(month) + "-" + self.addZero(day);
+            },
         }
     };
     const self = {

@@ -98,19 +98,22 @@ $convocatoria = $data['convocatoria'];
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Nombres</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="nombre" class="form-control form-control-solid form-input-validate" required readonly>
+                                <input type="text" name="nombre" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="30" required readonly>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Apellido Paterno</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="apellido_paterno" class="form-control form-control-solid form-input-validate" required readonly>
+                                <input type="text" name="apellido_paterno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="30" required readonly>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Apellido Materno</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="apellido_materno" class="form-control form-control-solid form-input-validate" required readonly>
+                                <input type="text" name="apellido_materno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="30" required readonly>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -121,6 +124,7 @@ $convocatoria = $data['convocatoria'];
                                     <option value="M">Masculino</option>
                                     <option value="F">Femenino</option>
                                 </select>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -133,8 +137,8 @@ $convocatoria = $data['convocatoria'];
                                     <option value="divorciado">Divorciado(a)</option>
                                     <option value="viudo">Viudo(a)</option>
                                     <option value="casado">Casado(a)</option>
-
                                 </select>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -145,31 +149,45 @@ $convocatoria = $data['convocatoria'];
                                     <option value="Peruana">Peruana</option>
                                     <option value="Extranjera">Extranjera</option>
                                 </select>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Fecha de Nacimiento</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="date" name="fecha_nacimiento" class="form-control form-control-solid form-input-validate" required>
+                                <input type="date" name="fecha_nacimiento" class="form-control form-control-solid form-control-validate form-input-age form-input-validate" max="2020-10-10" required>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Correo Electrónico</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="email" name="correo" class="form-control form-control-solid form-input-validate" required>
+                                <input type="email" name="correo" class="form-control form-control-solid form-input-validate form-input-email" maxlength="100" required>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 <small>Se enviarán todas las notificaciones del proceso de contratación docente.</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Confirmar Correo Electrónico</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <input type="email" name="confirma_correo" class="form-control form-control-solid form-input-validate form-input-confirm-email" maxlength="100" pattern="" required>
+                                <div class="invalid-feedback">
+                                    Por favor confirme el correo electrónico ingresado válido.
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Número de Celular</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="numero_celular" class="form-control form-control-solid input-phone form-input-validate" required>
+                                <input type="text" name="numero_celular" class="form-control form-control-solid form-control-validate input-number form-input-validate" required>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Número de Teléfono</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="numero_telefono" class="form-control form-control-solid input-number form-input-validate" required>
+                                <input type="text" name="numero_telefono" class="form-control form-control-solid form-control-validate  input-number form-input-validate" required>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
                         <div class="form-group row mt-5 section" data-scrolled="2">
@@ -205,24 +223,28 @@ $convocatoria = $data['convocatoria'];
                             <label class="col-xl-4 col-lg-4 col-form-label">Vía</label>
                             <div class="col-xl-8 col-lg-8">
                                 <input type="text" name="via" class="form-control form-control-solid form-input-validate" required>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Vía</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="nombre_via" class="form-control form-control-solid form-input-validate" required>
+                                <input type="text" name="nombre_via" class="form-control form-control-solid form-control-validate  form-input-validate" required>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Zona</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="zona" class="form-control form-control-solid form-input-validate" required>
+                                <input type="text" name="zona" class="form-control form-control-solid form-control-validate  form-input-validate" required>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Dirección</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="direccion" class="form-control form-control-solid form-input-validate" required>
+                                <input type="text" name="direccion" class="form-control form-control-solid form-control-validate  form-input-validate" required>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
                         <div class="form-group row mt-5 section" data-scrolled="3">
@@ -341,6 +363,7 @@ $convocatoria = $data['convocatoria'];
                                 <label class="col-xl-4 col-lg-4 col-form-label">Institución educativa</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="text" name="institucion_educativa" class="form-control form-control-solid" required>
+                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -366,12 +389,14 @@ $convocatoria = $data['convocatoria'];
                                 <label class="col-xl-4 col-lg-4 col-form-label">N° RD</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="text" name="numero_rd" class="form-control form-control-solid" required>
+                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">N° Contrato</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="text" name="numero_contrato" class="form-control form-control-solid" required>
+                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
                         </div>
@@ -406,30 +431,35 @@ $convocatoria = $data['convocatoria'];
                                 <label class="col-xl-4 col-lg-4 col-form-label">Tema</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="text" id="temaEspecializacion" name="tema_especializacion" class="form-control form-control-solid" required>
+                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la entidad</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="text" id="nombreEntidad" name="nombre_entidad" class="form-control form-control-solid" required>
+                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Fecha de inicio</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="date" id="fechaInicio" name="fecha_inicio" class="form-control form-control-solid" required>
+                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Fecha de termino</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="date" id="fechaTermino" name="fecha_termino" class="form-control form-control-solid" required>
+                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Número de horas</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="number" id="numeroHoras" name="numero_horas" class="form-control form-control-solid" required>
+                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
                         </div>
@@ -503,6 +533,7 @@ $convocatoria = $data['convocatoria'];
                                 <label class="col-xl-4 col-lg-4 col-form-label">N° de registro de título</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="text" name="registro_titulo" class="form-control form-control-solid" required>
+                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
 
@@ -510,6 +541,7 @@ $convocatoria = $data['convocatoria'];
                                 <label class="col-xl-4 col-lg-4 col-form-label">RD de título N°</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="text" name="rd_titulo" class="form-control form-control-solid" required>
+                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
 
@@ -517,6 +549,7 @@ $convocatoria = $data['convocatoria'];
                                 <label class="col-xl-4 col-lg-4 col-form-label">Obtención del grado</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="text" name="obtencion_grado" class="form-control form-control-solid" required>
+                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
                         </div>
