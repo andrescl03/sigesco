@@ -982,7 +982,7 @@ const AppConvovatoriaWeb = () => {
                                                                 <div class="col-lg-7">${item.tipo}</div>
                                                             </div>
                                                             <div class="row">
-                                                                <div class="col-lg-5">Archivo</div>
+                                                                <div class="col-lg-5">Ver Archivo</div>
                                                                 <div class="col-lg-7">${item.archivo}</div>
                                                             </div>
                                                         </div>`;
