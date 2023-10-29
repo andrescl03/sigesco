@@ -4,12 +4,33 @@ $convocatoria = $data['convocatoria'];
 <div class="container" id="AppConvocatoriaWeb" data-id="<?php echo $convocatoria->con_id ?>" data-type="<?php echo $convocatoria->con_type_postulacion ?>">
     <div class="card card-custom">
         <div class="card-header">
-            <div class="card-title mx-auto">
+            <div class="w-100">
+                <div class="row my-3">
+                    <div class="col-md-12 text-center">
+                        <h4 class="mx-auto mb-0">
+                            CONVOCATORIA REGISTRO DE DOCENTE <?php echo $convocatoria->con_anio ?>
+                        </h4>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <p class="m-0 text-secondary text-uppercase">
+                        <?php echo $convocatoria->con_type_postulacion == 2 ? 'Evaluación PUN (Prueba Única Nacional)' : 'Evaluación de expedientes' ?>
+                        </p>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <p class="m-0 text-secondary">
+                            Inicio <strong><?php echo $convocatoria->con_fechainicio ?></strong>
+                            Fin <strong><?php echo $convocatoria->con_fechafin ?></strong>
+                            <strong class="ms-2"><?php echo $convocatoria->con_diasrestantes ?> <?php echo $convocatoria->con_diasrestantes > 1 ? 'días restantes' : 'día restante' ?></strong>
+                        </p>
+                    </div>
+                </div>                
+            </div>
+            <!-- <div class="card-title mx-auto">
                 <h3 class="card-label text-center my-2">
                     <p>CONVOCATORIA REGISTRO DE DOCENTE <?php echo $convocatoria->con_anio ?></p>
                     DESDE <?php echo $convocatoria->con_fechainicio ?> AL <?php echo $convocatoria->con_fechafin ?>
                 </h3>
-            </div>
+            </div> -->
         </div>
         <div class="card-body">
             <div class="row justify-content-center py-4">
@@ -59,6 +80,7 @@ $convocatoria = $data['convocatoria'];
                                         <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document" placeholder="Ingrese su número de documento" required>
                                         <div class="input-group-append">
                                             <button class="btn btn-primary btn-documento" type="button">Validar</button>
+                                            <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
                                         </div>
                                     </div>
                                 <?php } ?>
@@ -69,7 +91,7 @@ $convocatoria = $data['convocatoria'];
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Modalidad</label>
                             <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid select-modalidad form-input-validate" name="modalidad_id" required readonly>
+                                <select class="form-control form-control-solid select-modalidad form-input-validate" name="modalidad_id" required>
                                     <option value="" hidden>[SELECCIONE]</option>
                                 </select>
                             </div>
@@ -77,7 +99,7 @@ $convocatoria = $data['convocatoria'];
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Nivel</label>
                             <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid select-nivel form-input-validate" name="nivel_id" required readonly>
+                                <select class="form-control form-control-solid select-nivel form-input-validate" name="nivel_id" required>
                                     <option value="" hidden>[SELECCIONE]</option>
                                 </select>
                             </div>
@@ -85,7 +107,7 @@ $convocatoria = $data['convocatoria'];
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Especialidad</label>
                             <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid select-especialidad form-input-validate" name="especialidad_id" required readonly>
+                                <select class="form-control form-control-solid select-especialidad form-input-validate" name="especialidad_id" required>
                                     <option value="" hidden>[SELECCIONE]</option>
                                 </select>
                             </div>
@@ -574,6 +596,23 @@ $convocatoria = $data['convocatoria'];
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
                         <button type="button" class="btn btn-primary btn-save">REGISTRAR MI POSTULACIÓN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modalViewerAttachedFile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Archivo Adjunto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <!-- <iframe id="iframeAttachedFile" src="" title="description" height="600" width="100%" type="application/pdf"></iframe>             -->
+                        <canvas id="the-canvas" style="border: 1px solid black; direction: ltr;max-width: 100%;" width="100%"></canvas>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
                     </div>
                 </div>
             </div>

@@ -250,11 +250,11 @@ class Convocatorias_model extends CI_Model {
         return $this->db->insert_id(); // para saber el id ingresado
     } 
     
-    public function showConvocatoria($args) {
+    public function showConvocatoria($request) {
       $response = $this->tools->responseDefault();
       try {
 
-        $id = isset($args['id']) ? $args['id'] : 0;
+        $id = isset($request['id']) ? $request['id'] : 0;
 
         $sql = "SELECT * FROM convocatorias WHERE con_estado = 1 AND con_id = ?";
         $convocatoria = $this->db->query($sql, compact('id'))->row();
@@ -276,6 +276,10 @@ class Convocatorias_model extends CI_Model {
           $convocatoria->con_type_postulacion = 1;
         }
 
+        $fechaActual = new DateTime();
+        $fechaFin = new DateTime($convocatoria->con_fechafin);
+        $interval = $fechaActual->diff($fechaFin);
+        $convocatoria->con_diasrestantes = $interval->days;
         $response['success'] = true;
         $response['data']  = compact('convocatoria');
         $response['status']  = 200;
