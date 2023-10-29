@@ -833,141 +833,149 @@ const AppConvovatoriaWeb = () => {
                                 <div class="card-header">
                                     <h5 class="m-0">Formación Académica</h5>
                                 </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead class="text-center">
-                                                <tr>
-                                                    <th>Nivel Educativo</th>
-                                                    <th>Grado Académico</th>
-                                                    <th>Universidad</th>
-                                                    <th>Carrera Profesional</th>
-                                                    <th>N° de Registro de Título</th>
-                                                    <th>RD de Título N°</th>
-                                                    <th>Obtención del Grado</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>`;
-                                            if (self.academicTrainings.length == 0) {
-                                                html += `<tr><td colspan="7" class="text-center">No hay registros para mostrar</td></tr>`;
-                                            } else {
-                                                self.academicTrainings.forEach(item => {
-                                                    html += `<tr>
-                                                                <td class="text-center">${item.nivel_educativo}</td>
-                                                                <td class="text-center">${item.grado_academico}</td>
-                                                                <td class="text-center">${item.universidad}</td>
-                                                                <td class="text-center">${item.carrera_profesional}</td>
-                                                                <td class="text-center">${item.registro_titulo}</td>
-                                                                <td class="text-center">${item.rd_titulo}</td>
-                                                                <td class="text-center">${item.obtencion_grado}</td>
-                                                            </tr>`;
-                                                });
-                                            }
-                                    html += `</tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                <div class="card-body">`;
+                                    if (self.academicTrainings.length == 0) {
+                                        html += `<div class="row">
+                                                    <div class="col-md-12"> No hay registros para mostrar</div>
+                                                </div>`;
+                                    } else {
+                                        self.academicTrainings.forEach(item => {
+                                            html += `<div class="mb-4">
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Nivel Educativo</div>
+                                                            <div class="col-lg-7">${item.nivel_educativo}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Grado Académico</div>
+                                                            <div class="col-lg-7">${item.grado_academico}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Universidad</div>
+                                                            <div class="col-lg-7">${item.universidad}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Carrera Profesional</div>
+                                                            <div class="col-lg-7">${item.carrera_profesional}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">N° de Registro de Título</div>
+                                                            <div class="col-lg-7">${item.registro_titulo}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">RD de Título N°</div>
+                                                            <div class="col-lg-7">${item.rd_titulo}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Obtención del Grado</div>
+                                                            <div class="col-lg-7">${item.obtencion_grado}</div>
+                                                        </div>
+                                                    </div>`;
+                                        });
+                                    } 
+                        html += `</div>
                             </div>
                             <div class="card mb-3">
                                 <div class="card-header">
                                     <h5 class="m-0">Experiencia laboral</h5>
                                 </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead class="text-center">
-                                                <tr>
-                                                    <th>Institución educativa</th>
-                                                    <th>Sector</th>
-                                                    <th>Puesto</th>
-                                                    <th>N° RD</th>
-                                                    <th>N° Contrato</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>`;
-                                            if (self.workExperiences.length == 0) {
-                                                html += `<tr><td colspan="5" class="text-center">No hay registros para mostrar</td></tr>`;
-                                            } else {
-                                                self.workExperiences.forEach(item => {
-                                                    html += `<tr>
-                                                                <td class="text-center">${item.institucion_educativa}</td>
-                                                                <td class="text-center">${item.sector}</td>
-                                                                <td class="text-center">${item.puesto}</td>
-                                                                <td class="text-center">${item.numero_rd}</td>
-                                                                <td class="text-center">${item.numero_contrato}</td>
-                                                            </tr>`;
-                                                }); 
-                                            }
-                                    html += `</tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                <div class="card-body">`;
+                                    if (self.workExperiences.length == 0) {
+                                        html += `<div class="row">
+                                                    <div class="col-md-12"> No hay registros para mostrar</div>
+                                                </div>`;
+                                    } else {
+                                        self.workExperiences.forEach(item => {
+                                            html += `<div class="mb-4">
+                                                <div class="row">
+                                                    <div class="col-lg-5">Institución educativa</div>
+                                                    <div class="col-lg-7">${item.institucion_educativa}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-5">Sector</div>
+                                                    <div class="col-lg-7">${item.sector}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-5">Puesto</div>
+                                                    <div class="col-lg-7">${item.puesto}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-5">N° RD</div>
+                                                    <div class="col-lg-7">${item.numero_rd}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-5">N° Contrato</div>
+                                                    <div class="col-lg-7">${item.numero_contrato}</div>
+                                                </div>
+                                            </div>`;
+                                        }); 
+                                    }
+                        html += `</div>
                             </div>
                             <div class="card mb-3">
                                 <div class="card-header">
                                     <h5 class="m-0">Especialización</h5>
                                 </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead class="text-center">
-                                                <tr>
-                                                    <th>Tipo de especialización</th>
-                                                    <th>Tema</th>
-                                                    <th>Nombre de la entidad</th>
-                                                    <th>Fecha de inicio</th>
-                                                    <th>Fecha de termino</th>
-                                                    <th>Número de horas</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>`;
-                                            if (self.specializations.length == 0) {
-                                                html += `<tr><td colspan="6" class="text-center">No hay registros para mostrar</td></tr>`;
-                                            } else {
-                                                self.specializations.forEach(item => {
-                                                    html += `<tr>
-                                                                <td class="text-center">${item.tipo_especializacion}</td>
-                                                                <td class="text-center">${item.tema_especializacion}</td>
-                                                                <td class="text-center">${item.nombre_entidad}</td>
-                                                                <td class="text-center">${item.fecha_inicio}</td>
-                                                                <td class="text-center">${item.fecha_termino}</td>
-                                                                <td class="text-center">${item.numero_horas}</td>
-                                                            </tr>`;
-                                                });
-                                            }
-                                    html += `</tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                <div class="card-body">`;
+                                    if (self.specializations.length == 0) {
+                                        html += `<div class="row">
+                                                    <div class="col-md-12"> No hay registros para mostrar</div>
+                                                </div>`;
+                                    } else {
+                                        self.specializations.forEach(item => {
+                                            html += `<div class="mb-4">
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Tipo de especialización</div>
+                                                            <div class="col-lg-7">${item.tipo_especializacion}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Tema</div>
+                                                            <div class="col-lg-7">${item.tema_especializacion}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Nombre de la entidad</div>
+                                                            <div class="col-lg-7">${item.nombre_entidad}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Fecha de inicio</div>
+                                                            <div class="col-lg-7">${item.fecha_inicio}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Fecha de termino</div>
+                                                            <div class="col-lg-7">${item.fecha_termino}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Número de horas</div>
+                                                            <div class="col-lg-7">${item.numero_horas}</div>
+                                                        </div>
+                                                    </div>`;
+                                        });
+                                    }
+                        html += `</div>
                             </div>
                             <div class="card mb-3">
                                 <div class="card-header">
                                     <h5 class="m-0">Archivos Adjuntos</h5>
                                 </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead class="text-center">
-                                                <tr>
-                                                    <th>Tipo</th>
-                                                    <th>Archivo</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>`;
-                                            if (self.formAttachedFiles.length == 0) {
-                                                html += `<tr><td colspan="2" class="text-center">No hay registros para mostrar</td></tr>`;
-                                            } else {
-                                                self.formAttachedFiles.forEach(item => {
-                                                    html += `<tr>
-                                                                <td class="text-center">${item.tipo}</td>
-                                                                <td class="text-center">${item.archivo}</td>
-                                                            </tr>`;
-                                                });
-                                            }
-                                    html += `</tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                <div class="card-body">`;
+                                    if (self.formAttachedFiles.length == 0) {
+                                        html += `<div class="row">
+                                                    <div class="col-md-12"> No hay registros para mostrar</div>
+                                                </div>`;
+                                    } else {
+                                        self.formAttachedFiles.forEach(item => {
+                                            html += `<div class="mb-4">
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Tipo</div>
+                                                            <div class="col-lg-7">${item.tipo}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Archivo</div>
+                                                            <div class="col-lg-7">${item.archivo}</div>
+                                                        </div>
+                                                    </div>`;
+                                        });
+                                    }
+                        html += `</div>
                             </div>`;
                 if (toString) {
                     return html;
