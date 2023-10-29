@@ -87,3 +87,9 @@ CREATE TABLE `postulacion_archivos` (
 	`deleted_at` DATETIME NULL DEFAULT NULL,
 	PRIMARY KEY (`id`) USING BTREE
 );
+
+
+/****************************** 29-10-23  ******************************/
+ALTER TABLE postulaciones ADD COLUMN `inscripcion_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `convocatoria_id`;
+ALTER TABLE postulaciones DROP COLUMN especialidad_id;
+

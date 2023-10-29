@@ -1,20 +1,25 @@
 <?php
 $convocatoria = $data['convocatoria'];
 ?>
-<div class="container" id="AppConvocatoriaWeb" data-id="<?php echo $convocatoria->con_id ?>" data-type="<?php echo $convocatoria->con_type_postulacion ?>">
+<div class="container" id="AppConvocatoriaWeb" data-id="<?php echo $convocatoria->con_id ?>" data-type="<?php echo $convocatoria->con_type_postulacion ?>" data-inscripcion-id="<?php echo $convocatoria->inscripcion_id ?>">
     <div class="card card-custom">
         <div class="card-header">
             <div class="w-100">
                 <div class="row my-3">
                     <div class="col-md-12 text-center">
-                        <h4 class="mx-auto mb-0">
+                        <h4 class="mx-auto mb-1 text-uppercase">
                             CONVOCATORIA REGISTRO DE DOCENTE <?php echo $convocatoria->con_anio ?>
                         </h4>
                     </div>
                     <div class="col-md-12 text-center">
-                        <p class="m-0 text-secondary text-uppercase">
-                        <?php echo $convocatoria->con_type_postulacion == 2 ? 'Evaluación PUN (Prueba Única Nacional)' : 'Evaluación de expedientes' ?>
-                        </p>
+                        <h6 class="mb-2 text-secondary text-uppercase">
+                            <?php echo $convocatoria->con_type_postulacion == 2 ? 'Evaluación PUN (Prueba Única Nacional)' : 'Evaluación de expedientes' ?>
+                        </h6>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <h6 class="mb-1 text-secondary text-uppercase">
+                            <?php echo $convocatoria->modalidad_nombre ?> <?php echo $convocatoria->nivel_nombre ?> <?php echo $convocatoria->especialidad_nombre == '-' ? '' : $convocatoria->especialidad_nombre ?>
+                        </h6>
                     </div>
                     <div class="col-md-12 text-center">
                         <p class="m-0 text-secondary">
@@ -88,7 +93,7 @@ $convocatoria = $data['convocatoria'];
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!--div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Modalidad</label>
                             <div class="col-xl-8 col-lg-8">
                                 <select class="form-control form-control-solid select-modalidad form-input-validate" name="modalidad_id" required>
@@ -111,7 +116,7 @@ $convocatoria = $data['convocatoria'];
                                     <option value="" hidden>[SELECCIONE]</option>
                                 </select>
                             </div>
-                        </div>
+                        </div-->
                         <div class="form-group row mt-5 section" data-scrolled="1">
                             <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label">
                                 <h5>Datos personales del postulante:</h5>

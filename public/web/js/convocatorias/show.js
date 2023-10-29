@@ -4,6 +4,8 @@ const AppConvovatoriaWeb = () => {
         mounted: () => {
             self.convocatoriaId = dom.getAttribute('data-id');
             dom.removeAttribute('data-id');
+            self.inscripcionId = dom.getAttribute('data-inscripcion-id');
+            dom.removeAttribute('data-inscripcion-id');
             self.convocatoriaType = dom.getAttribute('data-type');
             dom.removeAttribute('data-type');
             self.modalWorkExperience = self.modal('modalWorkExperience');
@@ -19,6 +21,7 @@ const AppConvovatoriaWeb = () => {
                 numberDocument: 0,
                 typeDocument: 1,
                 convocatoriaId: 0,
+                inscripcionId: 0,
                 convocatoriaType: 1, // 1 Expediente - 2 PUN
                 convocatoria: {},
                 workExperiences: [],
@@ -94,9 +97,12 @@ const AppConvovatoriaWeb = () => {
                         if (form.checkValidity()) {
                             self.formData = new FormData(e.target);
                             self.postulant = helper.formSerialize(e.target);
-                            self.postulant.modalidad = self.formModalities.find(o => o.mod_id === self.postulant.modalidad_id).mod_nombre;
+                            /*self.postulant.modalidad = self.formModalities.find(o => o.mod_id === self.postulant.modalidad_id).mod_nombre;
                             self.postulant.nivel = self.formLevels.find(o => o.niv_id === self.postulant.nivel_id).niv_descripcion;
-                            self.postulant.especialidad = self.formSpecialties.find(o => o.esp_id === self.postulant.especialidad_id).esp_descripcion;
+                            self.postulant.especialidad = self.formSpecialties.find(o => o.esp_id === self.postulant.especialidad_id).esp_descripcion;*/
+                            self.postulant.modalidad = self.formPostulant.modalidad_descripcion;
+                            self.postulant.nivel = self.formPostulant.nivel_descripcion;
+                            self.postulant.especialidad = self.formPostulant.especialidad_descripcion;
                             self.listAttachedFile();
                             self.renderPreviewPostulant({el: 'previewPostulant', postulant: self.postulant, toString: false});
                             self.modalPreviewPostulant.show();
@@ -169,14 +175,14 @@ const AppConvovatoriaWeb = () => {
                     self.modalSpecialization.show();
                 });
 
-                self.eventTag('select-nivel', (e) => {
+                /*self.eventTag('select-nivel', (e) => {
                     self.renderSpecialties(e.target.value);
                 }, 'change');
                 
                 self.eventTag('select-modalidad', (e) => {
                     self.renderLevels(e.target.value);
                     self.renderSpecialties();
-                }, 'change');
+                }, 'change');*/
 
                 self.eventTag('input-number', (e) => {
                     return self.onNumberOnly(e);
@@ -233,6 +239,7 @@ const AppConvovatoriaWeb = () => {
                         const formData = new FormData();
                         formData.append('documento', value);
                         formData.append('convocatoria_id', self.convocatoriaId);
+                        formData.append('inscripcion_id', self.inscripcionId);
                         $.ajax({
                             url: window.AppMain.url + 'web/postulaciones/find',
                             method: 'POST',
@@ -250,9 +257,9 @@ const AppConvovatoriaWeb = () => {
                                     dom.querySelector('input[name="nombre"]').value = self.formPostulant.cpe_nombres;
                                     dom.querySelector('input[name="apellido_paterno"]').value = self.formPostulant.cpe_apaterno;
                                     dom.querySelector('input[name="apellido_materno"]').value = self.formPostulant.cpe_amaterno;    
-                                    dom.querySelector('select[name="modalidad_id"]').innerHTML = `<option value="${self.formPostulant.modalidad_id}">${self.formPostulant.modalidad_descripcion}</option>`;
+                                    /*dom.querySelector('select[name="modalidad_id"]').innerHTML = `<option value="${self.formPostulant.modalidad_id}">${self.formPostulant.modalidad_descripcion}</option>`;
                                     dom.querySelector('select[name="nivel_id"]').innerHTML = `<option value="${self.formPostulant.nivel_id}">${self.formPostulant.nivel_descripcion}</option>`;
-                                    dom.querySelector('select[name="especialidad_id"]').innerHTML = `<option value="${self.formPostulant.especialidad_id}">${self.formPostulant.especialidad_descripcion}</option>`;
+                                    dom.querySelector('select[name="especialidad_id"]').innerHTML = `<option value="${self.formPostulant.especialidad_id}">${self.formPostulant.especialidad_descripcion}</option>`;*/
                                 }
                                 formPostulants.forEach(form => {
                                     form.classList.add('was-validated');
@@ -468,23 +475,6 @@ const AppConvovatoriaWeb = () => {
                 /*
                 https://github.com/mozilla/pdf.js/blob/master/examples/learning/helloworld64.html
                 */
-                // atob() is used to convert base64 encoded PDF to binary-like data.
-                // (See also https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/
-                // Base64_encoding_and_decoding.)
-                /*var pdfData = atob(
-                'JVBERi0xLjcKCjEgMCBvYmogICUgZW50cnkgcG9pbnQKPDwKICAvVHlwZSAvQ2F0YWxvZwog' +
-                'IC9QYWdlcyAyIDAgUgo+PgplbmRvYmoKCjIgMCBvYmoKPDwKICAvVHlwZSAvUGFnZXMKICAv' +
-                'TWVkaWFCb3ggWyAwIDAgMjAwIDIwMCBdCiAgL0NvdW50IDEKICAvS2lkcyBbIDMgMCBSIF0K' +
-                'Pj4KZW5kb2JqCgozIDAgb2JqCjw8CiAgL1R5cGUgL1BhZ2UKICAvUGFyZW50IDIgMCBSCiAg' +
-                'L1Jlc291cmNlcyA8PAogICAgL0ZvbnQgPDwKICAgICAgL0YxIDQgMCBSIAogICAgPj4KICA+' +
-                'PgogIC9Db250ZW50cyA1IDAgUgo+PgplbmRvYmoKCjQgMCBvYmoKPDwKICAvVHlwZSAvRm9u' +
-                'dAogIC9TdWJ0eXBlIC9UeXBlMQogIC9CYXNlRm9udCAvVGltZXMtUm9tYW4KPj4KZW5kb2Jq' +
-                'Cgo1IDAgb2JqICAlIHBhZ2UgY29udGVudAo8PAogIC9MZW5ndGggNDQKPj4Kc3RyZWFtCkJU' +
-                'CjcwIDUwIFRECi9GMSAxMiBUZgooSGVsbG8sIHdvcmxkISkgVGoKRVQKZW5kc3RyZWFtCmVu' +
-                'ZG9iagoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDEwIDAwMDAwIG4g' +
-                'CjAwMDAwMDAwNzkgMDAwMDAgbiAKMDAwMDAwMDE3MyAwMDAwMCBuIAowMDAwMDAwMzAxIDAw' +
-                'MDAwIG4gCjAwMDAwMDAzODAgMDAwMDAgbiAKdHJhaWxlcgo8PAogIC9TaXplIDYKICAvUm9v' +
-                'dCAxIDAgUgo+PgpzdGFydHhyZWYKNDkyCiUlRU9G');*/
                 var pdfData = atob(base64);
             
                 //
@@ -1051,7 +1041,7 @@ const AppConvovatoriaWeb = () => {
             renderAlertPostulant: (valid = false) => {
                 const alerts = dom.querySelectorAll('.alert-postulant');
                 alerts.forEach(alert => {
-                    let html = `<div class="alert alert-primary d-flex align-items-center" role="alert">
+                    let html = `<div class="alert alert-primary d-flex align-items-center mb-0" role="alert">
                                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
                                     <div>
                                         ${
@@ -1062,7 +1052,7 @@ const AppConvovatoriaWeb = () => {
                                     </div>
                                 </div>`; 
                     if (valid) {
-                        html = `<div class="alert alert-success d-flex align-items-center" role="alert">
+                        html = `<div class="alert alert-success d-flex align-items-center  mb-0" role="alert">
                             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="check-circle:"><use xlink:href="#check-circle-fill"/></svg>
                             <div>
                                 Bienvenido al proceso de registro de su postulación en está convocatoría

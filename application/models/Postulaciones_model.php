@@ -4,7 +4,8 @@ class Postulaciones_model extends CI_Model {
     public function __construct(){
         parent::__construct();
         $this->load->library('tools');
-        $this->load->model('email_model');
+        $this->load->model('email_model');    
+        $this->load->model("convocatorias_web_model");
     }
 
     public function store() 
@@ -20,7 +21,6 @@ class Postulaciones_model extends CI_Model {
             $this->form_validation->set_rules('correo', 'correo', 'trim|required|valid_email');
             $this->form_validation->set_rules('confirma_correo', 'confirma_correo', 'trim|required|valid_email');
             $this->form_validation->set_rules('distrito_id', 'distrito_id', 'trim|required|alpha_numeric');
-            $this->form_validation->set_rules('especialidad_id', 'especialidad_id', 'trim|required|alpha_numeric');
             $this->form_validation->set_rules('estado_civil', 'estado_civil', 'trim|required');
             $this->form_validation->set_rules('fecha_nacimiento', 'fecha_nacimiento', 'trim|required');
             $this->form_validation->set_rules('genero', 'genero', 'trim|required');
@@ -33,6 +33,7 @@ class Postulaciones_model extends CI_Model {
             $this->form_validation->set_rules('via', 'via', 'trim|required');
             $this->form_validation->set_rules('zona', 'zona', 'trim|required');
             $this->form_validation->set_rules('convocatoria_id', 'convocatoria_id', 'trim|required');
+            $this->form_validation->set_rules('inscripcion_id', 'inscripcion_id', 'trim|required');
 
             if ($this->form_validation->run() == FALSE) {
                 $response['errors'] = $this->form_validation->error_array();
@@ -45,8 +46,7 @@ class Postulaciones_model extends CI_Model {
             $correo           = $this->input->post("correo", true);
             $confirma_correo  = $this->input->post("confirma_correo", true);
             $direccion        = $this->input->post("direccion", true);
-            $distrito_id      = $this->input->post("distrito_id", true);
-            $especialidad_id  = $this->input->post("especialidad_id", true); 
+            $distrito_id      = $this->input->post("distrito_id", true); 
             $estado_civil     = $this->input->post("estado_civil", true);
             $fecha_nacimiento = $this->input->post("fecha_nacimiento", true);
             $genero           = $this->input->post("genero", true);
@@ -60,6 +60,7 @@ class Postulaciones_model extends CI_Model {
             $via              = $this->input->post("via", true);
             $zona             = $this->input->post("zona", true);
             $convocatoria_id  = $this->input->post("convocatoria_id", true);
+            $inscripcion_id   = $this->input->post("inscripcion_id", true);
 
             $tipo_archivos          = isset($_POST['tipo_archivos'])          ? $_POST['tipo_archivos']                             : [];
             $especializaciones      = isset($_POST['especializaciones'])      ? json_decode($_POST['especializaciones'], true)      : [];
@@ -74,21 +75,13 @@ class Postulaciones_model extends CI_Model {
                 throw new Exception("El campo confirmar correo debe ser igual al correo de origen");
             }
 
-            $sql = "SELECT * FROM convocatorias WHERE con_estado = 1 AND con_id = ?";
-            $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
-            if (!$convocatoria) {
-                throw new Exception("La convocatoria no existe");
+            $result = $this->convocatorias_web_model->show(compact('convocatoria_id', 'inscripcion_id'));
+            if (!$result['success']) {
+                throw new Exception($result['message']);
             }
+            $convocatoria = $result['data']['convocatoria'];
 
-            $now_unix = strtotime($this->tools->getDateHour());
-            $con_fechainicio_unix = strtotime($convocatoria->con_fechainicio);
-            $con_fechafin_unix = strtotime($convocatoria->con_fechafin);
-            
-            if (!($now_unix >= $con_fechainicio_unix  && $now_unix <= $con_fechafin_unix)) {
-                throw new Exception("La convocatoria ya expiró");
-            }
-
-            $result = $this->find(['documento'=>$numero_documento, 'convocatoria_id' => $convocatoria_id]);
+            $result = $this->find(['documento'=>$numero_documento, 'convocatoria_id'=>$convocatoria_id]);
             if (!$result['success']) {
                 throw new Exception($result['message']);
             }
@@ -184,7 +177,6 @@ class Postulaciones_model extends CI_Model {
             $data['direccion']        = $direccion;
             $data['fecha_registro']   = $this->tools->getDateHour();
             $data['distrito_id']      = $distrito_id;
-            $data['especialidad_id']  = $especialidad_id;
             $data['convocatoria_id']  = $convocatoria_id;
 
             $this->db->insert('postulaciones', $data);
@@ -261,23 +253,20 @@ class Postulaciones_model extends CI_Model {
         
         $documento       = isset($request['documento'])       ? $request['documento']       : 0;
         $convocatoria_id = isset($request['convocatoria_id']) ? $request['convocatoria_id'] : 0;
+        $inscripcion_id  = isset($request['inscripcion_id'])  ? $request['inscripcion_id']  : 0;
 
-        $sql = "SELECT 
-                    C.*
-                FROM convocatorias AS C
-                WHERE C.con_estado = 1
-                AND C.con_id = ?";
-        $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
-        if (!$convocatoria) {
-            throw new Exception("No se encontro la convocatoria");
+        if (!$documento) {
+            throw new Exception("El campo documento es requerido");
         }
 
-        $convocatoria->con_type_postulacion = 2; // PUN
-        if ($convocatoria->con_id == 7) {
-          $convocatoria->con_type_postulacion = 1;
+        $result = $this->convocatorias_web_model->show(compact('convocatoria_id', 'inscripcion_id'));
+        if (!$result['success']) {
+            throw new Exception($result['message']);
         }
 
+        $convocatoria = $result['data']['convocatoria'];
         $postulante = NULL;
+
         if ($convocatoria->con_type_postulacion == 2) { // PUN
             $sql = "SELECT 
                         CPE.*,
@@ -293,11 +282,12 @@ class Postulaciones_model extends CI_Model {
                     INNER JOIN niveles AS NIV ON NIV.niv_id = ESP.niveles_niv_id
                     INNER JOIN modalidades AS MDD ON MDD.mod_id = NIV.modalidad_mod_id
                     WHERE CPE.cpe_estado = 1 
-                    AND CPE.cpe_documento = ?";
-            $postulante = $this->db->query($sql, compact('documento'))->row();
+                    AND CPE.cpe_documento = ?
+                    AND grupo_inscripcion_gin_id = ?";
+            $postulante = $this->db->query($sql, compact('documento', 'inscripcion_id'))->row();
 
             if (!$postulante) {
-                throw new Exception("No se encontro el postulante");
+                throw new Exception("No se encontro el postulante en los registro de la PUN");
             }
         }
 
@@ -306,8 +296,9 @@ class Postulaciones_model extends CI_Model {
                 FROM postulaciones AS P 
                 WHERE P.deleted_at IS NULL 
                 AND P.numero_documento = ?
-                AND P.convocatoria_id = ?";
-        $postulacion = $this->db->query($sql, compact('documento', 'convocatoria_id'))->row();
+                AND P.convocatoria_id = ?
+                AND P.inscripcion_id = ?";
+        $postulacion = $this->db->query($sql, compact('documento', 'convocatoria_id', 'inscripcion_id'))->row();
 
         if ($postulacion) {
             throw new Exception("Ya se encuentra registrado en está convocatoria");
