@@ -569,9 +569,14 @@ class Postulaciones_model extends CI_Model {
                     <tbody>
                         <tr style="vertical-align: top;" valign="top">
                             <td style="word-break: break-word; vertical-align: top;" valign="top">
-                                <div>
+                                <div style="
+                                    background-image: url('.base_url()."assets/image/cover.png".');
+                                    background-repeat: no-repeat !important;
+                                    background-size: cover !important;
+                                    background-attachment: fixed !important;
+                                    padding: 20px 0px;">
                                     <div class="block-grid" style="margin: 0 auto; min-width: 320px; max-width: 600px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #ffffff;margin-top: 30px;margin-bottom: 30px;">
-                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;border: 1px solid gray;">
                                                 <div class="col num12" style="min-width: 320px; max-width: 600px; display: table-cell; vertical-align: top; width: 600px;"> 
                                                     <div style="width:100% !important;">
                                                         <!--[if (!mso)&(!IE)]><!-->
