@@ -132,7 +132,7 @@ const AppConvovatoriaWeb = () => {
                                     sweet2.show({type:'error', html: message});
                                     return;
                                 }
-                                self.response = data.postulante;
+                                self.response = data;
                                 dom.querySelector('#formPostulant').reset();
                                 self.renderCompletedPostulant();
                                 sweet2.loading(false);
@@ -698,22 +698,22 @@ const AppConvovatoriaWeb = () => {
                 let html = `${ 
                     Object.keys(self.response).length > 0 ? 
                                 `<div class="text-center mb-3">
-                                    <img src="https://www.ugel05.gob.pe/sites/default/files/inline-images/WhatsApp%20Image%202022-12-23%20at%208.52.58%20AM_1.jpeg" style="height: 90px;max-width: 100%;">
+                                    <img src="${window.AppMain.url + 'public/images/banner-ugel05.png'}" style="height: 90px;max-width: 100%;">
                                 </div>
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <div class="row mb-1">
                                             <div class="col-lg-5"><label class="label">Código</label></div>
-                                            <div class="col-lg-7"><span>${self.response.uid}</span></div>
+                                            <div class="col-lg-7"><span>${self.response.postulante.uid}</span></div>
                                         </div>
                                         <div class="row mb-1">
                                             <div class="col-lg-5"><label class="label">Fecha </label></div>
-                                            <div class="col-lg-7"><span>${self.response.fecha_registro}</span></div>
+                                            <div class="col-lg-7"><span>${self.response.postulante.fecha_registro}</span></div>
                                         </div>
                                         <!--div class="row mb-1">
                                             <div class="col-lg-5"><label class="label">URL </label></div>
                                             <div class="col-lg-7">
-                                                <a target="_blank" href="${ window.AppMain.url + 'web/postulaciones/' + self.response.uid}">${ window.AppMain.url + 'web/postulaciones/' + self.response.uid}</a>
+                                                <a target="_blank" href="${ window.AppMain.url + 'web/postulaciones/' + self.response.postulante.uid}">${ window.AppMain.url + 'web/postulaciones/' + self.response.postulante.uid}</a>
                                                 <small>Conserve esta URL si es necesario</small>
                                             </div>
                                         </div-->
@@ -962,18 +962,32 @@ const AppConvovatoriaWeb = () => {
                                                     <div class="col-md-12"> No hay registros para mostrar</div>
                                                 </div>`;
                                     } else {
-                                        self.formAttachedFiles.forEach(item => {
+                                        Object.keys(self.response).length > 0 ? (
+                                            self.response.archivos.forEach(item => {
                                             html += `<div class="mb-4">
                                                         <div class="row">
-                                                            <div class="col-lg-5">Tipo</div>
-                                                            <div class="col-lg-7">${item.tipo}</div>
+                                                            <div class="col-lg-5">Nombre</div>
+                                                            <div class="col-lg-7">${item.nombre}</div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-lg-5">Archivo</div>
-                                                            <div class="col-lg-7">${item.archivo}</div>
+                                                            <div class="col-lg-7"><a href="${ window.AppMain.url + '/public'+ item.url}" download>${item.url}</a></div>
                                                         </div>
                                                     </div>`;
-                                        });
+                                        })) : (
+                                            self.formAttachedFiles.forEach(item => {
+                                                html += `<div class="mb-4">
+                                                            <div class="row">
+                                                                <div class="col-lg-5">Tipo</div>
+                                                                <div class="col-lg-7">${item.tipo}</div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-5">Archivo</div>
+                                                                <div class="col-lg-7">${item.archivo}</div>
+                                                            </div>
+                                                        </div>`;
+                                            }) 
+                                        )
                                     }
                         html += `</div>
                             </div>`;
