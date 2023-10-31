@@ -1,9 +1,20 @@
 <style>
-    .accordion-button {
+    #AppEditarPeriodoAdmin .accordion-button {
         width: auto;
         padding: 0.5rem;
         box-shadow: none !important;
         background-color: transparent !important;
+    }
+
+    #AppEditarPeriodoAdmin .colvert {
+        writing-mode: vertical-lr;
+        transform: rotate(180deg);
+        text-align: center;
+        vertical-align: middle;
+    }
+    #AppEditarPeriodoAdmin td,
+    #AppEditarPeriodoAdmin th {
+        vertical-align: middle;
     }
 </style>
 <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Editar Periodo</b></h4>
@@ -87,21 +98,14 @@
                                             <table class="table table-bordered">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">RUBRO</th>
-                                                        <th scope="col">CRITERIOS</th>
-                                                        <th scope="col">SUBCRITERIOS</th>
-                                                        <th scope="col">Puntaje máximo por subcriterio</th>
-                                                        <th scope="col">Puntaje máximo por rubro</th>
+                                                        <th class="text-center bg-light">RUBRO</th>
+                                                        <th class="text-center bg-light">CRITERIOS</th>
+                                                        <th class="text-center bg-light">SUBCRITERIOS</th>
+                                                        <th class="text-center bg-light">Puntaje máximo por subcriterio</th>
+                                                        <th class="text-center bg-light">Puntaje máximo por rubro</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="tbody-anexo">
-                                                    <tr class="">
-                                                        <td scope="row">R1C1</td>
-                                                        <td>R1C2</td>
-                                                        <td>R1C3</td>
-                                                        <td>R1C2</td>
-                                                        <td>R1C3</td>
-                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>

@@ -418,17 +418,35 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             viewAnexoDetail: () => {
                 let html = ``;
                 let total = 0;
+                let ls = 0;
+                let lg = 0;
                 self.sections.forEach((section, index1) => {
                     total = total + Number(section.score);
+                    ls = 0; 
+                    section.groups.forEach((group, index2) => {                             
+                        group.questions.forEach((question, index3) => {
+                            ls = ls + 1;
+                        });
+                    });
                     section.groups.forEach((group, index2) => {
+                        lg = 0;
+                        group.questions.forEach((question, index3) => {
+                            lg = lg + 1;
+                        });
                         group.questions.forEach((question, index3) => {
                             html += 
                             `<tr class="">
-                                <td scope="row">${section.name}</td>
-                                <td>${group.name}</td>
+                                ${ 
+                                    index3 == 0 && index2 == 0 ? `<td class="colvert bg-light" rowspan="${ls}">${section.name}</td>` : ``
+                                }
+                                ${ 
+                                    index3 == 0 ? `<td scope="row" rowspan="${lg}">${group.name}</td>` : ``
+                                }
                                 <td>${question.name}</td>
                                 <td class="text-center">${question.score}</td>
-                                <td class="text-center">${section.score}</td>
+                                ${ 
+                                    index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
+                                }
                             </tr>`;
 
                         });
