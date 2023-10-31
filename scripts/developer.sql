@@ -93,3 +93,16 @@ CREATE TABLE `postulacion_archivos` (
 ALTER TABLE postulaciones ADD COLUMN `inscripcion_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `convocatoria_id`;
 ALTER TABLE postulaciones DROP COLUMN especialidad_id;
 
+
+/****************************** 31-10-23  ******************************/
+CREATE TABLE `periodo_anexos` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`nombre` VARCHAR(255) NULL DEFAULT NULL,
+	`plantilla` TEXT NULL DEFAULT NULL,
+	`tipo_id` INT(11) UNSIGNED DEFAULT '0',
+	`periodo_id` INT(11) UNSIGNED DEFAULT '0',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+);

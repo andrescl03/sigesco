@@ -25,7 +25,7 @@
                 <td ><?= $dato['per_nombre'];?></td>               
                 <td class="text-center">                    
                     <div class="d-flex justify-content-center gap-2">
-                        <a type="button" class="text-danger btn_editarPeriodo" title="Editar registro" ><b><i class="fa-solid fa-pen-to-square fa-xl"></i> </b></a>                        
+                        <a type="button" class="text-danger btn_editarPeriodo" title="Editar registro" href="<?php echo base_url()?>configuracion/periodos/<?php echo $dato['per_id'] ?>"><b><i class="fa-solid fa-pen-to-square fa-xl"></i> </b></a>                        
                     </div>                                       
                 </td>	  
         	</tr>

@@ -60,6 +60,10 @@ $route['web/postulaciones/find'] = 'PostulacionesWeb/find';
 $route['web/postulaciones/(:any)/update'] = 'PostulacionesWeb/update/$1';
 $route['web/postulaciones/(:any)'] = 'PostulacionesWeb/edit/$1';
 
+$route['configuracion/periodos/(:num)'] = 'Configuracion/editarPeriodo/$1';
+$route['configuracion/periodos/(:num)/detail'] = 'Configuracion/detallePeriodo/$1';
+$route['configuracion/periodos/(:num)/update'] = 'Configuracion/guardarPeriodo/$1';
+
 $route['default_controller'] = 'index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

@@ -3,6 +3,7 @@ class Configuracion_model extends CI_Model {
 
     public function __construct(){
         parent::__construct();
+        $this->load->library('tools');
     }
 
     public function listarPeriodosTodos(){
@@ -88,6 +89,71 @@ class Configuracion_model extends CI_Model {
       return ($this->db->affected_rows() > 0) ? 1 : 0; 
     }
     
+    public function detallePeriodo($id) {
+      $response = $this->tools->responseDefault();
+      try {
+        
+        $sql = "SELECT * FROM periodo_anexos WHERE periodo_id  = ?";
+        $anexos = $this->db->query($sql, compact('id'))->result_object();
+
+        foreach ($anexos as $k => $o) {
+          if ($o->plantilla) {
+            $anexos[$k]->plantilla = json_decode($o->plantilla);
+          }
+        }
+
+        $sql = "SELECT * FROM periodos WHERE per_id = ?";
+        $periodo = $this->db->query($sql, compact('id'))->row();
+        
+        $response['success'] = true;
+        $response['data']  = compact('anexos', 'periodo');
+        $response['status']  = 200;
+        $response['message'] = 'detail';
+
+      } catch (\Exception $e) {
+          $response['message'] = $e->getMessage();
+      }
+      return $response;  
+    }
+
+    public function guardarPeriodo($id) {
+      $response = $this->tools->responseDefault();
+      try {
+
+        $any = $this->input->post("any", true);
+
+        switch ($any) {
+          case 'anexos':
+            $anexo_id  = $this->input->post("anexo_id", true);
+            $sections  = $this->input->post("sections", true);
+
+            $sections = $sections ? json_decode($sections, true) : [];
+            $plantilla = ['sections' => []];
+            if ($sections) {
+              $plantilla['sections'] = $sections;
+            }
+            $plantilla = json_encode($plantilla);
+            $this->db->update('periodo_anexos', ['plantilla' => $plantilla], array('id' => $anexo_id));
+
+          break;
+          
+          default:
+            # code...
+            break;
+        }
+
+
+
+        $response['success'] = true;
+        $response['data']  = compact('anexos', 'periodo');
+        $response['status']  = 200;
+        $response['message'] = 'Se guardo correctamente';
+
+      } catch (\Exception $e) {
+          $response['message'] = $e->getMessage();
+      }
+      return $response; 
+    }
 
     
 
