@@ -38,6 +38,26 @@ class Configuracion extends CI_Controller {
         $this->layout->view('periodos/VListarPeriodos', compact('datos'));
     }
 
+    public function editarPeriodo(){   // TIENE SOLO 2 SEGMENTOS    
+        if(!in_array($this->uri->slash_segment(1).$this->uri->segment(2), $this->session->userdata("sigesco_rutas"))){            
+            redirect(base_url()."inicio/index",'refresh');
+        }        
+        $this->layout->js(array(base_url()."public/js/myscript/configuracion/periodo/editar.js?t=".date("mdYHis")));
+		$this->layout->view("periodos/editar", ['id'=>$this->uri->segment(3)]); 
+	}
+
+    public function detallePeriodo($id) {
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($this->configuracion_model->detallePeriodo($id)));
+    }
+
+    public function guardarPeriodo($id) {
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($this->configuracion_model->guardarPeriodo($id)));
+    }
+
     public function procesos(){   // TIENE SOLO 2 SEGMENTOS    
         if(!in_array($this->uri->slash_segment(1).$this->uri->segment(2), $this->session->userdata("sigesco_rutas"))){            
             redirect(base_url()."inicio/index",'refresh');

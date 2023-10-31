@@ -4,7 +4,7 @@ class Tools {
 
     public function responseDefault()
     {
-        return ['success' => false, 'data' => null, 'message' => 'Este servicio no se encuentra disponible en estos instantes. Inténtelo más tarde.', 'status' => 500];
+        return ['success' => false, 'data' => null, 'message' => 'Este servicio no se encuentra disponible en estos instantes. Inténtelo más tarde.', 'status' => 500, 'errors'=>[]];
     }
 
     public function _crypt($string)

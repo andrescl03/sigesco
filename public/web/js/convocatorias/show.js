@@ -4,12 +4,16 @@ const AppConvovatoriaWeb = () => {
         mounted: () => {
             self.convocatoriaId = dom.getAttribute('data-id');
             dom.removeAttribute('data-id');
+            self.inscripcionId = dom.getAttribute('data-inscripcion-id');
+            dom.removeAttribute('data-inscripcion-id');
             self.convocatoriaType = dom.getAttribute('data-type');
             dom.removeAttribute('data-type');
             self.modalWorkExperience = self.modal('modalWorkExperience');
             self.modalSpecialization = self.modal('modalSpecialization');
             self.modalAcademicTraining = self.modal('modalAcademicTraining');
             self.modalPreviewPostulant = self.modal('modalPreviewPostulant');
+            self.modalViewerAttachedFile = self.modal('modalViewerAttachedFile');
+            self.dateAdult = self.onDateAdut();
             self.initialize();
         },
         data: () => { 
@@ -17,6 +21,7 @@ const AppConvovatoriaWeb = () => {
                 numberDocument: 0,
                 typeDocument: 1,
                 convocatoriaId: 0,
+                inscripcionId: 0,
                 convocatoriaType: 1, // 1 Expediente - 2 PUN
                 convocatoria: {},
                 workExperiences: [],
@@ -27,6 +32,7 @@ const AppConvovatoriaWeb = () => {
                 modalSpecialization: {},
                 modalAcademicTraining: {},
                 modalPreviewPostulant: {},
+                modalViewerAttachedFile: {},
                 index: -1,
                 formPostulant: {},
                 postulant: {},
@@ -47,7 +53,8 @@ const AppConvovatoriaWeb = () => {
                     { id: 5, nombre: 'Anexo 12' },
                     { id: 6, nombre: 'Anexo 19' } 
                 ],
-                response: {}
+                response: {},
+                dateAdult: ''
             }
         },
         methods: {
@@ -90,9 +97,12 @@ const AppConvovatoriaWeb = () => {
                         if (form.checkValidity()) {
                             self.formData = new FormData(e.target);
                             self.postulant = helper.formSerialize(e.target);
-                            self.postulant.modalidad = self.formModalities.find(o => o.mod_id === self.postulant.modalidad_id).mod_nombre;
+                            /*self.postulant.modalidad = self.formModalities.find(o => o.mod_id === self.postulant.modalidad_id).mod_nombre;
                             self.postulant.nivel = self.formLevels.find(o => o.niv_id === self.postulant.nivel_id).niv_descripcion;
-                            self.postulant.especialidad = self.formSpecialties.find(o => o.esp_id === self.postulant.especialidad_id).esp_descripcion;
+                            self.postulant.especialidad = self.formSpecialties.find(o => o.esp_id === self.postulant.especialidad_id).esp_descripcion;*/
+                            self.postulant.modalidad = self.formPostulant.modalidad_descripcion;
+                            self.postulant.nivel = self.formPostulant.nivel_descripcion;
+                            self.postulant.especialidad = self.formPostulant.especialidad_descripcion;
                             self.listAttachedFile();
                             self.renderPreviewPostulant({el: 'previewPostulant', postulant: self.postulant, toString: false});
                             self.modalPreviewPostulant.show();
@@ -128,7 +138,7 @@ const AppConvovatoriaWeb = () => {
                                     sweet2.show({type:'error', html: message});
                                     return;
                                 }
-                                self.response = data.postulante;
+                                self.response = data;
                                 dom.querySelector('#formPostulant').reset();
                                 self.renderCompletedPostulant();
                                 sweet2.loading(false);
@@ -165,14 +175,54 @@ const AppConvovatoriaWeb = () => {
                     self.modalSpecialization.show();
                 });
 
-                self.eventTag('select-nivel', (e) => {
+                /*self.eventTag('select-nivel', (e) => {
                     self.renderSpecialties(e.target.value);
                 }, 'change');
                 
                 self.eventTag('select-modalidad', (e) => {
                     self.renderLevels(e.target.value);
                     self.renderSpecialties();
+                }, 'change');*/
+
+                self.eventTag('input-number', (e) => {
+                    return self.onNumberOnly(e);
+                }, 'keypress', false);
+
+                self.eventTag('input-document', (e) => {
+                    self.onValidateDocument(e);
+                }, 'keypress', false);
+
+                self.eventTag('form-radio-document', (e) => {
+                    self.typeDocument = Number(e.target.value);
                 }, 'change');
+
+                self.eventTag('form-input-email', ({target}) => {
+                    const {valid} = target.validity;
+                    const value = target.value;
+                    const inputs = dom.querySelectorAll('.form-input-confirm-email');
+                    inputs.forEach(input => {
+                        input.setAttribute('pattern', (valid ? value : ''));
+                    });
+                }, 'keyup', false);
+                
+                self.eventTag('form-control-validate', (e) => {
+                    const nextElementSibling = e.target.nextElementSibling;
+                    if (nextElementSibling) {
+                        nextElementSibling.innerHTML = e.target.validationMessage;
+                    }
+                }, 'keyup', false);
+
+                self.eventTag('form-control-validate', (e) => {
+                    const nextElementSibling = e.target.nextElementSibling;
+                    if (nextElementSibling) {
+                        nextElementSibling.innerHTML = e.target.validationMessage;
+                    }
+                }, 'change', false);
+
+                const dateAdults = dom.querySelectorAll('.form-input-age');
+                dateAdults.forEach(element => {
+                    element.setAttribute('max', self.dateAdult);
+                });
 
                 self.eventTag('btn-documento', (e) => {
                     const input = dom.querySelector('#inputDocumento');
@@ -189,6 +239,7 @@ const AppConvovatoriaWeb = () => {
                         const formData = new FormData();
                         formData.append('documento', value);
                         formData.append('convocatoria_id', self.convocatoriaId);
+                        formData.append('inscripcion_id', self.inscripcionId);
                         $.ajax({
                             url: window.AppMain.url + 'web/postulaciones/find',
                             method: 'POST',
@@ -206,9 +257,9 @@ const AppConvovatoriaWeb = () => {
                                     dom.querySelector('input[name="nombre"]').value = self.formPostulant.cpe_nombres;
                                     dom.querySelector('input[name="apellido_paterno"]').value = self.formPostulant.cpe_apaterno;
                                     dom.querySelector('input[name="apellido_materno"]').value = self.formPostulant.cpe_amaterno;    
-                                    dom.querySelector('select[name="modalidad_id"]').innerHTML = `<option value="${self.formPostulant.modalidad_id}">${self.formPostulant.modalidad_descripcion}</option>`;
+                                    /*dom.querySelector('select[name="modalidad_id"]').innerHTML = `<option value="${self.formPostulant.modalidad_id}">${self.formPostulant.modalidad_descripcion}</option>`;
                                     dom.querySelector('select[name="nivel_id"]').innerHTML = `<option value="${self.formPostulant.nivel_id}">${self.formPostulant.nivel_descripcion}</option>`;
-                                    dom.querySelector('select[name="especialidad_id"]').innerHTML = `<option value="${self.formPostulant.especialidad_id}">${self.formPostulant.especialidad_descripcion}</option>`;
+                                    dom.querySelector('select[name="especialidad_id"]').innerHTML = `<option value="${self.formPostulant.especialidad_id}">${self.formPostulant.especialidad_descripcion}</option>`;*/
                                 }
                                 formPostulants.forEach(form => {
                                     form.classList.add('was-validated');
@@ -352,6 +403,7 @@ const AppConvovatoriaWeb = () => {
                 });
             },
             renderFormAttachedFile: () => {
+                const uniq = Date.now();
                 let html = `
                                 <td>
                                     <select class="form-control form-control-solid form-input-file-type" name="tipo_archivos[]" required="">
@@ -362,10 +414,15 @@ const AppConvovatoriaWeb = () => {
                           html += ` </select>
                                 </td>
                                 <td>
-                                    <input class="form-control form-control-solid form-input-file" name="archivos[]" type="file" accept="application/pdf" required>
+                                    <div class="d-flex">
+                                        <input id="input-${uniq}" class="form-control form-control-solid form-input-file" name="archivos[]" type="file" accept="application/pdf" required>
+                                        <!--div class="my-auto">
+                                            <button id="button-${uniq}" class="btn btn-viewer btn-info ms-2">Visualizar</button>
+                                        </div-->
+                                    </div>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-danger btn-delete">Eliminar</button>
+                                    <button class="btn btn-danger btn-delete mt-1">Eliminar</button>
                                 </td>
                             `;
                 const tables = dom.querySelectorAll('.table-attached-file');
@@ -386,7 +443,76 @@ const AppConvovatoriaWeb = () => {
                             });
                         });
                     });
+                    tr.querySelectorAll('.btn-viewer').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const inputFile = dom.querySelector('#input-'+uniq);
+                            const files = inputFile.files;
+                            if (files.length > 0) {
+                                const f = files[0];
+                                const reader = new FileReader();
+                                reader.addEventListener(
+                                "load",
+                                () => {
+                                    const base64 = reader.result;
+                                    self.pdf(base64);
+                                    self.modalViewerAttachedFile.show();
+                                },
+                                false,
+                                );
+                                reader.readAsDataURL(f);
+                            } else {
+                                dom.querySelector('#iframeAttachedFile').setAttribute('src', '');
+                                sweet2.show({type:'info', text: 'Debe cargar un archivo para poder visualizarlo'});
+                            }
+                        });
+                    });
                     tbody.appendChild(tr);
+                });
+            },
+            pdf: (base64) => {
+                base64 = base64.replace('data:application/pdf;base64,', '');
+                /*
+                https://github.com/mozilla/pdf.js/blob/master/examples/learning/helloworld64.html
+                */
+                var pdfData = atob(base64);
+            
+                //
+                // The workerSrc property shall be specified.
+                //
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.4.456/build/pdf.worker.min.js';
+            
+                // Opening PDF by passing its binary data as a string. It is still preferable
+                // to 
+
+                // Opening PDF by passing its binary data as a string. It is still preferable
+                // to use Uint8Array, but string or array-like structure will work too.
+                var loadingTask = pdfjsLib.getDocument({
+                    data: pdfData,
+                });
+                loadingTask.promise.then(function(pdf) {
+                    // Fetch the first page.
+                    pdf.getPage(1).then(function(page) {
+                        
+                        var scale = 1;
+                        var viewport = page.getViewport({
+                            scale: scale,
+                        });
+
+                        // Prepare canvas using PDF page dimensions.
+                        var canvas = document.getElementById('the-canvas');
+                        var context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+
+                        // Render PDF page into canvas context.
+                        var renderContext = {
+                            canvasContext: context,
+                            viewport: viewport,
+                        };
+                        page.render(renderContext);
+                        
+                    });
                 });
             },
             renderWorkExperiences: () => {
@@ -562,25 +688,25 @@ const AppConvovatoriaWeb = () => {
                 let html = `${ 
                     Object.keys(self.response).length > 0 ? 
                                 `<div class="text-center mb-3">
-                                    <img src="https://www.ugel05.gob.pe/sites/default/files/inline-images/WhatsApp%20Image%202022-12-23%20at%208.52.58%20AM_1.jpeg" style="height: 90px;max-width: 100%;">
+                                    <img src="${window.AppMain.url + 'public/images/banner-ugel05.png'}" style="height: 90px;max-width: 100%;">
                                 </div>
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <div class="row mb-1">
                                             <div class="col-lg-5"><label class="label">Código</label></div>
-                                            <div class="col-lg-7"><span>${self.response.uid}</span></div>
+                                            <div class="col-lg-7"><span>${self.response.postulante.uid}</span></div>
                                         </div>
                                         <div class="row mb-1">
                                             <div class="col-lg-5"><label class="label">Fecha </label></div>
-                                            <div class="col-lg-7"><span>${self.response.fecha_registro}</span></div>
+                                            <div class="col-lg-7"><span>${self.response.postulante.fecha_registro}</span></div>
                                         </div>
-                                        <div class="row mb-1">
+                                        <!--div class="row mb-1">
                                             <div class="col-lg-5"><label class="label">URL </label></div>
                                             <div class="col-lg-7">
-                                                <a target="_blank" href="${ window.AppMain.url + 'web/postulaciones/' + self.response.uid}">${ window.AppMain.url + 'web/postulaciones/' + self.response.uid}</a>
+                                                <a target="_blank" href="${ window.AppMain.url + 'web/postulaciones/' + self.response.postulante.uid}">${ window.AppMain.url + 'web/postulaciones/' + self.response.postulante.uid}</a>
                                                 <small>Conserve esta URL si es necesario</small>
                                             </div>
-                                        </div>
+                                        </div-->
                                     </div>
                                 </div>` 
                                 : `` 
@@ -697,141 +823,163 @@ const AppConvovatoriaWeb = () => {
                                 <div class="card-header">
                                     <h5 class="m-0">Formación Académica</h5>
                                 </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead class="text-center">
-                                                <tr>
-                                                    <th>Nivel Educativo</th>
-                                                    <th>Grado Académico</th>
-                                                    <th>Universidad</th>
-                                                    <th>Carrera Profesional</th>
-                                                    <th>N° de Registro de Título</th>
-                                                    <th>RD de Título N°</th>
-                                                    <th>Obtención del Grado</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>`;
-                                            if (self.academicTrainings.length == 0) {
-                                                html += `<tr><td colspan="7" class="text-center">No hay registros para mostrar</td></tr>`;
-                                            } else {
-                                                self.academicTrainings.forEach(item => {
-                                                    html += `<tr>
-                                                                <td class="text-center">${item.nivel_educativo}</td>
-                                                                <td class="text-center">${item.grado_academico}</td>
-                                                                <td class="text-center">${item.universidad}</td>
-                                                                <td class="text-center">${item.carrera_profesional}</td>
-                                                                <td class="text-center">${item.registro_titulo}</td>
-                                                                <td class="text-center">${item.rd_titulo}</td>
-                                                                <td class="text-center">${item.obtencion_grado}</td>
-                                                            </tr>`;
-                                                });
-                                            }
-                                    html += `</tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                <div class="card-body">`;
+                                    if (self.academicTrainings.length == 0) {
+                                        html += `<div class="row">
+                                                    <div class="col-md-12"> No hay registros para mostrar</div>
+                                                </div>`;
+                                    } else {
+                                        self.academicTrainings.forEach(item => {
+                                            html += `<div class="mb-4">
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Nivel Educativo</div>
+                                                            <div class="col-lg-7">${item.nivel_educativo}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Grado Académico</div>
+                                                            <div class="col-lg-7">${item.grado_academico}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Universidad</div>
+                                                            <div class="col-lg-7">${item.universidad}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Carrera Profesional</div>
+                                                            <div class="col-lg-7">${item.carrera_profesional}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">N° de Registro de Título</div>
+                                                            <div class="col-lg-7">${item.registro_titulo}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">RD de Título N°</div>
+                                                            <div class="col-lg-7">${item.rd_titulo}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Obtención del Grado</div>
+                                                            <div class="col-lg-7">${item.obtencion_grado}</div>
+                                                        </div>
+                                                    </div>`;
+                                        });
+                                    } 
+                        html += `</div>
                             </div>
                             <div class="card mb-3">
                                 <div class="card-header">
                                     <h5 class="m-0">Experiencia laboral</h5>
                                 </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead class="text-center">
-                                                <tr>
-                                                    <th>Institución educativa</th>
-                                                    <th>Sector</th>
-                                                    <th>Puesto</th>
-                                                    <th>N° RD</th>
-                                                    <th>N° Contrato</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>`;
-                                            if (self.workExperiences.length == 0) {
-                                                html += `<tr><td colspan="5" class="text-center">No hay registros para mostrar</td></tr>`;
-                                            } else {
-                                                self.workExperiences.forEach(item => {
-                                                    html += `<tr>
-                                                                <td class="text-center">${item.institucion_educativa}</td>
-                                                                <td class="text-center">${item.sector}</td>
-                                                                <td class="text-center">${item.puesto}</td>
-                                                                <td class="text-center">${item.numero_rd}</td>
-                                                                <td class="text-center">${item.numero_contrato}</td>
-                                                            </tr>`;
-                                                }); 
-                                            }
-                                    html += `</tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                <div class="card-body">`;
+                                    if (self.workExperiences.length == 0) {
+                                        html += `<div class="row">
+                                                    <div class="col-md-12"> No hay registros para mostrar</div>
+                                                </div>`;
+                                    } else {
+                                        self.workExperiences.forEach(item => {
+                                            html += `<div class="mb-4">
+                                                <div class="row">
+                                                    <div class="col-lg-5">Institución educativa</div>
+                                                    <div class="col-lg-7">${item.institucion_educativa}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-5">Sector</div>
+                                                    <div class="col-lg-7">${item.sector}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-5">Puesto</div>
+                                                    <div class="col-lg-7">${item.puesto}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-5">N° RD</div>
+                                                    <div class="col-lg-7">${item.numero_rd}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-5">N° Contrato</div>
+                                                    <div class="col-lg-7">${item.numero_contrato}</div>
+                                                </div>
+                                            </div>`;
+                                        }); 
+                                    }
+                        html += `</div>
                             </div>
                             <div class="card mb-3">
                                 <div class="card-header">
                                     <h5 class="m-0">Especialización</h5>
                                 </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead class="text-center">
-                                                <tr>
-                                                    <th>Tipo de especialización</th>
-                                                    <th>Tema</th>
-                                                    <th>Nombre de la entidad</th>
-                                                    <th>Fecha de inicio</th>
-                                                    <th>Fecha de termino</th>
-                                                    <th>Número de horas</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>`;
-                                            if (self.specializations.length == 0) {
-                                                html += `<tr><td colspan="6" class="text-center">No hay registros para mostrar</td></tr>`;
-                                            } else {
-                                                self.specializations.forEach(item => {
-                                                    html += `<tr>
-                                                                <td class="text-center">${item.tipo_especializacion}</td>
-                                                                <td class="text-center">${item.tema_especializacion}</td>
-                                                                <td class="text-center">${item.nombre_entidad}</td>
-                                                                <td class="text-center">${item.fecha_inicio}</td>
-                                                                <td class="text-center">${item.fecha_termino}</td>
-                                                                <td class="text-center">${item.numero_horas}</td>
-                                                            </tr>`;
-                                                });
-                                            }
-                                    html += `</tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                <div class="card-body">`;
+                                    if (self.specializations.length == 0) {
+                                        html += `<div class="row">
+                                                    <div class="col-md-12"> No hay registros para mostrar</div>
+                                                </div>`;
+                                    } else {
+                                        self.specializations.forEach(item => {
+                                            html += `<div class="mb-4">
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Tipo de especialización</div>
+                                                            <div class="col-lg-7">${item.tipo_especializacion}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Tema</div>
+                                                            <div class="col-lg-7">${item.tema_especializacion}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Nombre de la entidad</div>
+                                                            <div class="col-lg-7">${item.nombre_entidad}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Fecha de inicio</div>
+                                                            <div class="col-lg-7">${item.fecha_inicio}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Fecha de termino</div>
+                                                            <div class="col-lg-7">${item.fecha_termino}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Número de horas</div>
+                                                            <div class="col-lg-7">${item.numero_horas}</div>
+                                                        </div>
+                                                    </div>`;
+                                        });
+                                    }
+                        html += `</div>
                             </div>
                             <div class="card mb-3">
                                 <div class="card-header">
                                     <h5 class="m-0">Archivos Adjuntos</h5>
                                 </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead class="text-center">
-                                                <tr>
-                                                    <th>Tipo</th>
-                                                    <th>Archivo</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>`;
-                                            if (self.formAttachedFiles.length == 0) {
-                                                html += `<tr><td colspan="2" class="text-center">No hay registros para mostrar</td></tr>`;
-                                            } else {
-                                                self.formAttachedFiles.forEach(item => {
-                                                    html += `<tr>
-                                                                <td class="text-center">${item.tipo}</td>
-                                                                <td class="text-center">${item.archivo}</td>
-                                                            </tr>`;
-                                                });
-                                            }
-                                    html += `</tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                <div class="card-body">`;
+                                    if (self.formAttachedFiles.length == 0) {
+                                        html += `<div class="row">
+                                                    <div class="col-md-12"> No hay registros para mostrar</div>
+                                                </div>`;
+                                    } else {
+                                        Object.keys(self.response).length > 0 ? (
+                                            self.response.archivos.forEach(item => {
+                                            html += `<div class="mb-4">
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Nombre</div>
+                                                            <div class="col-lg-7">${item.nombre}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-5">Archivo</div>
+                                                            <div class="col-lg-7"><a href="${ window.AppMain.url + '/public'+ item.url}" download>${item.url}</a></div>
+                                                        </div>
+                                                    </div>`;
+                                        })) : (
+                                            self.formAttachedFiles.forEach(item => {
+                                                html += `<div class="mb-4">
+                                                            <div class="row">
+                                                                <div class="col-lg-5">Tipo</div>
+                                                                <div class="col-lg-7">${item.tipo}</div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-5">Ver Archivo</div>
+                                                                <div class="col-lg-7">${item.archivo}</div>
+                                                            </div>
+                                                        </div>`;
+                                            }) 
+                                        )
+                                    }
+                        html += `</div>
                             </div>`;
                 if (toString) {
                     return html;
@@ -893,7 +1041,7 @@ const AppConvovatoriaWeb = () => {
             renderAlertPostulant: (valid = false) => {
                 const alerts = dom.querySelectorAll('.alert-postulant');
                 alerts.forEach(alert => {
-                    let html = `<div class="alert alert-primary d-flex align-items-center" role="alert">
+                    let html = `<div class="alert alert-primary d-flex align-items-center mb-0" role="alert">
                                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
                                     <div>
                                         ${
@@ -904,7 +1052,7 @@ const AppConvovatoriaWeb = () => {
                                     </div>
                                 </div>`; 
                     if (valid) {
-                        html = `<div class="alert alert-success d-flex align-items-center" role="alert">
+                        html = `<div class="alert alert-success d-flex align-items-center  mb-0" role="alert">
                             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="check-circle:"><use xlink:href="#check-circle-fill"/></svg>
                             <div>
                                 Bienvenido al proceso de registro de su postulación en está convocatoría
@@ -913,7 +1061,22 @@ const AppConvovatoriaWeb = () => {
                     }
                     alert.innerHTML = html;
                 });
-            }
+            },
+            onValidateDocument: (e) => {
+                if (self.typeDocument == 1) {
+                    if (self.onNumberOnly(e)) {
+                        if (e.target.value.length == 8) {
+                            e.preventDefault();
+                        }
+                    }        
+                } else if (self.typeDocument == 2) {
+                    if (e.target.value.length == 12) {
+                        e.preventDefault();
+                    }
+                } else {
+                    return false;
+                }
+            },
         },
         computed: {
             isPUN: () => {
@@ -995,15 +1158,48 @@ const AppConvovatoriaWeb = () => {
                     }
                 });
             },
-            eventTag: (el, _callback, evt = 'click') => {
+            eventTag: (el, _callback, evt = 'click', prevent = true) => {
                 const btns = dom.querySelectorAll('.' + el);
                 btns.forEach(btn => {
                     btn.addEventListener(evt, (e) => {
-                        e.preventDefault();
+                        if (prevent) {
+                            e.preventDefault();
+                        }
                         _callback(e);
                     });
                 });
-            }
+            },
+            onNumberOnly: (evt) => {
+                evt = (evt) ? evt : window.event;
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+                  evt.preventDefault();
+                } else {
+                  return true;
+                }
+            },
+            addZero: (num) => {
+                if (Number(num) < 10) {
+                    num = '0' + num;
+                }
+                return num;
+            },
+            onLetterOnly: (e) => {
+                const regEx1 = /[^a-zA-Z\s]+/;
+                const value = regEx1.test(e.target.value);
+                console.log(value);
+            },
+            onDateAdut: () => {
+                let dateNow = new Date();
+                let resta = 1000 * 60 * 60 * 24 * 6570; // 18 years
+                let timeOld = dateNow.getTime() - resta;
+                let dateObj = new Date(timeOld);
+                /*let dateObj = new Date();**/
+                let month = dateObj.getUTCMonth() + 1; //months from 1-12
+                let day = dateObj.getUTCDate();
+                let year = dateObj.getUTCFullYear();
+                return year + "-" + self.addZero(month) + "-" + self.addZero(day);
+            },
         }
     };
     const self = {

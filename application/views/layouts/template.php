@@ -34,7 +34,11 @@
         <link rel="stylesheet" href="<?php echo base_url()?>public/js/alertifyjs/css/themes/bootstrap.min.css">
 
         <link href="<?php echo base_url()?>public/css/estilos_2.css?t=1.5" rel="stylesheet" />
-      
+        <script>
+            window.AppMain = {
+                url: "<?php echo base_url() ?>"
+            };
+        </script>
     </head>    
     <body class="sb-nav-fixed ">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-rojo">
@@ -184,6 +188,7 @@
         <script src="<?php echo base_url()?>public/js/script.js"></script>
         <script src='<?php echo base_url()?>public/js/sha1/sha1.js'></script>    
         <script defer src="<?php echo base_url()?>public/js/jquery.validate/jquery.validate-1.19.3.min.js"></script>
+        <script src="<?php echo base_url() ?>/public/js/utilities/sweetalert2.js"></script>
         <?php echo $this->layout->js?>    
     </body>
 </html>

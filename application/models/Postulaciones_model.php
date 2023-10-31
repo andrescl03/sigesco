@@ -4,35 +4,65 @@ class Postulaciones_model extends CI_Model {
     public function __construct(){
         parent::__construct();
         $this->load->library('tools');
-        $this->load->model('email_model');
+        $this->load->model('email_model');    
+        $this->load->model("convocatorias_web_model");
     }
 
     public function store() 
     {
-        $rsp = $this->tools->responseDefault();
+        $response = $this->tools->responseDefault();
         try {
 
-            $apellido_materno = isset($_POST['apellido_materno']) ? $_POST['apellido_materno'] : NULL;
-            $apellido_paterno = isset($_POST['apellido_paterno']) ? $_POST['apellido_paterno'] : NULL;
-            $nombre           = isset($_POST['nombre'])           ? $_POST['nombre']           : NULL;
-            $correo           = isset($_POST['correo'])           ? $_POST['correo']           : NULL;
-            $direccion        = isset($_POST['direccion'])        ? $_POST['direccion']        : NULL;
-            $distrito_id      = isset($_POST['distrito_id'])      ? $_POST['distrito_id']      : 0;
-            $especialidad_id  = isset($_POST['especialidad_id'])  ? $_POST['especialidad_id']  : NULL;
-            $estado_civil     = isset($_POST['estado_civil'])     ? $_POST['estado_civil']     : NULL;
-            $fecha_nacimiento = isset($_POST['fecha_nacimiento']) ? $_POST['fecha_nacimiento'] : NULL;
-            $genero           = isset($_POST['genero'])           ? $_POST['genero']           : NULL;
-            $modalidad        = isset($_POST['modalidad'])        ? $_POST['modalidad']        : NULL;
-            $nacionalidad     = isset($_POST['nacionalidad'])     ? $_POST['nacionalidad']     : NULL;
-            $nombre_via       = isset($_POST['nombre_via'])       ? $_POST['nombre_via']       : NULL;
-            $numero_celular   = isset($_POST['numero_celular'])   ? $_POST['numero_celular']   : NULL;
-            $numero_documento = isset($_POST['numero_documento']) ? $_POST['numero_documento'] : NULL;
-            $tipo_documento   = isset($_POST['tipo_documento'])   ? $_POST['tipo_documento']   : 0;
-            $numero_telefono  = isset($_POST['numero_telefono'])  ? $_POST['numero_telefono']  : NULL;
-            $via              = isset($_POST['via'])              ? $_POST['via']              : NULL;
-            $zona             = isset($_POST['zona'])             ? $_POST['zona']             : NULL;
-            $convocatoria_id  = isset($_POST['convocatoria_id'])  ? $_POST['convocatoria_id']  : 0;
-            $tipo_archivos    = isset($_POST['tipo_archivos'])    ? $_POST['tipo_archivos']    : [];
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('nombre', 'nombre', 'trim|required|min_length[3]|max_length[100]');
+            $this->form_validation->set_rules('apellido_paterno', 'apellido_paterno', 'trim|required|min_length[3]|max_length[100]');
+            $this->form_validation->set_rules('apellido_materno', 'apellido_materno', 'trim|required|min_length[3]|max_length[100]');
+            $this->form_validation->set_rules('direccion', 'direccion', 'trim|required|min_length[3]|max_length[100]');
+            $this->form_validation->set_rules('correo', 'correo', 'trim|required|valid_email');
+            $this->form_validation->set_rules('confirma_correo', 'confirma_correo', 'trim|required|valid_email');
+            $this->form_validation->set_rules('distrito_id', 'distrito_id', 'trim|required|alpha_numeric');
+            $this->form_validation->set_rules('estado_civil', 'estado_civil', 'trim|required');
+            $this->form_validation->set_rules('fecha_nacimiento', 'fecha_nacimiento', 'trim|required');
+            $this->form_validation->set_rules('genero', 'genero', 'trim|required');
+            $this->form_validation->set_rules('nacionalidad', 'nacionalidad', 'trim|required');
+            $this->form_validation->set_rules('nombre_via', 'nombre_via', 'trim|required');
+            $this->form_validation->set_rules('numero_celular', 'numero_celular', 'trim|required');
+            $this->form_validation->set_rules('numero_documento', 'numero_documento', 'trim|required');
+            $this->form_validation->set_rules('tipo_documento', 'tipo_documento', 'trim|required');
+            $this->form_validation->set_rules('numero_telefono', 'numero_telefono', 'trim|required');
+            $this->form_validation->set_rules('via', 'via', 'trim|required');
+            $this->form_validation->set_rules('zona', 'zona', 'trim|required');
+            $this->form_validation->set_rules('convocatoria_id', 'convocatoria_id', 'trim|required');
+            $this->form_validation->set_rules('inscripcion_id', 'inscripcion_id', 'trim|required');
+
+            if ($this->form_validation->run() == FALSE) {
+                $response['errors'] = $this->form_validation->error_array();
+                throw new Exception("No cumple con los datos requeridos: " . json_encode($response['errors']));
+            }
+        
+            $apellido_materno = $this->input->post("apellido_materno", true);
+            $apellido_paterno = $this->input->post("apellido_paterno", true);
+            $nombre           = $this->input->post("nombre", true);
+            $correo           = $this->input->post("correo", true);
+            $confirma_correo  = $this->input->post("confirma_correo", true);
+            $direccion        = $this->input->post("direccion", true);
+            $distrito_id      = $this->input->post("distrito_id", true); 
+            $estado_civil     = $this->input->post("estado_civil", true);
+            $fecha_nacimiento = $this->input->post("fecha_nacimiento", true);
+            $genero           = $this->input->post("genero", true);
+            $modalidad        = $this->input->post("modalidad", true);
+            $nacionalidad     = $this->input->post("nacionalidad", true);
+            $nombre_via       = $this->input->post("nombre_via", true);
+            $numero_celular   = $this->input->post("numero_celular", true);
+            $numero_documento = $this->input->post("numero_documento", true);
+            $tipo_documento   = $this->input->post("tipo_documento", true);
+            $numero_telefono  = $this->input->post("numero_telefono", true);
+            $via              = $this->input->post("via", true);
+            $zona             = $this->input->post("zona", true);
+            $convocatoria_id  = $this->input->post("convocatoria_id", true);
+            $inscripcion_id   = $this->input->post("inscripcion_id", true);
+
+            $tipo_archivos          = isset($_POST['tipo_archivos'])          ? $_POST['tipo_archivos']                             : [];
             $especializaciones      = isset($_POST['especializaciones'])      ? json_decode($_POST['especializaciones'], true)      : [];
             $formaciones_academicas = isset($_POST['formaciones_academicas']) ? json_decode($_POST['formaciones_academicas'], true) : [];
             $experiencias_laborales = isset($_POST['experiencias_laborales']) ? json_decode($_POST['experiencias_laborales'], true) : [];
@@ -40,6 +70,21 @@ class Postulaciones_model extends CI_Model {
             $insert_especializaciones      = [];
             $insert_formaciones_academicas = [];
             $insert_experiencias_laborales = [];
+
+            if ($correo != $confirma_correo) {
+                throw new Exception("El campo confirmar correo debe ser igual al correo de origen");
+            }
+
+            $result = $this->convocatorias_web_model->show(compact('convocatoria_id', 'inscripcion_id'));
+            if (!$result['success']) {
+                throw new Exception($result['message']);
+            }
+            $convocatoria = $result['data']['convocatoria'];
+
+            $result = $this->find(['documento'=>$numero_documento, 'convocatoria_id'=>$convocatoria_id]);
+            if (!$result['success']) {
+                throw new Exception($result['message']);
+            }
 
             if (count($especializaciones) > 0) {
                 foreach ($especializaciones as $key => $item) {
@@ -132,7 +177,6 @@ class Postulaciones_model extends CI_Model {
             $data['direccion']        = $direccion;
             $data['fecha_registro']   = $this->tools->getDateHour();
             $data['distrito_id']      = $distrito_id;
-            $data['especialidad_id']  = $especialidad_id;
             $data['convocatoria_id']  = $convocatoria_id;
 
             $this->db->insert('postulaciones', $data);
@@ -170,60 +214,59 @@ class Postulaciones_model extends CI_Model {
                 $this->db->insert_batch('postulacion_archivos', $insert_archivos);
             }
             $sql = "SELECT
-                        P.id,
-                        P.uid,
-                        P.fecha_registro
+                        P.*
                     FROM postulaciones AS P
                     WHERE P.deleted_at IS NULL
                     AND P.id = ?";
             $postulante = $this->db->query($sql, compact('postulacion_id'))->row();
 
+            $sql = "SELECT
+                        P.*
+                    FROM postulacion_archivos AS P
+                    WHERE P.deleted_at IS NULL
+                    AND P.postulacion_id = ?";
+
+            $archivos = $this->db->query($sql, compact('postulacion_id'))->result_object();
+
             if ($data['correo']) {
                 $receivers = array();
                 $subtitle = 'SE ACABA DE REGISTRAR MANERA EXITOSA';
                 array_push($receivers, $data['correo']);
-                // $url = '/postulaciones/'. '1';
-                // $fullnameMail = $nombre . ' ' . $apellido_paterno .' '. $apellido_materno;
-                $message = $this->messageMail($uid);
+                $message = $this->messageMail($uid, $postulante);
                 $subject="prueba";
                 $result = $this->email_model->mail(compact('receivers', 'message', 'subject'));
             }
             
-
-            
-            $rsp['success'] = true;
-            $rsp['data'] = compact('postulante');
-            $rsp['message'] = 'Se registro correctamente';
+            $response['success'] = true;
+            $response['data'] = compact('postulante', 'archivos');
+            $response['message'] = 'Se registro correctamente';
 
         } catch (\Exception $e) {
-            $rsp['message'] = $e->getMessage();
+            $response['message'] = $e->getMessage();
         }
-        return $rsp;
+        return $response;
     }
 
-    public function find() {
+    public function find($request) {
       $response = $this->tools->responseDefault();
       try {
         
-        $documento       = isset($_POST['documento'])       ? $_POST['documento']       : 0;
-        $convocatoria_id = isset($_POST['convocatoria_id']) ? $_POST['convocatoria_id'] : 0;
+        $documento       = isset($request['documento'])       ? $request['documento']       : 0;
+        $convocatoria_id = isset($request['convocatoria_id']) ? $request['convocatoria_id'] : 0;
+        $inscripcion_id  = isset($request['inscripcion_id'])  ? $request['inscripcion_id']  : 0;
 
-        $sql = "SELECT 
-                    C.*
-                FROM convocatorias AS C
-                WHERE C.con_estado = 1
-                AND C.con_id = ?";
-        $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
-        if (!$convocatoria) {
-            throw new Exception("No se encontro la convocatoria");
+        if (!$documento) {
+            throw new Exception("El campo documento es requerido");
         }
 
-        $convocatoria->con_type_postulacion = 2; // PUN
-        if ($convocatoria->con_id == 7) {
-          $convocatoria->con_type_postulacion = 1;
+        $result = $this->convocatorias_web_model->show(compact('convocatoria_id', 'inscripcion_id'));
+        if (!$result['success']) {
+            throw new Exception($result['message']);
         }
 
+        $convocatoria = $result['data']['convocatoria'];
         $postulante = NULL;
+
         if ($convocatoria->con_type_postulacion == 2) { // PUN
             $sql = "SELECT 
                         CPE.*,
@@ -239,11 +282,12 @@ class Postulaciones_model extends CI_Model {
                     INNER JOIN niveles AS NIV ON NIV.niv_id = ESP.niveles_niv_id
                     INNER JOIN modalidades AS MDD ON MDD.mod_id = NIV.modalidad_mod_id
                     WHERE CPE.cpe_estado = 1 
-                    AND CPE.cpe_documento = ?";
-            $postulante = $this->db->query($sql, compact('documento'))->row();
+                    AND CPE.cpe_documento = ?
+                    AND grupo_inscripcion_gin_id = ?";
+            $postulante = $this->db->query($sql, compact('documento', 'inscripcion_id'))->row();
 
             if (!$postulante) {
-                throw new Exception("No se encontro el postulante");
+                throw new Exception("No se encontro el postulante en los registro de la PUN");
             }
         }
 
@@ -252,8 +296,9 @@ class Postulaciones_model extends CI_Model {
                 FROM postulaciones AS P 
                 WHERE P.deleted_at IS NULL 
                 AND P.numero_documento = ?
-                AND P.convocatoria_id = ?";
-        $postulacion = $this->db->query($sql, compact('documento', 'convocatoria_id'))->row();
+                AND P.convocatoria_id = ?
+                AND P.inscripcion_id = ?";
+        $postulacion = $this->db->query($sql, compact('documento', 'convocatoria_id', 'inscripcion_id'))->row();
 
         if ($postulacion) {
             throw new Exception("Ya se encuentra registrado en está convocatoria");
@@ -447,7 +492,7 @@ class Postulaciones_model extends CI_Model {
         return $response;
     }
 
-    public function messageMail($uid) {
+    public function messageMail($uid, $postulante) {
         return '
         <!DOCTYPE html PUBLIC "-//W3C//DTDXHTML1.0Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
@@ -571,9 +616,14 @@ class Postulaciones_model extends CI_Model {
                     <tbody>
                         <tr style="vertical-align: top;" valign="top">
                             <td style="word-break: break-word; vertical-align: top;" valign="top">
-                                <div>
+                                <div style="
+                                    background-image: url('.base_url()."assets/image/cover.png".');
+                                    background-repeat: no-repeat !important;
+                                    background-size: cover !important;
+                                    background-attachment: fixed !important;
+                                    padding: 20px 0px;">
                                     <div class="block-grid" style="margin: 0 auto; min-width: 320px; max-width: 600px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #ffffff;margin-top: 30px;margin-bottom: 30px;">
-                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;">
+                                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;border: 1px solid gray;">
                                                 <div class="col num12" style="min-width: 320px; max-width: 600px; display: table-cell; vertical-align: top; width: 600px;"> 
                                                     <div style="width:100% !important;">
                                                         <!--[if (!mso)&(!IE)]><!-->
@@ -610,12 +660,21 @@ class Postulaciones_model extends CI_Model {
                                                                         <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
                                                                             <span>Código: <br>'.$uid.'</span>
                                                                         </p>
-                                                                        <p style=" word-break: break-word; margin:0px; margin-bottom: 15px;">
-                                                                            <span>Url: <br>'.base_url().'web/postulaciones/'.$uid.'</span>
+                                                                        <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
+                                                                            <span>Postulante: <br>'.$postulante->nombre .' '. $postulante->apellido_paterno .' '. $postulante->apellido_materno.'</span>
                                                                         </p>
+                                                                        <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
+                                                                            <span>Número de Documento: <br>'.$postulante->numero_documento.'</span>
+                                                                        </p>
+                                                                        <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
+                                                                            <span>Fecha de Registro: <br>'.$postulante->fecha_registro.'</span>
+                                                                        </p>
+                                                                        <!--p style=" word-break: break-word; margin:0px; margin-bottom: 15px;">
+                                                                            <span>Url: <br>'.base_url().'web/postulaciones/'.$uid.'</span>
+                                                                        </p-->
                                                                     </div>
                                                                 </div>
-                                                                <div style="color:#000000; margin-bottom:25px;margin-top:15px;">
+                                                                <!--div style="color:#000000; margin-bottom:25px;margin-top:15px;">
                                                                     <div style="font-size: 16px;color: #000000;text-align:center">
                                                                         <a href="'.base_url().'web/postulaciones/'.$uid.'" type="button" style="color: #ffffff;
                                                                             background-color: #de1f29;
@@ -629,7 +688,7 @@ class Postulaciones_model extends CI_Model {
                                                                             border-radius: 0.25rem;
                                                                             text-decoration: none;">MI POSTULACIÓN</a>
                                                                     </div>
-                                                                </div>
+                                                                </div-->
 
                                                             </div>
                                                             <!--[if mso]></td></tr></table><![endif]-->

@@ -26,7 +26,7 @@ class PostulacionesWeb extends CI_Controller {
         if ($this->input->post()) {
             $this->output
                 ->set_content_type('application/json')
-                ->set_output(json_encode($this->postulaciones_model->find()));
+                ->set_output(json_encode($this->postulaciones_model->find($_POST)));
         } else {
             show_404();
         }    

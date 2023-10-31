@@ -105,6 +105,7 @@
     <script src='<?php echo base_url() ?>/public/js/sha1/sha1.js'></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.4.456/build/pdf.min.js"></script>
     <?php echo $this->layout->js ?>
 </body>
 
