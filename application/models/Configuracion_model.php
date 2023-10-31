@@ -123,6 +123,11 @@ class Configuracion_model extends CI_Model {
         $any = $this->input->post("any", true);
 
         switch ($any) {
+          case 'edicion':
+            $name  = $this->input->post("name", true);
+            $anio  = $this->input->post("anio", true);
+            $this->db->update('periodos', ['per_nombre' => $name, 'per_anio'=>$anio], array('per_id' => $id));
+          break;
           case 'anexos':
             $anexo_id  = $this->input->post("anexo_id", true);
             $sections  = $this->input->post("sections", true);
@@ -136,16 +141,9 @@ class Configuracion_model extends CI_Model {
             $this->db->update('periodo_anexos', ['plantilla' => $plantilla], array('id' => $anexo_id));
 
           break;
-          
-          default:
-            # code...
-            break;
         }
 
-
-
         $response['success'] = true;
-        $response['data']  = compact('anexos', 'periodo');
         $response['status']  = 200;
         $response['message'] = 'Se guardo correctamente';
 

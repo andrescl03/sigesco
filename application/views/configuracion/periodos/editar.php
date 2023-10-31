@@ -51,7 +51,7 @@
                                             </div>
                                             <div class="tab-pane fade pt-4" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab">
                                                 <div class="form-group">
-                                                    <label>Anexo</label>
+                                                    <label class="mb-2">Evaluación</label>
                                                     <select class="form-control select-anexo" name="" id="">
                                                         <option value="" hidden>[SELECCIONE]</option>
                                                         <option value="1">Anexo 13</option>
@@ -65,12 +65,51 @@
                                                     </div>
                                                 </div>
                                                 <hr>
-                                                <div class="text-end">
+                                                <div class="text-end" id="panel-actions" style="display:none;">
+                                                    <button type="button" class="btn btn-dark btn-viewer-module me-2">Visualizar</button>                                                    
                                                     <button type="button" class="btn btn-primary btn-save-module">Guardar</button>
                                                 </div>
                                         </div>
                                     </div>
                                         
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="modalViewerAnexo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">ANEXO</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">RUBRO</th>
+                                                        <th scope="col">CRITERIOS</th>
+                                                        <th scope="col">SUBCRITERIOS</th>
+                                                        <th scope="col">Puntaje máximo por subcriterio</th>
+                                                        <th scope="col">Puntaje máximo por rubro</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbody-anexo">
+                                                    <tr class="">
+                                                        <td scope="row">R1C1</td>
+                                                        <td>R1C2</td>
+                                                        <td>R1C3</td>
+                                                        <td>R1C2</td>
+                                                        <td>R1C3</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -79,27 +118,5 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="modal_agregarPeriodos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="font-size: 14px;">
-                <div class="modal-header">
-                    <h5 class="modal-title text-danger" id="staticBackdropLabel"><b><i class="fas fa-check-double fa-xs"></i> Agregar Periodo: </b><b class="text-dark lb_expediente"></b></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="view_agregarPeriodos">
-
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><b><i class="fas fa-window-close"></i> Cerrar</b></button>
-                    <!--<button type="button" class="btn btn-primary btn-sm" id="btn_agregarAplicacion"><b><i class="fas fa-plus-square"></i> Agregar</b></button>-->
-                </div>
-            </div>
-        </div>
-    </div>
-
 
   

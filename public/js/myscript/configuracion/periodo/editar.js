@@ -4,16 +4,19 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
         mounted: () => {
             self.periodo_id = dom.getAttribute('data-id');
             dom.removeAttribute('data-id');
+            self.modalViewerAnexo = self.modal('modalViewerAnexo');
             self.initialize();
         },
         data: () => { 
             return {
+                modalViewerAnexo: {},
                 periodo_id: 0,
                 sections: [],
                 periodo: {},
                 anexo_id: 0,
                 anexos: [],
-                anexo: {}
+                anexo: {},
+                items: []
             }
         },
         methods: {
@@ -33,28 +36,46 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
             },
             events: () => {
-                const btns = dom.querySelectorAll('.btn-save-module');
-                btns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        sweet2.show({
-                            type: 'question',
-                            text: '¿Estás seguro de guardar cambios?',
-                            showCancelButton: true,
-                            onOk: () => {
-                                const formData = new FormData();
-                                formData.append('any', 'anexos');
-                                formData.append('anexo_id', self.anexo_id);
-                                formData.append('sections', JSON.stringify(self.sections));
-                                self.setDetail(formData);
-                            }
-                        });
+
+                self.eventTag('btn-save-module', (e) => {
+                    sweet2.show({
+                        type: 'question',
+                        text: '¿Estás seguro de guardar cambios?',
+                        showCancelButton: true,
+                        onOk: () => {
+                            const formData = new FormData();
+                            formData.append('any', 'anexos');
+                            formData.append('anexo_id', self.anexo_id);
+                            formData.append('sections', JSON.stringify(self.sections));
+                            self.setDetail(formData);
+                        }
                     });
+                });
+
+                self.eventTag('btn-viewer-module', (e) => {
+                    self.viewAnexoDetail();
+                    self.modalViewerAnexo.show();
                 });
 
                 self.eventTag('select-anexo', (e) => {
                     self.anexo_id = Number(e.target.value);
                     self.setFormModule();
+                    dom.querySelector('#panel-actions').style.display = 'block';
                 }, 'change');
+
+                self.eventTag('form-periodo', (e) => {
+                    e.preventDefault();
+                    sweet2.show({
+                        type: 'question',
+                        text: '¿Estás seguro de guardar cambios?',
+                        showCancelButton: true,
+                        onOk: () => {
+                            const formData = new FormData(e.target);
+                            formData.append('any', 'edicion');
+                            self.setDetail(formData);
+                        }
+                    });
+                }, 'submit');
 
             },
             setFormModule: () => {
@@ -131,7 +152,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     const btnAdd = document.createElement('a');
                     btnAdd.classList.add('link-dark');
                     btnAdd.href = `javascript: void(0)`;
-                    btnAdd.innerHTML = `<svg class="svg-inline--fa fa-plus me-2 text-dark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"></path></svg>Agregar Sección`;
+                    btnAdd.innerHTML = `<svg class="svg-inline--fa fa-plus me-2 text-dark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"></path></svg>Agregar Rubro`;
                     btnAdd.addEventListener('click', (e) => {
                         const section = {
                             id: self.uniqid(),
@@ -160,7 +181,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 accordionHeader.style.padding = `1.75rem 1rem`;
 
                 const div1 = document.createElement('div');
-                div1.classList.add('col-md-10', 'd-flex');
+                div1.classList.add('col-lg-10', 'd-flex');
                 div1.innerHTML = `<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-section-${section.id}" aria-expanded="false" aria-controls="panelsStayOpen-collapse-section-${section.id}"></button>`;
                 const input = document.createElement('input');
                 input.type = 'text';
@@ -170,10 +191,27 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     section.name = e.target.value;
                 });
                 div1.appendChild(input);
+
+                const divgroup = document.createElement('div');
+                divgroup.classList.add('input-group', 'ms-3');
+                divgroup.style.maxWidth = '200px';
+                divgroup.innerHTML = `<span id="basic-addon1" class="input-group-text">Puntaje</span>`;
+                
+                const inputgroup = document.createElement('input');
+                inputgroup.type = 'number';
+                inputgroup.classList.add('form-control');
+                inputgroup.value = section.score;
+                inputgroup.addEventListener('change', (e)=>{
+                    section.score = e.target.value;
+                });
+                divgroup.appendChild(inputgroup);
+
+                div1.appendChild(divgroup);
+
                 accordionHeader.appendChild(div1);
 
                 const div2 = document.createElement('div');
-                div2.classList.add('col-md-2', 'text-end', 'mt-2');
+                div2.classList.add('col-lg-2', 'text-end', 'mt-2');
 
                 const btnRemove = document.createElement('a');
                 btnRemove.classList.add('link-dark');
@@ -214,12 +252,12 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 accordionCollapse.appendChild(accordionBody);
 
                 const div3 = document.createElement('div');
-                div3.classList.add('col-md-12', 'ps-4', 'pb-4');
+                div3.classList.add('col-lg-12', 'ps-4', 'pb-4');
 
                 const btnAdd = document.createElement('a');
                 btnAdd.classList.add('link-dark');
                 btnAdd.href = `javascript: void(0)`;
-                btnAdd.innerHTML = `<svg class="svg-inline--fa fa-plus me-2 text-dark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"></path></svg>Agregar Grupo`;
+                btnAdd.innerHTML = `<svg class="svg-inline--fa fa-plus me-2 text-dark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"></path></svg>Agregar Criterio`;
                 btnAdd.addEventListener('click', (e) => {
                     const group = {
                         id: self.uniqid(),
@@ -247,29 +285,24 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
 
                 const row1 = document.createElement('div');
                 row1.classList.add('row', 'mb-3');
-                row1.appendChild((() => {
-                    const col1 = document.createElement('div');
-                    col1.classList.add('col-lg-4','mb-3');
 
-                    const divgroup = document.createElement('div');
-                    divgroup.classList.add('input-group');
-                    divgroup.innerHTML = `<span id="basic-addon1" class="input-group-text">Puntaje</span>`;
-                    
-                    const inputgroup = document.createElement('input');
-                    inputgroup.type = 'number';
-                    inputgroup.classList.add('form-control');
-                    inputgroup.value = group.score;
-                    inputgroup.addEventListener('change', (e)=>{
-                        group.score = e.target.value;
-                    });
-                    divgroup.appendChild(inputgroup);
+                const col1 = document.createElement('div');
+                col1.classList.add('col-lg-10','mb-3');
 
-                    col1.appendChild(divgroup);
-                    return col1;
-                })());
+                const textarea = document.createElement('textarea');
+                textarea.placeholder = 'Escribe aquí';
+                textarea.classList.add('form-control');
+                textarea.value = group.name;
+                textarea.rows = 1;
+                textarea.addEventListener('keyup', (e) => {
+                    group.name = e.target.value;
+                });
+                col1.appendChild(textarea);
+
+                row1.appendChild(col1);
 
                 const col2 = document.createElement('div');
-                col2.classList.add('col-lg-8', 'text-end', 'my-auto', 'mb-3');
+                col2.classList.add('col-lg-2', 'text-end', 'my-auto', 'mb-3');
 
                 const btnRemove = document.createElement('a');
                 btnRemove.classList.add('link-dark');
@@ -289,20 +322,6 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 col2.appendChild(btnRemove);
                 row1.appendChild(col2);
 
-                const col3 = document.createElement('div');
-                col3.classList.add('col-lg-12','mb-3');
-
-                const textarea = document.createElement('textarea');
-                textarea.placeholder = 'Escribe aquí';
-                textarea.classList.add('form-control');
-                textarea.value = group.name;
-                textarea.rows = 1;
-                textarea.addEventListener('keyup', (e) => {
-                    group.name = e.target.value;
-                });
-                col3.appendChild(textarea);
-
-                row1.appendChild(col3);
                 panel.appendChild(row1);
 
                 const row2 = document.createElement('div');
@@ -320,7 +339,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 const btnAddQuestion = document.createElement('a');
                 btnAddQuestion.classList.add('link-dark');
                 btnAddQuestion.href = `javascript: void(0)`;
-                btnAddQuestion.innerHTML = `<svg class="svg-inline--fa fa-plus me-2 text-dark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"></path></svg>Agregar Pregunta`;
+                btnAddQuestion.innerHTML = `<svg class="svg-inline--fa fa-plus me-2 text-dark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"></path></svg>Agregar Subcriterio`;
                 btnAddQuestion.addEventListener('click', (e) => {
                     const question = {
                         id: self.uniqid(),
@@ -340,6 +359,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 return panel;
             },
             viewQuestion: (question, remove) => {
+
                 const panel = document.createElement('div');
                 panel.classList.add('col-lg-12');
 
@@ -359,6 +379,15 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
                 col1.appendChild(textarea);
 
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.classList.add('form-control', 'ms-3');
+                input.style.maxWidth = '75px';
+                input.value = question.score;
+                input.addEventListener('change', (e)=>{
+                    question.score = e.target.value;
+                });
+                col1.appendChild(input);
 
                 row1.appendChild(col1);
 
@@ -386,8 +415,40 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 panel.appendChild(row1);
                 return panel;
             },
+            viewAnexoDetail: () => {
+                let html = ``;
+                let total = 0;
+                self.sections.forEach((section, index1) => {
+                    total = total + Number(section.score);
+                    section.groups.forEach((group, index2) => {
+                        group.questions.forEach((question, index3) => {
+                            html += 
+                            `<tr class="">
+                                <td scope="row">${section.name}</td>
+                                <td>${group.name}</td>
+                                <td>${question.name}</td>
+                                <td class="text-center">${question.score}</td>
+                                <td class="text-center">${section.score}</td>
+                            </tr>`;
+
+                        });
+                    });
+                });
+                html += 
+                    `<tr class="">
+                        <td colspan="4" class="text-center fw-bold">PUNTAJE TOTAL</td>
+                        <td class="text-center fw-bold">${total}</td>
+                    </tr>`;
+                const tbodies = dom.querySelectorAll('.tbody-anexo');
+                tbodies.forEach(tbody => {
+                    tbody.innerHTML = html;
+                });
+            }
         },
         utilities: {
+            modal: (el) => {
+                return new bootstrap.Modal(dom.querySelector('#' + el));
+            },
             uniqid: () => {
                 return Math.floor(Math.random() * (new Date).getTime());
             },
