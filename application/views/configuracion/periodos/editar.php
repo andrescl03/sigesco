@@ -61,25 +61,21 @@
                                                 </form>
                                             </div>
                                             <div class="tab-pane fade pt-4" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab">
-                                                <div class="form-group">
-                                                    <label class="mb-2">Evaluación</label>
-                                                    <select class="form-control select-anexo" name="" id="">
-                                                        <option value="" hidden>[SELECCIONE]</option>
-                                                        <option value="1">Anexo 13</option>
-                                                        <option value="2">Anexo 14</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group  my-4">
-                                                    <label class="mb-2">Plantilla</label>
-                                                    <div class="container-section">
-                                                        No hay datos para mostrar
+                                                <div class="row mb-5">
+                                                    <div class="col">
+                                                        <select class="form-control select-anexo" name="" id="">
+                                                            <option value="" hidden>[SELECCIONE]</option>
+                                                            <option value="1">Anexo 13</option>
+                                                            <option value="2">Anexo 14</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col text-end">
+                                                        <!-- <button type="button" class="btn btn-success"  data-bs-toggle="modal" data-bs-target="#exampleModal2">Agregar</button> -->
                                                     </div>
                                                 </div>
-                                                <hr>
-                                                <div class="text-end" id="panel-actions" style="display:none;">
-                                                    <button type="button" class="btn btn-dark btn-viewer-module me-2">Visualizar</button>                                                    
-                                                    <button type="button" class="btn btn-primary btn-save-module">Guardar</button>
+                                                <div class="container-sheet">    
                                                 </div>
+                                            </div>
                                         </div>
                                     </div>
                                         
@@ -87,7 +83,7 @@
                             </div>
 
                             <div class="modal fade" id="modalViewerAnexo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-xl">
+                                <div class="modal-dialog modal-fullscreen">
                                     <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">ANEXO</h5>
@@ -101,6 +97,7 @@
                                                         <th class="text-center bg-light">RUBRO</th>
                                                         <th class="text-center bg-light">CRITERIOS</th>
                                                         <th class="text-center bg-light">SUBCRITERIOS</th>
+                                                        <th class="text-center bg-light">EVALUACIÓN</th>
                                                         <th class="text-center bg-light">Puntaje máximo por subcriterio</th>
                                                         <th class="text-center bg-light">Puntaje máximo por rubro</th>
                                                     </tr>
@@ -112,6 +109,40 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ...
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ...
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
                                     </div>
                                     </div>
                                 </div>
