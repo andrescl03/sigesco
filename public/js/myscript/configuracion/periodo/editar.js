@@ -16,7 +16,8 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 anexo_id: 0,
                 anexos: [],
                 anexo: {},
-                items: []
+                items: [],
+                options: ['selectiva', 'marcado', 'texto', 'numerico']
             }
         },
         methods: {
@@ -37,30 +38,9 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             },
             events: () => {
 
-                self.eventTag('btn-save-module', (e) => {
-                    sweet2.show({
-                        type: 'question',
-                        text: '¿Estás seguro de guardar cambios?',
-                        showCancelButton: true,
-                        onOk: () => {
-                            const formData = new FormData();
-                            formData.append('any', 'anexos');
-                            formData.append('anexo_id', self.anexo_id);
-                            formData.append('sections', JSON.stringify(self.sections));
-                            self.setDetail(formData);
-                        }
-                    });
-                });
-
-                self.eventTag('btn-viewer-module', (e) => {
-                    self.viewAnexoDetail();
-                    self.modalViewerAnexo.show();
-                });
-
                 self.eventTag('select-anexo', (e) => {
                     self.anexo_id = Number(e.target.value);
                     self.setFormModule();
-                    dom.querySelector('#panel-actions').style.display = 'block';
                 }, 'change');
 
                 self.eventTag('form-periodo', (e) => {
@@ -133,9 +113,33 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
         },
         renders: {
             viewModule: () => {
-                const containers = dom.querySelectorAll('.container-section');
+                const containers = dom.querySelectorAll('.container-sheet');
                 containers.forEach(container => {
                     container.innerHTML = ``;
+                    // Header
+                    const rowHeader = document.createElement('div');
+                    rowHeader.classList.add('row', 'mb-3');
+                    const colTitle = document.createElement('div');
+                    colTitle.classList.add('col-10');
+                    colTitle.innerHTML = `<h4>Ficha de evaluación</h4>`;
+                    rowHeader.appendChild(colTitle);
+
+                    const colAction = document.createElement('div');
+                    colAction.classList.add('col-2', 'text-end');
+
+                    const aConfig = document.createElement('a');
+                    aConfig.classList.add('link-dark');
+                    aConfig.setAttribute('href', '#');
+                    aConfig.innerHTML = `<i class="fa-solid fa-gear me-2"></i>Ajustes`;
+                    aConfig.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        console.log('ajustes');
+                    });
+                    // colAction.appendChild(aConfig);
+
+                    rowHeader.appendChild(colAction);
+                    container.appendChild(rowHeader);
+                    // Body
                     const accordion = document.createElement('div');
                     accordion.classList.add('accordion');
 
@@ -168,6 +172,47 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     });
                     row.appendChild(btnAdd);
                     container.appendChild(row);
+                    // Footer
+                    const line = document.createElement('hr'); 
+                    container.appendChild(line);
+                    const rowFooter = document.createElement('div');
+                    rowFooter.classList.add('row', 'my-3');
+
+                    const colFooterAction = document.createElement('div');
+                    colFooterAction.classList.add('col-12', 'text-end');
+
+                    const btnViewer = document.createElement('button');
+                    btnViewer.classList.add('btn', 'btn-dark', 'me-2');
+                    btnViewer.innerText = `Visualizar`;
+                    btnViewer.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        self.viewAnexoDetail();
+                        self.modalViewerAnexo.show();
+                    });
+                    colFooterAction.appendChild(btnViewer);
+
+                    const btnSave = document.createElement('button');
+                    btnSave.classList.add('btn', 'btn-primary');
+                    btnSave.innerText = `Guardar`;
+                    btnSave.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        sweet2.show({
+                            type: 'question',
+                            text: '¿Estás seguro de guardar cambios?',
+                            showCancelButton: true,
+                            onOk: () => {
+                                const formData = new FormData();
+                                formData.append('any', 'anexos');
+                                formData.append('anexo_id', self.anexo_id);
+                                formData.append('sections', JSON.stringify(self.sections));
+                                self.setDetail(formData);
+                            }
+                        });
+                    });
+                    colFooterAction.appendChild(btnSave);
+
+                    rowFooter.appendChild(colFooterAction);
+                    container.appendChild(rowFooter);
                 });
             },
             viewSection: (section, remove) => {
@@ -248,7 +293,6 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     }));
                 })
                 
-
                 accordionCollapse.appendChild(accordionBody);
 
                 const div3 = document.createElement('div');
@@ -336,24 +380,30 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 const row3 = document.createElement('div');
                 row3.classList.add('row', 'ms-2');
 
-                const btnAddQuestion = document.createElement('a');
-                btnAddQuestion.classList.add('link-dark');
-                btnAddQuestion.href = `javascript: void(0)`;
-                btnAddQuestion.innerHTML = `<svg class="svg-inline--fa fa-plus me-2 text-dark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"></path></svg>Agregar Subcriterio`;
-                btnAddQuestion.addEventListener('click', (e) => {
+                const colAction = document.createElement('div');
+                colAction.classList.add('col-lg-12','mb-3');
+
+                const btnAdd = document.createElement('a');
+                btnAdd.classList.add('link-dark');
+                btnAdd.href = `javascript: void(0)`;
+                btnAdd.innerHTML = `<svg class="svg-inline--fa fa-plus me-2 text-dark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"></path></svg>Agregar Subcriterio`;
+                btnAdd.addEventListener('click', (e) => {
                     const question = {
                         id: self.uniqid(),
                         name: '',
                         position: 0,
                         score: 0,
-                        answers: []
+                        type: '',
+                        caption: '',
+                        options: []
                     };
                     group.questions.push(question);
                     row2.appendChild(self.viewQuestion(question, ()=>{
                         group.questions.splice(group.questions.length - 1, 1);
                     }));
                 });
-                row3.appendChild(btnAddQuestion);
+                colAction.appendChild(btnAdd);
+                row3.appendChild(colAction);
                 panel.appendChild(row3);
 
                 return panel;
@@ -361,10 +411,10 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             viewQuestion: (question, remove) => {
 
                 const panel = document.createElement('div');
-                panel.classList.add('col-lg-12');
+                panel.classList.add('col-lg-12', 'mb-3');
 
                 const row1 = document.createElement('div');
-                row1.classList.add('row', 'mb-2');
+                row1.classList.add('row', 'mb-3');
 
                 const col1 = document.createElement('div');
                 col1.classList.add('col-lg-10', 'mb-2', 'd-flex', 'my-auto');
@@ -379,15 +429,21 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
                 col1.appendChild(textarea);
 
-                const input = document.createElement('input');
-                input.type = 'number';
-                input.classList.add('form-control', 'ms-3');
-                input.style.maxWidth = '75px';
-                input.value = question.score;
-                input.addEventListener('change', (e)=>{
+                const divgroup = document.createElement('div');
+                divgroup.classList.add('input-group', 'ms-3');
+                divgroup.style.maxWidth = '200px';
+                divgroup.innerHTML = `<span id="basic-addon1" class="input-group-text">Puntaje</span>`;
+                
+                const inputgroup = document.createElement('input');
+                inputgroup.type = 'number';
+                inputgroup.classList.add('form-control');
+                inputgroup.value = question.score;
+                inputgroup.addEventListener('change', (e)=>{
                     question.score = e.target.value;
                 });
-                col1.appendChild(input);
+                divgroup.appendChild(inputgroup);
+
+                col1.appendChild(divgroup);
 
                 row1.appendChild(col1);
 
@@ -412,6 +468,147 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 col2.appendChild(btnRemove);
 
                 row1.appendChild(col2);
+
+                const col3 = document.createElement('div');
+                col3.classList.add('col-lg-7', 'mb-2', 'd-flex', 'my-auto');
+
+                const input3 = document.createElement('input');
+                input3.type = 'text';
+                input3.classList.add('form-control');
+                input3.placeholder = 'Escribe un comentario para la opción';
+                input3.addEventListener('keyup', (e) => {
+                    question.caption = e.target.value;
+                });
+                col3.appendChild(input3);
+
+                const select = document.createElement('select');
+                select.classList.add('form-control', 'ms-3');
+                select.style.maxWidth = '120px';
+                select.style.textTransform = 'capitalize';
+                select.value = question.type;
+                select.addEventListener('change', (e)=>{
+                    question.type = e.target.value;
+                });
+
+                let el = document.createElement("option");
+                el.setAttribute('hidden', true);
+                el.setAttribute('selected', true);
+                el.textContent = '[SELECCIONE]';
+                el.value = '';
+                select.appendChild(el);
+
+                for (let i = 0; i < self.options.length; i++) {
+                    let optn = self.options[i];
+                    let el = document.createElement("option");
+                    el.textContent = optn;
+                    el.value = optn;
+                    if (optn == question.type) {
+                        el.setAttribute('selected', true);
+                    }
+                    select.appendChild(el);
+                }
+
+                select.addEventListener('change', (e)=>{
+                    question.type = e.target.value;
+                    question.options = [];
+                    row4.innerHTML = ``;
+                    if (question.type == 'selectiva') {
+                        row4.appendChild(self.viewPanelOption(question));                    
+                    }
+                });
+
+                col3.appendChild(select);
+                row1.appendChild(col3);
+
+                panel.appendChild(row1);
+                
+                
+                const row4 = document.createElement('div');
+                if (question.type == 'selectiva') {
+                    row4.appendChild(self.viewPanelOption(question));                    
+                }
+                panel.appendChild(row4);
+                return panel;
+            },
+            viewPanelOption: (question)=>{
+                const row2 = document.createElement('div');
+                row2.classList.add('row', 'ms-3');
+                question.options?.forEach((option, index) => {
+                    row2.appendChild(self.viewOption(option, ()=>{
+                        question.options.splice(index, 1);
+                    }));
+                });
+
+                const row3 = document.createElement('div');
+                row3.classList.add('row', 'ms-2');
+
+                const row4 = document.createElement('div');
+                row4.appendChild(row2);
+
+                const colAction = document.createElement('div');
+                colAction.classList.add('col-lg-12','mb-3');
+
+                const btnAdd = document.createElement('a');
+                btnAdd.classList.add('link-dark');
+                btnAdd.href = `javascript: void(0)`;
+                btnAdd.innerHTML = `<svg class="svg-inline--fa fa-plus me-2 text-dark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z"></path></svg>Agregar Opción`;
+                btnAdd.addEventListener('click', (e) => {
+                    const option = {
+                        id: self.uniqid(),
+                        name: '',
+                        position: 0,
+                        score: 0,
+                        type: 0
+                    };
+                    question.options.push(option);
+                    row2.appendChild(self.viewOption(option, ()=>{
+                        question.options.splice(question.options.length - 1, 1);
+                    }));
+                });
+                colAction.appendChild(btnAdd);
+                row3.appendChild(colAction);
+                row4.appendChild(row3);
+                return row4;
+            },
+            viewOption: (option, remove) => {
+                const panel = document.createElement('div');
+                panel.classList.add('col-lg-8');
+
+                const row1 = document.createElement('div');
+                row1.classList.add('row', 'mb-2');
+
+                const col1 = document.createElement('div');
+                col1.classList.add('col-lg-10', 'mb-2', 'd-flex', 'my-auto');
+
+                const input = document.createElement('input');
+                input.placeholder = 'Escribe aquí';
+                input.classList.add('form-control');
+                input.value = option.name;
+                input.addEventListener('keyup', (e) => {
+                    option.name = e.target.value;
+                });
+                col1.appendChild(input);
+
+                const btnRemove = document.createElement('a');
+                btnRemove.classList.add('link-dark');
+                btnRemove.href = `javascript: void(0)`;
+                btnRemove.style.minWidth = '100px';
+                btnRemove.style.marginLeft = '15px';
+                btnRemove.innerHTML = `<svg class="svg-inline--fa fa-trash-can me-2 text-dark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash-can" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69zM31.1 128H416V448C416 483.3 387.3 512 352 512H95.1C60.65 512 31.1 483.3 31.1 448V128zM111.1 208V432C111.1 440.8 119.2 448 127.1 448C136.8 448 143.1 440.8 143.1 432V208C143.1 199.2 136.8 192 127.1 192C119.2 192 111.1 199.2 111.1 208zM207.1 208V432C207.1 440.8 215.2 448 223.1 448C232.8 448 240 440.8 240 432V208C240 199.2 232.8 192 223.1 192C215.2 192 207.1 199.2 207.1 208zM304 208V432C304 440.8 311.2 448 320 448C328.8 448 336 440.8 336 432V208C336 199.2 328.8 192 320 192C311.2 192 304 199.2 304 208z"></path></svg>Eliminar`;
+                btnRemove.addEventListener('click', (e) => {
+                    sweet2.show({
+                        type: 'question',
+                        text: '¿Estás seguro de eliminar este elemento?',
+                        showCancelButton: true,
+                        onOk: () => {
+                            remove();
+                            panel.remove();        
+                        }
+                    });
+                });
+                col1.appendChild(btnRemove);
+
+                row1.appendChild(col1);
                 panel.appendChild(row1);
                 return panel;
             },
@@ -443,6 +640,9 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                                     index3 == 0 ? `<td scope="row" rowspan="${lg}">${group.name}</td>` : ``
                                 }
                                 <td>${question.name}</td>
+                                <td class="text-center">${
+                                    self.viewActionOption(question)
+                                }</td>
                                 <td class="text-center">${question.score}</td>
                                 ${ 
                                     index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
@@ -461,6 +661,28 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 tbodies.forEach(tbody => {
                     tbody.innerHTML = html;
                 });
+            },
+            viewActionOption: (question) => {
+                let html = ``;
+                if (question?.caption) {
+                    html += `<span>${question.caption}</span>`;
+                }
+                if (question.type == 'selectiva') {
+                    html += `<select class="form-control  text-center">`;
+                    question?.options.forEach(option => {
+                        html += `<option value="${option.name}">${option.name}</option>`;
+                    });
+                    html += `</select>`;
+                } else if (question.type == 'marcado') {
+                    html += `<input type="checkbox" class="form-check-input text-center" value="1">`;
+                } else if (question.type == 'texto') {
+                    html += `<input type="text" class="form-control text-center" value="">`;
+
+                } else if (question.type == 'numerico') {
+                    html += `<input type="number" class="form-control  text-center" value="">`;
+                }
+
+                return html;
             }
         },
         utilities: {

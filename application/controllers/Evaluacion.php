@@ -236,7 +236,8 @@ class Evaluacion extends CI_Controller {
 
         $datos = $this->evaluacion_model->verFichaEvaluacion(); 
 
-        $this->layout->js(array(base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis")));
+        $this->layout->js(array(base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
+        base_url()."public/js/myscript/evaluacion/guide.js?t=".date("mdYHis")));
         $this->layout->view("ficha/ficha", compact('datos')); 
 
        
