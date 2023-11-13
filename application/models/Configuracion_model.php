@@ -93,7 +93,7 @@ class Configuracion_model extends CI_Model {
       $response = $this->tools->responseDefault();
       try {
         
-        $sql = "SELECT * FROM periodo_fichas WHERE periodo_id  = ?";
+        $sql = "SELECT * FROM periodo_fichas WHERE deleted_at IS NULL AND periodo_id  = ?";
         $fichas = $this->db->query($sql, compact('id'))->result_object();
 
         foreach ($fichas as $k => $o) {
@@ -151,11 +151,18 @@ class Configuracion_model extends CI_Model {
             $periodo_ficha_id = $this->db->insert_id(); // para saber el id ingresado
           break;
           case 'actualizaficha':
+            $ficha_id  = $this->input->post("id", true);
             $nombre  = $this->input->post("name", true);
             $tipo_id  = $this->input->post("tipo_id", true);
-            $this->db->update('periodo_fichas', ['plantilla' => $plantilla], array('id' => $anexo_id));
+            $data = [
+              'nombre' => $nombre,
+              'tipo_id' => $tipo_id
+            ];
+            $this->db->update('periodo_fichas', $data, array('id' => $ficha_id));
           break;
-          case 'actualizaficha':
+          case 'eliminaficha':
+            $ficha_id  = $this->input->post("id", true);
+            $this->db->update('periodo_fichas', ['deleted_at'=>$this->tools->getDateHour()], array('id' => $ficha_id));
           break;
         }
 

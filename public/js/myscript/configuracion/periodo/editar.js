@@ -51,7 +51,6 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     self.setDetail(formData)
                     .then((data) => {
                         e.target.reset();
-                        form.querySelector('input[name="any"]').value = 'nuevaficha';
                         self.modalFicha.hide();
                         self.initialize();
                     });
@@ -61,6 +60,8 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     const forms = dom.querySelectorAll('.form-ficha');
                     forms.forEach(form => {
                         form.reset();
+                        form.querySelector('input[name="id"]').value = '';
+                        form.querySelector('input[name="any"]').value = 'nuevaficha';
                     });
                     self.modalFicha.show();
                 });
@@ -168,7 +169,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     const aConfig = document.createElement('a');
                     aConfig.classList.add('link-dark');
                     aConfig.setAttribute('href', '#');
-                    aConfig.innerHTML = `<i class="fa-solid fa-gear me-2"></i>Ajustes`;
+                    aConfig.innerHTML = `<i class="fa-solid fa-gear me-2"></i>Editar`;
                     aConfig.addEventListener('click', (e) => {
                         e.preventDefault();
                         const forms = dom.querySelectorAll('.form-ficha');
@@ -181,6 +182,28 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                         self.modalFicha.show();
                     });
                     colAction.appendChild(aConfig);
+
+                    const aDelete = document.createElement('a');
+                    aDelete.classList.add('link-dark', 'ms-3');
+                    aDelete.setAttribute('href', '#');
+                    aDelete.innerHTML = `<i class="fa-solid fa-trash me-2"></i>Eliminar`;
+                    aDelete.addEventListener('click', (e) => {
+                        sweet2.show({
+                            type: 'question',
+                            text: '¿Estás seguro de eliminar este elemento?',
+                            showCancelButton: true,
+                            onOk: () => {
+                                const formData = new FormData();
+                                formData.append('id', self.ficha_id);
+                                formData.append('any', 'eliminaficha');
+                                self.setDetail(formData)
+                                .then(()=>{
+                                    self.initialize();
+                                });
+                            }
+                        });
+                    });
+                    colAction.appendChild(aDelete);
 
                     rowHeader.appendChild(colAction);
                     container.appendChild(rowHeader);
