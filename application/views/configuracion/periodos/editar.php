@@ -36,7 +36,7 @@
                                         <nav>
                                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                 <button class="nav-link active" id="nav-1-tab" data-bs-toggle="tab" data-bs-target="#nav-1" type="button" role="tab" aria-controls="nav-1" aria-selected="true">Edición</button>
-                                                <button class="nav-link" id="nav-2-tab" data-bs-toggle="tab" data-bs-target="#nav-2" type="button" role="tab" aria-controls="nav-2" aria-selected="false">Anexos</button>
+                                                <button class="nav-link" id="nav-2-tab" data-bs-toggle="tab" data-bs-target="#nav-2" type="button" role="tab" aria-controls="nav-2" aria-selected="false">Fichas</button>
                                             </div>
                                         </nav>
                                         <div class="tab-content" id="nav-tabContent">
@@ -63,14 +63,12 @@
                                             <div class="tab-pane fade pt-4" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab">
                                                 <div class="row mb-5">
                                                     <div class="col">
-                                                        <select class="form-control select-anexo" name="" id="">
+                                                        <select class="form-control select-ficha" name="" id="">
                                                             <option value="" hidden>[SELECCIONE]</option>
-                                                            <option value="1">Anexo 13</option>
-                                                            <option value="2">Anexo 14</option>
                                                         </select>
                                                     </div>
                                                     <div class="col text-end">
-                                                        <!-- <button type="button" class="btn btn-success"  data-bs-toggle="modal" data-bs-target="#exampleModal2">Agregar</button> -->
+                                                        <button type="button" class="btn btn-success btn-ficha">Agregar</button>
                                                     </div>
                                                 </div>
                                                 <div class="container-sheet">    
@@ -86,7 +84,7 @@
                                 <div class="modal-dialog modal-fullscreen">
                                     <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">ANEXO</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">FICHA</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -113,37 +111,41 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="modalFicha" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        ...
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        ...
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
-                                    </div>
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">FICHA</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="container">
+                                                <form id="formficha" class="form-ficha">
+                                                    <input type="hidden" class="form-control" name="id">
+                                                    <input type="hidden" class="form-control" name="any" required>
+                                                    <div class="mb-3 row">
+                                                        <label class="col-4 col-form-label">Nombre</label>
+                                                        <div class="col-8">
+                                                            <input type="text" class="form-control" name="name" placeholder="Nombre" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label class="col-4 col-form-label">Tipo</label>
+                                                        <div class="col-8">
+                                                            <select class="form-select" name="tipo_id" required>
+                                                                <option value="" hidden selected>[SELECCIONE]</option>
+                                                                <option value="1">Tipo 1</option>
+                                                                <option value="2">Tipo 2</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary" form="formficha">Guardar</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
