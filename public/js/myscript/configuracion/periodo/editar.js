@@ -254,6 +254,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     btnViewer.innerText = `Visualizar`;
                     btnViewer.addEventListener('click', (e) => {
                         e.preventDefault();
+                        console.log(self.sections);
                         self.viewAnexoDetail();
                         self.modalViewerAnexo.show();
                     });
@@ -693,32 +694,55 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                             ls = ls + 1;
                         });
                     });
-                    section.groups.forEach((group, index2) => {
-                        lg = 0;
-                        group.questions.forEach((question, index3) => {
-                            lg = lg + 1;
+                    if (section.groups.length == 0) {
+                        html += 
+                        `<tr class=""> 
+                            <td class="colvert bg-light">${section.name}</td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                        </tr>`;
+                    } else {
+                        section.groups.forEach((group, index2) => {
+                            lg = 0;
+                            group.questions.forEach((question, index3) => {
+                                lg = lg + 1;
+                            });
+                            if (group.questions.length == 0) {
+                                html += 
+                                `<tr class=""> 
+                                    <td class="colvert bg-light">${section.name}</td>
+                                    <td>${group.name}</td>
+                                    <td></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                </tr>`;
+                            } else {
+                                group.questions.forEach((question, index3) => {
+                                    html += 
+                                    `<tr class="">
+                                        ${ 
+                                            index3 == 0 && index2 == 0 ? `<td class="colvert bg-light" rowspan="${ls}">${section.name}</td>` : ``
+                                        }
+                                        ${ 
+                                            index3 == 0 ? `<td rowspan="${lg}">${group.name}</td>` : ``
+                                        }
+                                        <td>${question.name}</td>
+                                        <td class="text-center">${
+                                            self.viewActionOption(question)
+                                        }</td>
+                                        <td class="text-center">${question.score}</td>
+                                        ${ 
+                                            index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
+                                        }
+                                    </tr>`;
+                                });    
+                            }
                         });
-                        group.questions.forEach((question, index3) => {
-                            html += 
-                            `<tr class="">
-                                ${ 
-                                    index3 == 0 && index2 == 0 ? `<td class="colvert bg-light" rowspan="${ls}">${section.name}</td>` : ``
-                                }
-                                ${ 
-                                    index3 == 0 ? `<td scope="row" rowspan="${lg}">${group.name}</td>` : ``
-                                }
-                                <td>${question.name}</td>
-                                <td class="text-center">${
-                                    self.viewActionOption(question)
-                                }</td>
-                                <td class="text-center">${question.score}</td>
-                                ${ 
-                                    index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
-                                }
-                            </tr>`;
-
-                        });
-                    });
+                    }
                 });
                 html += 
                     `<tr class="">
