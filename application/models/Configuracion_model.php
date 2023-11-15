@@ -93,12 +93,12 @@ class Configuracion_model extends CI_Model {
       $response = $this->tools->responseDefault();
       try {
         
-        $sql = "SELECT * FROM periodo_anexos WHERE periodo_id  = ?";
-        $anexos = $this->db->query($sql, compact('id'))->result_object();
+        $sql = "SELECT * FROM periodo_fichas WHERE deleted_at IS NULL AND periodo_id  = ?";
+        $fichas = $this->db->query($sql, compact('id'))->result_object();
 
-        foreach ($anexos as $k => $o) {
+        foreach ($fichas as $k => $o) {
           if ($o->plantilla) {
-            $anexos[$k]->plantilla = json_decode($o->plantilla);
+            $fichas[$k]->plantilla = json_decode($o->plantilla);
           }
         }
 
@@ -106,7 +106,7 @@ class Configuracion_model extends CI_Model {
         $periodo = $this->db->query($sql, compact('id'))->row();
         
         $response['success'] = true;
-        $response['data']  = compact('anexos', 'periodo');
+        $response['data']  = compact('fichas', 'periodo');
         $response['status']  = 200;
         $response['message'] = 'detail';
 
@@ -128,7 +128,7 @@ class Configuracion_model extends CI_Model {
             $anio  = $this->input->post("anio", true);
             $this->db->update('periodos', ['per_nombre' => $name, 'per_anio'=>$anio], array('per_id' => $id));
           break;
-          case 'anexos':
+          case 'actualizadetalleficha':
             $anexo_id  = $this->input->post("anexo_id", true);
             $sections  = $this->input->post("sections", true);
 
@@ -138,8 +138,31 @@ class Configuracion_model extends CI_Model {
               $plantilla['sections'] = $sections;
             }
             $plantilla = json_encode($plantilla);
-            $this->db->update('periodo_anexos', ['plantilla' => $plantilla], array('id' => $anexo_id));
-
+            $this->db->update('periodo_fichas', ['plantilla' => $plantilla], array('id' => $anexo_id));
+          break;
+          case 'nuevaficha':
+            $nombre  = $this->input->post("name", true);
+            $tipo_id  = $this->input->post("tipo_id", true);
+            $this->db->insert('periodo_fichas', [
+              'nombre' => $nombre,
+              'tipo_id' => $tipo_id,
+              'periodo_id' => $id
+            ]); 
+            $periodo_ficha_id = $this->db->insert_id(); // para saber el id ingresado
+          break;
+          case 'actualizaficha':
+            $ficha_id  = $this->input->post("id", true);
+            $nombre  = $this->input->post("name", true);
+            $tipo_id  = $this->input->post("tipo_id", true);
+            $data = [
+              'nombre' => $nombre,
+              'tipo_id' => $tipo_id
+            ];
+            $this->db->update('periodo_fichas', $data, array('id' => $ficha_id));
+          break;
+          case 'eliminaficha':
+            $ficha_id  = $this->input->post("id", true);
+            $this->db->update('periodo_fichas', ['deleted_at'=>$this->tools->getDateHour()], array('id' => $ficha_id));
           break;
         }
 

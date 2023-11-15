@@ -5,17 +5,19 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             self.periodo_id = dom.getAttribute('data-id');
             dom.removeAttribute('data-id');
             self.modalViewerAnexo = self.modal('modalViewerAnexo');
+            self.modalFicha = self.modal('modalFicha');
             self.initialize();
         },
         data: () => { 
             return {
                 modalViewerAnexo: {},
+                modalFicha: {},
                 periodo_id: 0,
                 sections: [],
                 periodo: {},
-                anexo_id: 0,
-                anexos: [],
-                anexo: {},
+                ficha_id: 0,
+                fichas: [],
+                ficha: {},
                 items: [],
                 options: ['selectiva', 'marcado', 'texto', 'numerico']
             }
@@ -25,11 +27,16 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 sweet2.loading();
                 self.getDetail()
                 .then(data => {
-                    console.log(data);
+                    const containers = dom.querySelectorAll('.container-sheet');
+                    containers.forEach(container => {
+                        container.innerHTML = ``;
+                    });
+                    self.sections = [];
+                    self.ficha = {};
                     self.periodo = data.periodo;
-                    self.anexos = data.anexos;
-                    self.events();
+                    self.fichas = data.fichas;
                     self.setFormPeriodo();
+                    self.events();
                     sweet2.loading(false);
                 })
                 .catch(error => {
@@ -38,8 +45,29 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             },
             events: () => {
 
-                self.eventTag('select-anexo', (e) => {
-                    self.anexo_id = Number(e.target.value);
+                self.eventTag('form-ficha', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    self.setDetail(formData)
+                    .then((data) => {
+                        e.target.reset();
+                        self.modalFicha.hide();
+                        self.initialize();
+                    });
+                }, 'submit');
+
+                self.eventTag('btn-ficha', (e) => {
+                    const forms = dom.querySelectorAll('.form-ficha');
+                    forms.forEach(form => {
+                        form.reset();
+                        form.querySelector('input[name="id"]').value = '';
+                        form.querySelector('input[name="any"]').value = 'nuevaficha';
+                    });
+                    self.modalFicha.show();
+                });
+
+                self.eventTag('select-ficha', (e) => {
+                    self.ficha_id = Number(e.target.value);
                     self.setFormModule();
                 }, 'change');
 
@@ -59,11 +87,11 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
 
             },
             setFormModule: () => {
-                self.anexo = self.anexos.find((o)=>{return o.id == self.anexo_id});
+                self.ficha = self.fichas.find((o)=>{return o.id == self.ficha_id});
                 self.sections = [];
-                if (self.anexo.plantilla) {
-                    if (self.anexo.plantilla.sections) {
-                        self.sections = self.anexo.plantilla.sections;
+                if (self.ficha.plantilla) {
+                    if (self.ficha.plantilla.sections) {
+                        self.sections = self.ficha.plantilla.sections;
                     }
                 }
                 self.viewModule();
@@ -71,22 +99,33 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             setFormPeriodo: () => {
                 dom.querySelector('input[name="name"]').value = self.periodo.per_nombre;
                 dom.querySelector('input[name="anio"]').value = self.periodo.per_anio;
+                const selectFichas = dom.querySelectorAll('.select-ficha');
+                let htmlSelect = `<option value="" selected hidden>[SELECCIONE]</option>`;
+                self.fichas.forEach(ficha => {
+                    htmlSelect += `<option value="${ficha.id}">${ficha.nombre}</option>`;
+                });
+                selectFichas.forEach(select => {
+                    select.innerHTML = htmlSelect;
+                });
             },
             setDetail: (formData) => {
-                sweet2.loading();
-                $.ajax({
-                    url: window.AppMain.url + `configuracion/periodos/${self.periodo_id}/update`,
-                    method: 'POST',
-                    dataType: 'json',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                })
-                .done(function ({success, data, message}) {
-                    sweet2.show({type: success ? 'success' : 'error', html: message});
-                })
-                .fail(function (xhr, status, error) {
-                    sweet2.show({type:'error', text:error});
+                return new Promise((resolve, reject)=>{
+                    sweet2.loading();
+                    $.ajax({
+                        url: window.AppMain.url + `configuracion/periodos/${self.periodo_id}/update`,
+                        method: 'POST',
+                        dataType: 'json',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                    })
+                    .done(function ({success, data, message}) {
+                        sweet2.show({type: success ? 'success' : 'error', html: message});
+                        resolve(data);
+                    })
+                    .fail(function (xhr, status, error) {
+                        sweet2.show({type:'error', text:error});
+                    });
                 });
             },
             getDetail: () => {
@@ -130,12 +169,41 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     const aConfig = document.createElement('a');
                     aConfig.classList.add('link-dark');
                     aConfig.setAttribute('href', '#');
-                    aConfig.innerHTML = `<i class="fa-solid fa-gear me-2"></i>Ajustes`;
+                    aConfig.innerHTML = `<i class="fa-solid fa-gear me-2"></i>Editar`;
                     aConfig.addEventListener('click', (e) => {
                         e.preventDefault();
-                        console.log('ajustes');
+                        const forms = dom.querySelectorAll('.form-ficha');
+                        forms.forEach(form => {
+                            form.querySelector('input[name="any"]').value = 'actualizaficha';
+                            form.querySelector('input[name="id"]').value = self.ficha.id;
+                            form.querySelector('input[name="name"]').value = self.ficha.nombre;
+                            form.querySelector('select[name="tipo_id"]').value = self.ficha.tipo_id; 
+                        });
+                        self.modalFicha.show();
                     });
-                    // colAction.appendChild(aConfig);
+                    colAction.appendChild(aConfig);
+
+                    const aDelete = document.createElement('a');
+                    aDelete.classList.add('link-dark', 'ms-3');
+                    aDelete.setAttribute('href', '#');
+                    aDelete.innerHTML = `<i class="fa-solid fa-trash me-2"></i>Eliminar`;
+                    aDelete.addEventListener('click', (e) => {
+                        sweet2.show({
+                            type: 'question',
+                            text: '¿Estás seguro de eliminar este elemento?',
+                            showCancelButton: true,
+                            onOk: () => {
+                                const formData = new FormData();
+                                formData.append('id', self.ficha_id);
+                                formData.append('any', 'eliminaficha');
+                                self.setDetail(formData)
+                                .then(()=>{
+                                    self.initialize();
+                                });
+                            }
+                        });
+                    });
+                    colAction.appendChild(aDelete);
 
                     rowHeader.appendChild(colAction);
                     container.appendChild(rowHeader);
@@ -186,6 +254,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     btnViewer.innerText = `Visualizar`;
                     btnViewer.addEventListener('click', (e) => {
                         e.preventDefault();
+                        console.log(self.sections);
                         self.viewAnexoDetail();
                         self.modalViewerAnexo.show();
                     });
@@ -202,8 +271,8 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                             showCancelButton: true,
                             onOk: () => {
                                 const formData = new FormData();
-                                formData.append('any', 'anexos');
-                                formData.append('anexo_id', self.anexo_id);
+                                formData.append('any', 'actualizadetalleficha');
+                                formData.append('anexo_id', self.ficha_id);
                                 formData.append('sections', JSON.stringify(self.sections));
                                 self.setDetail(formData);
                             }
@@ -625,32 +694,55 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                             ls = ls + 1;
                         });
                     });
-                    section.groups.forEach((group, index2) => {
-                        lg = 0;
-                        group.questions.forEach((question, index3) => {
-                            lg = lg + 1;
+                    if (section.groups.length == 0) {
+                        html += 
+                        `<tr class=""> 
+                            <td class="colvert bg-light">${section.name}</td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                        </tr>`;
+                    } else {
+                        section.groups.forEach((group, index2) => {
+                            lg = 0;
+                            group.questions.forEach((question, index3) => {
+                                lg = lg + 1;
+                            });
+                            if (group.questions.length == 0) {
+                                html += 
+                                `<tr class=""> 
+                                    <td class="colvert bg-light">${section.name}</td>
+                                    <td>${group.name}</td>
+                                    <td></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                </tr>`;
+                            } else {
+                                group.questions.forEach((question, index3) => {
+                                    html += 
+                                    `<tr class="">
+                                        ${ 
+                                            index3 == 0 && index2 == 0 ? `<td class="colvert bg-light" rowspan="${ls}">${section.name}</td>` : ``
+                                        }
+                                        ${ 
+                                            index3 == 0 ? `<td rowspan="${lg}">${group.name}</td>` : ``
+                                        }
+                                        <td>${question.name}</td>
+                                        <td class="text-center">${
+                                            self.viewActionOption(question)
+                                        }</td>
+                                        <td class="text-center">${question.score}</td>
+                                        ${ 
+                                            index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
+                                        }
+                                    </tr>`;
+                                });    
+                            }
                         });
-                        group.questions.forEach((question, index3) => {
-                            html += 
-                            `<tr class="">
-                                ${ 
-                                    index3 == 0 && index2 == 0 ? `<td class="colvert bg-light" rowspan="${ls}">${section.name}</td>` : ``
-                                }
-                                ${ 
-                                    index3 == 0 ? `<td scope="row" rowspan="${lg}">${group.name}</td>` : ``
-                                }
-                                <td>${question.name}</td>
-                                <td class="text-center">${
-                                    self.viewActionOption(question)
-                                }</td>
-                                <td class="text-center">${question.score}</td>
-                                ${ 
-                                    index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
-                                }
-                            </tr>`;
-
-                        });
-                    });
+                    }
                 });
                 html += 
                     `<tr class="">
