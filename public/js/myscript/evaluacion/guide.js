@@ -1,5 +1,5 @@
 
-const viewAnexoDetail = () => {
+const viewfichaDetail = () => {
 
 	return new Promise(function (resolve, reject) {
 		let periodo_id = 1;
@@ -12,34 +12,34 @@ const viewAnexoDetail = () => {
 		.done(function ({success, data, message}) {
 			if (success) {
 				let self = {
-					anexo_id: 1,
-					anexos: data.anexos,
+					ficha_id: 1,
+					fichas: data.fichas,
 					sections: [],
-					anexo: {}
+					ficha: {}
 				};
 
 
 				let setFormModule = () => {
-					self.anexo = self.anexos.find((o)=>{return o.id == self.anexo_id});
+					self.ficha = self.fichas.find((o)=>{return o.id == self.ficha_id});
 					self.sections = [];
-					if (self.anexo.plantilla) {
-						if (self.anexo.plantilla.sections) {
-							self.sections = self.anexo.plantilla.sections;
+					if (self.ficha.plantilla) {
+						if (self.ficha.plantilla.sections) {
+							self.sections = self.ficha.plantilla.sections;
 						}
 					}
-					viewAnexoDetail();
+					viewfichaDetail();
 				};
 
 				const selects = document.querySelectorAll('.select-anexo');
                 selects.forEach(select => {
 					
                     select.addEventListener('change', (e) => {
-						self.anexo_id = Number(e.target.value);
+						self.ficha_id = Number(e.target.value);
 						setFormModule();
                     });
                 });
 
-				let viewAnexoDetail = () => {
+				let viewfichaDetail = () => {
 
 					let html = ``;
 					let total = 0;
@@ -123,4 +123,4 @@ const viewAnexoDetail = () => {
 	});
 };
 
-document.addEventListener('DOMContentLoaded', viewAnexoDetail());
+document.addEventListener('DOMContentLoaded', viewfichaDetail());
