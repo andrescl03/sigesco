@@ -131,7 +131,8 @@ class Convocatorias extends CI_Controller {
         $fechaDesde     = $this->input->post("fechaDesde",true);
         $fechaHasta     = $this->input->post("fechaHasta",true);
         $grupoArr       = $this->input->post("grupoArr",true);
-        
+        $idTipo         = $this->input->post("idTipo",true);
+
         $dateInicio     = new DateTime( $fechaDesde );
         $fechaInicio    = $dateInicio->format( "Y-m-d" );
 
@@ -150,7 +151,8 @@ class Convocatorias extends CI_Controller {
             "con_anio"  	    => $anio,
             "con_fechainicio"   => $fechaInicio,
             "con_fechafin"      => $fechaFin,
-            "con_estado"        => $estado
+            "con_estado"        => $estado,
+            "con_tipo"          => $idTipo
         );
 
         $idCon = $this->convocatorias_model->insertarConvocatoria($arr_1);

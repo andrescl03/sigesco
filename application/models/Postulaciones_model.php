@@ -358,11 +358,8 @@ class Postulaciones_model extends CI_Model {
                 show_404();
             }*/
     
-            $convocatoria->con_type_postulacion = 2; // PUN
-            if ($convocatoria->con_id == 7) {
-                $convocatoria->con_type_postulacion = 1;
-            }
-    
+            $convocatoria->con_type_postulacion = $convocatoria->con_tipo; 
+
             $response['success'] = true;
             $response['data']  = compact('convocatoria', 'uid', 'postulante', 'postulacion_archivos', 'postulacion_experiencias_laborales', 'postulacion_formaciones_academicas', 'postulacion_especializaciones');
             $response['status']  = 200;

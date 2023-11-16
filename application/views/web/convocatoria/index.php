@@ -51,8 +51,11 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a type="button" class="btn btn-sm btn-danger <?= $dato['con_estado'] ? '' : 'disabled' ?>" title="Ingresar a postular" data-bs-toggle="modal" data-bs-target="#postularModal" data-conid="<?= $dato['con_id'] ?>" data-contitle="<?= "CONV-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio']  ?>" <b><i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i>POSTULAR</b>
-                                            </a>
+                                            <?php if ($dato['con_tipo'] == 2  || $dato['con_tipo'] == 1 ) { ?>
+                                                <a type="button" class="btn btn-sm btn-danger <?= $dato['con_estado'] ? '' : 'disabled' ?>" title="Ingresar a postular" data-bs-toggle="modal" data-bs-target="#postularModal" data-conid="<?= $dato['con_id'] ?>" data-contitle="<?= "CONV-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio']  ?>" <b><i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i>POSTULAR</b>
+                                                </a>
+                                            <?php } ?>
+                                            
                                         </div>
                                     </td>
                                 </tr>
@@ -72,7 +75,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                        
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

@@ -23,7 +23,7 @@ class Convocatorias_Web_model extends CI_Model
       ->where(array("cde.cde_estado" => 1, "gin.periodos_per_id" => $idPer, "gin.procesos_pro_id" => $idPro))
       ->order_by("con.con_id desc, mod.mod_id asc, niv.niv_id asc, esp.esp_id asc")
       ->get();
-      //echo $this->db->last_query(); exit(); 
+     //echo $this->db->last_query(); exit(); 
      return $sql->result_array();
   }
 
@@ -49,7 +49,8 @@ class Convocatorias_Web_model extends CI_Model
                     N.niv_descripcion AS nivel_nombre,
                     E.esp_id AS especialidad_id,
                     E.esp_descripcion AS especialidad_nombre,
-                    GI.gin_id AS inscripcion_id
+                    GI.gin_id AS inscripcion_id,
+                    C.con_tipo as con_tipo
                 FROM convocatorias C
                 INNER JOIN convocatorias_detalle CD ON CD.convocatorias_con_id = C.con_id
                 INNER JOIN grupo_inscripcion GI ON GI.gin_id = CD.grupo_inscripcion_gin_id
@@ -74,10 +75,8 @@ class Convocatorias_Web_model extends CI_Model
         throw new Exception("La convocatoria ya expiró");
       }
 
-      $convocatoria->con_type_postulacion = 2; // PUN
-      if ($convocatoria->con_id == 7) {
-        $convocatoria->con_type_postulacion = 1;
-      }
+      $convocatoria->con_type_postulacion = $convocatoria->con_tipo; // PUN
+      
 
       $fechaActual = new DateTime();
       $fechaFin = new DateTime($convocatoria->con_fechafin);

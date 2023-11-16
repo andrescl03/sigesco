@@ -21,7 +21,7 @@ class ConvocatoriasWeb extends CI_Controller
         $idPro  = true;
 
         $datos  = $this->convocatorias_web_model->index($idPer, $idPro);
-
+        //echo json_encode($datos);die();
         $this->layout->js(array(base_url() . "public/web/js/convocatorias/index.js"));
         $this->layout->view("/web/convocatoria/index", compact('dato', 'datos'));
     }

@@ -377,6 +377,7 @@ var btn_agregarNuevaConvocatoria = function () {
             idPro           = $("#opt_tipoProcesoModal").val();
             fechaDesde      = $("#fecha_inicio").val();
             fechaHasta      = $("#fecha_fin").val();
+			idTipo           = $("#opt_tipoConvocatoriaModal").val();
 
             if(grupoArr.length == 0) {
                 ToastError.fire({title: 'Agregar al menos un grupo de inscripción.'});
@@ -388,7 +389,8 @@ var btn_agregarNuevaConvocatoria = function () {
                     idPro   	: idPro,
                     fechaDesde  : fechaDesde,
                     fechaHasta  : fechaHasta,
-                    grupoArr    : grupoArr
+                    grupoArr    : grupoArr,
+					idTipo      : idTipo
                 }
                 SwalConfirmacionCenter.fire({
                     html: "¿Seguro(a) que desea <b class='text-primary h4'>registrar</b> esta información?"
