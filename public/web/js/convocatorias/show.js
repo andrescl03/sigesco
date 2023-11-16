@@ -113,6 +113,7 @@ const AppConvovatoriaWeb = () => {
 
                 self.eventTag('btn-save', () => {
                     self.formData.append('convocatoria_id', self.convocatoriaId);
+                    self.formData.append('inscripcion_id', self.inscripcionId);
                     self.formData.append('tipo_documento', self.typeDocument);
                     self.formData.append('archivos_adjuntos', self.attachedFiles);
                     self.formData.append('experiencias_laborales', JSON.stringify(self.workExperiences));

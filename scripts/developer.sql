@@ -140,3 +140,7 @@ CREATE TABLE `tipo_convocatoria` (
 
 INSERT INTO `tipo_convocatoria` (`tipo_id`, `descripcion`) VALUES (1, 'EVALUACIÓN DE EXPEDIENTE');
 INSERT INTO `tipo_convocatoria` (`tipo_id`, `descripcion`) VALUES (2, 'PUN');
+
+
+/*********** 16/11/2023 **********/
+ALTER TABLE evaluacion_pun_exp ADD COLUMN convocatorias_con_id INT(11) DEFAULT '0' NULL;

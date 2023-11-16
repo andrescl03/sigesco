@@ -158,20 +158,22 @@ class Evaluacion_model extends CI_Model {
     
     public function getPostulacionArchivos($postulaciones) {
       $postulaciones_ids = [];
+      $postulacion_archivos_keys = [];
+      
       foreach ($postulaciones as $k => $o) {
         $postulaciones_ids[] = $o['id'];
       }
 
-      $sql = "SELECT 
+      if (count($postulaciones_ids)) {
+        $sql = "SELECT 
                 par.*
               FROM postulacion_archivos par
               WHERE par.deleted_at IS NULL 
               AND par.postulacion_id IN (".implode(",", $postulaciones_ids).")";
-      $postulacion_archivos = $this->db->query($sql)->result_array();
-
-      $postulacion_archivos_keys = [];
-      foreach ($postulacion_archivos as $k => $o) {
-        $postulacion_archivos_keys[$o['postulacion_id']][] = $o;
+        $postulacion_archivos = $this->db->query($sql)->result_array();
+        foreach ($postulacion_archivos as $k => $o) {
+          $postulacion_archivos_keys[$o['postulacion_id']][] = $o;
+        }
       }
 
       foreach ($postulaciones as $k => $o) {

@@ -230,14 +230,14 @@ class Postulaciones_model extends CI_Model
 
             $archivos = $this->db->query($sql, compact('postulacion_id'))->result_object();
 
-            if ($data['correo']) {
+            /*if ($data['correo']) {
                 $receivers = array();
                 $subtitle = 'SE ACABA DE REGISTRAR MANERA EXITOSA';
                 array_push($receivers, $data['correo']);
                 $message = $this->messageMail($uid, $postulante);
                 $subject = "prueba";
                 $result = $this->email_model->mail(compact('receivers', 'message', 'subject'));
-            }
+            }*/
 
             $response['success'] = true;
             $response['data'] = compact('postulante', 'archivos');
