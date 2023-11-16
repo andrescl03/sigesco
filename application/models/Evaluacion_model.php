@@ -107,8 +107,11 @@ class Evaluacion_model extends CI_Model {
               WHERE pos.deleted_at IS NULL 
               AND pos.convocatoria_id = $convId
               GROUP BY pos.id";
-      return $this->db->query($sql)->result_array();
-    } 
+      $postulaciones = $this->db->query($sql)->result_array();
+      $postulaciones = $this->getPostulacionArchivos($postulaciones);
+
+      return $postulaciones;
+    }
 
     public function listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuario($idGin, $usuario, $evaluc){
       $sql=$this->db
@@ -130,25 +133,55 @@ class Evaluacion_model extends CI_Model {
         return $sql->result_array();  
     }
     
-    public function listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuarioV2($idGin, $usuario, $evaluc){
-      $sql=$this->db
-        ->select("cpe.*,epe.epe_id, usu.usu_nombre, usu.usu_apellidos, usu.usu_dni")      
-        ->from("cuadro_pun_exp cpe")
-        ->join("evaluacion_pun_exp epe", "cpe.cpe_id = epe.cuadro_pun_exp_cpe_id ", "left")   
-        ->join("usuarios usu", "usu.usu_dni = epe.epe_especialistaAsignado ", "left")    
-        ->where(array("cpe.cpe_estado"=>1, "cpe.cpe_enviadoeval"=>1, "cpe_tipoCuadro"=>$evaluc, "cpe.grupo_inscripcion_gin_id"=>$idGin, "epe.epe_especialistaAsignado" => $usuario))
-        ->group_start()
-          ->where('epe.epe_tipoevaluacion', 1) // 1: PRELIMINAR 2: FINAL
-          ->or_where('epe.epe_tipoevaluacion', NULL)
-        ->group_end()
-        ->group_start()
-          ->where('epe.epe_estadoEvaluacion', 1) // 1: ABIERTO, 0: CERRADO
-          ->or_where('epe.epe_estadoEvaluacion', NULL)
-        ->group_end()
-        ->get();
-        // echo $this->db->last_query(); exit(); 
-        return $sql->result_array();  
-    } 
+    public function listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuarioV2($convId, $usuario){
+      $sql = "SELECT 
+            pos.*,
+            cpp.cpe_orden,
+            epe.epe_id, 
+            usu.usu_nombre, 
+            usu.usu_apellidos, 
+            usu.usu_dni 
+          FROM postulaciones pos
+          INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id
+          LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id
+          LEFT JOIN evaluacion_pun_exp epe ON epe.convocatorias_con_id = pos.convocatoria_id 
+          LEFT JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
+          WHERE pos.deleted_at IS NULL 
+          AND pos.convocatoria_id = $convId
+          AND epe.epe_especialistaAsignado = $usuario
+          GROUP BY pos.id";
+      $postulaciones = $this->db->query($sql)->result_array();
+      $postulaciones = $this->getPostulacionArchivos($postulaciones);
+
+      return $postulaciones; 
+    }
+    
+    public function getPostulacionArchivos($postulaciones) {
+      $postulaciones_ids = [];
+      foreach ($postulaciones as $k => $o) {
+        $postulaciones_ids[] = $o['id'];
+      }
+
+      $sql = "SELECT 
+                par.*
+              FROM postulacion_archivos par
+              WHERE par.deleted_at IS NULL 
+              AND par.postulacion_id IN (".implode(",", $postulaciones_ids).")";
+      $postulacion_archivos = $this->db->query($sql)->result_array();
+
+      $postulacion_archivos_keys = [];
+      foreach ($postulacion_archivos as $k => $o) {
+        $postulacion_archivos_keys[$o['postulacion_id']][] = $o;
+      }
+
+      foreach ($postulaciones as $k => $o) {
+        $postulaciones[$k]['archivos'] = [];
+        if (isset($postulacion_archivos_keys[$o['id']])) {
+          $postulaciones[$k]['archivos'] = $postulacion_archivos_keys[$o['id']];
+        }
+      }
+      return $postulaciones;
+    }
 
     public function verEspecialistasAcceso(){
       $sql=$this->db

@@ -115,8 +115,8 @@ class Evaluacion extends CI_Controller {
                     $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuarioV2($convId, $usuario);
                 }
                 // writer($datos);
-                foreach ($datos as $key_1 => $dato) {
-                    /*$idCpu = $dato['cpe_id'];
+                /*foreach ($datos as $key_1 => $dato) {
+                    $idCpu = $dato['cpe_id'];
                     $asignaciones = $this->convocatorias_model->listarAsignacionxCuadroPun($idCpu);
                     if(!empty($asignaciones)){
                         foreach ($asignaciones as $key_2 =>$asignacion) {
@@ -133,8 +133,8 @@ class Evaluacion extends CI_Controller {
                         }
                     }else{
                         $datos[$key_1]['expediente'] = [];
-                    }*/
-                }
+                    }
+                }*/
                 //writer($datos);
                 $this->layout->setLayout("template_ajax");
                 $this->layout->view('convocatoria/cargar/pun/pun', compact('datos'));
