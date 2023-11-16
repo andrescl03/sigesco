@@ -30,6 +30,17 @@
                     <?php } ?>                
                 </select>
             </div>
+            <div class="col-md-2 mb-2 mt-1"><b>Tipo de convocatoriaa:</b></div>
+            <div class="col-md-10 mb-2">
+                <select class="form-select form-select-sm" name="opt_tipoConvocatoriaModal" id="opt_tipoConvocatoriaModal" > 
+                    <option value="">Elegir...</option>      
+                    <?php $tipos = [  ['id' => 1, 'descripcion' => 'PUN'],  ['id' => 2, 'descripcion' => 'EVALUACION DE EXPEDIENTE'] ]; ?>
+                    <?php foreach ($tipos as $tipo) { ?>
+                        <option value="<?= $tipo['id'] ?>" <?= $tipo['pro_default']==1 ? "Selected" : "" ?> ><?= $tipo['descripcion'] ?></option>
+                    <?php } ?>                
+                </select>
+            </div>
+
         </div>
 
         <div class="row">
