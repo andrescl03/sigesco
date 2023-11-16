@@ -103,19 +103,20 @@ class Evaluacion extends CI_Controller {
         $evaluc     = $this->input->post("evaluc",true); // 1: PUN, 2: POR EXP    
         $tipo       = $this->input->post("tipo",true);  // 1: PRELIMINAR, 2: FINAL   
         $todos      = $this->input->post("todos",true); // 0: POR ESPECIALISTA, 1: TODOS
-        
-        $usuario = $this->session->userdata("sigesco_dni");
+        $convId     = $this->input->post("convId",true);
+        $usuario    = $this->session->userdata("sigesco_dni");
 
        
         switch ($tipo) {
             case '1':
                 if($todos==1){// 1: todos
-                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminar($idGin, $evaluc);
+                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarV2($convId);
                 }else{// 0: por especialista
-                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuario($idGin, $usuario, $evaluc);
+                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuarioV2($convId, $usuario);
                 }
+                // writer($datos);
                 foreach ($datos as $key_1 => $dato) {
-                    $idCpu = $dato['cpe_id'];
+                    /*$idCpu = $dato['cpe_id'];
                     $asignaciones = $this->convocatorias_model->listarAsignacionxCuadroPun($idCpu);
                     if(!empty($asignaciones)){
                         foreach ($asignaciones as $key_2 =>$asignacion) {
@@ -132,7 +133,7 @@ class Evaluacion extends CI_Controller {
                         }
                     }else{
                         $datos[$key_1]['expediente'] = [];
-                    }
+                    }*/
                 }
                 //writer($datos);
                 $this->layout->setLayout("template_ajax");

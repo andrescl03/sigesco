@@ -35,14 +35,13 @@
                     </td>
                 <?php } ?>   
                 <td><?= toMayus($dato['usu_nombre']." ".$dato['usu_apellidos']) ?></td>
-                <td class="text-center"><?= $dato['numero_documento'] ?></td>	
-                <td><?= $dato['apellido_paterno']." ".$dato['apellido_materno'] ?></td>
-                <td><?= $dato['nombre'] ?></td>
+                <td class="text-center"><?= $dato['cpe_documento'] ?></td>	
+                <td><?= $dato['cpe_apellidos'] ?></td>
+                <td><?= $dato['cpe_nombres'] ?></td>
                 <td class="text-center"><?= $dato['cpe_orden'] ?></td>
                 <td class="text-center">
-                    <span class="badge bg-success" style="font-size: 0.9em;">KEJDNEI7Y4R-83R</span>
                     <?php
-                        /*if($dato['cpe_sepresento'] == 0){ //0: NO SE PRESENTÓ , 2: REGISTRADO, 1: PRESENTO EXP.
+                        if($dato['cpe_sepresento'] == 0){ //0: NO SE PRESENTÓ , 2: REGISTRADO, 1: PRESENTO EXP.
                             echo '<span class="badge bg-warning text-dark" style="font-size: 0.85em;">NO REGISTRÓ EXPEDIENTE</span>';
                         }else{                            
                             foreach ($dato['expediente'] as $value_1) {
@@ -52,36 +51,14 @@
                                     echo "<b>".$value_1['codigo']."</b>"."</br>";
                                 }
                             }
-                        }*/
+                        }
+                        
                     ?>
                 </td>
                <td class="text-center">
                 <div class="d-flex justify-content-center gap-2">                  
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $data['id'] ?>">
-                        <i class="fa-solid fa-file-pdf fa-2xl"></i>
-                    </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal<?php echo $data['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    ...
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <?php 
-                        /*foreach ($dato['expediente'] as $key => $value_1) {
+                        foreach ($dato['expediente'] as $key => $value_1) {
                             foreach ($value_1['archivo'] as $value_2) {
                                 switch ($value_2['procedencia']) {
                                     case '1':  // MPV
@@ -106,7 +83,7 @@
                             if($key != count($dato['expediente'])-1){
                                 echo '<div class="vr"></div>';
                             }
-                        }*/
+                        }
                     ?>
                     </div> 
                 </td>

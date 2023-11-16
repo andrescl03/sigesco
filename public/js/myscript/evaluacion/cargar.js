@@ -27,12 +27,14 @@ var Init = function (){
 	idGin   = $("#txt_idGin").val();
 	evaluc  = $("#txt_eval").val();   
 	tipo   	= $("#txt_tipo").val();
+	convId  = $("#txt_idConv").val();
 	todos	= Number($("#chk_especialistasTodos").is(':checked'));
 	parametros  = {           
 		idGin		: idGin,
 		evaluc		: evaluc,
 		tipo        : tipo,
-		todos		: todos
+		todos		: todos,
+		convId  	: convId
 	}  
 	VListarCargarExpedientePunEvaluar(parametros);
 }

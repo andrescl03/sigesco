@@ -89,9 +89,48 @@ class Evaluacion_model extends CI_Model {
         ->get();
         // echo $this->db->last_query(); exit(); 
         return $sql->result_array();  
+    }
+    
+    public function listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarV2($convId) {
+      $sql = "SELECT 
+                pos.*,
+                cpp.cpe_orden,
+                epe.epe_id, 
+                usu.usu_nombre, 
+                usu.usu_apellidos, 
+                usu.usu_dni 
+              FROM postulaciones pos
+              INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id
+              LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id
+              LEFT JOIN evaluacion_pun_exp epe ON epe.convocatorias_con_id = pos.convocatoria_id 
+              LEFT JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
+              WHERE pos.deleted_at IS NULL 
+              AND pos.convocatoria_id = $convId
+              GROUP BY pos.id";
+      return $this->db->query($sql)->result_array();
     } 
 
     public function listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuario($idGin, $usuario, $evaluc){
+      $sql=$this->db
+        ->select("cpe.*,epe.epe_id, usu.usu_nombre, usu.usu_apellidos, usu.usu_dni")      
+        ->from("cuadro_pun_exp cpe")
+        ->join("evaluacion_pun_exp epe", "cpe.cpe_id = epe.cuadro_pun_exp_cpe_id ", "left")   
+        ->join("usuarios usu", "usu.usu_dni = epe.epe_especialistaAsignado ", "left")    
+        ->where(array("cpe.cpe_estado"=>1, "cpe.cpe_enviadoeval"=>1, "cpe_tipoCuadro"=>$evaluc, "cpe.grupo_inscripcion_gin_id"=>$idGin, "epe.epe_especialistaAsignado" => $usuario))
+        ->group_start()
+          ->where('epe.epe_tipoevaluacion', 1) // 1: PRELIMINAR 2: FINAL
+          ->or_where('epe.epe_tipoevaluacion', NULL)
+        ->group_end()
+        ->group_start()
+          ->where('epe.epe_estadoEvaluacion', 1) // 1: ABIERTO, 0: CERRADO
+          ->or_where('epe.epe_estadoEvaluacion', NULL)
+        ->group_end()
+        ->get();
+        // echo $this->db->last_query(); exit(); 
+        return $sql->result_array();  
+    }
+    
+    public function listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuarioV2($idGin, $usuario, $evaluc){
       $sql=$this->db
         ->select("cpe.*,epe.epe_id, usu.usu_nombre, usu.usu_apellidos, usu.usu_dni")      
         ->from("cuadro_pun_exp cpe")
