@@ -121,6 +121,8 @@ const viewfichaDetail = () => {
 		});
 
 	});
+
+	
 };
 
 document.addEventListener('DOMContentLoaded', viewfichaDetail());

@@ -231,11 +231,13 @@ class Evaluacion extends CI_Controller {
         $arreglo    = explode("||",$_cadena);     
         $idCpu      = $arreglo[0];
         $idEpu      = $arreglo[1];       
-      
+  
+
         if (count($arreglo) != 2) redirect(base_url()."errores/error404");
 
-        $datos = $this->evaluacion_model->verFichaEvaluacion(); 
 
+        $datos = $this->evaluacion_model->verFichaEvaluacion(); 
+     
         $this->layout->js(array(base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
         base_url()."public/js/myscript/evaluacion/guide.js?t=".date("mdYHis")));
         $this->layout->view("ficha/ficha", compact('datos')); 

@@ -1,14 +1,16 @@
 <?php
-class Postulaciones_model extends CI_Model {
+class Postulaciones_model extends CI_Model
+{
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
         $this->load->library('tools');
-        $this->load->model('email_model');    
+        $this->load->model('email_model');
         $this->load->model("convocatorias_web_model");
     }
 
-    public function store() 
+    public function store()
     {
         $response = $this->tools->responseDefault();
         try {
@@ -39,14 +41,14 @@ class Postulaciones_model extends CI_Model {
                 $response['errors'] = $this->form_validation->error_array();
                 throw new Exception("No cumple con los datos requeridos: " . json_encode($response['errors']));
             }
-        
+
             $apellido_materno = $this->input->post("apellido_materno", true);
             $apellido_paterno = $this->input->post("apellido_paterno", true);
             $nombre           = $this->input->post("nombre", true);
             $correo           = $this->input->post("correo", true);
             $confirma_correo  = $this->input->post("confirma_correo", true);
             $direccion        = $this->input->post("direccion", true);
-            $distrito_id      = $this->input->post("distrito_id", true); 
+            $distrito_id      = $this->input->post("distrito_id", true);
             $estado_civil     = $this->input->post("estado_civil", true);
             $fecha_nacimiento = $this->input->post("fecha_nacimiento", true);
             $genero           = $this->input->post("genero", true);
@@ -81,7 +83,7 @@ class Postulaciones_model extends CI_Model {
             }
             $convocatoria = $result['data']['convocatoria'];
 
-            $result = $this->find(['documento'=>$numero_documento, 'convocatoria_id'=>$convocatoria_id]);
+            $result = $this->find(['documento' => $numero_documento, 'convocatoria_id' => $convocatoria_id]);
             if (!$result['success']) {
                 throw new Exception($result['message']);
             }
@@ -96,7 +98,7 @@ class Postulaciones_model extends CI_Model {
                         'fecha_termino'        => $item['fecha_termino'],
                         'numero_horas'         => $item['numero_horas']
                     ];
-                }  
+                }
             }
 
             if (count($formaciones_academicas) > 0) {
@@ -110,7 +112,7 @@ class Postulaciones_model extends CI_Model {
                         'rd_titulo'           => $item['rd_titulo'],
                         'obtencion_grado'     => $item['obtencion_grado']
                     ];
-                }  
+                }
             }
 
             if (count($experiencias_laborales) > 0) {
@@ -122,7 +124,7 @@ class Postulaciones_model extends CI_Model {
                         'numero_rd'             => $item['numero_rd'],
                         'numero_contrato'       => $item['numero_contrato']
                     ];
-                }  
+                }
             }
 
             $insert_archivos = [];
@@ -130,29 +132,29 @@ class Postulaciones_model extends CI_Model {
                 $total  = count($_FILES['archivos']['name']);
                 $files  = array();
                 if ($total) {
-                    $path = __DIR__."/../../public/uploads/";
+                    $path = __DIR__ . "/../../public/uploads/";
                     if (!is_dir($path)) {
-                        mkdir($path, 0777,true);
+                        mkdir($path, 0777, true);
                     }
                     $fields = ["name", "type", "tmp_name", "error", "size"];
                     $uploads = $_FILES['archivos'];
                     $result = array();
-                    for ($index=0; $index < $total; $index++) {
+                    for ($index = 0; $index < $total; $index++) {
                         array_push($files, $this->tools->getFieldArray($uploads, $fields, $index));
                     }
                     foreach ($files as $key => $item) {
 
                         if ($item['error'] == UPLOAD_ERR_OK) {
-                            $filename = uniqid(time())."-".$item['name'];
-                            $fullpath = $path.$filename;
-                            $filepath = "/uploads/".$filename;
+                            $filename = uniqid(time()) . "-" . $item['name'];
+                            $fullpath = $path . $filename;
+                            $filepath = "/uploads/" . $filename;
                             $extension = strtolower(pathinfo($item['name'], PATHINFO_EXTENSION));
                             move_uploaded_file($item['tmp_name'], $fullpath);
                             $insert_archivos[] = [
-                                'nombre'  => $item['name'], 
-                                'url'     => $filepath, 
-                                'formato' => $extension, 
-                                'peso'    => $item['size'], 
+                                'nombre'  => $item['name'],
+                                'url'     => $filepath,
+                                'formato' => $extension,
+                                'peso'    => $item['size'],
                             ];
                         }
                     }
@@ -172,7 +174,7 @@ class Postulaciones_model extends CI_Model {
             $data['numero_celular']   = $numero_celular;
             $data['numero_telefono']  = $numero_telefono;
             $data['via']              = $via;
-            $data['nombre_via']       = $nombre_via;            
+            $data['nombre_via']       = $nombre_via;
             $data['zona']             = $zona;
             $data['direccion']        = $direccion;
             $data['fecha_registro']   = $this->tools->getDateHour();
@@ -182,8 +184,8 @@ class Postulaciones_model extends CI_Model {
             $this->db->insert('postulaciones', $data);
             $postulacion_id = $this->db->insert_id();
 
-            $uid = strtolower(uniqid().$postulacion_id);
-            $this->db->update('postulaciones', ['uid'=>$uid], array('id' => $postulacion_id));
+            $uid = strtolower(uniqid() . $postulacion_id);
+            $this->db->update('postulaciones', ['uid' => $uid], array('id' => $postulacion_id));
 
             if (count($insert_especializaciones) > 0) {
                 foreach ($insert_especializaciones as $key => $item) {
@@ -233,42 +235,43 @@ class Postulaciones_model extends CI_Model {
                 $subtitle = 'SE ACABA DE REGISTRAR MANERA EXITOSA';
                 array_push($receivers, $data['correo']);
                 $message = $this->messageMail($uid, $postulante);
-                $subject="prueba";
+                $subject = "prueba";
                 $result = $this->email_model->mail(compact('receivers', 'message', 'subject'));
             }
-            
+
             $response['success'] = true;
             $response['data'] = compact('postulante', 'archivos');
             $response['message'] = 'Se registro correctamente';
-
         } catch (\Exception $e) {
             $response['message'] = $e->getMessage();
         }
         return $response;
     }
+  
 
-    public function find($request) {
-      $response = $this->tools->responseDefault();
-      try {
-        
-        $documento       = isset($request['documento'])       ? $request['documento']       : 0;
-        $convocatoria_id = isset($request['convocatoria_id']) ? $request['convocatoria_id'] : 0;
-        $inscripcion_id  = isset($request['inscripcion_id'])  ? $request['inscripcion_id']  : 0;
+    public function find($request)
+    {
+        $response = $this->tools->responseDefault();
+        try {
 
-        if (!$documento) {
-            throw new Exception("El campo documento es requerido");
-        }
+            $documento       = isset($request['documento'])       ? $request['documento']       : 0;
+            $convocatoria_id = isset($request['convocatoria_id']) ? $request['convocatoria_id'] : 0;
+            $inscripcion_id  = isset($request['inscripcion_id'])  ? $request['inscripcion_id']  : 0;
 
-        $result = $this->convocatorias_web_model->show(compact('convocatoria_id', 'inscripcion_id'));
-        if (!$result['success']) {
-            throw new Exception($result['message']);
-        }
+            if (!$documento) {
+                throw new Exception("El campo documento es requerido");
+            }
 
-        $convocatoria = $result['data']['convocatoria'];
-        $postulante = NULL;
+            $result = $this->convocatorias_web_model->show(compact('convocatoria_id', 'inscripcion_id'));
+            if (!$result['success']) {
+                throw new Exception($result['message']);
+            }
 
-        if ($convocatoria->con_type_postulacion == 2) { // PUN
-            $sql = "SELECT 
+            $convocatoria = $result['data']['convocatoria'];
+            $postulante = NULL;
+
+            if ($convocatoria->con_type_postulacion == 2) { // PUN
+                $sql = "SELECT 
                         CPE.*,
                         ESP.esp_id AS especialidad_id,
                         ESP.esp_descripcion AS especialidad_descripcion,
@@ -284,46 +287,46 @@ class Postulaciones_model extends CI_Model {
                     WHERE CPE.cpe_estado = 1 
                     AND CPE.cpe_documento = ?
                     AND grupo_inscripcion_gin_id = ?";
-            $postulante = $this->db->query($sql, compact('documento', 'inscripcion_id'))->row();
+                $postulante = $this->db->query($sql, compact('documento', 'inscripcion_id'))->row();
 
-            if (!$postulante) {
-                throw new Exception("No se encontro el postulante en los registro de la PUN");
+                if (!$postulante) {
+                    throw new Exception("No se encontro el postulante en los registro de la PUN");
+                }
             }
-        }
 
-        $sql = "SELECT 
+            $sql = "SELECT 
                   P.*
                 FROM postulaciones AS P 
                 WHERE P.deleted_at IS NULL 
                 AND P.numero_documento = ?
                 AND P.convocatoria_id = ?
                 AND P.inscripcion_id = ?";
-        $postulacion = $this->db->query($sql, compact('documento', 'convocatoria_id', 'inscripcion_id'))->row();
+            $postulacion = $this->db->query($sql, compact('documento', 'convocatoria_id', 'inscripcion_id'))->row();
 
-        if ($postulacion) {
-            throw new Exception("Ya se encuentra registrado en está convocatoria");
+            if ($postulacion) {
+                throw new Exception("Ya se encuentra registrado en está convocatoria");
+            }
+
+            $response['success'] = true;
+            $response['data']  = compact('postulante');
+            $response['status']  = 200;
+            $response['message'] = 'showPostulant';
+        } catch (\Exception $e) {
+            $response['message'] = $e->getMessage();
         }
-
-        $response['success'] = true;
-        $response['data']  = compact('postulante');
-        $response['status']  = 200;
-        $response['message'] = 'showPostulant';
-
-      } catch (\Exception $e) {
-          $response['message'] = $e->getMessage();
-      }
-      return $response; 
+        return $response;
     }
 
-    public function edit($args) {
+    public function edit($args)
+    {
         $response = $this->tools->responseDefault();
         try {
-  
+
             $uid = isset($args['uid']) ? $args['uid'] : 0;
-    
+
             $sql = "SELECT * FROM postulaciones WHERE deleted_at IS NULL AND uid = ?";
             $postulante = $this->db->query($sql, compact('uid'))->row();
-    
+
             if (!$postulante) {
                 show_404();
             }
@@ -339,10 +342,10 @@ class Postulaciones_model extends CI_Model {
 
             $sql = "SELECT * FROM postulacion_especializaciones WHERE deleted_at IS NULL AND postulacion_id = ?";
             $postulacion_especializaciones = $this->db->query($sql, compact('postulacion_id'))->result_object();
-            
+
             $sql = "SELECT * FROM postulacion_formaciones_academicas WHERE deleted_at IS NULL AND postulacion_id = ?";
             $postulacion_formaciones_academicas = $this->db->query($sql, compact('postulacion_id'))->result_object();
-    
+
             $sql = "SELECT * FROM postulacion_experiencias_laborales WHERE deleted_at IS NULL AND postulacion_id = ?";
             $postulacion_experiencias_laborales = $this->db->query($sql, compact('postulacion_id'))->result_object();
 
@@ -357,29 +360,29 @@ class Postulaciones_model extends CI_Model {
                 && $now_unix <= $con_fechafin_unix)) {
                 show_404();
             }*/
-    
-            $convocatoria->con_type_postulacion = $convocatoria->con_tipo; 
+
+            $convocatoria->con_type_postulacion = $convocatoria->con_tipo;
 
             $response['success'] = true;
             $response['data']  = compact('convocatoria', 'uid', 'postulante', 'postulacion_archivos', 'postulacion_experiencias_laborales', 'postulacion_formaciones_academicas', 'postulacion_especializaciones');
             $response['status']  = 200;
             $response['message'] = 'show';
-  
         } catch (\Exception $e) {
             $response['message'] = $e->getMessage();
         }
         return $response;
     }
 
-    public function update($args) {
+    public function update($args)
+    {
         $response = $this->tools->responseDefault();
         try {
-  
+
             $uid = isset($args['uid']) ? $args['uid'] : 0;
-    
+
             $sql = "SELECT * FROM postulaciones WHERE deleted_at IS NULL AND uid = ?";
             $postulacion = $this->db->query($sql, compact('uid'))->row();
-    
+
             if (!$postulacion) {
                 throw new Exception("No se encontro el registro");
             }
@@ -397,30 +400,30 @@ class Postulaciones_model extends CI_Model {
             switch ($any) {
                 case 'archivos_adjuntos_guardar':
                     if (isset($_FILES['archivo'])) {
-                        $path = __DIR__."/../../public/uploads/";
+                        $path = __DIR__ . "/../../public/uploads/";
                         if (!is_dir($path)) {
-                            mkdir($path, 0777,true);
+                            mkdir($path, 0777, true);
                         }
                         $file = $_FILES['archivo'];
                         if ($file['error'] == UPLOAD_ERR_OK) {
-                            $filename = uniqid(time())."-".$file['name'];
-                            $fullpath = $path.$filename;
-                            $filepath = "/uploads/".$filename;
+                            $filename = uniqid(time()) . "-" . $file['name'];
+                            $fullpath = $path . $filename;
+                            $filepath = "/uploads/" . $filename;
                             $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
                             move_uploaded_file($file['tmp_name'], $fullpath);
                             $data = [
-                                'nombre'  => $file['name'], 
-                                'url'     => $filepath, 
-                                'formato' => $extension, 
+                                'nombre'  => $file['name'],
+                                'url'     => $filepath,
+                                'formato' => $extension,
                                 'peso'    => $file['size'],
                                 'tipo_id' => $_POST['tipo'],
-                                'postulacion_id' => $postulacion_id 
+                                'postulacion_id' => $postulacion_id
                             ];
                             $this->db->insert('postulacion_archivos', $data);
                         }
                     }
-                break;
-                case 'experiencia_laboral_guardar' :
+                    break;
+                case 'experiencia_laboral_guardar':
                     $data = [
                         'institucion_educativa' => $_POST['institucion_educativa'],
                         'sector'                => $_POST['sector'],
@@ -430,8 +433,8 @@ class Postulaciones_model extends CI_Model {
                         'postulacion_id'        => $postulacion_id
                     ];
                     $this->db->insert('postulacion_experiencias_laborales', $data);
-                break;
-                case 'formacion_academica_guardar' :
+                    break;
+                case 'formacion_academica_guardar':
                     $data = [
                         'nivel_educativo'     => $_POST['nivel_educativo'],
                         'grado_academico'     => $_POST['grado_academico'],
@@ -443,8 +446,8 @@ class Postulaciones_model extends CI_Model {
                         'postulacion_id'      => $postulacion_id
                     ];
                     $this->db->insert('postulacion_formaciones_academicas', $data);
-                break;
-                case 'especializacion_guardar' :
+                    break;
+                case 'especializacion_guardar':
                     $data = [
                         'tipo_especializacion' => $_POST['tipo_especializacion'],
                         'tema_especializacion' => $_POST['tema_especializacion'],
@@ -455,41 +458,41 @@ class Postulaciones_model extends CI_Model {
                         'postulacion_id'       => $postulacion_id
                     ];
                     $this->db->insert('postulacion_especializaciones', $data);
-                break;
-                case 'datos_postulante': 
-                
-                break;
-                case 'datos_ubicacion': 
+                    break;
+                case 'datos_postulante':
 
-                break;
-                case 'archivos_adjuntos_eliminar': 
+                    break;
+                case 'datos_ubicacion':
+
+                    break;
+                case 'archivos_adjuntos_eliminar':
                     $this->db->update('postulacion_archivos', ['deleted_at' => $this->tools->getDateHour()], array('id' => $_POST['id']));
-                break;
-                case 'experiencia_laboral_eliminar': 
+                    break;
+                case 'experiencia_laboral_eliminar':
                     $this->db->update('postulacion_experiencias_laborales', ['deleted_at' => $this->tools->getDateHour()], array('id' => $_POST['id']));
-                break;
-                case 'formacion_academica_eliminar': 
+                    break;
+                case 'formacion_academica_eliminar':
                     $this->db->update('postulacion_formaciones_academicas', ['deleted_at' => $this->tools->getDateHour()], array('id' => $_POST['id']));
-                break;
-                case 'especializacion_eliminar': 
+                    break;
+                case 'especializacion_eliminar':
                     $this->db->update('postulacion_especializaciones', ['deleted_at' => $this->tools->getDateHour()], array('id' => $_POST['id']));
-                break;
+                    break;
                 default:
                     # code...
-                break;
+                    break;
             }
-    
+
             $response['success'] = true;
             $response['status']  = 200;
             $response['message'] = 'Se guardo correctamente';
-  
         } catch (\Exception $e) {
             $response['message'] = $e->getMessage();
         }
         return $response;
     }
 
-    public function messageMail($uid, $postulante) {
+    public function messageMail($uid, $postulante)
+    {
         return '
         <!DOCTYPE html PUBLIC "-//W3C//DTDXHTML1.0Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
@@ -614,7 +617,7 @@ class Postulaciones_model extends CI_Model {
                         <tr style="vertical-align: top;" valign="top">
                             <td style="word-break: break-word; vertical-align: top;" valign="top">
                                 <div style="
-                                    background-image: url('.base_url()."assets/image/cover.png".');
+                                    background-image: url(' . base_url() . "assets/image/cover.png" . ');
                                     background-repeat: no-repeat !important;
                                     background-size: cover !important;
                                     background-attachment: fixed !important;
@@ -655,25 +658,25 @@ class Postulaciones_model extends CI_Model {
                                                                     <div style="font-size: 17px;color: #000000; text-align: left;">
 
                                                                         <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
-                                                                            <span>Código: <br>'.$uid.'</span>
+                                                                            <span>Código: <br>' . $uid . '</span>
                                                                         </p>
                                                                         <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
-                                                                            <span>Postulante: <br>'.$postulante->nombre .' '. $postulante->apellido_paterno .' '. $postulante->apellido_materno.'</span>
+                                                                            <span>Postulante: <br>' . $postulante->nombre . ' ' . $postulante->apellido_paterno . ' ' . $postulante->apellido_materno . '</span>
                                                                         </p>
                                                                         <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
-                                                                            <span>Número de Documento: <br>'.$postulante->numero_documento.'</span>
+                                                                            <span>Número de Documento: <br>' . $postulante->numero_documento . '</span>
                                                                         </p>
                                                                         <p style="word-break: break-word; margin:0px; margin-bottom: 15px;">
-                                                                            <span>Fecha de Registro: <br>'.$postulante->fecha_registro.'</span>
+                                                                            <span>Fecha de Registro: <br>' . $postulante->fecha_registro . '</span>
                                                                         </p>
                                                                         <!--p style=" word-break: break-word; margin:0px; margin-bottom: 15px;">
-                                                                            <span>Url: <br>'.base_url().'web/postulaciones/'.$uid.'</span>
+                                                                            <span>Url: <br>' . base_url() . 'web/postulaciones/' . $uid . '</span>
                                                                         </p-->
                                                                     </div>
                                                                 </div>
                                                                 <!--div style="color:#000000; margin-bottom:25px;margin-top:15px;">
                                                                     <div style="font-size: 16px;color: #000000;text-align:center">
-                                                                        <a href="'.base_url().'web/postulaciones/'.$uid.'" type="button" style="color: #ffffff;
+                                                                        <a href="' . base_url() . 'web/postulaciones/' . $uid . '" type="button" style="color: #ffffff;
                                                                             background-color: #de1f29;
                                                                             border-color: #de1f29;
                                                                             border: 1px solid transparent;
