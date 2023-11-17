@@ -84,7 +84,9 @@
                                                                     <span class="<?= $color_1 ?>" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
                                                                 </a>
                                                                 <?php } ?>
-                                                                
+                                                                <a type="button"  title="Ingresar a detalle" href="<?= base_url()?>evaluacion/convocatoria/<?= encryption($cadena."||1||1") ?>" >                                                                
+                                                                    <span class="<?= $color_1 ?>" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
+                                                                </a>
                                                             </div>
                                                         </td>
                                                         <td class="text-center">

@@ -49,7 +49,7 @@ class Evaluacion extends CI_Controller {
 
         if($idCon != '0' && $idGin == '0'){
             $datos   = $this->evaluacion_model->listarGruposInscripcionxConvocatoria($idCon);
-            foreach ($datos as $key_1 => $dato) {
+            /*foreach ($datos as $key_1 => $dato) {
                 $_idGin = $dato['gin_id'];
                 $usuario = $this->session->userdata("sigesco_dni");
                 $docente   = $this->evaluacion_model->listarCuadroPunxIdGrupoConEvaluacion($_idGin, $usuario);
@@ -67,10 +67,7 @@ class Evaluacion extends CI_Controller {
                 $datos[$key_1]['te_final']       = $docente['t_final'];
                 $datos[$key_1]['te_mis_preliminar']  = $docente['t_mis_preliminar'];
                 $datos[$key_1]['te_mis_final']       = $docente['t_mis_final'];
-
-
-
-            }
+            }*/
             $this->layout->js(array(base_url()."public/js/myscript/evaluacion/grupos.js?t=".date("mdYHis")));
 		    $this->layout->view("convocatoria/grupos/grupos", compact('datos')); 
         }
@@ -157,7 +154,7 @@ class Evaluacion extends CI_Controller {
         foreach ($grupos as $grupo) {        
             array_push($ar_idGin, $grupo['grupo_inscripcion_gin_id']);
         }
-        $contador =  $this->evaluacion_model->contarEspecialistasAsignadosaPunxConvocatoriaPreliminar($ar_idGin);
+        $contador =  $this->evaluacion_model->contarEspecialistasAsignadosaPunxConvocatoriaPreliminarV2($ar_idGin, $idConv);
 
         foreach ($datos as $key_1 => $dato) {
             $found_key = (string)array_search($dato['usu_dni'], array_column($contador, 'dni_espec'));    
@@ -193,7 +190,7 @@ class Evaluacion extends CI_Controller {
                     "epe_estadoEvaluacion"      => 1, // 1: abierto, 2: cerrado
                     "epe_estado"                => 1, // 1: activo
                     // "cuadro_pun_exp_cpe_id"         => $idCpu
-                    "convocatorias_con_id"      => $convId
+                    "postulacion_id"      => $idCpu
                 );
                 array_push($ar_insert, $arr_1);
 

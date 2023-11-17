@@ -29,7 +29,7 @@
                 <?php if(in_array("convocatorias/cargarexpedientes", $this->session->userdata("sigesco_rutas"))){ ?>    
                     <td class="text-center">
                         <div class="custom-control custom-checkbox chk_asignarEval" style="padding-right: 20px;">
-                            <input type="checkbox" class="custom-control-input" id="chk_asignarEval_<?= $i+1;?>" value="<?= $dato['cpe_id']."||".($dato['epe_id']== NULL ? 0 : $dato['epe_id']) ?>" correlativo ="<?= $i+1;?>" >
+                            <input type="checkbox" class="custom-control-input" id="chk_asignarEval_<?= $i+1;?>" value="<?= $dato['id']."||".($dato['epe_id']== NULL ? 0 : $dato['epe_id']) ?>" correlativo ="<?= $i+1;?>" >
                             <label class="custom-control-label" for="chk_asignarEval_<?= $i+1;?>"></label>
                         </div>                   
                     </td>

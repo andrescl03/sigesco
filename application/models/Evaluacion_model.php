@@ -221,6 +221,17 @@ class Evaluacion_model extends CI_Model {
         return $sql->result_array();  
     }
 
+    public function contarEspecialistasAsignadosaPunxConvocatoriaPreliminarV2($ar_idGin, $idConv){
+      $sql=$this->db
+        ->select("epe.epe_especialistaAsignado as dni_espec, count(epe_especialistaAsignado) AS total")      
+        ->from("postulaciones pos")
+        ->join("evaluacion_pun_exp epe", "pos.id = epe.postulacion_id ")
+        ->where(array("pos.deleted_at", "pos.convocatoria_id"=>$idConv))
+        ->where_in("pos.inscripcion_id", $ar_idGin)
+        ->group_by(array("epe_especialistaAsignado"))
+        ->get();
+        return $sql->result_array();  
+    }
 
     public function updateBatchEvaluacionPun($data){
       $this->db->update_batch('evaluacion_pun_exp', $data, 'epe_id', 1000);
