@@ -5,8 +5,8 @@
         <li class="breadcrumb-item active">Registro de Expediente Externo</li> -->
 </ol>
 
-<div class="app-row">
-    <div class="col-md-12">
+<div class="app-row row">
+    <div class="col-md-3">
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
@@ -255,6 +255,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="col-md-9">
         <div class="tile">
             <div class="tile-body">
                 <div class="card border-secondary">
