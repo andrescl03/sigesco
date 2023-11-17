@@ -83,7 +83,7 @@ class Postulaciones_model extends CI_Model
             }
             $convocatoria = $result['data']['convocatoria'];
 
-            $result = $this->find(['documento' => $numero_documento, 'convocatoria_id' => $convocatoria_id]);
+            $result = $this->find(['documento' => $numero_documento, 'convocatoria_id' => $convocatoria_id, 'inscripcion_id' => $inscripcion_id]);
             if (!$result['success']) {
                 throw new Exception($result['message']);
             }
@@ -180,6 +180,7 @@ class Postulaciones_model extends CI_Model
             $data['fecha_registro']   = $this->tools->getDateHour();
             $data['distrito_id']      = $distrito_id;
             $data['convocatoria_id']  = $convocatoria_id;
+            $data['inscripcion_id']   = $inscripcion_id;
 
             $this->db->insert('postulaciones', $data);
             $postulacion_id = $this->db->insert_id();
@@ -270,7 +271,7 @@ class Postulaciones_model extends CI_Model
             $convocatoria = $result['data']['convocatoria'];
             $postulante = NULL;
 
-            if ($convocatoria->con_type_postulacion == 2) { // PUN
+            if ($convocatoria->con_tipo == 1) { // PUN
                 $sql = "SELECT 
                         CPE.*,
                         ESP.esp_id AS especialidad_id,
@@ -361,7 +362,7 @@ class Postulaciones_model extends CI_Model
                 show_404();
             }*/
 
-            $convocatoria->con_type_postulacion = $convocatoria->con_tipo;
+            // $convocatoria->con_type_postulacion = $convocatoria->con_tipo;
 
             $response['success'] = true;
             $response['data']  = compact('convocatoria', 'uid', 'postulante', 'postulacion_archivos', 'postulacion_experiencias_laborales', 'postulacion_formaciones_academicas', 'postulacion_especializaciones');

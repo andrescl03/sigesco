@@ -91,7 +91,7 @@ class Evaluacion_model extends CI_Model {
         return $sql->result_array();  
     }
     
-    public function listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarV2($convId) {
+    public function listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarV2($convId, $insId) {
       $sql = "SELECT 
                 pos.*,
                 cpp.cpe_orden,
@@ -102,10 +102,11 @@ class Evaluacion_model extends CI_Model {
               FROM postulaciones pos
               INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id
               LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id
-              LEFT JOIN evaluacion_pun_exp epe ON epe.convocatorias_con_id = pos.convocatoria_id 
+              LEFT JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
               LEFT JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
               WHERE pos.deleted_at IS NULL 
               AND pos.convocatoria_id = $convId
+              AND pos.inscripcion_id = $insId
               GROUP BY pos.id";
       $postulaciones = $this->db->query($sql)->result_array();
       $postulaciones = $this->getPostulacionArchivos($postulaciones);
@@ -133,7 +134,7 @@ class Evaluacion_model extends CI_Model {
         return $sql->result_array();  
     }
     
-    public function listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuarioV2($convId, $usuario){
+    public function listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuarioV2($convId, $insId, $usuario){
       $sql = "SELECT 
             pos.*,
             cpp.cpe_orden,
@@ -143,16 +144,16 @@ class Evaluacion_model extends CI_Model {
             usu.usu_dni 
           FROM postulaciones pos
           INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id
-          LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id
-          LEFT JOIN evaluacion_pun_exp epe ON epe.convocatorias_con_id = pos.convocatoria_id 
-          LEFT JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
+          INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id
+          INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
+          INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
           WHERE pos.deleted_at IS NULL 
           AND pos.convocatoria_id = $convId
+          AND pos.inscripcion_id = $insId
           AND epe.epe_especialistaAsignado = $usuario
           GROUP BY pos.id";
       $postulaciones = $this->db->query($sql)->result_array();
       $postulaciones = $this->getPostulacionArchivos($postulaciones);
-
       return $postulaciones; 
     }
     

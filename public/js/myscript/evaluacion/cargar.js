@@ -171,6 +171,7 @@ var btn_asignarReasignar= function(cadena){
 	$('body').off('click', '#btn_asignarReasignar');
     $('body').on('click', '#btn_asignarReasignar', function (e) {
     	usuario=0;
+		var convId = $('#txt_idConv').val();
      	$(".opt_usuario input:radio:checked").each(function () {
             usuario = $(this).val();
         });     	
@@ -181,7 +182,8 @@ var btn_asignarReasignar= function(cadena){
 				if (result.isConfirmed) {
 					parametros = {
 						cadena 	: cadena,
-						usuario	: usuario
+						usuario	: usuario,
+						convId  : convId
 					};
 					CAsignarReasignar(parametros);
 				}

@@ -137,10 +137,16 @@ CREATE TABLE `tipo_convocatoria` (
   KEY `tipo_id` (`tipo_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
-INSERT INTO `tipo_convocatoria` (`tipo_id`, `descripcion`) VALUES (1, 'EVALUACIÓN DE EXPEDIENTE');
-INSERT INTO `tipo_convocatoria` (`tipo_id`, `descripcion`) VALUES (2, 'PUN');
+INSERT INTO `tipo_convocatoria` (`tipo_id`, `descripcion`) VALUES (1, 'PUN');
+INSERT INTO `tipo_convocatoria` (`tipo_id`, `descripcion`) VALUES (2, 'EVALUACIÓN DE EXPEDIENTE');
 
 
 /*********** 16/11/2023 **********/
-ALTER TABLE evaluacion_pun_exp ADD COLUMN convocatorias_con_id INT(11) DEFAULT '0' NULL;
+
+ALTER TABLE evaluacion_pun_exp ADD COLUMN `postulacion_id` INT(11) UNSIGNED NOT NULL DEFAULT '0' AFTER `epe_estado`;
+ALTER TABLE evaluacion_pun_exp DROP COLUMN convocatorias_con_id;
+ALTER TABLE evaluacion_pun_exp DROP FOREIGN KEY fk_evaluacion_pun_exp_cuadro_pun_exp1;
+ALTER TABLE evaluacion_pun_exp DROP INDEX fk_evaluacion_pun_exp_cuadro_pun_exp1_idx;
+ALTER TABLE evaluacion_pun_exp DROP COLUMN cuadro_pun_exp_cpe_id;
+SELECT*FROM evaluacion_pun_exp;
+

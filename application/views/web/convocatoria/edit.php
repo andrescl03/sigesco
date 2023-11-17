@@ -13,7 +13,7 @@
     $anexos[5] = 'Anexo 12';  
     $anexos[6] = 'Anexo 19';
 ?>
-<div class="container" id="AppConvovatoriaEditWeb"  data-uid="<?php echo $data['uid'] ?>" data-id="<?php echo $convocatoria->con_id ?>" data-type="<?php echo $convocatoria->con_type_postulacion ?>">
+<div class="container" id="AppConvovatoriaEditWeb"  data-uid="<?php echo $data['uid'] ?>" data-id="<?php echo $convocatoria->con_id ?>" data-type="<?php echo $convocatoria->con_tipo ?>">
     <div class="card card-custom">
         <div class="card-header">
             <div class="card-title mx-auto">
@@ -41,7 +41,7 @@
                 </div>
                 <div class="col-xl-9">
                     <!-- <form class="form-postulant needs-validation" id="formPostulant" novalidate> -->
-                        <?php if ($convocatoria->con_type_postulacion == 1) { ?>
+                        <?php if ($convocatoria->con_tipo == 2) { ?>
                         <!-- <div class="card mb-5 section" data-scrolled="0">
                             <form class="form-postulant needs-validation" novalidate>
                                 <div class="card-header">
@@ -88,7 +88,7 @@
                                     <h5 class="my-2">Datos personales del postulante</h5>
                                 </div>
                                 <div class="card-body">
-                                <?php if ($convocatoria->con_type_postulacion == 1) { ?>
+                                <?php if ($convocatoria->con_tipo == 1) { ?>
                                     <div class="form-group row">
                                         <label class="col-xl-4 col-lg-4 col-form-label">Nombres</label>
                                         <div class="col-xl-8 col-lg-8">

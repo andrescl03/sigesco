@@ -110,9 +110,9 @@ class Evaluacion extends CI_Controller {
         switch ($tipo) {
             case '1':
                 if($todos==1){// 1: todos
-                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarV2($convId);
+                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarV2($convId, $idGin);
                 }else{// 0: por especialista
-                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuarioV2($convId, $usuario);
+                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuarioV2($convId, $idGin, $usuario);
                 }
                 // writer($datos);
                 /*foreach ($datos as $key_1 => $dato) {
@@ -177,6 +177,7 @@ class Evaluacion extends CI_Controller {
     public function CAsignarReasignar(){
         $cadena     = $this->input->post("cadena",true);
         $usuario    = $this->input->post("usuario",true);
+        $convId     = $this->input->post("convId",true);
         $ar_insert = [];
         $ar_update = [];
         for ($i=0; $i <count($cadena) ; $i++) { 
@@ -191,7 +192,8 @@ class Evaluacion extends CI_Controller {
                     "epe_fechaApertura"         => date("Y-m-d H:i:s"),                
                     "epe_estadoEvaluacion"      => 1, // 1: abierto, 2: cerrado
                     "epe_estado"                => 1, // 1: activo
-                    "cuadro_pun_exp_cpe_id"         => $idCpu
+                    // "cuadro_pun_exp_cpe_id"         => $idCpu
+                    "convocatorias_con_id"      => $convId
                 );
                 array_push($ar_insert, $arr_1);
 

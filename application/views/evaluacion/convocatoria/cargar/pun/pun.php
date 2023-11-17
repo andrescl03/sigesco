@@ -58,10 +58,7 @@
                <td class="text-center">
                 <div class="d-flex justify-content-center gap-2">                  
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $dato['id'] ?>">
-                        <i class="fa-solid fa-file-pdf fa-2xl"></i>
-                    </button>
-
+                    <i class="fa fa-th-list fa-2xl text-danger" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $dato['id'] ?>"></i>
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal<?php echo $dato['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -71,15 +68,32 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <ul class="list-group list-group-flush">
-                                        <?php foreach ($dato['archivos'] as $k2 => $archivo) { ?>
-                                        <li class="list-group-item"><a href="<?php echo $archivo['url']  ?>" target="_blank" donwload><?php echo $archivo['nombre']  ?></a></li>
-                                        <?php } ?>
-                                    </ul>
+                                    <div class="table-responsive mb-3">
+                                        <table class="table mb-0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">N°</th>
+                                                    <th scope="col">Nombre</th>
+                                                    <th scope="col">Archivo</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($dato['archivos'] as $k2 => $archivo) { ?>
+                                                <tr class="">
+                                                    <td scope="row"><?php echo $k2 + 1 ?></td>
+                                                    <td><?php echo $archivo['nombre'] ?></td>
+                                                    <td>
+                                                        <a href="/public<?php echo $archivo['url']  ?>" target="_blank" donwload><i class="fa-solid fa-file-pdf fa-2xl"></i></a>
+                                                    </td>
+                                                </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div class="modal-footer">
+                                <!-- <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

@@ -22,7 +22,7 @@ const AppConvovatoriaWeb = () => {
                 typeDocument: 1,
                 convocatoriaId: 0,
                 inscripcionId: 0,
-                convocatoriaType: 1, // 1 Expediente - 2 PUN
+                convocatoriaType: 1, // 2 Expediente - 1 PUN
                 convocatoria: {},
                 workExperiences: [],
                 academicTrainings: [],
@@ -962,7 +962,7 @@ const AppConvovatoriaWeb = () => {
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-lg-5">Archivo</div>
-                                                            <div class="col-lg-7"><a href="${ window.AppMain.url + '/public'+ item.url}" download>${item.url}</a></div>
+                                                            <div class="col-lg-7"><a href="${ window.AppMain.url + 'public'+ item.url}" download>${item.url}</a></div>
                                                         </div>
                                                     </div>`;
                                         })) : (
@@ -1081,7 +1081,7 @@ const AppConvovatoriaWeb = () => {
         },
         computed: {
             isPUN: () => {
-                return self.convocatoriaType == 2;
+                return self.convocatoriaType == 1;
             }
         },
         utilities: {

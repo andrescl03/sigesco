@@ -1,7 +1,7 @@
 <?php
 $convocatoria = $data['convocatoria'];
 ?>
-<div class="container" id="AppConvocatoriaWeb" data-id="<?php echo $convocatoria->con_id ?>" data-type="<?php echo $convocatoria->con_type_postulacion ?>" data-inscripcion-id="<?php echo $convocatoria->inscripcion_id ?>">
+<div class="container" id="AppConvocatoriaWeb" data-id="<?php echo $convocatoria->con_id ?>" data-type="<?php echo $convocatoria->con_tipo ?>" data-inscripcion-id="<?php echo $convocatoria->inscripcion_id ?>">
     <div class="card card-custom">
         <div class="card-header">
             <div class="w-100">
@@ -13,7 +13,7 @@ $convocatoria = $data['convocatoria'];
                     </div>
                     <div class="col-md-12 text-center">
                         <h6 class="mb-2 text-secondary text-uppercase">
-                            <?php echo $convocatoria->con_type_postulacion == 2 ? 'Evaluación PUN (Prueba Única Nacional)' : 'Evaluación de expedientes' ?>
+                            <?php echo $convocatoria->con_tipo == 1 ? 'Evaluación PUN (Prueba Única Nacional)' : 'Evaluación de expedientes' ?>
                         </h6>
                     </div>
                     <div class="col-md-12 text-center">
@@ -72,7 +72,7 @@ $convocatoria = $data['convocatoria'];
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Número de Documento</label>
                             <div class="col-xl-8 col-lg-8">
-                                <?php if ($convocatoria->con_type_postulacion == 2) { ?>
+                                <?php if ($convocatoria->con_tipo == 1) { ?>
                                     <div class="input-group mb-3">
                                         <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document form-input-document" placeholder="Ingrese su número de documento" required>
                                         <div class="input-group-append">

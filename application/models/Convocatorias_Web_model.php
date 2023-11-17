@@ -75,7 +75,7 @@ class Convocatorias_Web_model extends CI_Model
         throw new Exception("La convocatoria ya expiró");
       }
 
-      $convocatoria->con_type_postulacion = $convocatoria->con_tipo; // PUN
+      // $convocatoria->con_type_postulacion = $convocatoria->con_tipo; // PUN
       
 
       $fechaActual = new DateTime();
