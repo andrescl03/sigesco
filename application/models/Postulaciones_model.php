@@ -248,7 +248,6 @@ class Postulaciones_model extends CI_Model
         }
         return $response;
     }
-  
 
     public function find($request)
     {
@@ -327,6 +326,62 @@ class Postulaciones_model extends CI_Model
 
             $sql = "SELECT * FROM postulaciones WHERE deleted_at IS NULL AND uid = ?";
             $postulante = $this->db->query($sql, compact('uid'))->row();
+
+            if (!$postulante) {
+                show_404();
+            }
+
+            $convocatoria_id = $postulante->convocatoria_id;
+            $postulacion_id = $postulante->id;
+
+            $sql = "SELECT * FROM convocatorias WHERE con_estado = 1 AND con_id = ?";
+            $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
+            if (!$convocatoria) {
+                show_404();
+            }
+
+            $sql = "SELECT * FROM postulacion_especializaciones WHERE deleted_at IS NULL AND postulacion_id = ?";
+            $postulacion_especializaciones = $this->db->query($sql, compact('postulacion_id'))->result_object();
+
+            $sql = "SELECT * FROM postulacion_formaciones_academicas WHERE deleted_at IS NULL AND postulacion_id = ?";
+            $postulacion_formaciones_academicas = $this->db->query($sql, compact('postulacion_id'))->result_object();
+
+            $sql = "SELECT * FROM postulacion_experiencias_laborales WHERE deleted_at IS NULL AND postulacion_id = ?";
+            $postulacion_experiencias_laborales = $this->db->query($sql, compact('postulacion_id'))->result_object();
+
+            $sql = "SELECT * FROM postulacion_archivos WHERE deleted_at IS NULL AND postulacion_id = ?";
+            $postulacion_archivos = $this->db->query($sql, compact('postulacion_id'))->result_object();
+
+            /*$now_unix = strtotime($this->tools->getDateHour());
+            $con_fechainicio_unix = strtotime($convocatoria->con_fechainicio);
+            $con_fechafin_unix = strtotime($convocatoria->con_fechafin);
+            
+            if (!($now_unix >= $con_fechainicio_unix  
+                && $now_unix <= $con_fechafin_unix)) {
+                show_404();
+            }*/
+
+            // $convocatoria->con_type_postulacion = $convocatoria->con_tipo;
+
+            $response['success'] = true;
+            $response['data']  = compact('convocatoria', 'uid', 'postulante', 'postulacion_archivos', 'postulacion_experiencias_laborales', 'postulacion_formaciones_academicas', 'postulacion_especializaciones');
+            $response['status']  = 200;
+            $response['message'] = 'edit';
+        } catch (\Exception $e) {
+            $response['message'] = $e->getMessage();
+        }
+        return $response;
+    }
+
+    public function show($args)
+    {
+        $response = $this->tools->responseDefault();
+        try {
+
+            $id = isset($args['id']) ? $args['id'] : 0;
+
+            $sql = "SELECT * FROM postulaciones WHERE deleted_at IS NULL AND id = ?";
+            $postulante = $this->db->query($sql, compact('id'))->row();
 
             if (!$postulante) {
                 show_404();

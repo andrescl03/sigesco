@@ -21,6 +21,7 @@ class Evaluacion extends CI_Controller {
         $this->load->model("convocatorias_model");
         $this->load->model("evaluacion_model");
         $this->load->model("configuracion_model");
+        $this->load->model("postulaciones_model");
         //$this->load->model("mesadepartes_model");
 		date_default_timezone_set('America/Lima');
 	}
@@ -231,13 +232,12 @@ class Evaluacion extends CI_Controller {
         $arreglo    = explode("||",$_cadena);     
         $idCpu      = $arreglo[0];
         $idEpu      = $arreglo[1];       
-  
+        
 
         if (count($arreglo) != 2) redirect(base_url()."errores/error404");
 
-
-        $datos = $this->evaluacion_model->verFichaEvaluacion(); 
-     
+        $datos = $this->postulaciones_model->show(['id' => $idCpu]);
+        // $datos = $this->evaluacion_model->verFichaEvaluacion(); 
         $this->layout->js(array(base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
         base_url()."public/js/myscript/evaluacion/guide.js?t=".date("mdYHis")));
         $this->layout->view("ficha/ficha", compact('datos')); 

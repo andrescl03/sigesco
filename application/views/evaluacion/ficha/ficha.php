@@ -4,7 +4,10 @@
     <!-- <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>/porderivar/listar"> Expedientes Por Derivar</a></li>
         <li class="breadcrumb-item active">Registro de Expediente Externo</li> -->
 </ol>
-
+<?php 
+    $postulante = $datos['data']['postulante'];
+    $formaciones_academicas = $datos['data']['postulacion_formaciones_academicas'];
+?>
 <div class="app-row row">
     <div class="col-md-3">
         <div class="accordion" id="accordionExample">
@@ -17,67 +20,64 @@
                 </h2>
                 <div id="collapseDatosPostulante" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <div class="card card-body mb-5 ">
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Nombres</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="nombre" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="50" required readonly>
-                                </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4">Nombres</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->nombre ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Apellido Paterno</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="apellido_paterno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="50" required readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4">Apellido Paterno</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->apellido_paterno ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Apellido Materno</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="apellido_materno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="50" required readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4">Apellido Materno</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->apellido_materno ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Género</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="apellido_materno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="50" required readonly>
-
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4">Género</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->genero ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Estado Civil</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="estado_civil" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="50" required readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4">Estado Civil</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->estado_civil ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Nacionalidad</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="nacionalidad" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="50" required readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4">Nacionalidad</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->nacionalidad ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Fecha de Nacimiento</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="date" name="fecha_nacimiento" class="form-control form-control-solid form-control-validate form-input-age form-input-validate" max="2020-10-10" required readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4">Fecha de Nacimiento</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->fecha_nacimiento ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Correo Electrónico</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="email" name="correo" class="form-control form-control-solid form-input-validate form-input-email" maxlength="100" required readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4">Correo Electrónico</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->correo ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Número de Celular</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="numero_celular" class="form-control form-control-solid form-control-validate input-number form-input-validate" maxlength="9" required readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4">Número de Celular</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->numero_celular ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Número de Teléfono</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="numero_telefono" class="form-control form-control-solid form-control-validate  input-number form-input-validate" maxlength="6" required readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4">Número de Teléfono</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->numero_telefono ?>
                             </div>
                         </div>
                     </div>
@@ -91,48 +91,47 @@
                 </h2>
                 <div id="collapseUbicacion" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <div class="card card-body">
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4 col-form-label">Departamento</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="departmento_id" class="form-control form-control-solid select-department form-input-validate" readonly>
-                                </div>
+                        
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Departamento</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->numero_telefono ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4 col-form-label">Provincia</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="provincia_id" class="form-control form-control-solid select-province form-input-validate" readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Provincia</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->numero_telefono ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4 col-form-label">Distrito</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="distrito_id" class="form-control form-control-solid select-district form-input-validate" readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Distrito</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->distrito_id ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4 col-form-label">Vía</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="via" class="form-control form-control-solid form-input-validate" minlength="3" maxlength="50" readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Vía</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->via ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Vía</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="nombre_via" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="50" readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Vía</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->nombre_via ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Zona</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="zona" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="50" readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Zona</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->zona ?>
                             </div>
-                            <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4 col-form-label">Dirección</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="direccion" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100" readonly>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Dirección</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <?php echo $postulante->direccion ?>
                             </div>
                         </div>
                     </div>
@@ -146,26 +145,55 @@
                 </h2>
                 <div id="collapseFormacionAcademica" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <div class="card card-body">
-                            <div class="table-responsive">
-                                <table class="table table-academic-training mb-0">
-                                    <thead class="text-center">
-                                        <tr>
-                                            <th>Nivel Educativo</th>
-                                            <th>Grado Académico</th>
-                                            <th>Universidad</th>
-                                            <th>Carrera Profesional</th>
-                                            <th>N° de Registro de Título</th>
-                                            <th>RD de Título N°</th>
-                                            <th>Obtención del Grado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Las filas se agregarán dinámicamente aquí -->
-                                    </tbody>
-                                </table>
+                        <?php foreach ($formaciones_academicas as $k => $formacion_academica) { ?>
+                     
+                            <div class="form-group row mb-1">
+                                <label class="col-xl-4 col-lg-4">Nivel Educativo</label>
+                                <div class="col-xl-8 col-lg-8">
+                                    <?php echo $formacion_academica->nivel_educativo ?>
+                                </div>
                             </div>
-                        </div>
+                            <div class="form-group row mb-1">
+                                <label class="col-xl-4 col-lg-4">Grado Académico</label>
+                                <div class="col-xl-8 col-lg-8">
+                                    <?php echo $formacion_academica->grado_academico ?>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-1">
+                                <label class="col-xl-4 col-lg-4">Universidad</label>
+                                <div class="col-xl-8 col-lg-8">
+                                    <?php echo $formacion_academica->universidad ?>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-1">
+                                <label class="col-xl-4 col-lg-4">Carrera Profesional</label>
+                                <div class="col-xl-8 col-lg-8">
+                                    <?php echo $formacion_academica->carrera_profesional ?>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-1">
+                                <label class="col-xl-4 col-lg-4 text-secondary">N° de Registro de Título</label>
+                                <div class="col-xl-8 col-lg-8 bold">
+                                    <?php echo $formacion_academica->registro_titulo ?>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-1">
+                                <label class="col-xl-4 col-lg-4">RD de Título N°</label>
+                                <div class="col-xl-8 col-lg-8">
+                                    <?php echo $formacion_academica->rd_titulo ?>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-1">
+                                <label class="col-xl-4 col-lg-4">Obtención del Grado</label>
+                                <div class="col-xl-8 col-lg-8">
+                                    <?php echo $formacion_academica->obtencion_grado ?>
+                                </div>
+                            </div>
+                        
+                        <?php if ($k < count($formaciones_academicas) - 1) { ?>
+                            <hr>
+                        <?php } ?>
+                        <?php } ?>
                     </div>
                 </div>
             </div>

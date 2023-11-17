@@ -130,7 +130,7 @@
                 <td class="text-center">
                     <div class="d-flex justify-content-center gap-2">
                         <?php if($dato['epe_id']!= NULL){ ?>
-                            <a type="button" class="text-dark" title="Ver Ficha" href="<?= base_url()."evaluacion/ficha/".encryption($dato['cpe_id']."||".($dato['epe_id']== NULL ? 0 : $dato['epe_id'])) ?>" target="_blank"><b><i class="fa-solid fa-file-signature fa-2xl"></i> </b></a>
+                            <a type="button" class="text-dark" title="Ver Ficha" href="<?= base_url()."evaluacion/ficha/".encryption($dato['id']."||".($dato['epe_id']== NULL ? 0 : $dato['epe_id'])) ?>" target="_blank"><b><i class="fa-solid fa-file-signature fa-2xl"></i> </b></a>
                         <?php } ?>
                     </div> 
                 </td>
