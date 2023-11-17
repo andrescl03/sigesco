@@ -95,7 +95,6 @@ ALTER TABLE postulaciones DROP COLUMN especialidad_id;
 
 
 /****************************** 31-10-23  ******************************/
-DROP TABLE `periodo_fichas`;
 CREATE TABLE `periodo_fichas` (
 	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`nombre` VARCHAR(255) NULL DEFAULT NULL,
