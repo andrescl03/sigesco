@@ -151,5 +151,8 @@ ALTER TABLE evaluacion_pun_exp DROP COLUMN cuadro_pun_exp_cpe_id;
 
 SELECT*FROM evaluacion_pun_exp;
 
+/********** 21/11/2023 **********/
 
+ALTER TABLE convocatorias ADD COLUMN `con_horainicio` time default null;
+ALTER TABLE convocatorias ADD COLUMN `con_horafin` time default null;
 

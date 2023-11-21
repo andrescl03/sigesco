@@ -30,8 +30,8 @@ $(document).ready(function(){
 });
 
 var rangoFecha=function(){
-	$('#dp_fechasBusqueda').datepicker({
-		format: "dd-mm-yyyy",
+	/* $('#vvv').flatpickr({
+		format: "dd-mm-yyyy mm:ss",
         clearBtn: true,
         language: "es",
         orientation: "bottom auto",
@@ -41,6 +41,28 @@ var rangoFecha=function(){
        // startDate: $inicio,
         //endDate: $fin		
 	});
+ */
+
+	 flatpickr("#fecha_inicio", {
+        enableTime: true,
+        dateFormat: "d-m-Y H:i:S", // Formato de fecha y hora
+        clear: true,
+        locale: {
+            firstDayOfWeek: 1, // Lunes como primer día de la semana
+        },
+        time_24hr: true, // Formato de 24 horas
+    });
+	
+	flatpickr("#fecha_fin", {
+        enableTime: true,
+        dateFormat: "d-m-Y H:i:S", // Formato de fecha y hora
+        clear: true,
+        locale: {
+            firstDayOfWeek: 1, // Lunes como primer día de la semana
+        },
+        time_24hr: true, // Formato de 24 horas
+    });
+
 }
 
 var VListarConvocatorias = function(parametros){	
@@ -378,10 +400,18 @@ var btn_agregarNuevaConvocatoria = function () {
             fechaDesde      = $("#fecha_inicio").val();
             fechaHasta      = $("#fecha_fin").val();
 			idTipo           = $("#opt_tipoConvocatoriaModal").val();
-
+			console.log(fechaDesde);
+			console.log(fechaHasta);
+			var fechaDesdeMoment = moment(fechaDesde, "DD-MM-YYYY HH:mm:ss");
+			var fechaHastaMoment = moment(fechaHasta, "DD-MM-YYYY HH:mm:ss");
+	
             if(grupoArr.length == 0) {
                 ToastError.fire({title: 'Agregar al menos un grupo de inscripción.'});
-            }else{
+            }
+			else if (fechaDesdeMoment.isAfter(fechaHastaMoment)) {
+				ToastError.fire({ title: 'La fecha fin debe ser mayor que la fecha de inicio.'});
+			}
+			else{
                 parametros = {
                     idPer		: idPer,
 					anio		: anio,

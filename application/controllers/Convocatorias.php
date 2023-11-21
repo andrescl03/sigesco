@@ -134,10 +134,12 @@ class Convocatorias extends CI_Controller {
         $idTipo         = $this->input->post("idTipo",true);
 
         $dateInicio     = new DateTime( $fechaDesde );
-        $fechaInicio    = $dateInicio->format( "Y-m-d" );
+        $fechaInicio    = $dateInicio->format("Y-m-d");
+        $horaInicio = $dateInicio->format( "H:i");
 
         $dateFin        = new DateTime( $fechaHasta );
-        $fechaFin       = $dateFin->format( "Y-m-d" ); 
+        $fechaFin       = $dateFin->format( "Y-m-d"); 
+        $horaFin  = $dateFin->format( "H:i");
 
         $buscar = $this->convocatorias_model->buscarUltimoNumero($anio);
         if(!empty($buscar)){
@@ -151,6 +153,8 @@ class Convocatorias extends CI_Controller {
             "con_anio"  	    => $anio,
             "con_fechainicio"   => $fechaInicio,
             "con_fechafin"      => $fechaFin,
+            "con_horainicio"    => $horaInicio,
+            "con_horafin"       => $horaFin,
             "con_estado"        => $estado,
             "con_tipo"          => $idTipo
         );
