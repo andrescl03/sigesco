@@ -371,7 +371,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="table-responsive">
+                                <!-- <div class="table-responsive">
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -386,9 +386,9 @@
                                         <tbody class="tbody-anexo">
                                         </tbody>
                                     </table>
+                                </div> -->
+                                <div id="containerFicha">
                                 </div>
-
-
                             </div>
                         </div>
                     </div>

@@ -284,7 +284,8 @@ class Postulaciones_model extends CI_Model
                     INNER JOIN especialidades AS ESP ON ESP.esp_id = GIN.especialidades_esp_id
                     INNER JOIN niveles AS NIV ON NIV.niv_id = ESP.niveles_niv_id
                     INNER JOIN modalidades AS MDD ON MDD.mod_id = NIV.modalidad_mod_id
-                    WHERE CPE.cpe_estado = 1 
+                    WHERE CPE.cpe_estado = 1
+                    AND CPE.cpe_tipoCuadro = 1 
                     AND CPE.cpe_documento = ?
                     AND grupo_inscripcion_gin_id = ?";
                 $postulante = $this->db->query($sql, compact('documento', 'inscripcion_id'))->row();

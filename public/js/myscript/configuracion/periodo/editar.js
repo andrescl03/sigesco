@@ -541,17 +541,17 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 const col3 = document.createElement('div');
                 col3.classList.add('col-lg-7', 'mb-2', 'd-flex', 'my-auto');
 
-                const input3 = document.createElement('input');
+                /*const input3 = document.createElement('input');
                 input3.type = 'text';
                 input3.classList.add('form-control');
                 input3.placeholder = 'Escribe un comentario para la opción';
                 input3.addEventListener('keyup', (e) => {
                     question.caption = e.target.value;
                 });
-                col3.appendChild(input3);
+                col3.appendChild(input3);*/
 
                 const select = document.createElement('select');
-                select.classList.add('form-control', 'ms-3');
+                select.classList.add('form-control');
                 select.style.maxWidth = '120px';
                 select.style.textTransform = 'capitalize';
                 select.value = question.type;
@@ -587,10 +587,34 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
 
                 col3.appendChild(select);
+                
+                const uniqid = self.uniqid();
+                // Create the outer div with the 'form-check' class
+                var formCheckDiv = document.createElement('div');
+                formCheckDiv.classList.add('form-check', 'ms-3', 'mt-2');
+                // Create the checkbox input element
+                var checkboxInput = document.createElement('input');
+                checkboxInput.classList.add('form-check-input');
+                checkboxInput.type = 'checkbox';
+                checkboxInput.value = '1';
+                checkboxInput.id = 'flexCheckChecked' + uniqid;
+                checkboxInput.checked = question.observation_status == 1 ? true : false;
+                checkboxInput.addEventListener('change', (e) => {
+                    question.observation_status = e.target.checked ? 1 : 0;
+                });
+                // Create the label element
+                var label = document.createElement('label');
+                label.classList.add('form-check-label');
+                label.htmlFor = 'flexCheckChecked' + uniqid;
+                label.appendChild(document.createTextNode('Permite agregar observación'));
+                // Append the checkbox input and label to the 'form-check' div
+                formCheckDiv.appendChild(checkboxInput);
+                formCheckDiv.appendChild(label);
+                col3.appendChild(formCheckDiv);
+
                 row1.appendChild(col3);
 
                 panel.appendChild(row1);
-                
                 
                 const row4 = document.createElement('div');
                 if (question.type == 'selectiva') {
@@ -609,7 +633,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
 
                 const row3 = document.createElement('div');
-                row3.classList.add('row', 'ms-2');
+                row3.classList.add('row', 'ms-3');
 
                 const row4 = document.createElement('div');
                 row4.appendChild(row2);
@@ -641,7 +665,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             },
             viewOption: (option, remove) => {
                 const panel = document.createElement('div');
-                panel.classList.add('col-lg-8');
+                panel.classList.add('col-lg-10');
 
                 const row1 = document.createElement('div');
                 row1.classList.add('row', 'mb-2');
@@ -657,6 +681,17 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     option.name = e.target.value;
                 });
                 col1.appendChild(input);
+
+                const input2 = document.createElement('input');
+                input2.placeholder = 'Puntaje';
+                input2.type = 'number';
+                input2.classList.add('form-control', 'ms-3');
+                input2.value = option.score;
+                input2.style.maxWidth = '100px';
+                input2.addEventListener('keyup', (e) => {
+                    option.score = e.target.value;
+                });
+                col1.appendChild(input2);
 
                 const btnRemove = document.createElement('a');
                 btnRemove.classList.add('link-dark');
@@ -730,7 +765,13 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                                         ${ 
                                             index3 == 0 ? `<td rowspan="${lg}">${group.name}</td>` : ``
                                         }
-                                        <td>${question.name}</td>
+                                        <td>
+                                            ${question.name}
+                                            ${
+                                                question.observation_status == 1 ? 
+                                                `<textarea class="form-control mt-3" placeholder="Ingrese su obervación" rows="2"></textarea>` : ``
+                                            }
+                                        </td>
                                         <td class="text-center">${
                                             self.viewActionOption(question)
                                         }</td>
@@ -756,9 +797,9 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             },
             viewActionOption: (question) => {
                 let html = ``;
-                if (question?.caption) {
+                /*if (question?.caption) {
                     html += `<span>${question.caption}</span>`;
-                }
+                }*/
                 if (question.type == 'selectiva') {
                     html += `<select class="form-control  text-center">`;
                     question?.options.forEach(option => {
