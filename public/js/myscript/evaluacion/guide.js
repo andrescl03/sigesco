@@ -1,8 +1,10 @@
 
 const viewfichaDetail = () => {
 
+	const dom = document.querySelector('#containerFicha');
+
 	// Function to create a cell with specified attributes and text
-	function createCell(tag, text, attributes = {}) {
+	function createCell(tag, text, attributes = {}, style = {}) {
 		const cell = document.createElement(tag);
 		if (text !== undefined) {
 			if (typeof text == 'object') {
@@ -10,9 +12,14 @@ const viewfichaDetail = () => {
 			} else {
 				cell.textContent = text;
 			}
-		} 
+		}	
 		for (const key in attributes) {
 			cell.setAttribute(key, attributes[key]);
+		}
+		for (const key in style) {
+			if (cell.style.hasOwnProperty(key)) {
+				cell.style[key] = style[key];
+			}
 		}
 		return cell;
 	}
@@ -44,6 +51,12 @@ const viewfichaDetail = () => {
 		for (const key in attributes) {
 			select.setAttribute(key, attributes[key]);
 		}
+		const option = document.createElement('option');
+		option.text = '[SELECCIONE]';
+		option.value = '';
+		option.setAttribute('hidden', true);
+		option.setAttribute('selected', true);
+		select.add(option);
 		// Create option elements and append them to the select element
 		options.forEach(optionText => {
 			const option = document.createElement('option');
@@ -74,6 +87,7 @@ const viewfichaDetail = () => {
 	function createNumberInput(attributes = {}, events = {}) {
 		const numberInput = document.createElement('input');
 		numberInput.type = 'number';
+		numberInput.min = 0;
 		for (const key in attributes) {
 			numberInput.setAttribute(key, attributes[key]);
 		}
@@ -95,324 +109,343 @@ const viewfichaDetail = () => {
 		}
 		return textInput;
 	}
+
+	// Function to create and display a Bootstrap alert
+	function showAlert(message, alertType) {
+		// Create a div element with Bootstrap alert classes
+		var alertDiv = document.createElement('div');
+		alertDiv.className = 'alert alert-' + alertType + ' alert-dismissible fade show';
 	
+		// Create the close button for the alert
+		var closeButton = document.createElement('button');
+		closeButton.type = 'button';
+		closeButton.className = 'btn-close';
+		closeButton.setAttribute('data-bs-dismiss', 'alert');
+		closeButton.setAttribute('aria-label', 'Close');
+	
+		// Create a paragraph element for the alert message
+		var messageParagraph = document.createElement('p');
+		messageParagraph.innerHTML = `<strong>Error: </strong>` + message;
+	
+		// Append elements to the alert div
+		alertDiv.appendChild(messageParagraph);
+		alertDiv.appendChild(closeButton);
+		return alertDiv;
+	}
+	
+	function getDetail() {
+		return new Promise(function (resolve, reject) {
+			let periodo_id = 1;
+			$.ajax({
+				url: window.AppMain.url + `configuracion/periodos/${periodo_id}/detail`,
+				method: 'POST',
+				dataType: 'json',
+				cache: 'false'
+			})
+			.done(function ({success, data, message}) {
+				if (success) {
+					resolve(data);
+				} else {
+					reject(message);
+				}
+			})
+			.fail(function (xhr, status, error) {
+				reject(message);
+			});
+	
+		});
+	}
 
-	return new Promise(function (resolve, reject) {
-		let periodo_id = 1;
-		$.ajax({
-			url: window.AppMain.url + `configuracion/periodos/${periodo_id}/detail`,
-			method: 'POST',
-			dataType: 'json',
-			cache: 'false'
-		})
-		.done(function ({success, data, message}) {
-			if (success) {
-				let self = {
-					ficha_id: 1,
-					fichas: data.fichas,
-					sections: [],
-					ficha: {}
-				};
+	function init(data) {
 
+		let self = {
+			ficha_id: 1,
+			fichas: data.fichas,
+			sections: [],
+			ficha: {},
+			total_section: 0,
+			total_question: 0,
+			total: 0
+		};
 
-				let setFormModule = () => {
-					self.ficha = self.fichas.find((o)=>{return o.id == self.ficha_id});
-					self.sections = [];
-					if (self.ficha.plantilla) {
-						if (self.ficha.plantilla.sections) {
-							self.sections = self.ficha.plantilla.sections;
-						}
-					}
-					viewfichaDetail();
-					// viewfichaDetail2();
-				};
+		const setFormModule = () => {
+			self.ficha = self.fichas.find((o)=>{return o.id == self.ficha_id});
+			self.sections = [];
+			if (self.ficha.plantilla) {
+				if (self.ficha.plantilla.sections) {
+					self.sections = self.ficha.plantilla.sections;
+				}
+			}
+			formFichaDetail();
+		};
 
-				const selects = document.querySelectorAll('.select-anexo');
-                selects.forEach(select => {
-					
-                    select.addEventListener('change', (e) => {
-						self.ficha_id = Number(e.target.value);
-						setFormModule();
-                    });
-                });
+		const selects = document.querySelectorAll('.select-anexo');
+		selects.forEach(select => {
+			select.addEventListener('change', (e) => {
+				self.ficha_id = Number(e.target.value);
+				setFormModule();
+			});
+		});
 
-				let viewfichaDetail = () => {
+		const formFichaDetail = () => {
 
-					// Create the outer div with the 'table-responsive' class
-					const tableResponsiveDiv = document.createElement('div');
-					tableResponsiveDiv.classList.add('table-responsive');
+			// Create the outer div with the 'table-responsive' class
+			const tableResponsiveDiv = document.createElement('div');
+			tableResponsiveDiv.classList.add('table-responsive', 'mb-3');
 
-					// Create the table with the 'table' and 'table-bordered' classes
-					const table = document.createElement('table');
-					table.classList.add('table', 'table-bordered', 'mb-0');
+			// Create the table with the 'table' and 'table-bordered' classes
+			const table = document.createElement('table');
+			table.classList.add('table', 'table-bordered', 'mb-0');
 
-					// Create the table header
-					const thead = document.createElement('thead');
-					const headerRow = createRow([
-						createCell('th', 'RUBRO', { class: 'text-center bg-light' }),
-						createCell('th', 'CRITERIOS', { class: 'text-center bg-light' }),
-						createCell('th', 'SUBCRITERIOS', { class: 'text-center bg-light' }),
-						createCell('th', 'EVALUACIÓN', { class: 'text-center bg-light' }),
-						createCell('th', 'Puntaje máximo por subcriterio', { class: 'text-center bg-light' }),
-						createCell('th', 'Puntaje máximo por rubro', { class: 'text-center bg-light' })
-					]);
+			// Create the table header
+			const thead = document.createElement('thead');
+			const headerRow = createRow([
+				createCell('th', 'RUBRO', { class: 'text-center bg-light' }),
+				createCell('th', 'CRITERIOS', { class: 'text-center bg-light' }),
+				createCell('th', 'SUBCRITERIOS', { class: 'text-center bg-light' }),
+				createCell('th', 'EVALUACIÓN', { class: 'text-center bg-light' }),
+				createCell('th', 'Puntaje máximo por subcriterio', { class: 'text-center bg-light' }),
+				createCell('th', 'Puntaje máximo por rubro', { class: 'text-center bg-light' })
+			]);
 
-					thead.appendChild(headerRow);
-					table.appendChild(thead);
+			thead.appendChild(headerRow);
+			table.appendChild(thead);
 
-					// Create the table body
-					const tbody = document.createElement('tbody');
+			// Create the table body
+			const tbody = document.createElement('tbody');
 
-					// Your rows and cells creation goes here...
-					// For brevity, I'm only creating a single row with some data
-					const rows = [];
-					let html = ``;
-					let total = 0;
-					let ls = 0;
-					let lg = 0;
-					self.sections.forEach((section, index1) => {
-						total = total + Number(section.score);
-						ls = 0; 
-						section.groups.forEach((group, index2) => {                             
-							group.questions.forEach((question, index3) => {
-								ls = ls + 1;
-							});
+			// Your rows and cells creation goes here...
+			// For brevity, I'm only creating a single row with some data
+			const rows = [];
+			let total = 0;
+			let ls = 0;
+			let lg = 0;
+
+			self.sections.forEach((section, index1) => {
+				total = total + Number(section.score);
+				ls = 0; 
+				self.total_section = self.total_section + Number(section.score);  
+				section.groups.forEach((group, index2) => {                          
+					group.questions.forEach((question, index3) => {
+						ls = ls + 1;
+						self.total_question = self.total_question + Number(question.score);
+					});
+				});
+				if (section.groups.length == 0) {
+					rows.push(createRow([
+						createCell('td', section.name, {class: 'colvert bg-light'}),
+						createCell('td', ''),
+						createCell('td', ''),
+						createCell('td', '', {class: 'text-center'}),
+						createCell('td', '', {class: 'text-center'}),
+						createCell('td', '', {class: 'text-center'})
+					]));
+				} else {
+					section.groups.forEach((group, index2) => {
+						lg = 0;
+						group.questions.forEach((question, index3) => {
+							lg = lg + 1;
 						});
-						if (section.groups.length == 0) {
+						if (group.questions.length == 0) {
+							const div = document.createElement('div');
+							div.innerText = section.name;
+							div.style.writingMode = 'vertical-lr';
+							div.style.transform = 'rotate(180deg)';
+							div.style.textAlign = 'center';
+							div.style.verticalAlign = 'middle';
 							rows.push(createRow([
-								createCell('td', section.name, {class: 'colvert bg-light'}),
-								createCell('td', ''),
+								createCell('td', div, {class: 'colvert bg-light'}, {
+									verticalAlign: 'middle',
+									textAlign: '-webkit-center'
+								}),
+								createCell('td', group.name),
 								createCell('td', ''),
 								createCell('td', '', {class: 'text-center'}),
 								createCell('td', '', {class: 'text-center'}),
 								createCell('td', '', {class: 'text-center'})
 							]));
 						} else {
-							section.groups.forEach((group, index2) => {
-								lg = 0;
-								group.questions.forEach((question, index3) => {
-									lg = lg + 1;
-								});
-								if (group.questions.length == 0) {
-									rows.push(createRow([
-										createCell('td', section.name, {class: 'colvert bg-light'}),
-										createCell('td', group.name),
-										createCell('td', ''),
-										createCell('td', '', {class: 'text-center'}),
-										createCell('td', '', {class: 'text-center'}),
-										createCell('td', '', {class: 'text-center'})
-									]));
-								} else {
-									group.questions.forEach((question, index3) => {
-										const cells = [];
-										if (index3 == 0 && index2 == 0) {
-											cells.push(createCell('td', section.name, { class: 'colvert bg-light', rowspan: ls }));
-										}
-										if (index3 == 0) {
-											cells.push(createCell('td', group.name, { rowspan: lg }));
-										}
-										const div = document.createElement('div');
-										const span = document.createElement('span');
-										span.innerText = question.name;
-										div.appendChild(span);
-										if (question.observation_status == 1) {
-											// Create the textarea with some attributes
-											const textarea = createTextarea({
-												class: 'form-control mt-3',
-												placeholder: 'Ingrese su observación',
-												rows: '2'
-											}, {
-												keyup: (e) => {
-													question.observation = e.target.value;
-												},
-											});
-											div.appendChild(textarea);											
-										}
-										cells.push(createCell('td', div));
-										cells.push(createCell('td', viewActionOption(question), {class: 'text-center'}));
-										cells.push(createCell('td', question.score, {class: 'text-center'}));
-										if (index3 == 0 && index2 == 0) {
-											cells.push(createCell('td', section.score, { class: 'text-center', rowspan: ls }));
-										}
-										rows.push(createRow(cells));
-									});    
+							group.questions.forEach((question, index3) => {
+								const cells = [];
+								if (index3 == 0 && index2 == 0) {
+									const div = document.createElement('div');
+									div.innerText = section.name;
+									div.style.writingMode = 'vertical-lr';
+									div.style.transform = 'rotate(180deg)';
+									div.style.textAlign = 'center';
+									div.style.verticalAlign = 'middle';
+									cells.push(createCell('td', div, { class: 'colvert bg-light', rowspan: ls }, {
+										verticalAlign: 'middle',
+										textAlign: '-webkit-center'
+									}));
 								}
-							});
+								if (index3 == 0) {
+									cells.push(createCell('td', group.name, { rowspan: lg }));
+								}
+								const div = document.createElement('div');
+								const span = document.createElement('span');
+								span.innerText = question.name;
+								div.appendChild(span);
+								if (question.observation_status == 1) {
+									// Create the textarea with some attributes
+									const textarea = createTextarea({
+										class: 'form-control mt-3',
+										placeholder: 'Ingrese su observación',
+										rows: '2'
+									}, {
+										keyup: (e) => {
+											question.observation = e.target.value;
+										},
+									});
+									div.appendChild(textarea);											
+								}
+								cells.push(createCell('td', div));
+								cells.push(createCell('td', viewActionOption(question), {class: 'text-center'}));
+								cells.push(createCell('td', question.score, {class: 'text-center'}));
+								if (index3 == 0 && index2 == 0) {
+									cells.push(createCell('td', section.score, { class: 'text-center', rowspan: ls }));
+								}
+								rows.push(createRow(cells));
+							});    
 						}
 					});
-					html += 
-						`<tr class="">
-							<td colspan="4" class="text-center fw-bold">PUNTAJE TOTAL</td>
-							<td class="text-center fw-bold">${total}</td>
-						</tr>`;
-					rows.forEach(row => {
-						tbody.appendChild(row);						
-					});
-					// End of creating a single row
-
-					// Append the table body to the table
-					table.appendChild(tbody);
-
-					// Append the table to the 'table-responsive' div
-					tableResponsiveDiv.appendChild(table);
-
-					// Append the 'table-responsive' div to the body of the HTML document
-					document.querySelector('#containerFicha').appendChild(tableResponsiveDiv);
-
-					const footer = document.createElement('div');
-					footer.classList.add('mt-3', 'text-end');
-					const btnSave = document.createElement('button');
-					btnSave.classList.add('btn', 'btn-primary');
-					btnSave.innerText = 'Guardar';
-					btnSave.addEventListener('click', (e) => {
-						console.log(self.sections);
-					});
-					footer.appendChild(btnSave);
-					document.querySelector('#containerFicha').appendChild(footer);
-					
 				}
+			});
+			rows.push(createRow([
+				createCell('td', 'TOTAL', { class: 'text-center colvert bg-light fw-bold', colspan: 3 }),
+				createCell('td', self.total, { class: 'text-center fw-bold', id: 'total' }),
+				createCell('td', self.total_question, { class: 'text-center fw-bold'}),
+				createCell('td', self.total_section, { class: 'text-center fw-bold'})
+			]));
+			rows.forEach(row => {
+				tbody.appendChild(row);						
+			});
+			// End of creating a single row
 
-				let viewfichaDetail2 = () => {
+			// Append the table body to the table
+			table.appendChild(tbody);
 
-					let html = ``;
-					let total = 0;
-					let ls = 0;
-					let lg = 0;
-					self.sections.forEach((section, index1) => {
-						total = total + Number(section.score);
-						ls = 0; 
-						section.groups.forEach((group, index2) => {                             
-							group.questions.forEach((question, index3) => {
-								ls = ls + 1;
-							});
-						});
-						section.groups.forEach((group, index2) => {
-							lg = 0;
-							group.questions.forEach((question, index3) => {
-								lg = lg + 1;
-							});
-							group.questions.forEach((question, index3) => {
-								html += 
-								`<tr class="">
-									${ 
-										index3 == 0 && index2 == 0 ? `<td class="colvert bg-light" rowspan="${ls}">${section.name}</td>` : ``
-									}
-									${ 
-										index3 == 0 ? `<td scope="row" rowspan="${lg}">${group.name}</td>` : ``
-									}
-									<td>
-										${question.name}
-										${
-											question.observation_status == 1 ? 
-											`<textarea class="form-control mt-3" placeholder="Ingrese su obervación" rows="2"></textarea>` : ``
-										}
-									</td>
-									<td class="text-center">${
-										viewActionOption(question)
-									}</td>
-									<td class="text-center">${question.score}</td>
-									${ 
-										index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
-									}
-								</tr>`;
+			// Append the table to the 'table-responsive' div
+			tableResponsiveDiv.appendChild(table);
 
-							});
-						});
-					});
-					const tbodies = document.querySelectorAll('.tbody-anexo');
-					tbodies.forEach(tbody => {
-						tbody.innerHTML = html;
-					});
-				}
+			// Append the 'table-responsive' div to the body of the HTML document
+			dom.appendChild(tableResponsiveDiv);
 
-				let viewActionOption = (question) => {
-					let element = ``;
-					if (question.type == 'selectiva') {
-						const options = [];
-						question?.options.forEach(o => {
-							options.push({
-								text: o.name,
-								value: o.score
-							});
-						});
-						element = createSelect(
-							options,
-							{ class: 'form-control text-center' },
-							{
-								change: (e) => {
-									question.value = e.target.value;
-								}
-							}
-						);					
-					} else if (question.type == 'marcado') {
-						const attributes = { 
-							class: 'form-check-input text-center', 
-							value: question.score 
-						};
-						if (Number(question.value) > 0) {
-							attributes.checked = true;
+			const alertDiv = document.createElement('div');
+			alertDiv.id = 'divAlert';
+			dom.appendChild(alertDiv);
+
+			const footer = document.createElement('div');
+			footer.classList.add('mt-3', 'text-end');
+			const btnSave = document.createElement('button');
+			btnSave.classList.add('btn', 'btn-primary');
+			btnSave.innerText = 'Guardar';
+			btnSave.addEventListener('click', (e) => {
+				if (calculation()) {
+					sweet2.show({
+						type: 'question',
+						html: `¿Estás seguro de guardar cambios? <h5>Puntaje Total</h5> <h3>${self.total}</h3>`,
+						showCancelButton: true,
+						onOk: () => {
 						}
-						element = createCheckbox(attributes,
-						{
-							change: (e) => {
-								question.value = e.target.checked ? e.target.value : 0;
-							}
-						});
-					} else if (question.type == 'texto') {
-						element = createTextInput({ class: 'form-control text-center', placeholder: 'Ingresar texto...', value: question.value }, {
-							keyup: (e) => {
-								question.value = e.target.value;
-							}
-						});	
-					} else if (question.type == 'numerico') {
-						element = createNumberInput({ class: 'form-control text-center', value: '', placeholder: '0', value: question.value }, {
-							keyup: (e) => {
-								question.value = e.target.value;
-							},
-							change: (e) => {
-								question.value = e.target.value;
-							},
-						});
-					}
-					return element;
+					});
 				}
+			});
+			footer.appendChild(btnSave);
+			dom.appendChild(footer);
+		}
 
-				let viewActionOption2 = (question) => {
-					let html = ``;
-					if (question?.caption) {
-						html += `<span>${question.caption}</span>`;
+		const viewActionOption = (question) => {
+			let element = ``;
+			if (question.type == 'selectiva') {
+				const options = [];
+				question?.options.forEach(o => {
+					options.push({
+						text: o.name,
+						value: o.score
+					});
+				});
+				element = createSelect(
+					options,
+					{ class: 'form-control text-center' },
+					{
+						change: (e) => {
+							question.value = e.target.value;
+							calculation();
+						}
 					}
-					if (question.type == 'selectiva') {
-						html += `<select class="form-control  text-center">`;
-						question?.options.forEach(option => {
-							html += `<option value="${option.name}">${option.name}</option>`;
-						});
-						html += `</select>`;
-					} else if (question.type == 'marcado') {
-						html += `<input type="checkbox" class="form-check-input text-center" value="1">`;
-					} else if (question.type == 'texto') {
-						html += `<input type="text" class="form-control text-center" value="">`;
-	
-					} else if (question.type == 'numerico') {
-						html += `<input type="number" class="form-control  text-center" value="">`;
-					}
-	
-					return html;
+				);					
+			} else if (question.type == 'marcado') {
+				const attributes = { 
+					class: 'form-check-input text-center', 
+					value: question.score 
+				};
+				if (Number(question.value) > 0) {
+					attributes.checked = true;
 				}
-
-				setFormModule();
-
-			} else {
-				reject(error);
-				sweet2.error({text: error});
+				element = createCheckbox(attributes,
+				{
+					change: (e) => {
+						question.value = e.target.checked ? e.target.value : 0;
+						calculation();
+					}
+				});
+			} else if (question.type == 'texto') {
+				element = createTextInput({ class: 'form-control text-center', placeholder: 'Ingresar texto...', value: question.value }, {
+					keyup: (e) => {
+						question.value = e.target.value;
+					}
+				});	
+			} else if (question.type == 'numerico') {
+				element = createNumberInput({ class: 'form-control text-center', value: '', placeholder: '0', value: question.value }, {
+					keyup: (e) => {
+						question.value = e.target.value;
+						calculation();
+					},
+					change: (e) => {
+						question.value = e.target.value;
+						calculation();
+					},
+				});
 			}
-		})
-		.fail(function (xhr, status, error) {
-			sweet2.error({text: error});
-		});
+			return element;
+		}
 
+		const calculation = () => {
+			let brand = true;
+			let total = 0;
+			self.sections.forEach(section => {
+				section.groups.forEach(group => {
+					group.questions.forEach(question => {
+						let value = 0;
+						if (question.hasOwnProperty('value')) {
+							value = Number(question.value);
+						}
+						total = total + value;
+					});
+				});
+			});
+			self.total = total;
+			dom.querySelector('#total').innerText = self.total;
+			const divAlert = dom.querySelector('#divAlert');
+			divAlert.innerHTML = ``;
+			if (self.total > self.total_section) {
+				divAlert.appendChild(showAlert('El puntaje acumulado excede el puntaje total', 'danger'));
+				brand = false;
+			}
+			return brand;
+		}
+
+		setFormModule();
+	}
+
+	return getDetail()
+	.then((data) => {
+		init(data);
+	})
+	.catch((error) => {
+		sweet2.error({text: error});
 	});
-
 	
 };
 
