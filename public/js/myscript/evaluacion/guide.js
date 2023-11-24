@@ -200,12 +200,12 @@ const viewfichaDetail = () => {
 			// Create the table header
 			const thead = document.createElement('thead');
 			const headerRow = createRow([
-				createCell('th', 'RUBRO', { class: 'text-center bg-light' }),
-				createCell('th', 'CRITERIOS', { class: 'text-center bg-light' }),
-				createCell('th', 'SUBCRITERIOS', { class: 'text-center bg-light' }),
-				createCell('th', 'EVALUACIÓN', { class: 'text-center bg-light' }),
-				createCell('th', 'Puntaje máximo por subcriterio', { class: 'text-center bg-light' }),
-				createCell('th', 'Puntaje máximo por rubro', { class: 'text-center bg-light' })
+				createCell('th', 'RUBRO', { class: 'text-center bg-light' }, { verticalAlign: 'middle' }),
+				createCell('th', 'CRITERIOS', { class: 'text-center bg-light' }, { verticalAlign: 'middle' }),
+				createCell('th', 'SUBCRITERIOS', { class: 'text-center bg-light' }, { verticalAlign: 'middle' }),
+				createCell('th', 'EVALUACIÓN', { class: 'text-center bg-light' }, { verticalAlign: 'middle' }),
+				createCell('th', 'Puntaje máximo por subcriterio', { class: 'text-center bg-light' }, { verticalAlign: 'middle' }),
+				createCell('th', 'Puntaje máximo por rubro', { class: 'text-center bg-light' }, { verticalAlign: 'middle' })
 			]);
 
 			thead.appendChild(headerRow);
