@@ -2,6 +2,13 @@
 const viewfichaDetail = () => {
 
 	const dom = document.querySelector('#containerFicha');
+	const domHeader = document.createElement('div');
+	domHeader.classList.add('mb-3');
+	domHeader.style.display = 'flex';
+	domHeader.style.overflowX = 'auto';
+	dom.appendChild(domHeader);
+	const domBody = document.createElement('div');
+	dom.appendChild(domBody);
 
 	// Function to create a cell with specified attributes and text
 	function createCell(tag, text, attributes = {}, style = {}) {
@@ -329,11 +336,11 @@ const viewfichaDetail = () => {
 			tableResponsiveDiv.appendChild(table);
 
 			// Append the 'table-responsive' div to the body of the HTML document
-			dom.appendChild(tableResponsiveDiv);
+			domBody.appendChild(tableResponsiveDiv);
 
 			const alertDiv = document.createElement('div');
 			alertDiv.id = 'divAlert';
-			dom.appendChild(alertDiv);
+			domBody.appendChild(alertDiv);
 
 			const footer = document.createElement('div');
 			footer.classList.add('mt-3', 'text-end');
@@ -352,7 +359,7 @@ const viewfichaDetail = () => {
 				}
 			});
 			footer.appendChild(btnSave);
-			dom.appendChild(footer);
+			domBody.appendChild(footer);
 		}
 
 		const viewActionOption = (question) => {
@@ -426,8 +433,8 @@ const viewfichaDetail = () => {
 				});
 			});
 			self.total = total;
-			dom.querySelector('#total').innerText = self.total;
-			const divAlert = dom.querySelector('#divAlert');
+			domBody.querySelector('#total').innerText = self.total;
+			const divAlert = domBody.querySelector('#divAlert');
 			divAlert.innerHTML = ``;
 			if (self.total > self.total_section) {
 				divAlert.appendChild(showAlert('El puntaje acumulado excede el puntaje total', 'danger'));
@@ -436,7 +443,112 @@ const viewfichaDetail = () => {
 			return brand;
 		}
 
+		const currentProgress = () => {
+
+			const progressContainer = document.createElement('div');
+			progressContainer.classList.add('progress-container', 'mx-auto');
+	
+			const progressLine = document.createElement('div');
+			progressLine.classList.add('progress-line');
+			progressLine.id = 'progress';
+			const textWraps = [];
+
+			const progressBackButton = createButton('progressBack', 'Regresar', true);
+			const progressNextButton = createButton('progressNext', 'Siguiente');
+	
+			progressContainer.appendChild(progressLine);
+
+			self.fichas.forEach((ficha, fichaIndex) => {
+				const wrap = createTextWrap(fichaIndex + 1, ficha.nombre, fichaIndex == 0);
+				progressContainer.appendChild(wrap);
+			});
+	
+			domHeader.classList.add('text-center');
+			domHeader.appendChild(progressBackButton);
+			domHeader.appendChild(progressContainer);
+
+			domHeader.appendChild(progressNextButton);
+	
+			function createTextWrap(circleNumber, labelText, isActive = false) {
+				const textWrap = document.createElement('div');
+				textWrap.classList.add('progress-text-wrap');
+				if (isActive) {
+					textWrap.classList.add('active');
+				}
+	
+				const circle = document.createElement('div');
+				circle.classList.add('circle');
+				circle.textContent = circleNumber;
+	
+				const text = document.createElement('p');
+				text.classList.add('text');
+				text.textContent = labelText;
+	
+				textWrap.appendChild(circle);
+				textWrap.appendChild(text);
+	
+				return textWrap;
+			}
+	
+			function createButton(id, text, isDisabled = false) {
+				const button = document.createElement('button');
+				button.classList.add('btn', 'progress-btn');
+				button.id = id;
+				button.textContent = text;
+				if (isDisabled) {
+					button.setAttribute('disabled', true);
+				}
+	
+				return button;
+			}
+			
+			const wraps = document.querySelectorAll('.progress-text-wrap')
+	
+			let currentActive = 1
+	
+			progressNextButton.addEventListener('click', () => {
+				currentActive++
+				if(currentActive > wraps.length) {
+					currentActive = wraps.length
+				}
+				update()
+			})
+	
+			progressBackButton.addEventListener('click', () => {
+				currentActive--
+				if(currentActive < 1) {
+					currentActive = 1
+				}
+				update()
+			})
+	
+			function update() {
+				wraps.forEach((wrap, index) => {
+					if(index < currentActive) {
+						wrap.classList.add('active')
+					} else {
+						wrap.classList.remove('active')
+					}
+				})
+	
+				const actives = document.querySelectorAll('.active')
+				progressLine.style.width = (actives.length - 1) / (wraps.length - 1)* 80 + '%'
+
+				if(currentActive === 1) {
+					progressBackButton.disabled = true
+					progressNextButton.disabled = false
+				} else if(currentActive === wraps.length) {
+					progressBackButton.disabled = false
+					progressNextButton.disabled = true
+				} else {
+					progressBackButton.disabled = false
+					progressNextButton.disabled = false
+				}
+			}
+		}
+		
 		setFormModule();
+		currentProgress();
 	}
 
 	return getDetail()
@@ -444,7 +556,7 @@ const viewfichaDetail = () => {
 		init(data);
 	})
 	.catch((error) => {
-		sweet2.error({text: error});
+		sweet2.show({type: 'error', text: error});
 	});
 	
 };
