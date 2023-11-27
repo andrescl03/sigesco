@@ -2,8 +2,10 @@
 const viewfichaDetail = () => {
 
 	const dom = document.querySelector('#containerFicha');
+	const postulant_id = dom.getAttribute('data-id');
+	dom.removeAttribute('data-id');
 	const domHeader = document.createElement('div');
-	domHeader.classList.add('mb-3');
+	domHeader.classList.add('mb-3', 'text-center');
 	domHeader.style.display = 'flex';
 	domHeader.style.overflowX = 'auto';
 	dom.appendChild(domHeader);
@@ -120,19 +122,19 @@ const viewfichaDetail = () => {
 	// Function to create and display a Bootstrap alert
 	function showAlert(message, alertType) {
 		// Create a div element with Bootstrap alert classes
-		var alertDiv = document.createElement('div');
+		let alertDiv = document.createElement('div');
 		alertDiv.className = 'alert alert-' + alertType + ' alert-dismissible fade show';
 	
 		// Create the close button for the alert
-		var closeButton = document.createElement('button');
+		let closeButton = document.createElement('button');
 		closeButton.type = 'button';
 		closeButton.className = 'btn-close';
 		closeButton.setAttribute('data-bs-dismiss', 'alert');
 		closeButton.setAttribute('aria-label', 'Close');
 	
 		// Create a paragraph element for the alert message
-		var messageParagraph = document.createElement('p');
-		messageParagraph.innerHTML = `<strong>Error: </strong>` + message;
+		let messageParagraph = document.createElement('p');
+		messageParagraph.innerHTML = message;
 	
 		// Append elements to the alert div
 		alertDiv.appendChild(messageParagraph);
@@ -163,10 +165,34 @@ const viewfichaDetail = () => {
 		});
 	}
 
+	function setFicha(formData) {
+		return new Promise(function (resolve, reject) {
+			$.ajax({
+				url: window.AppMain.url + `postulaciones/${postulant_id}/ficha`,
+				method: 'POST',
+				dataType: 'json',
+				processData: false,
+				contentType: false,
+				data: formData
+			})
+			.done(function ({success, data, message}) {
+				if (success) {
+					resolve(data);
+				} else {
+					reject(message);
+				}
+			})
+			.fail(function (xhr, status, error) {
+				reject(message);
+			});
+	
+		});
+	}
+
 	function init(data) {
 
 		let self = {
-			ficha_id: 1,
+			ficha_id: 0,
 			fichas: data.fichas,
 			sections: [],
 			ficha: {},
@@ -174,28 +200,28 @@ const viewfichaDetail = () => {
 			total_question: 0,
 			total: 0
 		};
-
-		const setFormModule = () => {
-			self.ficha = self.fichas.find((o)=>{return o.id == self.ficha_id});
-			self.sections = [];
-			if (self.ficha.plantilla) {
-				if (self.ficha.plantilla.sections) {
-					self.sections = self.ficha.plantilla.sections;
+		
+		const setFormModule = (id) => {
+			self.ficha_id = id;
+			return new Promise((resolve, reject) => {
+				try {
+					domBody.innerHTML = ``;
+					self.ficha = self.fichas.find((o)=>{return o.id == id});
+					self.sections = [];
+					if (self.ficha.plantilla) {
+						if (self.ficha.plantilla.sections) {
+							self.sections = self.ficha.plantilla.sections;
+							formFichaDetail();
+						}
+					}
+					resolve();
+				} catch (error) {
+					reject(error);
 				}
-			}
-			formFichaDetail();
+			});
 		};
 
-		const selects = document.querySelectorAll('.select-anexo');
-		selects.forEach(select => {
-			select.addEventListener('change', (e) => {
-				self.ficha_id = Number(e.target.value);
-				setFormModule();
-			});
-		});
-
 		const formFichaDetail = () => {
-
 			// Create the outer div with the 'table-responsive' class
 			const tableResponsiveDiv = document.createElement('div');
 			tableResponsiveDiv.classList.add('table-responsive', 'mb-3');
@@ -354,6 +380,26 @@ const viewfichaDetail = () => {
 						html: `¿Estás seguro de guardar cambios? <h5>Puntaje Total</h5> <h3>${self.total}</h3>`,
 						showCancelButton: true,
 						onOk: () => {
+							const plantilla = {
+								sections: self.sections
+							};
+							const formData = new FormData();
+							formData.append('ficha_id', self.ficha_id);
+							formData.append('plantilla', JSON.stringify(plantilla));
+							formData.append('puntaje', self.total);
+							sweet2.loading();
+							setFicha(formData)
+							.then(({success, data, message})=>{
+								if (!success) {
+									throw message;
+								}
+								console.log(response);
+								sweet2.loading(false);
+							})
+							.catch((error)=>{
+								console.log(error);
+								sweet2.show({type: 'error', text: error});
+							})
 						}
 					});
 				}
@@ -378,7 +424,7 @@ const viewfichaDetail = () => {
 					{
 						change: (e) => {
 							question.value = e.target.value;
-							calculation();
+							validValue(question, e);
 						}
 					}
 				);					
@@ -394,7 +440,7 @@ const viewfichaDetail = () => {
 				{
 					change: (e) => {
 						question.value = e.target.checked ? e.target.value : 0;
-						calculation();
+						validValue(question, e);
 					}
 				});
 			} else if (question.type == 'texto') {
@@ -407,38 +453,53 @@ const viewfichaDetail = () => {
 				element = createNumberInput({ class: 'form-control text-center', value: '', placeholder: '0', value: question.value }, {
 					keyup: (e) => {
 						question.value = e.target.value;
-						calculation();
+						validValue(question, e);
 					},
 					change: (e) => {
 						question.value = e.target.value;
-						calculation();
+						validValue(question, e);
 					},
 				});
 			}
 			return element;
 		}
 
+		const validValue = (question, e) => {
+			if (Number(question.value) > Number(question.score)) {
+				e.target.style.borderColor = 'red';
+			} else {
+				e.target.style.borderColor = '#ced4da';
+			}
+			calculation();
+		}
+
 		const calculation = () => {
-			let brand = true;
-			let total = 0;
-			self.sections.forEach(section => {
-				section.groups.forEach(group => {
-					group.questions.forEach(question => {
-						let value = 0;
-						if (question.hasOwnProperty('value')) {
-							value = Number(question.value);
-						}
-						total = total + value;
-					});
-				});
-			});
-			self.total = total;
-			domBody.querySelector('#total').innerText = self.total;
+			let brand = true, total = 0;
 			const divAlert = domBody.querySelector('#divAlert');
 			divAlert.innerHTML = ``;
-			if (self.total > self.total_section) {
-				divAlert.appendChild(showAlert('El puntaje acumulado excede el puntaje total', 'danger'));
-				brand = false;
+			try {
+				self.sections.forEach(section => {
+					section.groups.forEach(group => {
+						group.questions.forEach(question => {
+							let value = 0;
+							if (question.hasOwnProperty('value')) {
+								value = Number(question.value);
+								if (value > question.score) {
+									throw `El puntaje asignado excede al puntaje máximo en el subcriterio: ${question.name}`;
+								}
+							}
+							total = total + value;
+						});
+					});
+				});
+				if (total > self.total_section) {
+					throw `El puntaje acumulado excede el puntaje total`;
+				}
+				self.total = total;
+				domBody.querySelector('#total').innerText = self.total;
+			} catch (error) {
+				divAlert.appendChild(showAlert(error, 'danger'));
+				brand = false;				
 			}
 			return brand;
 		}
@@ -459,19 +520,38 @@ const viewfichaDetail = () => {
 			progressContainer.appendChild(progressLine);
 
 			self.fichas.forEach((ficha, fichaIndex) => {
-				const wrap = createTextWrap(fichaIndex + 1, ficha.nombre, fichaIndex == 0);
+				const wrap = createTextWrap(fichaIndex + 1, ficha.nombre, fichaIndex == 0, ficha.id);
 				progressContainer.appendChild(wrap);
+				textWraps.push(wrap);
 			});
+
+			let currentActive = 1;
 	
-			domHeader.classList.add('text-center');
+			progressNextButton.addEventListener('click', () => {
+				currentActive++
+				if(currentActive > textWraps.length) {
+					currentActive = textWraps.length
+				}
+				update()
+			})
+	
+			progressBackButton.addEventListener('click', () => {
+				currentActive--
+				if(currentActive < 1) {
+					currentActive = 1
+				}
+				update()
+			})
+
 			domHeader.appendChild(progressBackButton);
 			domHeader.appendChild(progressContainer);
 
 			domHeader.appendChild(progressNextButton);
 	
-			function createTextWrap(circleNumber, labelText, isActive = false) {
+			function createTextWrap(circleNumber, labelText, isActive = false, id = 0) {
 				const textWrap = document.createElement('div');
 				textWrap.classList.add('progress-text-wrap');
+				textWrap.setAttribute('data-id', id);
 				if (isActive) {
 					textWrap.classList.add('active');
 				}
@@ -501,53 +581,47 @@ const viewfichaDetail = () => {
 	
 				return button;
 			}
-			
-			const wraps = document.querySelectorAll('.progress-text-wrap')
-	
-			let currentActive = 1
-	
-			progressNextButton.addEventListener('click', () => {
-				currentActive++
-				if(currentActive > wraps.length) {
-					currentActive = wraps.length
-				}
-				update()
-			})
-	
-			progressBackButton.addEventListener('click', () => {
-				currentActive--
-				if(currentActive < 1) {
-					currentActive = 1
-				}
-				update()
-			})
 	
 			function update() {
-				wraps.forEach((wrap, index) => {
-					if(index < currentActive) {
-						wrap.classList.add('active')
-					} else {
-						wrap.classList.remove('active')
-					}
-				})
-	
-				const actives = document.querySelectorAll('.active')
-				progressLine.style.width = (actives.length - 1) / (wraps.length - 1)* 80 + '%'
-
-				if(currentActive === 1) {
-					progressBackButton.disabled = true
-					progressNextButton.disabled = false
-				} else if(currentActive === wraps.length) {
-					progressBackButton.disabled = false
-					progressNextButton.disabled = true
-				} else {
-					progressBackButton.disabled = false
-					progressNextButton.disabled = false
+				const currentWrap = textWraps[currentActive - 1];
+				if (!currentWrap) {
+					return;
+				}
+				const id = currentWrap.getAttribute('data-id');
+				if (id > 0) {
+					setFormModule(id)
+					.then(() => {
+						textWraps.forEach((wrap, index) => {
+							if(index < currentActive) {
+								wrap.classList.add('active')
+							} else {
+								wrap.classList.remove('active')
+							}
+						})
+			
+						const actives = progressContainer.querySelectorAll('.active')
+						progressLine.style.width = (actives.length - 1) / (textWraps.length - 1)* 80 + '%'
+		
+						if(currentActive === 1) {
+							progressBackButton.disabled = true
+							progressNextButton.disabled = false
+						} else if(currentActive === textWraps.length) {
+							progressBackButton.disabled = false
+							progressNextButton.disabled = true
+						} else {
+							progressBackButton.disabled = false
+							progressNextButton.disabled = false
+						}
+					})
+					.catch(error => {
+						sweet2.show({type: 'error', text: error});
+					});
 				}
 			}
+
+			update();
 		}
-		
-		setFormModule();
+	
 		currentProgress();
 	}
 

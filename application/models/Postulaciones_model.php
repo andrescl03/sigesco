@@ -773,4 +773,73 @@ class Postulaciones_model extends CI_Model
             </body>
         </html>';
     }
+
+    public function ficha($request)
+    {
+        $response = $this->tools->responseDefault();
+        try {
+
+            $documento       = isset($request['documento'])       ? $request['documento']       : 0;
+            $convocatoria_id = isset($request['convocatoria_id']) ? $request['convocatoria_id'] : 0;
+            $inscripcion_id  = isset($request['inscripcion_id'])  ? $request['inscripcion_id']  : 0;
+
+            if (!$documento) {
+                throw new Exception("El campo documento es requerido");
+            }
+
+            $result = $this->convocatorias_web_model->show(compact('convocatoria_id', 'inscripcion_id'));
+            if (!$result['success']) {
+                throw new Exception($result['message']);
+            }
+
+            $convocatoria = $result['data']['convocatoria'];
+            $postulante = NULL;
+
+            if ($convocatoria->con_tipo == 1) { // PUN
+                $sql = "SELECT 
+                        CPE.*,
+                        ESP.esp_id AS especialidad_id,
+                        ESP.esp_descripcion AS especialidad_descripcion,
+                        NIV.niv_id AS nivel_id,
+                        NIV.niv_descripcion AS nivel_descripcion,
+                        MDD.mod_id AS modalidad_id,
+                        MDD.mod_nombre AS modalidad_descripcion
+                    FROM cuadro_pun_exp AS CPE 
+                    INNER JOIN grupo_inscripcion AS GIN ON CPE.grupo_inscripcion_gin_id = GIN.gin_id
+                    INNER JOIN especialidades AS ESP ON ESP.esp_id = GIN.especialidades_esp_id
+                    INNER JOIN niveles AS NIV ON NIV.niv_id = ESP.niveles_niv_id
+                    INNER JOIN modalidades AS MDD ON MDD.mod_id = NIV.modalidad_mod_id
+                    WHERE CPE.cpe_estado = 1
+                    AND CPE.cpe_tipoCuadro = 1 
+                    AND CPE.cpe_documento = ?
+                    AND grupo_inscripcion_gin_id = ?";
+                $postulante = $this->db->query($sql, compact('documento', 'inscripcion_id'))->row();
+
+                if (!$postulante) {
+                    throw new Exception("No se encontro el postulante en los registro de la PUN");
+                }
+            }
+
+            $sql = "SELECT 
+                  P.*
+                FROM postulaciones AS P 
+                WHERE P.deleted_at IS NULL 
+                AND P.numero_documento = ?
+                AND P.convocatoria_id = ?
+                AND P.inscripcion_id = ?";
+            $postulacion = $this->db->query($sql, compact('documento', 'convocatoria_id', 'inscripcion_id'))->row();
+
+            if ($postulacion) {
+                throw new Exception("Ya se encuentra registrado en está convocatoria");
+            }
+
+            $response['success'] = true;
+            $response['data']  = compact('postulante');
+            $response['status']  = 200;
+            $response['message'] = 'ficha';
+        } catch (\Exception $e) {
+            $response['message'] = $e->getMessage();
+        }
+        return $response;
+    }
 }

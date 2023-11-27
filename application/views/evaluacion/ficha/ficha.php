@@ -434,17 +434,8 @@
                 <div class="card border-secondary">
                     <div class="card-body text-dark">
                         <div class="text-right mb-2">
-                            <!-- <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <select class="form-control select-anexo" name="" id="">
-                                        <option value="1">Anexo 13</option>
-                                        <option value="2">Anexo 14</option>
-                                    </select>
-                                </div>
-                            </div> -->
                             <div class="row">
-                             
-                                <div id="containerFicha">
+                                <div id="containerFicha" data-id="<?php echo $postulante->id ?>">
                                 </div>
                             </div>
                         </div>
