@@ -23,7 +23,7 @@
     }
 </style>
 <div class="app-row row">
-    <div class="col-md-3">
+    <div class="col-md-3 mb-3">
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
@@ -428,7 +428,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-9 mb-3">
         <div class="tile">
             <div class="tile-body">
                 <div class="card border-secondary">

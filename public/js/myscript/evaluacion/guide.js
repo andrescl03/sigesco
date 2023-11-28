@@ -12,6 +12,8 @@ const viewfichaDetail = () => {
 	const domBody = document.createElement('div');
 	dom.appendChild(domBody);
 
+	let currentActive = 1;
+
 	// Function to create a cell with specified attributes and text
 	function createCell(tag, text, attributes = {}, style = {}) {
 		const cell = document.createElement(tag);
@@ -210,11 +212,17 @@ const viewfichaDetail = () => {
 					domBody.innerHTML = ``;
 					self.ficha = self.fichas.find((o)=>{return o.id == id});
 					self.sections = [];
-					if (self.ficha.plantilla) {
+					if (self.ficha.plantilla) {						
 						if (self.ficha.plantilla.sections) {
 							self.sections = self.ficha.plantilla.sections;
-							formFichaDetail();
+							if (self.ficha.evaluacion_estado == 1) {
+								viewFicha();
+							} else {
+								formFichaDetail();
+							}
 						}
+					} else {
+						throw 'No se encontro la plantilla';
 					}
 					resolve();
 				} catch (error) {
@@ -395,8 +403,8 @@ const viewfichaDetail = () => {
 								if (!success) {
 									throw message;
 								}
-								console.log(data);
-								sweet2.loading(false);
+								sweet2.show({type: 'success', text: message});
+								build();
 							})
 							.catch((error)=>{
 								console.log(error);
@@ -479,30 +487,32 @@ const viewfichaDetail = () => {
 		const calculation = () => {
 			let brand = true, total = 0;
 			const divAlert = domBody.querySelector('#divAlert');
-			divAlert.innerHTML = ``;
-			try {
-				self.sections.forEach(section => {
-					section.groups.forEach(group => {
-						group.questions.forEach(question => {
-							let value = 0;
-							if (question.hasOwnProperty('value')) {
-								value = Number(question.value);
-								if (value > question.score) {
-									throw `El puntaje asignado excede al puntaje máximo en el subcriterio: ${question.name}`;
+			if (divAlert) {
+				divAlert.innerHTML = ``;
+				try {
+					self.sections.forEach(section => {
+						section.groups.forEach(group => {
+							group.questions.forEach(question => {
+								let value = 0;
+								if (question.hasOwnProperty('value')) {
+									value = Number(question.value);
+									if (value > question.score) {
+										throw `El puntaje asignado excede al puntaje máximo en el subcriterio: ${question.name}`;
+									}
 								}
-							}
-							total = total + value;
+								total = total + value;
+							});
 						});
 					});
-				});
-				if (total > self.total_section) {
-					throw `El puntaje acumulado excede el puntaje total`;
+					if (total > self.total_section) {
+						throw `El puntaje acumulado excede el puntaje total`;
+					}
+					self.total = total;
+					domBody.querySelector('#total').innerText = self.total;
+				} catch (error) {
+					divAlert.appendChild(showAlert(error, 'danger'));
+					brand = false;				
 				}
-				self.total = total;
-				domBody.querySelector('#total').innerText = self.total;
-			} catch (error) {
-				divAlert.appendChild(showAlert(error, 'danger'));
-				brand = false;				
 			}
 			return brand;
 		}
@@ -527,8 +537,6 @@ const viewfichaDetail = () => {
 				progressContainer.appendChild(wrap);
 				textWraps.push(wrap);
 			});
-
-			let currentActive = 1;
 	
 			progressNextButton.addEventListener('click', () => {
 				currentActive++
@@ -625,17 +633,133 @@ const viewfichaDetail = () => {
 
 			update();
 		}
+
+		const viewFicha = () => {
+
+			let total = 0;
+			let ls = 0;
+			let lg = 0;
+			let html = `<div class="table-responsive">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th class="text-center bg-light" style="vertical-align: middle;">RUBRO</th>
+										<th class="text-center bg-light" style="vertical-align: middle;">CRITERIOS</th>
+										<th class="text-center bg-light" style="vertical-align: middle;">SUBCRITERIOS</th>
+										<th class="text-center bg-light" style="vertical-align: middle;">EVALUACIÓN</th>
+										<th class="text-center bg-light" style="vertical-align: middle;">Puntaje máximo por subcriterio</th>
+										<th class="text-center bg-light" style="vertical-align: middle;">Puntaje máximo por rubro</th>
+									</tr>
+								</thead>
+								<tbody>`;
+			self.sections.forEach((section, index1) => {
+				ls = 0; 
+				section.groups.forEach((group, index2) => {                             
+					group.questions.forEach((question, index3) => {
+						ls = ls + 1;
+					});
+				});
+				if (section.groups.length == 0) {
+					html += 
+					`<tr class=""> 
+						<td class="colvert bg-light" style="vertical-align: middle; text-align: -webkit-center;">
+							<div style="writing-mode: vertical-lr; transform: rotate(180deg); text-align: center; vertical-align: middle;">
+								${section.name}
+							</div>
+						</td>
+						<td></td>
+						<td></td>
+						<td class="text-center"></td>
+						<td class="text-center"></td>
+						<td class="text-center"></td>
+					</tr>`;
+				} else {
+					section.groups.forEach((group, index2) => {
+						lg = 0;
+						group.questions.forEach((question, index3) => {
+							lg = lg + 1;
+						});
+						if (group.questions.length == 0) {
+							html += 
+							`<tr class=""> 
+								<td class="colvert bg-light" style="vertical-align: middle; text-align: -webkit-center;">
+									<div style="writing-mode: vertical-lr; transform: rotate(180deg); text-align: center; vertical-align: middle;">
+										${section.name}
+									</div>
+								</td>
+								<td>${group.name}</td>
+								<td></td>
+								<td class="text-center"></td>
+								<td class="text-center"></td>
+								<td class="text-center"></td>
+							</tr>`;
+						} else {
+							group.questions.forEach((question, index3) => {
+								html += 
+								`<tr class="">
+									${ 
+										index3 == 0 && index2 == 0 ? `<td class="colvert bg-light" rowspan="${ls}" style="vertical-align: middle; text-align: -webkit-center;">
+																			<div style="writing-mode: vertical-lr; transform: rotate(180deg); text-align: center; vertical-align: middle;">
+																				${section.name}
+																			</div>
+																	  </td>` : ``
+									}
+									${ 
+										index3 == 0 ? `<td rowspan="${lg}">${group.name}</td>` : ``
+									}
+									<td>
+										${question.name}
+										${
+											question.observation_status == 1 ? 
+											`<br><strong>Observacion: </strong> ${question.observation ?? `-`}` : ``
+										}
+									</td>
+									<td class="text-center">${question.value}</td>
+									<td class="text-center">${question.score}</td>
+									${ 
+										index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
+									}
+								</tr>`;
+								let value = 0;
+								if (question.hasOwnProperty('value')) {
+									value = Number(question.value);
+								}
+								if (question.type == 'selectiva' ||
+								    question.type == 'marcado' ||
+									question.type == 'numerico') {
+									total = total + value;
+								}
+							});   
+						}
+					});
+				}
+			});
+			html += 
+				`<tr class="">
+					<td colspan="3" class="text-center colvert bg-light fw-bold">PUNTAJE OBTENIDO</td>
+					<td class="text-center fw-bold">${total}</td>
+					<td colspan="2"></td>
+				</tr>
+				</tbody>
+                </table>
+			</div>`;
+			domBody.innerHTML = html;
+		};
 	
 		currentProgress();
 	}
 
-	return getDetail()
-	.then((data) => {
-		init(data);
-	})
-	.catch((error) => {
-		sweet2.show({type: 'error', text: error});
-	});
+	const build = () => {
+		getDetail()
+		.then((data) => {
+			init(data);
+		})
+		.catch((error) => {
+			sweet2.show({type: 'error', text: error});
+		});
+	}
+
+	build();
 	
 };
 
