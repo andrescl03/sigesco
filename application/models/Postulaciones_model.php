@@ -828,9 +828,8 @@ class Postulaciones_model extends CI_Model
             $this->db->insert('postulacion_evaluaciones', $insert);
 
             $response['success'] = true;
-            $response['data']    = compact('postulante');
             $response['status']  = 200;
-            $response['message'] = 'ficha';
+            $response['message'] = 'Se guardo correctamente';
         } catch (\Exception $e) {
             $response['message'] = $e->getMessage();
         }

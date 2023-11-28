@@ -181,7 +181,7 @@ const viewfichaDetail = () => {
 			})
 			.done(function ({success, data, message}) {
 				if (success) {
-					resolve(data);
+					resolve({success, data, message});
 				} else {
 					reject(message);
 				}
@@ -406,9 +406,8 @@ const viewfichaDetail = () => {
 								sweet2.show({type: 'success', text: message});
 								build();
 							})
-							.catch((error)=>{
-								console.log(error);
-								sweet2.show({type: 'error', text: error});
+							.catch(error => {
+								sweet2.show({type: 'error', text: error});								
 							})
 						}
 					});
@@ -499,6 +498,8 @@ const viewfichaDetail = () => {
 									if (value > question.score) {
 										throw `El puntaje asignado excede al puntaje máximo en el subcriterio: ${question.name}`;
 									}
+								} else {
+									question.value = 0;
 								}
 								total = total + value;
 							});
@@ -750,6 +751,8 @@ const viewfichaDetail = () => {
 	}
 
 	const build = () => {
+		domHeader.innerHTML = ``;
+		domBody.innerHTML = ``;
 		getDetail()
 		.then((data) => {
 			init(data);
