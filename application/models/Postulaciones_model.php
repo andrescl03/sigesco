@@ -816,6 +816,16 @@ class Postulaciones_model extends CI_Model
                 throw new Exception("Ya existe una ficha registrada");
             }
 
+            $sql = "SELECT 
+                        PE.*
+                    FROM postulacion_evaluaciones AS PE
+                    WHERE PE.deleted_at IS NULL 
+                    AND PE.postulacion_id  = ?";
+            $fichas = $this->db->query($sql, compact('id'))->result_object();
+
+            $contador = count($fichas);
+            $orden = $contador ? ($contador + 1) : 1;
+
             $insert = [
                 'plantilla'      => $plantilla,
                 'puntaje'        => $puntaje,
@@ -823,7 +833,7 @@ class Postulaciones_model extends CI_Model
                 'postulacion_id' => $id,
                 'fecha_registro' => $this->tools->getDateHour(),
                 'estado'         => 1,
-                'orden'          => 1
+                'orden'          => $orden
             ];
             $this->db->insert('postulacion_evaluaciones', $insert);
 
