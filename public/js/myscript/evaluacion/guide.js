@@ -55,7 +55,7 @@ const viewfichaDetail = () => {
 	}
 	
 	// Function to create a select element with specified options
-	function createSelect(options = [], attributes = {}, events = {}) {
+	function createSelect(options = [], attributes = {}, events = {}, selected = null) {
 		const select = document.createElement('select');
 		for (const key in attributes) {
 			select.setAttribute(key, attributes[key]);
@@ -71,6 +71,9 @@ const viewfichaDetail = () => {
 			const option = document.createElement('option');
 			option.text = optionText.text;
 			option.value = optionText.value;
+			if (selected == optionText.value) {
+				option.selected = true;
+			}
 			select.add(option);
 		});
 		for (const key in events) {
@@ -144,9 +147,8 @@ const viewfichaDetail = () => {
 	
 	function getDetail() {
 		return new Promise(function (resolve, reject) {
-			let periodo_id = 1;
 			$.ajax({
-				url: window.AppMain.url + `configuracion/periodos/${periodo_id}/detail`,
+				url: window.AppMain.url + `postulaciones/${postulant_id}/fichas`,
 				method: 'POST',
 				dataType: 'json',
 				cache: 'false'
@@ -393,7 +395,7 @@ const viewfichaDetail = () => {
 								if (!success) {
 									throw message;
 								}
-								console.log(response);
+								console.log(data);
 								sweet2.loading(false);
 							})
 							.catch((error)=>{
@@ -426,7 +428,8 @@ const viewfichaDetail = () => {
 							question.value = e.target.value;
 							validValue(question, e);
 						}
-					}
+					},
+					question.value
 				);					
 			} else if (question.type == 'marcado') {
 				const attributes = { 
@@ -616,6 +619,7 @@ const viewfichaDetail = () => {
 					.catch(error => {
 						sweet2.show({type: 'error', text: error});
 					});
+					calculation();
 				}
 			}
 

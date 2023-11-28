@@ -66,6 +66,7 @@ $route['configuracion/periodos/(:num)/detail'] = 'Configuracion/detallePeriodo/$
 $route['configuracion/periodos/(:num)/update'] = 'Configuracion/guardarPeriodo/$1';
 
 $route['postulaciones/(:num)/ficha'] = 'Postulaciones/ficha/$1';
+$route['postulaciones/(:num)/fichas'] = 'Postulaciones/fichas/$1';
 
 $route['default_controller'] = 'index';
 $route['404_override'] = '';

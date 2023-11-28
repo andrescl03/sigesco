@@ -160,6 +160,7 @@ CREATE TABLE `postulacion_evaluaciones` (
 	`plantilla` TEXT NULL DEFAULT NULL,
 	`puntaje` DECIMAL(9,2) NULL DEFAULT NULL,
 	`estado` INT(11) UNSIGNED NULL DEFAULT '0',
+	`orden` INT(11) UNSIGNED NULL DEFAULT '0',
 	`fecha_registro` DATETIME NULL DEFAULT NULL,
 	`ficha_id` INT(11) UNSIGNED NULL DEFAULT '0',
 	`postulacion_id` INT(11) UNSIGNED NULL DEFAULT '0',

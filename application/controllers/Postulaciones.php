@@ -12,45 +12,6 @@ class Postulaciones extends CI_Controller {
         date_default_timezone_set('America/Lima');
     }
 
-    public function store() {
-        if ($this->input->post()) {
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($this->postulaciones_model->store()));
-        } else {
-			show_404();
-		}
-    }  
-
-    public function find() {
-        if ($this->input->post()) {
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($this->postulaciones_model->find($_POST)));
-        } else {
-            show_404();
-        }    
-    }
-
-    public function update($uid) {
-        if ($this->input->post()) {
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($this->postulaciones_model->update(compact('uid'))));
-        } else {
-            show_404();
-        }  
-    }
-
-    public function edit($uid) {
-        if (!empty(trim($uid))) {
-            $this->layout->js(array(base_url()."public/web/js/convocatorias/edit.js"));
-            $this->layout->view("/web/convocatoria/edit", $this->postulaciones_model->edit(compact('uid')));    
-		} else {
-			show_404();
-		}
-    }
-
     public function ficha($id) {
         if ($this->input->post()) {
             $this->output
@@ -61,4 +22,9 @@ class Postulaciones extends CI_Controller {
         }  
     }
 
+    public function fichas($id) {
+        return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->postulaciones_model->fichas($id)));
+    }
 }
