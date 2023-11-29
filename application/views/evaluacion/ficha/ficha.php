@@ -23,7 +23,7 @@
     }
 </style>
 <div class="app-row row">
-    <div class="col-md-3">
+    <div class="col-md-3 mb-3">
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
@@ -35,63 +35,83 @@
                 <div id="collapseDatosPostulante" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Nombres</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->nombre ?>
+                            <div class="col-lg-12">
+                                <strong>Nombres: </strong>
+                                <span>
+                                    <?php echo $postulante->nombre ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Apellido Paterno</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->apellido_paterno ?>
+                            <div class="col-lg-12">
+                                <strong>Apellido Paterno: </strong>
+                                <span>
+                                    <?php echo $postulante->apellido_paterno ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Apellido Materno</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->apellido_materno ?>
+                            <div class="col-lg-12">
+                                <strong>Apellido Materno</strong>
+                                <span>
+                                    <?php echo $postulante->apellido_materno ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Género</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->genero ?>
+                            <div class="col-lg-12">
+                                <strong>Género</strong>
+                                <span>
+                                    <?php echo $postulante->genero ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Estado Civil</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->estado_civil ?>
+                            <div class="col-lg-12">
+                                <strong>Estado Civil</strong>
+                                <span>
+                                    <?php echo $postulante->estado_civil ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Nacionalidad</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->nacionalidad ?>
+                            <div class="col-lg-12">
+                                <strong>Nacionalidad</strong>
+                                <span>
+                                    <?php echo $postulante->nacionalidad ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Fecha de Nacimiento</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->fecha_nacimiento ?>
+                            <div class="col-lg-12">
+                                <strong>Fecha de Nacimiento</strong>
+                                <span>
+                                    <?php echo $postulante->fecha_nacimiento ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Correo Electrónico</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->correo ?>
+                            <div class="col-lg-12">
+                                <strong>Correo Electrónico</strong>
+                                <span>
+                                    <?php echo $postulante->correo ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Número de Celular</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->numero_celular ?>
+                            <div class="col-lg-12">
+                                <strong>Número de Celular</strong>
+                                <span>
+                                    <?php echo $postulante->numero_celular ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Número de Teléfono</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->numero_telefono ?>
+                            <div class="col-lg-12">
+                                <strong>Número de Teléfono</strong>
+                                <span>
+                                    <?php echo $postulante->numero_telefono ?>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -105,47 +125,60 @@
                 </h2>
                 <div id="collapseUbicacion" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Departamento</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->numero_telefono ?>
+                            <div class="col-lg-12">
+                                <strong>Departamento</strong>
+                                <span>
+                                    <?php echo $postulante->numero_telefono ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Provincia</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->numero_telefono ?>
+                            <div class="col-lg-12">
+                                <strong>Provincia</strong>
+                                <span>
+                                    <?php echo $postulante->numero_telefono ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Distrito</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->distrito_id ?>
+                            <div class="col-lg-12">
+                                <strong>Distrito</strong>
+                                <span>
+                                    <?php echo $postulante->distrito_id ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Vía</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->via ?>
+                            <div class="col-lg-12">
+                                <strong>Vía</strong>
+                                <span>
+                                    <?php echo $postulante->via ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Vía</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->nombre_via ?>
+                            <div class="col-lg-12">
+                                <strong>Nombre de la Vía</strong>
+                                <span>
+                                    <?php echo $postulante->nombre_via ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Zona</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->zona ?>
+                            <div class="col-lg-12">
+                                <strong>Nombre de la Zona</strong>
+                                <span>
+                                    <?php echo $postulante->zona ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Dirección</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $postulante->direccion ?>
+                            <div class="col-lg-12">
+                                <strong>Dirección</strong>
+                                <span>
+                                    <?php echo $postulante->direccion ?>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -161,48 +194,61 @@
                     <div class="accordion-body">
                         <?php foreach ($formaciones_academicas as $k => $formacion_academica) { ?>
                             <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Nivel Educativo</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <?php echo $formacion_academica->nivel_educativo ?>
+                                <div class="col-lg-12">
+                                    <strong>Nivel Educativo</strong>
+                                    <span>
+                                        <?php echo $formacion_academica->nivel_educativo ?>
+                                    </span>
                                 </div>
                             </div>
                             <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Grado Académico</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <?php echo $formacion_academica->grado_academico ?>
+                                <div class="col-lg-12">
+                                    <strong>Grado Académico</strong>
+                                    <span>
+                                        <?php echo $formacion_academica->grado_academico ?>
+                                    </span>
                                 </div>
                             </div>
                             <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Universidad</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <?php echo $formacion_academica->universidad ?>
+                                <div class="col-lg-12">
+                                    <strong>Universidad</strong>
+                                    <span>
+                                        <?php echo $formacion_academica->universidad ?>
+                                    </span>
                                 </div>
                             </div>
                             <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Carrera Profesional</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <?php echo $formacion_academica->carrera_profesional ?>
+                                <div class="col-lg-12">
+                                    <strong>Carrera Profesional</strong>
+                                    <span>
+                                        <?php echo $formacion_academica->carrera_profesional ?>
+                                    </span>
                                 </div>
                             </div>
                             <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4 text-secondary">N° de Registro de Título</label>
-                                <div class="col-xl-8 col-lg-8 bold">
-                                    <?php echo $formacion_academica->registro_titulo ?>
+                                <div class="col-lg-12">
+                                    <strong>N° de Registro de Título</strong>
+                                    <span>
+                                        <?php echo $formacion_academica->registro_titulo ?>
+                                    </span>
                                 </div>
                             </div>
                             <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">RD de Título N°</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <?php echo $formacion_academica->rd_titulo ?>
+                                <div class="col-lg-12">
+                                    <strong>RD de Título N°</strong>
+                                    <span>
+                                        <?php echo $formacion_academica->rd_titulo ?>
+                                    </span>
                                 </div>
                             </div>
                             <div class="form-group row mb-1">
-                                <label class="col-xl-4 col-lg-4">Obtención del Grado</label>
-                                <div class="col-xl-8 col-lg-8">
-                                    <?php echo $formacion_academica->obtencion_grado ?>
+                                <div class="col-lg-12">
+                                    <strong>Obtención del Grado</strong>
+                                    <span>
+                                        <?php echo $formacion_academica->obtencion_grado ?>
+                                    </span>
                                 </div>
                             </div>
-                        
                         <?php if ($k < count($formaciones_academicas) - 1) { ?>
                             <hr>
                         <?php } ?>
@@ -220,33 +266,43 @@
                     <div class="accordion-body">
                     <?php foreach ($experiencias_laborales as $k => $experiencia_laboral) { ?>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Institución educativa</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $experiencia_laboral->institucion_educativa ?>
+                            <div class="col-lg-12">
+                                <strong>Institución educativa</strong>
+                                <span>
+                                    <?php echo $experiencia_laboral->institucion_educativa ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Sector</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $experiencia_laboral->sector ?>
+                            <div class="col-lg-12">
+                                <strong>Sector</strong>
+                                <span>
+                                    <?php echo $experiencia_laboral->sector ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Puesto</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $experiencia_laboral->puesto ?>
+                            <div class="col-lg-12">
+                                <strong>Puesto</strong>
+                                <span>
+                                    <?php echo $experiencia_laboral->puesto ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">N° RD</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $experiencia_laboral->numero_rd ?>
+                            <div class="col-lg-12">
+                                <strong>N° RD</strong>
+                                <span>
+                                    <?php echo $experiencia_laboral->numero_rd ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">N° Contrato</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $experiencia_laboral->numero_contrato ?>
+                            <div class="col-lg-12">
+                                <strong>N° Contrato</strong>
+                                <span>
+                                    <?php echo $experiencia_laboral->numero_contrato ?>
+                                </span>
                             </div>
                         </div>
                         <?php if ($k < count($experiencias_laborales) - 1) { ?>
@@ -266,39 +322,51 @@
                     <div class="accordion-body">
                     <?php foreach ($especializaciones as $k => $especializacion) { ?>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Tipo de especialización</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $especializacion->tipo_especializacion ?>
+                            <div class="col-lg-12">
+                                <strong>Tipo de especialización</strong>
+                                <span>
+                                    <?php echo $especializacion->tipo_especializacion ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Tema</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $especializacion->tema_especializacion ?>
+                            <div class="col-lg-12">
+                                <strong>Tema</strong>
+                                <span>
+                                    <?php echo $especializacion->tema_especializacion ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Nombre de la entidad</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $especializacion->nombre_entidad ?>
+                            <div class="col-lg-12">
+                                <strong>Nombre de la entidad</strong>
+                                <span>
+                                    <?php echo $especializacion->nombre_entidad ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Fecha de inicio</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $especializacion->fecha_inicio ?>
+                            <div class="col-lg-12">
+                                <strong>Fecha de inicio</strong>
+                                <span>
+                                    <?php echo $especializacion->fecha_inicio ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Fecha de termino</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $especializacion->fecha_termino ?>
+                            <div class="col-lg-12">
+                                <strong>Fecha de termino</strong>
+                                <span>
+                                    <?php echo $especializacion->fecha_termino ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Número de horas</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $especializacion->numero_horas ?>
+                            <div class="col-lg-12">
+                                <strong>Número de horas</strong>
+                                <span>
+                                    <?php echo $especializacion->numero_horas ?>
+                                </span>
                             </div>
                         </div>
                         <?php if ($k < count($especializaciones) - 1) { ?>
@@ -319,31 +387,35 @@
 
                     <?php foreach ($archivos as $k => $archivo) { ?>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Archivo</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <?php echo $archivo->nombre ?>
+                            <div class="col-lg-12">
+                                <strong>Archivo</strong>
+                                <span>
+                                    <?php echo $archivo->nombre ?>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label class="col-xl-4 col-lg-4">Visualizar</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <i class="fa fa-file-pdf fa-2xl text-danger" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#modalFilePostulant<?php echo $archivo->id ?>"></i>
-                                <div class="modal fade" id="modalFilePostulant<?php echo $archivo->id ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
-                                    <div class="modal-dialog modal-xl">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">ARCHIVO</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div class="col-lg-12">
+                                <strong>Visualizar</strong>
+                                <span>
+                                    <i class="fa fa-file-pdf fa-2xl text-danger ms-2" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#modalFilePostulant<?php echo $archivo->id ?>"></i>
+                                    <div class="modal fade" id="modalFilePostulant<?php echo $archivo->id ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+                                        <div class="modal-dialog modal-xl">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">ARCHIVO</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body p-0">
+                                                    <iframe src="<?php base_url() ?>/public<?php echo $archivo->url ?>" width="100%" height="700px"></iframe>
+                                                </div>
+                                                <!-- <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div> -->
                                             </div>
-                                            <div class="modal-body p-0">
-                                                <iframe src="<?php base_url() ?>/public<?php echo $archivo->url ?>" width="100%" height="700px"></iframe>
-                                            </div>
-                                            <!-- <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            </div> -->
                                         </div>
                                     </div>
-                                </div>
+                                </span>
                             </div>
                         </div>
                         <?php if ($k < count($archivos) - 1) { ?>
@@ -356,39 +428,15 @@
             </div>
         </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-9 mb-3">
         <div class="tile">
             <div class="tile-body">
                 <div class="card border-secondary">
                     <div class="card-body text-dark">
                         <div class="text-right mb-2">
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <select class="form-control select-anexo" name="" id="">
-                                        <option value="1">Anexo 13</option>
-                                        <option value="2">Anexo 14</option>
-                                    </select>
-                                </div>
-                            </div>
                             <div class="row">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center bg-light">RUBRO</th>
-                                                <th class="text-center bg-light">CRITERIOS</th>
-                                                <th class="text-center bg-light">SUBCRITERIOS</th>
-                                                <th class="text-center bg-light">EVALUACIÓN</th>
-                                                <th class="text-center bg-light">Puntaje máximo por subcriterio</th>
-                                                <th class="text-center bg-light">Puntaje máximo por rubro</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="tbody-anexo">
-                                        </tbody>
-                                    </table>
+                                <div id="containerFicha" data-id="<?php echo $postulante->id ?>">
                                 </div>
-
-
                             </div>
                         </div>
                     </div>

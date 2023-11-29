@@ -156,3 +156,20 @@ SELECT*FROM evaluacion_pun_exp;
 ALTER TABLE convocatorias ADD COLUMN `con_horainicio` time default null;
 ALTER TABLE convocatorias ADD COLUMN `con_horafin` time default null;
 
+/************ 27/11/2023 **********************/
+
+CREATE TABLE `postulacion_evaluaciones` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`plantilla` TEXT NULL DEFAULT NULL,
+	`puntaje` DECIMAL(9,2) NULL DEFAULT NULL,
+	`estado` INT(11) UNSIGNED NULL DEFAULT '0',
+	`orden` INT(11) UNSIGNED NULL DEFAULT '0',
+	`fecha_registro` DATETIME NULL DEFAULT NULL,
+	`ficha_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`postulacion_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+);
+

@@ -35,6 +35,7 @@
         <link rel="stylesheet" href="<?php echo base_url()?>public/js/alertifyjs/css/themes/bootstrap.min.css">
 
         <link href="<?php echo base_url()?>public/css/estilos_2.css?t=1.5" rel="stylesheet" />
+        <link href="<?php echo base_url()?>public/css/main.css?t=<?php echo time()?>" rel="stylesheet" />
         <script>
             window.AppMain = {
                 url: "<?php echo base_url() ?>"

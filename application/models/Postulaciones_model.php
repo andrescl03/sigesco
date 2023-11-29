@@ -284,7 +284,8 @@ class Postulaciones_model extends CI_Model
                     INNER JOIN especialidades AS ESP ON ESP.esp_id = GIN.especialidades_esp_id
                     INNER JOIN niveles AS NIV ON NIV.niv_id = ESP.niveles_niv_id
                     INNER JOIN modalidades AS MDD ON MDD.mod_id = NIV.modalidad_mod_id
-                    WHERE CPE.cpe_estado = 1 
+                    WHERE CPE.cpe_estado = 1
+                    AND CPE.cpe_tipoCuadro = 1 
                     AND CPE.cpe_documento = ?
                     AND grupo_inscripcion_gin_id = ?";
                 $postulante = $this->db->query($sql, compact('documento', 'inscripcion_id'))->row();
@@ -771,5 +772,141 @@ class Postulaciones_model extends CI_Model
                 </table>
             </body>
         </html>';
+    }
+
+    public function ficha($id) {
+
+        $response = $this->tools->responseDefault();
+        try {
+
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('ficha_id', 'ficha_id', 'trim|required');
+            $this->form_validation->set_rules('plantilla', 'plantilla', 'trim|required');
+            $this->form_validation->set_rules('puntaje', 'puntaje', 'trim|required');
+            
+            if ($this->form_validation->run() == FALSE) {
+                $response['errors'] = $this->form_validation->error_array();
+                throw new Exception("No cumple con los datos requeridos: " . json_encode($response['errors']));
+            }
+
+            $ficha_id  = $this->input->post("ficha_id", true);
+            $plantilla = $this->input->post("plantilla", true);
+            $puntaje   = $this->input->post("puntaje", true);
+
+            $sql = "SELECT 
+                        P.*
+                    FROM postulaciones AS P 
+                    WHERE P.deleted_at IS NULL 
+                    AND P.id = ?";
+            $postulante = $this->db->query($sql, compact('id'))->row();
+
+            if (!$postulante) {
+                throw new Exception("No se encontro el postulante");
+            }
+
+            $sql = "SELECT 
+                        P.*
+                    FROM postulacion_evaluaciones AS P 
+                    WHERE P.deleted_at IS NULL 
+                    AND P.postulacion_id = ?
+                    AND P.ficha_id = ?";
+            $ficha = $this->db->query($sql, compact('id', 'ficha_id'))->row();
+
+            if ($ficha) {
+                throw new Exception("Ya existe una ficha registrada");
+            }
+
+            $sql = "SELECT 
+                        PE.*
+                    FROM postulacion_evaluaciones AS PE
+                    WHERE PE.deleted_at IS NULL 
+                    AND PE.postulacion_id  = ?";
+            $fichas = $this->db->query($sql, compact('id'))->result_object();
+
+            $contador = count($fichas);
+            $orden = $contador ? ($contador + 1) : 1;
+
+            $insert = [
+                'plantilla'      => $plantilla,
+                'puntaje'        => $puntaje,
+                'ficha_id'       => $ficha_id,
+                'postulacion_id' => $id,
+                'fecha_registro' => $this->tools->getDateHour(),
+                'estado'         => 1,
+                'orden'          => $orden
+            ];
+            $this->db->insert('postulacion_evaluaciones', $insert);
+
+            $response['success'] = true;
+            $response['status']  = 200;
+            $response['message'] = 'Se guardo correctamente';
+        } catch (\Exception $e) {
+            $response['message'] = $e->getMessage();
+        }
+        return $response;
+    }
+
+    public function fichas($id) {
+        $response = $this->tools->responseDefault();
+        try {
+          
+            $sql = "SELECT 
+                        P.*
+                    FROM postulaciones AS P 
+                    WHERE P.deleted_at IS NULL 
+                    AND P.id = ?";
+            $postulante = $this->db->query($sql, compact('id'))->row();
+
+            if (!$postulante) {
+                throw new Exception("No se encontro el postulante");
+            }
+
+            $inscripcion_id = $postulante->inscripcion_id;
+
+            $sql = "SELECT 
+                        P.*
+                    FROM grupo_inscripcion AS P 
+                    WHERE P.gin_id = ?";
+            $inscripcion = $this->db->query($sql, compact('inscripcion_id'))->row();
+
+            if (!$inscripcion) {
+                throw new Exception("No se encontro la inscripcion");
+            }
+
+            $periodo_id = $inscripcion->periodos_per_id;
+
+            $sql = "SELECT 
+                        P.*,
+                        PE.plantilla AS evaluacion_plantilla,
+                        PE.estado AS evaluacion_estado,
+                        PE.puntaje AS evaluacion_puntaje
+                    FROM periodo_fichas AS P
+                    LEFT JOIN postulacion_evaluaciones AS PE ON P.id = PE.ficha_id
+                    WHERE P.deleted_at IS NULL 
+                    AND P.periodo_id  = ?";
+            $fichas = $this->db->query($sql, compact('periodo_id'))->result_object();
+    
+            foreach ($fichas as $k => $o) {
+                if ($o->evaluacion_plantilla) {
+                    $fichas[$k]->plantilla = json_decode($o->evaluacion_plantilla);
+                } else {
+                    if ($o->plantilla) {
+                        $fichas[$k]->plantilla = json_decode($o->plantilla);
+                    }    
+                }
+            }
+  
+            $sql = "SELECT * FROM periodos WHERE per_id = ?";
+            $periodo = $this->db->query($sql, compact('id'))->row();
+            
+            $response['success'] = true;
+            $response['data']  = compact('fichas', 'periodo');
+            $response['status']  = 200;
+            $response['message'] = 'fichas';
+  
+        } catch (\Exception $e) {
+            $response['message'] = $e->getMessage();
+        }
+        return $response;  
     }
 }
