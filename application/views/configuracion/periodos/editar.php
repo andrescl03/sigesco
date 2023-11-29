@@ -61,7 +61,9 @@
                                                 </form>
                                             </div>
                                             <div class="tab-pane fade pt-4" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab">
-                                                <div class="row mb-5">
+                                                <div class="row container-sheet-list">
+                                                </div>
+                                                <!-- <div class="row mb-5">
                                                     <div class="col">
                                                         <select class="form-control select-ficha" name="" id="">
                                                             <option value="" hidden>[SELECCIONE]</option>
@@ -70,8 +72,8 @@
                                                     <div class="col text-end">
                                                         <button type="button" class="btn btn-success btn-ficha">Agregar</button>
                                                     </div>
-                                                </div>
-                                                <div class="container-sheet">    
+                                                </div> -->
+                                                <div class="row container-sheet-edit">    
                                                 </div>
                                             </div>
                                         </div>

@@ -2,11 +2,15 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
     const { data, methods, mounted, computed, utilities, el, renders } = {
         el: 'AppEditarPeriodoAdmin',
         mounted: () => {
+            sweet2.loading();
             self.periodo_id = dom.getAttribute('data-id');
             dom.removeAttribute('data-id');
             self.modalViewerAnexo = self.modal('modalViewerAnexo');
             self.modalFicha = self.modal('modalFicha');
-            self.initialize();
+            self.initialize()
+            .then(() => {
+                sweet2.loading(false);
+            });
         },
         data: () => { 
             return {
@@ -24,23 +28,72 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
         },
         methods: {
             initialize: () => {
-                sweet2.loading();
-                self.getDetail()
-                .then(data => {
-                    const containers = dom.querySelectorAll('.container-sheet');
-                    containers.forEach(container => {
-                        container.innerHTML = ``;
+                return new Promise((resolve, reject) => {
+                    self.getDetail()
+                    .then(data => {
+                        const containers = dom.querySelectorAll('.container-sheet-edit');
+                        containers.forEach(container => {
+                            container.innerHTML = ``;
+                        });
+                        self.sections = [];
+                        self.ficha = {};
+                        self.periodo = data.periodo;
+                        self.fichas = data.fichas;
+                        self.setFormPeriodo();
+                        self.listSheet();
+                        resolve();
+                    })
+                    .catch(error => {
+                        sweet2.show({type: 'error', text: error});
                     });
-                    self.sections = [];
-                    self.ficha = {};
-                    self.periodo = data.periodo;
-                    self.fichas = data.fichas;
-                    self.setFormPeriodo();
-                    self.events();
-                    sweet2.loading(false);
-                })
-                .catch(error => {
-                    sweet2.show({type: 'error', text: error});
+                });
+            },
+            editSheet: (id) => {
+                dom.querySelectorAll('.container-sheet-list').forEach(container => {
+                    container.innerHTML = ``;
+                });
+                self.ficha_id = Number(id);
+                self.setFormModule();
+                self.events();
+            },
+            listSheet: () => {
+                dom.querySelectorAll('.container-sheet-edit').forEach(container => {
+                    container.innerHTML = ``;
+                });
+                const containers = dom.querySelectorAll('.container-sheet-list');
+                containers.forEach(container => {
+                    container.innerHTML = ``;
+
+                    const rowHeader = document.createElement('div');
+                    rowHeader.classList.add('row', 'mb-3');
+                    const colTitle = document.createElement('div');
+                    colTitle.classList.add('col-10');
+                    colTitle.innerHTML = `<h4>Listado fichas de evaluación</h4>`;
+                    rowHeader.appendChild(colTitle);
+
+                    const colAction = document.createElement('div');
+                    colAction.classList.add('col-2', 'text-end');
+
+                    const button = document.createElement('a');
+                    button.classList.add('link-dark', 'ms-3');
+                    button.setAttribute('href', '#');
+                    button.innerHTML = `<i class="fa fa-plus me-2"></i>Agregar`;
+                    button.addEventListener('click', (e) => {
+                        const forms = dom.querySelectorAll('.form-ficha');
+                        forms.forEach(form => {
+                            form.reset();
+                            form.querySelector('input[name="id"]').value = '';
+                            form.querySelector('input[name="any"]').value = 'nuevaficha';
+                        });
+                        self.modalFicha.show();
+                    });
+                    colAction.appendChild(button);
+
+                    rowHeader.appendChild(colAction);
+                    container.appendChild(rowHeader);
+                    self.fichas.forEach(ficha => {
+                        container.appendChild(self.renderSheetItem(ficha));
+                    });
                 });
             },
             events: () => {
@@ -151,8 +204,100 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             }
         },
         renders: {
+            renderSheetItem: (ficha) => {
+                // Crear un elemento div
+                var divElement = document.createElement('div');
+                divElement.classList.add('col-md-3', 'mb-3'); // Agregar clases al div
+
+                // Crear un elemento de tarjeta (card)
+                var cardElement = document.createElement('div');
+                cardElement.classList.add('card');
+
+                // Crear un elemento de cuerpo de tarjeta (card-body)
+                var cardBodyElement = document.createElement('div');
+                cardBodyElement.classList.add('card-body');
+
+                // Crear un elemento de título de tarjeta (card-title)
+                var titleElement = document.createElement('h5');
+                titleElement.classList.add('card-title');
+                titleElement.textContent = ficha.nombre;
+
+                // Crear un elemento de subtítulo de tarjeta (card-subtitle)
+                var subtitleElement = document.createElement('h6');
+                subtitleElement.classList.add('card-subtitle', 'mb-2', 'text-muted');
+                subtitleElement.textContent = 'Card subtitle';
+
+                // Crear un elemento de texto de tarjeta (card-text)
+                var textElement = document.createElement('p');
+                textElement.classList.add('card-text', 'mb-3');
+                textElement.style.height = '75px';
+                textElement.style.overflowY = 'none';
+                textElement.textContent = "Some quick example text to build on the card title and make up the bulk of the card's content.";
+
+                // Crear enlaces de tarjeta (card-link)
+                var link0Element = document.createElement('a');
+                link0Element.classList.add('card-link');
+                link0Element.href = '#';
+                link0Element.textContent = 'Editar';
+                link0Element.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const forms = dom.querySelectorAll('.form-ficha');
+                    forms.forEach(form => {
+                        form.querySelector('input[name="any"]').value = 'actualizaficha';
+                        form.querySelector('input[name="id"]').value = ficha.id;
+                        form.querySelector('input[name="name"]').value = ficha.nombre;
+                        form.querySelector('select[name="tipo_id"]').value = ficha.tipo_id; 
+                    });
+                    self.modalFicha.show();
+                });
+
+                var link1Element = document.createElement('a');
+                link1Element.classList.add('card-link');
+                link1Element.href = '#';
+                link1Element.textContent = 'Ficha';
+                link1Element.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    self.editSheet(ficha.id);
+                });
+
+                var link2Element = document.createElement('a');
+                link2Element.classList.add('card-link');
+                link2Element.href = '#';
+                link2Element.textContent = 'Eliminar';
+                link2Element.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    sweet2.show({
+                        type: 'question',
+                        text: '¿Estás seguro de eliminar este elemento?',
+                        showCancelButton: true,
+                        onOk: () => {
+                            sweet2.loading();
+                            const formData = new FormData();
+                            formData.append('id', ficha.id);
+                            formData.append('any', 'eliminaficha');
+                            self.setDetail(formData)
+                            .then(()=>{
+                                sweet2.show({type: 'success', text: 'Se elimino correctamente'});
+                                self.initialize();
+                            });
+                        }
+                    });
+                });
+
+                // Agregar elementos al árbol DOM
+                cardBodyElement.appendChild(titleElement);
+                cardBodyElement.appendChild(subtitleElement);
+                cardBodyElement.appendChild(textElement);
+                cardBodyElement.appendChild(link0Element);
+                cardBodyElement.appendChild(link1Element);
+                cardBodyElement.appendChild(link2Element);
+
+                cardElement.appendChild(cardBodyElement);
+                divElement.appendChild(cardElement);
+                return divElement;
+            },
             viewModule: () => {
-                const containers = dom.querySelectorAll('.container-sheet');
+                const containers = dom.querySelectorAll('.container-sheet-edit');
                 containers.forEach(container => {
                     container.innerHTML = ``;
                     // Header
@@ -166,7 +311,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     const colAction = document.createElement('div');
                     colAction.classList.add('col-2', 'text-end');
 
-                    const aConfig = document.createElement('a');
+                    /*const aConfig = document.createElement('a');
                     aConfig.classList.add('link-dark');
                     aConfig.setAttribute('href', '#');
                     aConfig.innerHTML = `<i class="fa-solid fa-gear me-2"></i>Editar`;
@@ -181,14 +326,15 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                         });
                         self.modalFicha.show();
                     });
-                    colAction.appendChild(aConfig);
+                    colAction.appendChild(aConfig);*/
 
                     const aDelete = document.createElement('a');
                     aDelete.classList.add('link-dark', 'ms-3');
                     aDelete.setAttribute('href', '#');
-                    aDelete.innerHTML = `<i class="fa-solid fa-trash me-2"></i>Eliminar`;
+                    aDelete.innerHTML = `<i class="fa fa-chevron-left me-2"></i>Atras`;
                     aDelete.addEventListener('click', (e) => {
-                        sweet2.show({
+                        self.listSheet();
+                        /*sweet2.show({
                             type: 'question',
                             text: '¿Estás seguro de eliminar este elemento?',
                             showCancelButton: true,
@@ -201,7 +347,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                                     self.initialize();
                                 });
                             }
-                        });
+                        });*/
                     });
                     colAction.appendChild(aDelete);
 
@@ -541,15 +687,6 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 const col3 = document.createElement('div');
                 col3.classList.add('col-lg-7', 'mb-2', 'd-flex', 'my-auto');
 
-                /*const input3 = document.createElement('input');
-                input3.type = 'text';
-                input3.classList.add('form-control');
-                input3.placeholder = 'Escribe un comentario para la opción';
-                input3.addEventListener('keyup', (e) => {
-                    question.caption = e.target.value;
-                });
-                col3.appendChild(input3);*/
-
                 const select = document.createElement('select');
                 select.classList.add('form-control');
                 select.style.maxWidth = '120px';
@@ -797,9 +934,6 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             },
             viewActionOption: (question) => {
                 let html = ``;
-                /*if (question?.caption) {
-                    html += `<span>${question.caption}</span>`;
-                }*/
                 if (question.type == 'selectiva') {
                     html += `<select class="form-control  text-center">`;
                     question?.options.forEach(option => {
