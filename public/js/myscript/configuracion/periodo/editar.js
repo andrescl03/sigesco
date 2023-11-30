@@ -298,14 +298,14 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 // Crear un elemento de subtítulo de tarjeta (card-subtitle)
                 var subtitleElement = document.createElement('h6');
                 subtitleElement.classList.add('card-subtitle', 'mb-2', 'text-muted');
-                subtitleElement.textContent = 'Card subtitle';
+                subtitleElement.textContent = 'Ficha';
 
                 // Crear un elemento de texto de tarjeta (card-text)
                 var textElement = document.createElement('p');
                 textElement.classList.add('card-text', 'mb-3');
                 textElement.style.height = '75px';
                 textElement.style.overflowY = 'hidden';
-                textElement.textContent = "Some quick example text to build on the card title and make up the bulk of the card's content.";
+                textElement.textContent = ficha.descripcion;
 
                 // Crear enlaces de tarjeta (card-link)
                 var link0Element = document.createElement('a');
