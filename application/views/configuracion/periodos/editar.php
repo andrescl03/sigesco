@@ -114,7 +114,7 @@
                                 </div>
                             </div>
                             <div class="modal fade" id="modalFicha" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">FICHA</h5>
@@ -132,13 +132,51 @@
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
-                                                        <label class="col-4 col-form-label">Tipo</label>
+                                                        <label class="col-4 col-form-label">Descripción</label>
+                                                        <div class="col-8">
+                                                            <textarea class="form-control" name="descripcion" placeholder="Descripcion"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label class="col-4 col-form-label">Tipo de convocatoria</label>
                                                         <div class="col-8">
                                                             <select class="form-select" name="tipo_id" required>
                                                                 <option value="" hidden selected>[SELECCIONE]</option>
-                                                                <option value="1">Tipo 1</option>
-                                                                <option value="2">Tipo 2</option>
+                                                                <option value="1">PUN</option>
+                                                                <option value="2">Expediente</option>
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label class="col-4 col-form-label">Especialidades</label>
+                                                        <div class="col-8">
+                                                            <div class="table-responsive">
+                                                                <table class="table mb-0">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col">Modalidad</th>
+                                                                            <th scope="col">Nivel</th>
+                                                                            <th scope="col">Especialidad</th>
+                                                                            <th scope="col">
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input check-all-especialidad" type="checkbox" value="1">
+                                                                                </div>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="list-especialidades">
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            
+                                                            <!-- <ul class="list-group list-group-flush list-especialidades mb-0">
+                                                                <li class="list-group-item">Item</li>
+                                                                <li class="list-group-item">Item</li>
+                                                                <li class="list-group-item">Item</li>
+                                                                <li class="list-group-item">Item</li>
+                                                                <li class="list-group-item">Item</li>
+                                                            </ul> -->
                                                         </div>
                                                     </div>
                                                 </form>

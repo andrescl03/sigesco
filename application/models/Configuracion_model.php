@@ -104,9 +104,19 @@ class Configuracion_model extends CI_Model {
 
         $sql = "SELECT * FROM periodos WHERE per_id = ?";
         $periodo = $this->db->query($sql, compact('id'))->row();
+
+        $sql = "SELECT
+                  ESP.esp_id,
+                  ESP.esp_descripcion,
+                  NIV.niv_descripcion,
+                  MDA.mod_nombre
+                FROM especialidades AS ESP
+                INNER JOIN niveles AS NIV ON NIV.niv_id = ESP.niveles_niv_id
+                INNER JOIN modalidades AS MDA ON MDA.mod_id = NIV.modalidad_mod_id";
+        $especialidades = $this->db->query($sql)->result_object();
         
         $response['success'] = true;
-        $response['data']  = compact('fichas', 'periodo');
+        $response['data']  = compact('fichas', 'periodo', 'especialidades');
         $response['status']  = 200;
         $response['message'] = 'detail';
 

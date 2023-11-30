@@ -23,7 +23,8 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 fichas: [],
                 ficha: {},
                 items: [],
-                options: ['selectiva', 'marcado', 'texto', 'numerico']
+                options: ['selectiva', 'marcado', 'texto', 'numerico'],
+                especialidades: []
             }
         },
         methods: {
@@ -39,6 +40,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                         self.ficha = {};
                         self.periodo = data.periodo;
                         self.fichas = data.fichas;
+                        self.especialidades = data.especialidades;
                         self.setFormPeriodo();
                         self.listSheet();
                         resolve();
@@ -109,6 +111,11 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     });
                 }, 'submit');
 
+                self.eventTag('check-all-especialidad', (e) => {
+                    e.preventDefault();
+                    console.log(e.target.checked);
+                }, 'click');
+
                 self.eventTag('btn-ficha', (e) => {
                     const forms = dom.querySelectorAll('.form-ficha');
                     forms.forEach(form => {
@@ -160,6 +167,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 selectFichas.forEach(select => {
                     select.innerHTML = htmlSelect;
                 });
+                self.renderEspecialidades();
             },
             setDetail: (formData) => {
                 return new Promise((resolve, reject)=>{
@@ -204,6 +212,27 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             }
         },
         renders: {
+            renderEspecialidades: () => {
+                const containers = dom.querySelectorAll('.list-especialidades');
+                containers.forEach(container => {
+                    container.innerHTML = ``;
+                    let html = ``;
+                    self.especialidades.forEach(especialidad => {
+                        html += `<tr>
+                                    <td>${especialidad.mod_nombre}</td>
+                                    <td>${especialidad.niv_descripcion}</td>
+                                    <td>${especialidad.esp_descripcion}</td>
+                                    <td><input class="form-check-input check-especialidad" type="checkbox" value="${especialidad.esp_id}"></td>
+                                </tr>`;
+                        /*html += `<li class="list-group-item">${especialidad.mod_nombre} <small class="text-muted">|</small> ${especialidad.niv_descripcion} <small class="text-muted">|</small> ${especialidad.esp_descripcion} 
+                                    <div class="form-check float-end">
+                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    </div>
+                                </li>`;*/
+                    });
+                    container.innerHTML = html;
+                });
+            },
             renderSheetItem: (ficha) => {
                 // Crear un elemento div
                 var divElement = document.createElement('div');
