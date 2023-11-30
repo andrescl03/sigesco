@@ -128,7 +128,7 @@
                                                     <div class="mb-3 row">
                                                         <label class="col-4 col-form-label">Nombre</label>
                                                         <div class="col-8">
-                                                            <input type="text" class="form-control" name="name" placeholder="Nombre" required>
+                                                            <input type="text" class="form-control" name="nombre" placeholder="Nombre" required>
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
@@ -145,6 +145,20 @@
                                                                 <option value="1">PUN</option>
                                                                 <option value="2">Expediente</option>
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label class="col-4 col-form-label">Orden</label>
+                                                        <div class="col-8">
+                                                            <input type="number" class="form-control" name="orden" placeholder="0" min="0" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label class="col-4 col-form-label">Se promedia</label>
+                                                        <div class="col-8">
+                                                            <div class="form-check form-switch mt-2">
+                                                                <input class="form-check-input" type="checkbox" name="promedio" value="1">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
@@ -169,14 +183,6 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                            
-                                                            <!-- <ul class="list-group list-group-flush list-especialidades mb-0">
-                                                                <li class="list-group-item">Item</li>
-                                                                <li class="list-group-item">Item</li>
-                                                                <li class="list-group-item">Item</li>
-                                                                <li class="list-group-item">Item</li>
-                                                                <li class="list-group-item">Item</li>
-                                                            </ul> -->
                                                         </div>
                                                     </div>
                                                 </form>

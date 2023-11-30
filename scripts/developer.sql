@@ -170,3 +170,17 @@ CREATE TABLE `postulacion_evaluaciones` (
 	PRIMARY KEY (`id`) USING BTREE
 );
 
+/******************** 30/11/2023 ********************/
+
+ALTER TABLE `periodo_fichas` ADD COLUMN `orden` INT(11) UNSIGNED NULL DEFAULT '0' AFTER `periodo_id`;
+ALTER TABLE `periodo_fichas` ADD COLUMN `promedio` INT(11) UNSIGNED NULL DEFAULT '0' AFTER `periodo_id`;
+ALTER TABLE `periodo_fichas` ADD COLUMN `descripcion` VARCHAR(255) NULL DEFAULT NULL AFTER `periodo_id`;
+
+CREATE TABLE `periodo_ficha_especialidades` (
+	`periodo_ficha_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`especialidad_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL
+);
+

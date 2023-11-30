@@ -43,6 +43,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                         self.especialidades = data.especialidades;
                         self.setFormPeriodo();
                         self.listSheet();
+                        self.events();
                         resolve();
                     })
                     .catch(error => {
@@ -56,7 +57,24 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
                 self.ficha_id = Number(id);
                 self.setFormModule();
-                self.events();
+            },
+            setFormSheet: (form, ficha) => {
+                const id          = ficha ? ficha.id          : '',
+                      nombre      = ficha ? ficha.nombre      : '',
+                      tipo_id     = ficha ? ficha.tipo_id     : '',
+                      descripcion = ficha ? ficha.descripcion : '',
+                      promedio    = ficha ? ficha.promedio    : '',
+                      orden       = ficha ? ficha.orden       : '',
+                      any         = ficha ? 'actualizaficha'  : 'nuevaficha';
+
+                form.reset();
+                form.querySelector('input[name="id"]').value             = id;
+                form.querySelector('input[name="any"]').value            = any;
+                form.querySelector('input[name="nombre"]').value         = nombre;
+                form.querySelector('select[name="tipo_id"]').value       = tipo_id; 
+                form.querySelector('textarea[name="descripcion"]').value = descripcion;
+                form.querySelector('input[name="promedio"]').checked     = promedio == 1 ? true : false;
+                form.querySelector('input[name="orden"]').value          = orden;
             },
             listSheet: () => {
                 dom.querySelectorAll('.container-sheet-edit').forEach(container => {
@@ -83,9 +101,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     button.addEventListener('click', (e) => {
                         const forms = dom.querySelectorAll('.form-ficha');
                         forms.forEach(form => {
-                            form.reset();
-                            form.querySelector('input[name="id"]').value = '';
-                            form.querySelector('input[name="any"]').value = 'nuevaficha';
+                            self.setFormSheet(form, false);
                         });
                         self.modalFicha.show();
                     });
@@ -112,9 +128,13 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 }, 'submit');
 
                 self.eventTag('check-all-especialidad', (e) => {
-                    e.preventDefault();
-                    console.log(e.target.checked);
-                }, 'click');
+                    const checks = dom.querySelectorAll('.check-especialidad');
+                    if (checks) {
+                        checks.forEach(check => {
+                            check.checked = e.target.checked;
+                        });
+                    }
+                }, 'click', false);
 
                 self.eventTag('btn-ficha', (e) => {
                     const forms = dom.querySelectorAll('.form-ficha');
@@ -222,13 +242,8 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                                     <td>${especialidad.mod_nombre}</td>
                                     <td>${especialidad.niv_descripcion}</td>
                                     <td>${especialidad.esp_descripcion}</td>
-                                    <td><input class="form-check-input check-especialidad" type="checkbox" value="${especialidad.esp_id}"></td>
+                                    <td><input class="form-check-input check-especialidad" name="order[${especialidad.esp_id}]" type="checkbox" value="${especialidad.esp_id}"></td>
                                 </tr>`;
-                        /*html += `<li class="list-group-item">${especialidad.mod_nombre} <small class="text-muted">|</small> ${especialidad.niv_descripcion} <small class="text-muted">|</small> ${especialidad.esp_descripcion} 
-                                    <div class="form-check float-end">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    </div>
-                                </li>`;*/
                     });
                     container.innerHTML = html;
                 });
@@ -260,7 +275,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 var textElement = document.createElement('p');
                 textElement.classList.add('card-text', 'mb-3');
                 textElement.style.height = '75px';
-                textElement.style.overflowY = 'none';
+                textElement.style.overflowY = 'hidden';
                 textElement.textContent = "Some quick example text to build on the card title and make up the bulk of the card's content.";
 
                 // Crear enlaces de tarjeta (card-link)
@@ -272,10 +287,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     e.preventDefault();
                     const forms = dom.querySelectorAll('.form-ficha');
                     forms.forEach(form => {
-                        form.querySelector('input[name="any"]').value = 'actualizaficha';
-                        form.querySelector('input[name="id"]').value = ficha.id;
-                        form.querySelector('input[name="name"]').value = ficha.nombre;
-                        form.querySelector('select[name="tipo_id"]').value = ficha.tipo_id; 
+                        self.setFormSheet(form, ficha);
                     });
                     self.modalFicha.show();
                 });
