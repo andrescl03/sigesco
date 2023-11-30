@@ -100,6 +100,20 @@ class Configuracion_model extends CI_Model {
           if ($o->plantilla) {
             $fichas[$k]->plantilla = json_decode($o->plantilla);
           }
+          $fichas[$k]->periodo_ficha_especialidades = [];
+        }
+
+        $keys_especialidades = [];
+        $sql = "SELECT * FROM periodo_ficha_especialidades WHERE deleted_at IS NULL";
+        $periodo_ficha_especialidades = $this->db->query($sql)->result_object();
+        foreach ($periodo_ficha_especialidades as $k => $o) {
+          $keys_especialidades[$o->periodo_ficha_id][] = $o;
+        }
+
+        foreach ($fichas as $k => $o) {
+          if (isset($keys_especialidades[$o->id])) {
+            $fichas[$k]->periodo_ficha_especialidades = $keys_especialidades[$o->id];
+          }
         }
 
         $sql = "SELECT * FROM periodos WHERE per_id = ?";
@@ -162,13 +176,34 @@ class Configuracion_model extends CI_Model {
           break;
           case 'actualizaficha':
             $ficha_id  = $this->input->post("id", true);
-            $nombre  = $this->input->post("name", true);
+            $nombre  = $this->input->post("nombre", true);
             $tipo_id  = $this->input->post("tipo_id", true);
+            $promedio  = $this->input->post("promedio", true);
+            $descripcion  = $this->input->post("descripcion", true);
+            $orden  = $this->input->post("orden", true);
+            $ids  = $this->input->post("ids", true);
+
             $data = [
               'nombre' => $nombre,
-              'tipo_id' => $tipo_id
+              'tipo_id' => $tipo_id,
+              'promedio' => $promedio,
+              'descripcion' => $descripcion,
+              'orden' => $orden
             ];
             $this->db->update('periodo_fichas', $data, array('id' => $ficha_id));
+            $this->db->delete('periodo_ficha_especialidades', array('periodo_ficha_id' => $ficha_id));
+            if (count(@$ids)) {
+              $inserts = [];
+              foreach ($ids as $key => $value) {
+                $inserts[] = [
+                  'periodo_ficha_id' => $ficha_id,
+                  'especialidad_id' => $value
+                ];
+              }
+              if (count($inserts)) {
+                $this->db->insert_batch('periodo_ficha_especialidades', $inserts);
+              }
+            }
           break;
           case 'eliminaficha':
             $ficha_id  = $this->input->post("id", true);

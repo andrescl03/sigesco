@@ -75,6 +75,35 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 form.querySelector('textarea[name="descripcion"]').value = descripcion;
                 form.querySelector('input[name="promedio"]').checked     = promedio == 1 ? true : false;
                 form.querySelector('input[name="orden"]').value          = orden;
+
+                let count = 0;
+                const checks = form.querySelectorAll('.check-especialidad');
+                if (checks) {
+                    checks.forEach(check => {
+                        check.checked = false;
+                        if (ficha) {
+                            ficha.periodo_ficha_especialidades.forEach(item => {
+                                if (item.especialidad_id == check.value) {
+                                    count++;
+                                    check.checked = true; return;
+                                }
+                            });
+                        }
+                    });
+                }
+                const checksAll = form.querySelectorAll('.check-all-especialidad');
+                if (checksAll) {
+                    checksAll.forEach(check => {
+                        check.checked = false;
+                        if (ficha) {
+                            if (checks) {
+                                if (checks.length == count) {
+                                    check.checked = true;
+                                }
+                            }
+                        }
+                    });
+                }
             },
             listSheet: () => {
                 dom.querySelectorAll('.container-sheet-edit').forEach(container => {
@@ -242,7 +271,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                                     <td>${especialidad.mod_nombre}</td>
                                     <td>${especialidad.niv_descripcion}</td>
                                     <td>${especialidad.esp_descripcion}</td>
-                                    <td><input class="form-check-input check-especialidad" name="order[${especialidad.esp_id}]" type="checkbox" value="${especialidad.esp_id}"></td>
+                                    <td><input class="form-check-input check-especialidad" name="ids[${especialidad.esp_id}]" type="checkbox" value="${especialidad.esp_id}"></td>
                                 </tr>`;
                     });
                     container.innerHTML = html;
