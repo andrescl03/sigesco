@@ -140,7 +140,7 @@
                                                     <div class="mb-3 row">
                                                         <label class="col-4 col-form-label">Tipo de convocatoria</label>
                                                         <div class="col-8">
-                                                            <select class="form-select" name="tipo_id" required>
+                                                            <select class="form-select select-tipo" name="tipo_id" required>
                                                                 <option value="" hidden selected>[SELECCIONE]</option>
                                                                 <option value="1">PUN</option>
                                                                 <option value="2">Expediente</option>

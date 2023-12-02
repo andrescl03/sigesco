@@ -24,7 +24,8 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 ficha: {},
                 items: [],
                 options: ['selectiva', 'marcado', 'texto', 'numerico'],
-                especialidades: []
+                especialidades: [],
+                tipo_convocatorias: []
             }
         },
         methods: {
@@ -41,6 +42,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                         self.periodo = data.periodo;
                         self.fichas = data.fichas;
                         self.especialidades = data.especialidades;
+                        self.tipo_convocatorias = data.tipo_convocatorias;
                         self.setFormPeriodo();
                         self.listSheet();
                         self.events();
@@ -116,12 +118,12 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     const rowHeader = document.createElement('div');
                     rowHeader.classList.add('row', 'mb-3');
                     const colTitle = document.createElement('div');
-                    colTitle.classList.add('col-10');
+                    colTitle.classList.add('col-lg-10');
                     colTitle.innerHTML = `<h4>Listado fichas de evaluación</h4>`;
                     rowHeader.appendChild(colTitle);
 
                     const colAction = document.createElement('div');
-                    colAction.classList.add('col-2', 'text-end');
+                    colAction.classList.add('col-lg-2', 'text-end');
 
                     const button = document.createElement('a');
                     button.classList.add('link-dark', 'ms-3');
@@ -138,8 +140,29 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
 
                     rowHeader.appendChild(colAction);
                     container.appendChild(rowHeader);
-                    self.fichas.forEach(ficha => {
-                        container.appendChild(self.renderSheetItem(ficha));
+
+                    self.tipo_convocatorias.forEach(tipo => {
+
+                        const row1 = document.createElement('div');
+                        row1.classList.add('row', 'mb-3');
+
+                        const col1 = document.createElement('div');
+                        col1.classList.add('col-lg-12');
+                        col1.innerHTML = `<h5>${tipo.descripcion}</h5>`;
+                        row1.appendChild(col1);
+
+                        container.appendChild(row1);
+
+                        const row2 = document.createElement('div');
+                        row2.classList.add('row', 'mb-4');
+                        
+                        self.fichas.forEach(ficha => {
+                            if (ficha.tipo_id == tipo.tipo_id) {
+                                row2.appendChild(self.renderSheetItem(ficha));
+                            }
+                        });
+
+                        container.appendChild(row2);
                     });
                 });
             },
@@ -164,6 +187,24 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                         });
                     }
                 }, 'click', false);
+
+                self.eventTag('check-especialidad', (e) => {
+                    const checks = dom.querySelectorAll('.check-especialidad');
+                    if (checks) {
+                        let count = 0;
+                        checks.forEach(check => {
+                            if (check.checked) {
+                                count++;
+                            }
+                        });
+                        const checks2 = dom.querySelectorAll('.check-all-especialidad');
+                        if (checks2) {
+                            checks2.forEach(check => {
+                                check.checked = count == checks.length;
+                            });
+                        }
+                    }
+                }, 'change', false);
 
                 self.eventTag('btn-ficha', (e) => {
                     const forms = dom.querySelectorAll('.form-ficha');
@@ -208,10 +249,10 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             setFormPeriodo: () => {
                 dom.querySelector('input[name="name"]').value = self.periodo.per_nombre;
                 dom.querySelector('input[name="anio"]').value = self.periodo.per_anio;
-                const selectFichas = dom.querySelectorAll('.select-ficha');
+                const selectFichas = dom.querySelectorAll('.select-tipo');
                 let htmlSelect = `<option value="" selected hidden>[SELECCIONE]</option>`;
-                self.fichas.forEach(ficha => {
-                    htmlSelect += `<option value="${ficha.id}">${ficha.nombre}</option>`;
+                self.tipo_convocatorias.forEach(tipo => {
+                    htmlSelect += `<option value="${tipo.tipo_id}">${tipo.descripcion}</option>`;
                 });
                 selectFichas.forEach(select => {
                     select.innerHTML = htmlSelect;
@@ -298,7 +339,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 // Crear un elemento de subtítulo de tarjeta (card-subtitle)
                 var subtitleElement = document.createElement('h6');
                 subtitleElement.classList.add('card-subtitle', 'mb-2', 'text-muted');
-                subtitleElement.textContent = 'Ficha';
+                subtitleElement.textContent = ficha.promedio == 1 ? 'Evaluado' : 'Ficha';
 
                 // Crear un elemento de texto de tarjeta (card-text)
                 var textElement = document.createElement('p');

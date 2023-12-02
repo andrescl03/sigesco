@@ -93,7 +93,10 @@ class Configuracion_model extends CI_Model {
       $response = $this->tools->responseDefault();
       try {
         
-        $sql = "SELECT * FROM periodo_fichas WHERE deleted_at IS NULL AND periodo_id  = ?";
+        $sql = "SELECT * FROM tipo_convocatoria WHERE deleted_at IS NULL";
+        $tipo_convocatorias = $this->db->query($sql)->result_object();
+
+        $sql = "SELECT * FROM periodo_fichas WHERE deleted_at IS NULL AND periodo_id  = ? ORDER BY orden ASC";
         $fichas = $this->db->query($sql, compact('id'))->result_object();
 
         foreach ($fichas as $k => $o) {
@@ -130,7 +133,7 @@ class Configuracion_model extends CI_Model {
         $especialidades = $this->db->query($sql)->result_object();
         
         $response['success'] = true;
-        $response['data']  = compact('fichas', 'periodo', 'especialidades');
+        $response['data']    = compact('fichas', 'periodo', 'especialidades', 'tipo_convocatorias');
         $response['status']  = 200;
         $response['message'] = 'detail';
 
