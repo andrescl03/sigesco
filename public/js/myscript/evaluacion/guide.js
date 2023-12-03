@@ -522,7 +522,7 @@ const viewfichaDetail = () => {
 
 			const progressContainer = document.createElement('div');
 			progressContainer.classList.add('progress-container', 'mx-auto');
-	
+			progressContainer.style.display = self.fichas.length == 1 ? 'block' : 'flex';
 			const progressLine = document.createElement('div');
 			progressLine.classList.add('progress-line');
 			progressLine.id = 'progress';
@@ -617,6 +617,9 @@ const viewfichaDetail = () => {
 						if(currentActive === 1) {
 							progressBackButton.disabled = true
 							progressNextButton.disabled = false
+							if(currentActive === textWraps.length) {
+								progressNextButton.disabled = true
+							}
 						} else if(currentActive === textWraps.length) {
 							progressBackButton.disabled = false
 							progressNextButton.disabled = true

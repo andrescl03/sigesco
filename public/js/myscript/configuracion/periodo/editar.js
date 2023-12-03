@@ -170,6 +170,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
 
                 self.eventTag('form-ficha', (e) => {
                     e.preventDefault();
+                    sweet2.loading();
                     const formData = new FormData(e.target);
                     self.setDetail(formData)
                     .then((data) => {
@@ -422,43 +423,16 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     const colAction = document.createElement('div');
                     colAction.classList.add('col-2', 'text-end');
 
-                    /*const aConfig = document.createElement('a');
-                    aConfig.classList.add('link-dark');
-                    aConfig.setAttribute('href', '#');
-                    aConfig.innerHTML = `<i class="fa-solid fa-gear me-2"></i>Editar`;
-                    aConfig.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const forms = dom.querySelectorAll('.form-ficha');
-                        forms.forEach(form => {
-                            form.querySelector('input[name="any"]').value = 'actualizaficha';
-                            form.querySelector('input[name="id"]').value = self.ficha.id;
-                            form.querySelector('input[name="name"]').value = self.ficha.nombre;
-                            form.querySelector('select[name="tipo_id"]').value = self.ficha.tipo_id; 
-                        });
-                        self.modalFicha.show();
-                    });
-                    colAction.appendChild(aConfig);*/
-
                     const aDelete = document.createElement('a');
                     aDelete.classList.add('link-dark', 'ms-3');
                     aDelete.setAttribute('href', '#');
                     aDelete.innerHTML = `<i class="fa fa-chevron-left me-2"></i>Atras`;
                     aDelete.addEventListener('click', (e) => {
-                        self.listSheet();
-                        /*sweet2.show({
-                            type: 'question',
-                            text: '¿Estás seguro de eliminar este elemento?',
-                            showCancelButton: true,
-                            onOk: () => {
-                                const formData = new FormData();
-                                formData.append('id', self.ficha_id);
-                                formData.append('any', 'eliminaficha');
-                                self.setDetail(formData)
-                                .then(()=>{
-                                    self.initialize();
-                                });
-                            }
-                        });*/
+                        sweet2.loading();
+                        self.initialize()
+                        .then(() => {
+                            sweet2.loading(false);
+                        });
                     });
                     colAction.appendChild(aDelete);
 
