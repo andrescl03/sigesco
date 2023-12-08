@@ -168,14 +168,36 @@ class Configuracion_model extends CI_Model {
             $this->db->update('periodo_fichas', ['plantilla' => $plantilla], array('id' => $anexo_id));
           break;
           case 'nuevaficha':
-            $nombre  = $this->input->post("name", true);
+            $nombre  = $this->input->post("nombre", true);
             $tipo_id  = $this->input->post("tipo_id", true);
-            $this->db->insert('periodo_fichas', [
+            $promedio  = $this->input->post("promedio", true);
+            $descripcion  = $this->input->post("descripcion", true);
+            $orden  = $this->input->post("orden", true);
+            $ids  = $this->input->post("ids", true);
+
+            $data = [
               'nombre' => $nombre,
               'tipo_id' => $tipo_id,
+              'promedio' => $promedio,
+              'descripcion' => $descripcion,
+              'orden' => $orden,
               'periodo_id' => $id
-            ]); 
-            $periodo_ficha_id = $this->db->insert_id(); // para saber el id ingresado
+            ];
+            $this->db->insert('periodo_fichas', $data); 
+            $ficha_id = $this->db->insert_id(); // para saber el id ingresado
+            $this->db->delete('periodo_ficha_especialidades', array('periodo_ficha_id' => $ficha_id));
+            if (count(@$ids)) {
+              $inserts = [];
+              foreach ($ids as $key => $value) {
+                $inserts[] = [
+                  'periodo_ficha_id' => $ficha_id,
+                  'especialidad_id' => $value
+                ];
+              }
+              if (count($inserts)) {
+                $this->db->insert_batch('periodo_ficha_especialidades', $inserts);
+              }
+            }
           break;
           case 'actualizaficha':
             $ficha_id  = $this->input->post("id", true);
