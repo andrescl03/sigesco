@@ -894,10 +894,10 @@ class Postulaciones_model extends CI_Model
                         PE.plantilla AS evaluacion_plantilla,
                         PE.estado AS evaluacion_estado,
                         PE.puntaje AS evaluacion_puntaje
-                    FROM periodo_fichas AS P
-                    LEFT JOIN postulacion_evaluaciones AS PE ON P.id = PE.ficha_id
+                    FROM periodo_fichas AS P 
                     INNER JOIN periodo_ficha_especialidades AS PFE ON PFE.periodo_ficha_id = P.id
-                    WHERE P.deleted_at IS NULL 
+                    LEFT JOIN postulacion_evaluaciones AS PE ON P.id = PE.ficha_id AND PE.deleted_at IS NULL
+                    WHERE P.deleted_at IS NULL
                     AND P.tipo_id = ? AND P.periodo_id  = ? AND PFE.especialidad_id = ?
                     ORDER BY P.orden ASC";
             $fichas = $this->db->query($sql, compact('tipo_id', 'periodo_id', 'especialidad_id'))->result_object();

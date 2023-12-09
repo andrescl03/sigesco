@@ -184,3 +184,6 @@ CREATE TABLE `periodo_ficha_especialidades` (
 	`deleted_at` DATETIME NULL DEFAULT NULL
 );
 
+/********************** 08/12/2023 **************/
+
+ALTER TABLE `postulacion_evaluaciones` ADD COLUMN `promedio` INT(11) UNSIGNED NULL DEFAULT '0' AFTER `orden`;
