@@ -89,23 +89,9 @@
                                         <h5 class="modal-title" id="exampleModalLabel">FICHA</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center bg-light">RUBRO</th>
-                                                        <th class="text-center bg-light">CRITERIOS</th>
-                                                        <th class="text-center bg-light">SUBCRITERIOS</th>
-                                                        <th class="text-center bg-light">EVALUACIÓN</th>
-                                                        <th class="text-center bg-light">Puntaje máximo por subcriterio</th>
-                                                        <th class="text-center bg-light">Puntaje máximo por rubro</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="tbody-anexo">
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                    <div class="modal-body panel-viewer">
+                                        
+                                                
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

@@ -450,7 +450,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     container.appendChild(accordion);
 
                     const row = document.createElement('div');
-                    row.classList.add('row', 'ms-2', 'mt-4');
+                    row.classList.add('row', 'ms-2', 'my-4');
 
                     const btnAdd = document.createElement('a');
                     btnAdd.classList.add('link-dark');
@@ -485,7 +485,6 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     btnViewer.innerText = `Visualizar`;
                     btnViewer.addEventListener('click', (e) => {
                         e.preventDefault();
-                        console.log(self.sections);
                         self.viewAnexoDetail();
                         self.modalViewerAnexo.show();
                     });
@@ -537,21 +536,23 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
                 div1.appendChild(input);
 
-                const divgroup = document.createElement('div');
-                divgroup.classList.add('input-group', 'ms-3');
-                divgroup.style.maxWidth = '200px';
-                divgroup.innerHTML = `<span id="basic-addon1" class="input-group-text">Puntaje</span>`;
-                
-                const inputgroup = document.createElement('input');
-                inputgroup.type = 'number';
-                inputgroup.classList.add('form-control');
-                inputgroup.value = section.score;
-                inputgroup.addEventListener('change', (e)=>{
-                    section.score = e.target.value;
-                });
-                divgroup.appendChild(inputgroup);
-
-                div1.appendChild(divgroup);
+                if (self.ficha && self.ficha.promedio == 1) {
+                    const divgroup = document.createElement('div');
+                    divgroup.classList.add('input-group', 'ms-3');
+                    divgroup.style.maxWidth = '200px';
+                    divgroup.innerHTML = `<span id="basic-addon1" class="input-group-text">Puntaje</span>`;
+                    
+                    const inputgroup = document.createElement('input');
+                    inputgroup.type = 'number';
+                    inputgroup.classList.add('form-control');
+                    inputgroup.value = section.score;
+                    inputgroup.addEventListener('change', (e)=>{
+                        section.score = e.target.value;
+                    });
+                    divgroup.appendChild(inputgroup);
+    
+                    div1.appendChild(divgroup);
+                }
 
                 accordionHeader.appendChild(div1);
 
@@ -729,21 +730,23 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
                 col1.appendChild(textarea);
 
-                const divgroup = document.createElement('div');
-                divgroup.classList.add('input-group', 'ms-3');
-                divgroup.style.maxWidth = '200px';
-                divgroup.innerHTML = `<span id="basic-addon1" class="input-group-text">Puntaje</span>`;
-                
-                const inputgroup = document.createElement('input');
-                inputgroup.type = 'number';
-                inputgroup.classList.add('form-control');
-                inputgroup.value = question.score;
-                inputgroup.addEventListener('change', (e)=>{
-                    question.score = e.target.value;
-                });
-                divgroup.appendChild(inputgroup);
+                if (self.ficha && self.ficha.promedio == 1) {
+                    const divgroup = document.createElement('div');
+                    divgroup.classList.add('input-group', 'ms-3');
+                    divgroup.style.maxWidth = '200px';
+                    divgroup.innerHTML = `<span id="basic-addon1" class="input-group-text">Puntaje</span>`;
+                    
+                    const inputgroup = document.createElement('input');
+                    inputgroup.type = 'number';
+                    inputgroup.classList.add('form-control');
+                    inputgroup.value = question.score;
+                    inputgroup.addEventListener('change', (e)=>{
+                        question.score = e.target.value;
+                    });
+                    divgroup.appendChild(inputgroup);
 
-                col1.appendChild(divgroup);
+                    col1.appendChild(divgroup);
+                }
 
                 row1.appendChild(col1);
 
@@ -904,16 +907,18 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
                 col1.appendChild(input);
 
-                const input2 = document.createElement('input');
-                input2.placeholder = 'Puntaje';
-                input2.type = 'number';
-                input2.classList.add('form-control', 'ms-3');
-                input2.value = option.score;
-                input2.style.maxWidth = '100px';
-                input2.addEventListener('keyup', (e) => {
-                    option.score = e.target.value;
-                });
-                col1.appendChild(input2);
+                if (self.ficha && self.ficha.promedio == 1) {
+                    const input2 = document.createElement('input');
+                    input2.placeholder = 'Puntaje';
+                    input2.type = 'number';
+                    input2.classList.add('form-control', 'ms-3');
+                    input2.value = option.score;
+                    input2.style.maxWidth = '100px';
+                    input2.addEventListener('keyup', (e) => {
+                        option.score = e.target.value;
+                    });
+                    col1.appendChild(input2);
+                }
 
                 const btnRemove = document.createElement('a');
                 btnRemove.classList.add('link-dark');
@@ -939,7 +944,23 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 return panel;
             },
             viewAnexoDetail: () => {
-                let html = ``;
+                let html = `<div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center bg-light">RUBRO</th>
+                            <th class="text-center bg-light">CRITERIOS</th>
+                            <th class="text-center bg-light">SUBCRITERIOS</th>
+                            <th class="text-center bg-light">EVALUACIÓN</th>
+                            ${
+                                self.ficha && self.ficha.promedio == 1 ? 
+                                    `<th class="text-center bg-light">Puntaje máximo por subcriterio</th>
+                                     <th class="text-center bg-light">Puntaje máximo por rubro</th>` : ``
+                            }
+                        </tr>
+                    </thead>
+                    <tbody class="tbody-anexo">`;
+
                 let total = 0;
                 let ls = 0;
                 let lg = 0;
@@ -958,8 +979,11 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                             <td></td>
                             <td></td>
                             <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
+                            ${
+                                self.ficha && self.ficha.promedio == 1 ? `
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>` : ``
+                            }
                         </tr>`;
                     } else {
                         section.groups.forEach((group, index2) => {
@@ -968,14 +992,23 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                                 lg = lg + 1;
                             });
                             if (group.questions.length == 0) {
+                                let lg1 = 0;
+                                section.groups.forEach((group, index2) => {
+                                    lg1 = lg1 + 1;
+                                });
                                 html += 
                                 `<tr class=""> 
-                                    <td class="colvert bg-light">${section.name}</td>
+                                    ${ 
+                                        index2 == 0 ? `<td class="colvert bg-light" rowspan="${lg1}">${section.name}</td>` : ``
+                                    }
                                     <td>${group.name}</td>
                                     <td></td>
                                     <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
+                                    ${
+                                        self.ficha && self.ficha.promedio == 1 ? `
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>` : ``
+                                    }
                                 </tr>`;
                             } else {
                                 group.questions.forEach((question, index3) => {
@@ -994,12 +1027,17 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                                                 `<textarea class="form-control mt-3" placeholder="Ingrese su obervación" rows="2"></textarea>` : ``
                                             }
                                         </td>
-                                        <td class="text-center">${
-                                            self.viewActionOption(question)
-                                        }</td>
-                                        <td class="text-center">${question.score}</td>
-                                        ${ 
-                                            index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
+                                        <td class="text-center">
+                                            ${
+                                                self.viewActionOption(question)
+                                            }
+                                        </td>
+                                        ${
+                                            self.ficha && self.ficha.promedio == 1 ? `
+                                                <td class="text-center">${question.score}</td>
+                                                ${ 
+                                                    index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
+                                                } ` : ``
                                         }
                                     </tr>`;
                                 });    
@@ -1007,14 +1045,20 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                         });
                     }
                 });
-                html += 
-                    `<tr class="">
-                        <td colspan="4" class="text-center fw-bold">PUNTAJE TOTAL</td>
-                        <td class="text-center fw-bold">${total}</td>
-                    </tr>`;
-                const tbodies = dom.querySelectorAll('.tbody-anexo');
-                tbodies.forEach(tbody => {
-                    tbody.innerHTML = html;
+                html +=    `
+                ${
+                    self.ficha && self.ficha.promedio == 1 ? `
+                            <tr class="">
+                                <td colspan="4" class="text-center fw-bold">PUNTAJE TOTAL</td>
+                                <td class="text-center fw-bold">${total}</td>
+                            </tr>` : ``
+                }
+                        </tbody>
+                    </table>
+                </div>`;
+                const paneles = dom.querySelectorAll('.panel-viewer');
+                paneles.forEach(panel => {
+                    panel.innerHTML = html;
                 });
             },
             viewActionOption: (question) => {
