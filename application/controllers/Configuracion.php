@@ -381,13 +381,13 @@ class Configuracion extends CI_Controller
     public function VNuevaPlaza(){ 
         $periodos   = $this->configuracion_model->listarPeriodosActivos();
         $procesos   = $this->configuracion_model->listarProcesosActivos();
+        $colegios   = $this->configuracion_model->listarColegiosActivos();
 
         $idPer = $this->session->userdata("sigesco_default_periodo");
         $idPro = $this->session->userdata("sigesco_default_proceso");    
         $grupos     = $this->configuracion_model->listarGruposInscripcion($idPer, $idPro);
-
         $this->layout->setLayout("template_ajax");
-        $this->layout->view('plazas/VNuevaPlaza', compact('periodos', 'procesos', 'grupos'));
+        $this->layout->view('plazas/VNuevaPlaza', compact('periodos', 'procesos', 'grupos','colegios'));
     }
 
 

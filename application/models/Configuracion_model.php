@@ -197,6 +197,18 @@ class Configuracion_model extends CI_Model
     // echo $this->db->last_query(); exit(); 
     return $sql->result_array();
   }
+  public function listarColegiosActivos()
+  {
+    $sql = $this->db
+      ->select("*")
+      ->from("localie lie")
+      ->join("modularie mie", "lie.loc_id = mie.localie_loc_id", "inner")
+      ->group_by(array("lie.loc_codigo")) 
+      ->order_by('mie.mod_nombre asc')               
+      ->get();
+    // echo $this->db->last_query(); exit(); 
+    return $sql->result_array();
+  }
 
 
   public function listarPlazas()

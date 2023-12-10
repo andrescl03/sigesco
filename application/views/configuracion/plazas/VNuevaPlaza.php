@@ -31,7 +31,6 @@
                 </select>
             </div>
 
-
             <div class="col-md-2 mb-2 mt-1"><b>Modalidad de contratación:</b></div>
             <div class="col-md-10 mb-2">
                 <select class="form-select form-select-sm" name="opt_tipoConvocatoriaModal" id="opt_tipoConvocatoriaModal">
@@ -43,28 +42,16 @@
                 </select>
             </div>
 
-
             <div class="col-md-2 mb-2 mt-1"><b>Institución Educativa:</b></div>
             <div class="col-md-10 mb-2">
-                <select class="form-select form-select-sm" name="opt_tipoConvocatoriaModal" id="opt_tipoConvocatoriaModal">
+                <select class="form-select form-select-sm" name="opt_ieModal" id="opt_ieModal">
                     <option value="">Elegir...</option>
-                    <?php $tipos = [['id' => 1, 'descripcion' => 'PUN'],  ['id' => 2, 'descripcion' => 'EVALUACION DE EXPEDIENTE']]; ?>
-                    <?php foreach ($tipos as $tipo) { ?>
-                        <option value="<?= $tipo['id'] ?>" <?= $tipo['pro_default'] == 1 ? "Selected" : "" ?>><?= $tipo['descripcion'] ?></option>
+                    <?php foreach ($colegios as $colegio) { ?>
+                        <option value="<?= $colegio['loc_id'] ?>" <?= $colegio['loc_id'] == 1 ? "Selected" : "" ?>><?= $colegio['mod_nombre'] ?></option>
                     <?php } ?>
                 </select>
             </div>
 
-            <div class="col-md-2 mb-2 mt-1"><b>Modalidad:</b></div>
-            <div class="col-md-10 mb-2">
-                <select class="form-select form-select-sm" name="opt_tipoConvocatoriaModal" id="opt_tipoConvocatoriaModal">
-                    <option value="">Elegir...</option>
-                    <?php $tipos = [['id' => 1, 'descripcion' => 'PUN'],  ['id' => 2, 'descripcion' => 'EVALUACION DE EXPEDIENTE']]; ?>
-                    <?php foreach ($tipos as $tipo) { ?>
-                        <option value="<?= $tipo['id'] ?>" <?= $tipo['pro_default'] == 1 ? "Selected" : "" ?>><?= $tipo['descripcion'] ?></option>
-                    <?php } ?>
-                </select>
-            </div>
 
             <div class="col-md-2 mb-2 mt-1"><b>Nivel:</b></div>
             <div class="col-md-10 mb-2">
@@ -102,7 +89,7 @@
 
             <div class="col-md-2 mb-2 mt-1"><b>Motivo de vacante:</b></div>
             <div class="col-md-10 mb-2">
-            <input class="form-control form-control-sm" id="" name="" type="number" />
+                <input class="form-control form-control-sm" id="" name="" type="text" />
             </div>
 
         </div>

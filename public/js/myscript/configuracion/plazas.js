@@ -131,14 +131,11 @@ var VNuevaPlaza = function(parametros){
 					"lengthMenu": [[-1], ["All"]],
 					"dom": '<<t>>',
 				});
-				opt_periodoModal();
-                opt_tipoProcesoModal();
-                rangoFecha();
-                btn_asignarGrupoInscripcion();
+                btn_nivelColegio();
                 grupoArr = [];                
-                frm='#frmMantenimientoConvocatoria';
-				varlidarMantenimientoConvocatoria(frm);
-                btn_agregarNuevaConvocatoria();
+               // frm='#frmMantenimientoConvocatoria';
+				//varlidarMantenimientoConvocatoria(frm);
+              //  btn_agregarNuevaConvocatoria();
 			}
 		},
 		error: function (jqXHR, textStatus, error) {
@@ -149,6 +146,79 @@ var VNuevaPlaza = function(parametros){
 }
 
 
+var btn_nivelColegio = function () {
+	$('body').off('change', '#opt_ieModal');
+	$('body').on('change', '#opt_ieModal', function (e) {
+		idIE = $('#opt_ieModal option:selected').val();	
+		if( idIE != "" ){
+			if(grupoArr.indexOf(idIE) == -1){
+				grupoArr.push(idIE);
+				parametros = {
+					grupoArr : grupoArr
+				}
+				VComboNivelIE(parametros);
+			}else{
+				ToastError.fire({title: 'La IE de inscripción ya existe.'});		
+			}
+			$("#opt_grupoInscripcion").val(null).trigger('change');			
+		}else{
+			ToastError.fire({title: 'Seleccionar grupo de inscripción.'});			
+		}		
+	});
+}
+
+
+var VComboNivelIE=function(parametros){	
+	$.ajax({
+		url: 'VTablaGrupoInscripcion',
+		method: 'POST',
+		data: parametros,
+		cache: 'false',
+		// dataType: 'json',
+		beforeSend: function () {	
+			$.blockUI(blockUIMensaje);           
+		},
+		success: function (data) { 
+			$.unblockUI(); 
+			try{
+				var data = jQuery.parseJSON(data);
+				if(data.link === undefined){					
+					ToastError.fire({title: data.error});
+				}else{
+					SwalErrorCenter.fire({
+						html: "<b class='h4'>"+data.error+"</b>"
+					}).then((result) => {
+						if (result.isConfirmed) {
+							window.location.href = data.link;
+						}
+					})
+				}
+			}catch(err){
+				$("#view_tablaGrupoInscripcion").html(data);
+                tabla=$('#tb_listarGrupoInscripcion').DataTable({
+					"destroy": true,
+					"ordering": false,
+					"bAutoWidth": false,
+					"oLanguage": dt_Idioma,
+					"lengthMenu": [[-1], ["All"]],
+					"dom": '<<t>>',
+				});               
+                if(parametros.grupoArr.length > 0 ){                   
+                    $('#opt_periodoModal').prop('disabled', true);
+					$('#opt_tipoProcesoModal').prop('disabled', true);
+                }else{ 
+					$('#opt_periodoModal').prop('disabled', false);                   
+                    $('#opt_tipoProcesoModal').prop('disabled', false);
+                }
+				btn_eliminarAccion();
+			}	
+		},
+		error: function (jqXHR, textStatus, error) {
+		    $.unblockUI();
+			SwalErrorServidor.fire();
+		}
+	});	
+}
 
  
   
