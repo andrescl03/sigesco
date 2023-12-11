@@ -242,14 +242,17 @@ const viewfichaDetail = () => {
 
 			// Create the table header
 			const thead = document.createElement('thead');
-			const headerRow = createRow([
+			const headerCells = [
 				createCell('th', 'RUBRO', { class: 'text-center bg-light' }, { verticalAlign: 'middle' }),
 				createCell('th', 'CRITERIOS', { class: 'text-center bg-light' }, { verticalAlign: 'middle' }),
 				createCell('th', 'SUBCRITERIOS', { class: 'text-center bg-light' }, { verticalAlign: 'middle' }),
 				createCell('th', 'EVALUACIÓN', { class: 'text-center bg-light' }, { verticalAlign: 'middle' }),
-				createCell('th', 'Puntaje máximo por subcriterio', { class: 'text-center bg-light' }, { verticalAlign: 'middle' }),
-				createCell('th', 'Puntaje máximo por rubro', { class: 'text-center bg-light' }, { verticalAlign: 'middle' })
-			]);
+			];
+			if (self.ficha && self.ficha.promedio == 1) {
+				headerCells.push(createCell('th', 'Puntaje máximo por subcriterio', { class: 'text-center bg-light' }, { verticalAlign: 'middle' }));
+				headerCells.push(createCell('th', 'Puntaje máximo por rubro', { class: 'text-center bg-light' }, { verticalAlign: 'middle' }));
+			}
+			const headerRow = createRow(headerCells);
 
 			thead.appendChild(headerRow);
 			table.appendChild(thead);
@@ -275,14 +278,17 @@ const viewfichaDetail = () => {
 					});
 				});
 				if (section.groups.length == 0) {
-					rows.push(createRow([
+					const cells = [
 						createCell('td', section.name, {class: 'colvert bg-light'}),
 						createCell('td', ''),
 						createCell('td', ''),
-						createCell('td', '', {class: 'text-center'}),
-						createCell('td', '', {class: 'text-center'}),
 						createCell('td', '', {class: 'text-center'})
-					]));
+					];
+					if (self.ficha && self.ficha.promedio == 1) {
+						cells.push(createCell('td', '', {class: 'text-center'}));
+						cells.push(createCell('td', '', {class: 'text-center'}));
+					}
+					rows.push(createRow(cells));
 				} else {
 					section.groups.forEach((group, index2) => {
 						lg = 0;
@@ -296,17 +302,20 @@ const viewfichaDetail = () => {
 							div.style.transform = 'rotate(180deg)';
 							div.style.textAlign = 'center';
 							div.style.verticalAlign = 'middle';
-							rows.push(createRow([
+							const cells = [
 								createCell('td', div, {class: 'colvert bg-light'}, {
 									verticalAlign: 'middle',
 									textAlign: '-webkit-center'
 								}),
 								createCell('td', group.name),
 								createCell('td', ''),
-								createCell('td', '', {class: 'text-center'}),
-								createCell('td', '', {class: 'text-center'}),
 								createCell('td', '', {class: 'text-center'})
-							]));
+							];
+							if (self.ficha && self.ficha.promedio == 1) {
+								cells.push(createCell('td', '', {class: 'text-center'}));
+								cells.push(createCell('td', '', {class: 'text-center'}));
+							}
+							rows.push(createRow(cells));
 						} else {
 							group.questions.forEach((question, index3) => {
 								const cells = [];
@@ -344,9 +353,11 @@ const viewfichaDetail = () => {
 								}
 								cells.push(createCell('td', div));
 								cells.push(createCell('td', viewActionOption(question), {class: 'text-center'}));
-								cells.push(createCell('td', question.score, {class: 'text-center'}));
-								if (index3 == 0 && index2 == 0) {
-									cells.push(createCell('td', section.score, { class: 'text-center', rowspan: ls }));
+								if (self.ficha && self.ficha.promedio == 1) {
+									cells.push(createCell('td', question.score, {class: 'text-center'}));
+									if (index3 == 0 && index2 == 0) {
+										cells.push(createCell('td', section.score, { class: 'text-center', rowspan: ls }));
+									}
 								}
 								rows.push(createRow(cells));
 							});    
@@ -354,12 +365,14 @@ const viewfichaDetail = () => {
 					});
 				}
 			});
-			rows.push(createRow([
-				createCell('td', 'TOTAL', { class: 'text-center colvert bg-light fw-bold', colspan: 3 }),
-				createCell('td', self.total, { class: 'text-center fw-bold', id: 'total' }),
-				createCell('td', self.total_question, { class: 'text-center fw-bold'}),
-				createCell('td', self.total_section, { class: 'text-center fw-bold'})
-			]));
+			if (self.ficha && self.ficha.promedio == 1) {
+				rows.push(createRow([
+					createCell('td', 'TOTAL', { class: 'text-center colvert bg-light fw-bold', colspan: 3 }),
+					createCell('td', self.total, { class: 'text-center fw-bold', id: 'total' }),
+					createCell('td', self.total_question, { class: 'text-center fw-bold'}),
+					createCell('td', self.total_section, { class: 'text-center fw-bold'})
+				]));
+			}
 			rows.forEach(row => {
 				tbody.appendChild(row);						
 			});
@@ -454,7 +467,7 @@ const viewfichaDetail = () => {
 					}
 				});
 			} else if (question.type == 'texto') {
-				element = createTextInput({ class: 'form-control text-center', placeholder: 'Ingresar texto...', value: question.value }, {
+				element = createTextInput({ class: 'form-control text-center', placeholder: 'Ingresar texto...', value: question.value ?? '' }, {
 					keyup: (e) => {
 						question.value = e.target.value;
 					}
@@ -509,7 +522,10 @@ const viewfichaDetail = () => {
 						throw `El puntaje acumulado excede el puntaje total`;
 					}
 					self.total = total;
-					domBody.querySelector('#total').innerText = self.total;
+					const divTotal = domBody.querySelector('#total');
+					if (divTotal) {
+						divTotal.innerText = self.total;						
+					}
 				} catch (error) {
 					divAlert.appendChild(showAlert(error, 'danger'));
 					brand = false;				
@@ -522,7 +538,7 @@ const viewfichaDetail = () => {
 
 			const progressContainer = document.createElement('div');
 			progressContainer.classList.add('progress-container', 'mx-auto');
-	
+			progressContainer.style.display = self.fichas.length == 1 ? 'block' : 'flex';
 			const progressLine = document.createElement('div');
 			progressLine.classList.add('progress-line');
 			progressLine.id = 'progress';
@@ -617,6 +633,9 @@ const viewfichaDetail = () => {
 						if(currentActive === 1) {
 							progressBackButton.disabled = true
 							progressNextButton.disabled = false
+							if(currentActive === textWraps.length) {
+								progressNextButton.disabled = true
+							}
 						} else if(currentActive === textWraps.length) {
 							progressBackButton.disabled = false
 							progressNextButton.disabled = true
@@ -636,7 +655,6 @@ const viewfichaDetail = () => {
 		}
 
 		const viewFicha = () => {
-
 			let total = 0;
 			let ls = 0;
 			let lg = 0;
@@ -648,8 +666,11 @@ const viewfichaDetail = () => {
 										<th class="text-center bg-light" style="vertical-align: middle;">CRITERIOS</th>
 										<th class="text-center bg-light" style="vertical-align: middle;">SUBCRITERIOS</th>
 										<th class="text-center bg-light" style="vertical-align: middle;">EVALUACIÓN</th>
-										<th class="text-center bg-light" style="vertical-align: middle;">Puntaje máximo por subcriterio</th>
-										<th class="text-center bg-light" style="vertical-align: middle;">Puntaje máximo por rubro</th>
+										${
+											(self.ficha && self.ficha.promedio == 1) ? 
+											`<th class="text-center bg-light" style="vertical-align: middle;">Puntaje máximo por subcriterio</th>
+											 <th class="text-center bg-light" style="vertical-align: middle;">Puntaje máximo por rubro</th>` : ``
+										}
 									</tr>
 								</thead>
 								<tbody>`;
@@ -671,8 +692,11 @@ const viewfichaDetail = () => {
 						<td></td>
 						<td></td>
 						<td class="text-center"></td>
-						<td class="text-center"></td>
-						<td class="text-center"></td>
+						${
+							(self.ficha && self.ficha.promedio == 1) ? 
+							`<td class="text-center"></td>
+							 <td class="text-center"></td>` : ``
+						}
 					</tr>`;
 				} else {
 					section.groups.forEach((group, index2) => {
@@ -691,8 +715,11 @@ const viewfichaDetail = () => {
 								<td>${group.name}</td>
 								<td></td>
 								<td class="text-center"></td>
-								<td class="text-center"></td>
-								<td class="text-center"></td>
+								${
+									(self.ficha && self.ficha.promedio == 1) ? 
+									`<td class="text-center"></td>
+									<td class="text-center"></td>` : ``
+								}
 							</tr>`;
 						} else {
 							group.questions.forEach((question, index3) => {
@@ -716,9 +743,13 @@ const viewfichaDetail = () => {
 										}
 									</td>
 									<td class="text-center">${question.value}</td>
-									<td class="text-center">${question.score}</td>
-									${ 
-										index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
+									${
+										(self.ficha && self.ficha.promedio == 1) ?
+										`<td class="text-center">${question.score}</td>
+											${ 
+												index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
+											}
+										` : ``
 									}
 								</tr>`;
 								let value = 0;
@@ -736,11 +767,15 @@ const viewfichaDetail = () => {
 				}
 			});
 			html += 
-				`<tr class="">
-					<td colspan="3" class="text-center colvert bg-light fw-bold">PUNTAJE OBTENIDO</td>
-					<td class="text-center fw-bold">${total}</td>
-					<td colspan="2"></td>
-				</tr>
+				`
+				${
+					(self.ficha && self.ficha.promedio == 1) ?
+						`<tr class="">
+							<td colspan="3" class="text-center colvert bg-light fw-bold">PUNTAJE OBTENIDO</td>
+							<td class="text-center fw-bold">${total}</td>
+							<td colspan="2"></td>
+						</tr>` : ``
+				}
 				</tbody>
                 </table>
 			</div>`;

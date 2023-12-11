@@ -2,11 +2,15 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
     const { data, methods, mounted, computed, utilities, el, renders } = {
         el: 'AppEditarPeriodoAdmin',
         mounted: () => {
+            sweet2.loading();
             self.periodo_id = dom.getAttribute('data-id');
             dom.removeAttribute('data-id');
             self.modalViewerAnexo = self.modal('modalViewerAnexo');
             self.modalFicha = self.modal('modalFicha');
-            self.initialize();
+            self.initialize()
+            .then(() => {
+                sweet2.loading(false);
+            });
         },
         data: () => { 
             return {
@@ -19,34 +23,154 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 fichas: [],
                 ficha: {},
                 items: [],
-                options: ['selectiva', 'marcado', 'texto', 'numerico']
+                options: ['selectiva', 'marcado', 'texto', 'numerico'],
+                especialidades: [],
+                tipo_convocatorias: []
             }
         },
         methods: {
             initialize: () => {
-                sweet2.loading();
-                self.getDetail()
-                .then(data => {
-                    const containers = dom.querySelectorAll('.container-sheet');
-                    containers.forEach(container => {
-                        container.innerHTML = ``;
+                return new Promise((resolve, reject) => {
+                    self.getDetail()
+                    .then(data => {
+                        const containers = dom.querySelectorAll('.container-sheet-edit');
+                        containers.forEach(container => {
+                            container.innerHTML = ``;
+                        });
+                        self.sections = [];
+                        self.ficha = {};
+                        self.periodo = data.periodo;
+                        self.fichas = data.fichas;
+                        self.especialidades = data.especialidades;
+                        self.tipo_convocatorias = data.tipo_convocatorias;
+                        self.setFormPeriodo();
+                        self.listSheet();
+                        self.events();
+                        resolve();
+                    })
+                    .catch(error => {
+                        sweet2.show({type: 'error', text: error});
                     });
-                    self.sections = [];
-                    self.ficha = {};
-                    self.periodo = data.periodo;
-                    self.fichas = data.fichas;
-                    self.setFormPeriodo();
-                    self.events();
-                    sweet2.loading(false);
-                })
-                .catch(error => {
-                    sweet2.show({type: 'error', text: error});
+                });
+            },
+            editSheet: (id) => {
+                dom.querySelectorAll('.container-sheet-list').forEach(container => {
+                    container.innerHTML = ``;
+                });
+                self.ficha_id = Number(id);
+                self.setFormModule();
+            },
+            setFormSheet: (form, ficha) => {
+                const id          = ficha ? ficha.id          : '',
+                      nombre      = ficha ? ficha.nombre      : '',
+                      tipo_id     = ficha ? ficha.tipo_id     : '',
+                      descripcion = ficha ? ficha.descripcion : '',
+                      promedio    = ficha ? ficha.promedio    : '',
+                      orden       = ficha ? ficha.orden       : '',
+                      any         = ficha ? 'actualizaficha'  : 'nuevaficha';
+
+                form.reset();
+                form.querySelector('input[name="id"]').value             = id;
+                form.querySelector('input[name="any"]').value            = any;
+                form.querySelector('input[name="nombre"]').value         = nombre;
+                form.querySelector('select[name="tipo_id"]').value       = tipo_id; 
+                form.querySelector('textarea[name="descripcion"]').value = descripcion;
+                form.querySelector('input[name="promedio"]').checked     = promedio == 1 ? true : false;
+                form.querySelector('input[name="orden"]').value          = orden;
+
+                let count = 0;
+                const checks = form.querySelectorAll('.check-especialidad');
+                if (checks) {
+                    checks.forEach(check => {
+                        check.checked = false;
+                        if (ficha) {
+                            ficha.periodo_ficha_especialidades.forEach(item => {
+                                if (item.especialidad_id == check.value) {
+                                    count++;
+                                    check.checked = true; return;
+                                }
+                            });
+                        }
+                    });
+                }
+                const checksAll = form.querySelectorAll('.check-all-especialidad');
+                if (checksAll) {
+                    checksAll.forEach(check => {
+                        check.checked = false;
+                        if (ficha) {
+                            if (checks) {
+                                if (checks.length == count) {
+                                    check.checked = true;
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            listSheet: () => {
+                dom.querySelectorAll('.container-sheet-edit').forEach(container => {
+                    container.innerHTML = ``;
+                });
+                const containers = dom.querySelectorAll('.container-sheet-list');
+                containers.forEach(container => {
+                    container.innerHTML = ``;
+
+                    const rowHeader = document.createElement('div');
+                    rowHeader.classList.add('row', 'mb-3');
+                    const colTitle = document.createElement('div');
+                    colTitle.classList.add('col-lg-10');
+                    colTitle.innerHTML = `<h4>Listado fichas de evaluación</h4>`;
+                    rowHeader.appendChild(colTitle);
+
+                    const colAction = document.createElement('div');
+                    colAction.classList.add('col-lg-2', 'text-end');
+
+                    const button = document.createElement('a');
+                    button.classList.add('link-dark', 'ms-3');
+                    button.setAttribute('href', '#');
+                    button.innerHTML = `<i class="fa fa-plus me-2"></i>Agregar`;
+                    button.addEventListener('click', (e) => {
+                        const forms = dom.querySelectorAll('.form-ficha');
+                        forms.forEach(form => {
+                            self.setFormSheet(form, false);
+                        });
+                        self.modalFicha.show();
+                    });
+                    colAction.appendChild(button);
+
+                    rowHeader.appendChild(colAction);
+                    container.appendChild(rowHeader);
+
+                    self.tipo_convocatorias.forEach(tipo => {
+
+                        const row1 = document.createElement('div');
+                        row1.classList.add('row', 'mb-3');
+
+                        const col1 = document.createElement('div');
+                        col1.classList.add('col-lg-12');
+                        col1.innerHTML = `<h5>${tipo.descripcion}</h5>`;
+                        row1.appendChild(col1);
+
+                        container.appendChild(row1);
+
+                        const row2 = document.createElement('div');
+                        row2.classList.add('row', 'mb-4');
+                        
+                        self.fichas.forEach(ficha => {
+                            if (ficha.tipo_id == tipo.tipo_id) {
+                                row2.appendChild(self.renderSheetItem(ficha));
+                            }
+                        });
+
+                        container.appendChild(row2);
+                    });
                 });
             },
             events: () => {
 
                 self.eventTag('form-ficha', (e) => {
                     e.preventDefault();
+                    sweet2.loading();
                     const formData = new FormData(e.target);
                     self.setDetail(formData)
                     .then((data) => {
@@ -55,6 +179,33 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                         self.initialize();
                     });
                 }, 'submit');
+
+                self.eventTag('check-all-especialidad', (e) => {
+                    const checks = dom.querySelectorAll('.check-especialidad');
+                    if (checks) {
+                        checks.forEach(check => {
+                            check.checked = e.target.checked;
+                        });
+                    }
+                }, 'click', false);
+
+                self.eventTag('check-especialidad', (e) => {
+                    const checks = dom.querySelectorAll('.check-especialidad');
+                    if (checks) {
+                        let count = 0;
+                        checks.forEach(check => {
+                            if (check.checked) {
+                                count++;
+                            }
+                        });
+                        const checks2 = dom.querySelectorAll('.check-all-especialidad');
+                        if (checks2) {
+                            checks2.forEach(check => {
+                                check.checked = count == checks.length;
+                            });
+                        }
+                    }
+                }, 'change', false);
 
                 self.eventTag('btn-ficha', (e) => {
                     const forms = dom.querySelectorAll('.form-ficha');
@@ -99,14 +250,15 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             setFormPeriodo: () => {
                 dom.querySelector('input[name="name"]').value = self.periodo.per_nombre;
                 dom.querySelector('input[name="anio"]').value = self.periodo.per_anio;
-                const selectFichas = dom.querySelectorAll('.select-ficha');
+                const selectFichas = dom.querySelectorAll('.select-tipo');
                 let htmlSelect = `<option value="" selected hidden>[SELECCIONE]</option>`;
-                self.fichas.forEach(ficha => {
-                    htmlSelect += `<option value="${ficha.id}">${ficha.nombre}</option>`;
+                self.tipo_convocatorias.forEach(tipo => {
+                    htmlSelect += `<option value="${tipo.tipo_id}">${tipo.descripcion}</option>`;
                 });
                 selectFichas.forEach(select => {
                     select.innerHTML = htmlSelect;
                 });
+                self.renderEspecialidades();
             },
             setDetail: (formData) => {
                 return new Promise((resolve, reject)=>{
@@ -151,8 +303,113 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             }
         },
         renders: {
+            renderEspecialidades: () => {
+                const containers = dom.querySelectorAll('.list-especialidades');
+                containers.forEach(container => {
+                    container.innerHTML = ``;
+                    let html = ``;
+                    self.especialidades.forEach(especialidad => {
+                        html += `<tr>
+                                    <td>${especialidad.mod_nombre}</td>
+                                    <td>${especialidad.niv_descripcion}</td>
+                                    <td>${especialidad.esp_descripcion}</td>
+                                    <td><input class="form-check-input check-especialidad" name="ids[${especialidad.esp_id}]" type="checkbox" value="${especialidad.esp_id}"></td>
+                                </tr>`;
+                    });
+                    container.innerHTML = html;
+                });
+            },
+            renderSheetItem: (ficha) => {
+                // Crear un elemento div
+                var divElement = document.createElement('div');
+                divElement.classList.add('col-md-3', 'mb-3'); // Agregar clases al div
+
+                // Crear un elemento de tarjeta (card)
+                var cardElement = document.createElement('div');
+                cardElement.classList.add('card');
+
+                // Crear un elemento de cuerpo de tarjeta (card-body)
+                var cardBodyElement = document.createElement('div');
+                cardBodyElement.classList.add('card-body');
+
+                // Crear un elemento de título de tarjeta (card-title)
+                var titleElement = document.createElement('h5');
+                titleElement.classList.add('card-title');
+                titleElement.textContent = ficha.nombre;
+
+                // Crear un elemento de subtítulo de tarjeta (card-subtitle)
+                var subtitleElement = document.createElement('h6');
+                subtitleElement.classList.add('card-subtitle', 'mb-2', 'text-muted');
+                subtitleElement.textContent = ficha.promedio == 1 ? 'Evaluado' : 'Ficha';
+
+                // Crear un elemento de texto de tarjeta (card-text)
+                var textElement = document.createElement('p');
+                textElement.classList.add('card-text', 'mb-3');
+                textElement.style.height = '75px';
+                textElement.style.overflowY = 'hidden';
+                textElement.textContent = ficha.descripcion;
+
+                // Crear enlaces de tarjeta (card-link)
+                var link0Element = document.createElement('a');
+                link0Element.classList.add('card-link');
+                link0Element.href = '#';
+                link0Element.textContent = 'Editar';
+                link0Element.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const forms = dom.querySelectorAll('.form-ficha');
+                    forms.forEach(form => {
+                        self.setFormSheet(form, ficha);
+                    });
+                    self.modalFicha.show();
+                });
+
+                var link1Element = document.createElement('a');
+                link1Element.classList.add('card-link');
+                link1Element.href = '#';
+                link1Element.textContent = 'Ficha';
+                link1Element.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    self.editSheet(ficha.id);
+                });
+
+                var link2Element = document.createElement('a');
+                link2Element.classList.add('card-link');
+                link2Element.href = '#';
+                link2Element.textContent = 'Eliminar';
+                link2Element.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    sweet2.show({
+                        type: 'question',
+                        text: '¿Estás seguro de eliminar este elemento?',
+                        showCancelButton: true,
+                        onOk: () => {
+                            sweet2.loading();
+                            const formData = new FormData();
+                            formData.append('id', ficha.id);
+                            formData.append('any', 'eliminaficha');
+                            self.setDetail(formData)
+                            .then(()=>{
+                                sweet2.show({type: 'success', text: 'Se elimino correctamente'});
+                                self.initialize();
+                            });
+                        }
+                    });
+                });
+
+                // Agregar elementos al árbol DOM
+                cardBodyElement.appendChild(titleElement);
+                cardBodyElement.appendChild(subtitleElement);
+                cardBodyElement.appendChild(textElement);
+                cardBodyElement.appendChild(link0Element);
+                cardBodyElement.appendChild(link1Element);
+                cardBodyElement.appendChild(link2Element);
+
+                cardElement.appendChild(cardBodyElement);
+                divElement.appendChild(cardElement);
+                return divElement;
+            },
             viewModule: () => {
-                const containers = dom.querySelectorAll('.container-sheet');
+                const containers = dom.querySelectorAll('.container-sheet-edit');
                 containers.forEach(container => {
                     container.innerHTML = ``;
                     // Header
@@ -166,41 +423,15 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     const colAction = document.createElement('div');
                     colAction.classList.add('col-2', 'text-end');
 
-                    const aConfig = document.createElement('a');
-                    aConfig.classList.add('link-dark');
-                    aConfig.setAttribute('href', '#');
-                    aConfig.innerHTML = `<i class="fa-solid fa-gear me-2"></i>Editar`;
-                    aConfig.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const forms = dom.querySelectorAll('.form-ficha');
-                        forms.forEach(form => {
-                            form.querySelector('input[name="any"]').value = 'actualizaficha';
-                            form.querySelector('input[name="id"]').value = self.ficha.id;
-                            form.querySelector('input[name="name"]').value = self.ficha.nombre;
-                            form.querySelector('select[name="tipo_id"]').value = self.ficha.tipo_id; 
-                        });
-                        self.modalFicha.show();
-                    });
-                    colAction.appendChild(aConfig);
-
                     const aDelete = document.createElement('a');
                     aDelete.classList.add('link-dark', 'ms-3');
                     aDelete.setAttribute('href', '#');
-                    aDelete.innerHTML = `<i class="fa-solid fa-trash me-2"></i>Eliminar`;
+                    aDelete.innerHTML = `<i class="fa fa-chevron-left me-2"></i>Atras`;
                     aDelete.addEventListener('click', (e) => {
-                        sweet2.show({
-                            type: 'question',
-                            text: '¿Estás seguro de eliminar este elemento?',
-                            showCancelButton: true,
-                            onOk: () => {
-                                const formData = new FormData();
-                                formData.append('id', self.ficha_id);
-                                formData.append('any', 'eliminaficha');
-                                self.setDetail(formData)
-                                .then(()=>{
-                                    self.initialize();
-                                });
-                            }
+                        sweet2.loading();
+                        self.initialize()
+                        .then(() => {
+                            sweet2.loading(false);
                         });
                     });
                     colAction.appendChild(aDelete);
@@ -219,7 +450,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     container.appendChild(accordion);
 
                     const row = document.createElement('div');
-                    row.classList.add('row', 'ms-2', 'mt-4');
+                    row.classList.add('row', 'ms-2', 'my-4');
 
                     const btnAdd = document.createElement('a');
                     btnAdd.classList.add('link-dark');
@@ -254,7 +485,6 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     btnViewer.innerText = `Visualizar`;
                     btnViewer.addEventListener('click', (e) => {
                         e.preventDefault();
-                        console.log(self.sections);
                         self.viewAnexoDetail();
                         self.modalViewerAnexo.show();
                     });
@@ -306,21 +536,23 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
                 div1.appendChild(input);
 
-                const divgroup = document.createElement('div');
-                divgroup.classList.add('input-group', 'ms-3');
-                divgroup.style.maxWidth = '200px';
-                divgroup.innerHTML = `<span id="basic-addon1" class="input-group-text">Puntaje</span>`;
-                
-                const inputgroup = document.createElement('input');
-                inputgroup.type = 'number';
-                inputgroup.classList.add('form-control');
-                inputgroup.value = section.score;
-                inputgroup.addEventListener('change', (e)=>{
-                    section.score = e.target.value;
-                });
-                divgroup.appendChild(inputgroup);
-
-                div1.appendChild(divgroup);
+                if (self.ficha && self.ficha.promedio == 1) {
+                    const divgroup = document.createElement('div');
+                    divgroup.classList.add('input-group', 'ms-3');
+                    divgroup.style.maxWidth = '200px';
+                    divgroup.innerHTML = `<span id="basic-addon1" class="input-group-text">Puntaje</span>`;
+                    
+                    const inputgroup = document.createElement('input');
+                    inputgroup.type = 'number';
+                    inputgroup.classList.add('form-control');
+                    inputgroup.value = section.score;
+                    inputgroup.addEventListener('change', (e)=>{
+                        section.score = e.target.value;
+                    });
+                    divgroup.appendChild(inputgroup);
+    
+                    div1.appendChild(divgroup);
+                }
 
                 accordionHeader.appendChild(div1);
 
@@ -498,21 +730,23 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
                 col1.appendChild(textarea);
 
-                const divgroup = document.createElement('div');
-                divgroup.classList.add('input-group', 'ms-3');
-                divgroup.style.maxWidth = '200px';
-                divgroup.innerHTML = `<span id="basic-addon1" class="input-group-text">Puntaje</span>`;
-                
-                const inputgroup = document.createElement('input');
-                inputgroup.type = 'number';
-                inputgroup.classList.add('form-control');
-                inputgroup.value = question.score;
-                inputgroup.addEventListener('change', (e)=>{
-                    question.score = e.target.value;
-                });
-                divgroup.appendChild(inputgroup);
+                if (self.ficha && self.ficha.promedio == 1) {
+                    const divgroup = document.createElement('div');
+                    divgroup.classList.add('input-group', 'ms-3');
+                    divgroup.style.maxWidth = '200px';
+                    divgroup.innerHTML = `<span id="basic-addon1" class="input-group-text">Puntaje</span>`;
+                    
+                    const inputgroup = document.createElement('input');
+                    inputgroup.type = 'number';
+                    inputgroup.classList.add('form-control');
+                    inputgroup.value = question.score;
+                    inputgroup.addEventListener('change', (e)=>{
+                        question.score = e.target.value;
+                    });
+                    divgroup.appendChild(inputgroup);
 
-                col1.appendChild(divgroup);
+                    col1.appendChild(divgroup);
+                }
 
                 row1.appendChild(col1);
 
@@ -540,15 +774,6 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
 
                 const col3 = document.createElement('div');
                 col3.classList.add('col-lg-7', 'mb-2', 'd-flex', 'my-auto');
-
-                /*const input3 = document.createElement('input');
-                input3.type = 'text';
-                input3.classList.add('form-control');
-                input3.placeholder = 'Escribe un comentario para la opción';
-                input3.addEventListener('keyup', (e) => {
-                    question.caption = e.target.value;
-                });
-                col3.appendChild(input3);*/
 
                 const select = document.createElement('select');
                 select.classList.add('form-control');
@@ -682,16 +907,18 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
                 col1.appendChild(input);
 
-                const input2 = document.createElement('input');
-                input2.placeholder = 'Puntaje';
-                input2.type = 'number';
-                input2.classList.add('form-control', 'ms-3');
-                input2.value = option.score;
-                input2.style.maxWidth = '100px';
-                input2.addEventListener('keyup', (e) => {
-                    option.score = e.target.value;
-                });
-                col1.appendChild(input2);
+                if (self.ficha && self.ficha.promedio == 1) {
+                    const input2 = document.createElement('input');
+                    input2.placeholder = 'Puntaje';
+                    input2.type = 'number';
+                    input2.classList.add('form-control', 'ms-3');
+                    input2.value = option.score;
+                    input2.style.maxWidth = '100px';
+                    input2.addEventListener('keyup', (e) => {
+                        option.score = e.target.value;
+                    });
+                    col1.appendChild(input2);
+                }
 
                 const btnRemove = document.createElement('a');
                 btnRemove.classList.add('link-dark');
@@ -717,7 +944,23 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 return panel;
             },
             viewAnexoDetail: () => {
-                let html = ``;
+                let html = `<div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center bg-light">RUBRO</th>
+                            <th class="text-center bg-light">CRITERIOS</th>
+                            <th class="text-center bg-light">SUBCRITERIOS</th>
+                            <th class="text-center bg-light">EVALUACIÓN</th>
+                            ${
+                                self.ficha && self.ficha.promedio == 1 ? 
+                                    `<th class="text-center bg-light">Puntaje máximo por subcriterio</th>
+                                     <th class="text-center bg-light">Puntaje máximo por rubro</th>` : ``
+                            }
+                        </tr>
+                    </thead>
+                    <tbody class="tbody-anexo">`;
+
                 let total = 0;
                 let ls = 0;
                 let lg = 0;
@@ -736,8 +979,11 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                             <td></td>
                             <td></td>
                             <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
+                            ${
+                                self.ficha && self.ficha.promedio == 1 ? `
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>` : ``
+                            }
                         </tr>`;
                     } else {
                         section.groups.forEach((group, index2) => {
@@ -746,14 +992,23 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                                 lg = lg + 1;
                             });
                             if (group.questions.length == 0) {
+                                let lg1 = 0;
+                                section.groups.forEach((group, index2) => {
+                                    lg1 = lg1 + 1;
+                                });
                                 html += 
                                 `<tr class=""> 
-                                    <td class="colvert bg-light">${section.name}</td>
+                                    ${ 
+                                        index2 == 0 ? `<td class="colvert bg-light" rowspan="${lg1}">${section.name}</td>` : ``
+                                    }
                                     <td>${group.name}</td>
                                     <td></td>
                                     <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
+                                    ${
+                                        self.ficha && self.ficha.promedio == 1 ? `
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>` : ``
+                                    }
                                 </tr>`;
                             } else {
                                 group.questions.forEach((question, index3) => {
@@ -772,12 +1027,17 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                                                 `<textarea class="form-control mt-3" placeholder="Ingrese su obervación" rows="2"></textarea>` : ``
                                             }
                                         </td>
-                                        <td class="text-center">${
-                                            self.viewActionOption(question)
-                                        }</td>
-                                        <td class="text-center">${question.score}</td>
-                                        ${ 
-                                            index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
+                                        <td class="text-center">
+                                            ${
+                                                self.viewActionOption(question)
+                                            }
+                                        </td>
+                                        ${
+                                            self.ficha && self.ficha.promedio == 1 ? `
+                                                <td class="text-center">${question.score}</td>
+                                                ${ 
+                                                    index3 == 0 && index2 == 0 ? `<td class="text-center" rowspan="${ls}">${section.score}</td>` : ``
+                                                } ` : ``
                                         }
                                     </tr>`;
                                 });    
@@ -785,21 +1045,24 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                         });
                     }
                 });
-                html += 
-                    `<tr class="">
-                        <td colspan="4" class="text-center fw-bold">PUNTAJE TOTAL</td>
-                        <td class="text-center fw-bold">${total}</td>
-                    </tr>`;
-                const tbodies = dom.querySelectorAll('.tbody-anexo');
-                tbodies.forEach(tbody => {
-                    tbody.innerHTML = html;
+                html +=    `
+                ${
+                    self.ficha && self.ficha.promedio == 1 ? `
+                            <tr class="">
+                                <td colspan="4" class="text-center fw-bold">PUNTAJE TOTAL</td>
+                                <td class="text-center fw-bold">${total}</td>
+                            </tr>` : ``
+                }
+                        </tbody>
+                    </table>
+                </div>`;
+                const paneles = dom.querySelectorAll('.panel-viewer');
+                paneles.forEach(panel => {
+                    panel.innerHTML = html;
                 });
             },
             viewActionOption: (question) => {
                 let html = ``;
-                /*if (question?.caption) {
-                    html += `<span>${question.caption}</span>`;
-                }*/
                 if (question.type == 'selectiva') {
                     html += `<select class="form-control  text-center">`;
                     question?.options.forEach(option => {

@@ -61,7 +61,9 @@
                                                 </form>
                                             </div>
                                             <div class="tab-pane fade pt-4" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab">
-                                                <div class="row mb-5">
+                                                <div class="row container-sheet-list">
+                                                </div>
+                                                <!-- <div class="row mb-5">
                                                     <div class="col">
                                                         <select class="form-control select-ficha" name="" id="">
                                                             <option value="" hidden>[SELECCIONE]</option>
@@ -70,8 +72,8 @@
                                                     <div class="col text-end">
                                                         <button type="button" class="btn btn-success btn-ficha">Agregar</button>
                                                     </div>
-                                                </div>
-                                                <div class="container-sheet">    
+                                                </div> -->
+                                                <div class="row container-sheet-edit">    
                                                 </div>
                                             </div>
                                         </div>
@@ -87,23 +89,9 @@
                                         <h5 class="modal-title" id="exampleModalLabel">FICHA</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center bg-light">RUBRO</th>
-                                                        <th class="text-center bg-light">CRITERIOS</th>
-                                                        <th class="text-center bg-light">SUBCRITERIOS</th>
-                                                        <th class="text-center bg-light">EVALUACIÓN</th>
-                                                        <th class="text-center bg-light">Puntaje máximo por subcriterio</th>
-                                                        <th class="text-center bg-light">Puntaje máximo por rubro</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="tbody-anexo">
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                    <div class="modal-body panel-viewer">
+                                        
+                                                
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -112,7 +100,7 @@
                                 </div>
                             </div>
                             <div class="modal fade" id="modalFicha" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">FICHA</h5>
@@ -126,17 +114,61 @@
                                                     <div class="mb-3 row">
                                                         <label class="col-4 col-form-label">Nombre</label>
                                                         <div class="col-8">
-                                                            <input type="text" class="form-control" name="name" placeholder="Nombre" required>
+                                                            <input type="text" class="form-control" name="nombre" placeholder="Nombre" required>
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
-                                                        <label class="col-4 col-form-label">Tipo</label>
+                                                        <label class="col-4 col-form-label">Descripción</label>
                                                         <div class="col-8">
-                                                            <select class="form-select" name="tipo_id" required>
+                                                            <textarea class="form-control" name="descripcion" placeholder="Descripcion"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label class="col-4 col-form-label">Tipo de convocatoria</label>
+                                                        <div class="col-8">
+                                                            <select class="form-select select-tipo" name="tipo_id" required>
                                                                 <option value="" hidden selected>[SELECCIONE]</option>
-                                                                <option value="1">Tipo 1</option>
-                                                                <option value="2">Tipo 2</option>
+                                                                <option value="1">PUN</option>
+                                                                <option value="2">Expediente</option>
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label class="col-4 col-form-label">Orden</label>
+                                                        <div class="col-8">
+                                                            <input type="number" class="form-control" name="orden" placeholder="0" min="0" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label class="col-4 col-form-label">Se promedia</label>
+                                                        <div class="col-8">
+                                                            <div class="form-check form-switch mt-2">
+                                                                <input class="form-check-input" type="checkbox" name="promedio" value="1">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label class="col-4 col-form-label">Especialidades</label>
+                                                        <div class="col-8">
+                                                            <div class="table-responsive">
+                                                                <table class="table mb-0">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col">Modalidad</th>
+                                                                            <th scope="col">Nivel</th>
+                                                                            <th scope="col">Especialidad</th>
+                                                                            <th scope="col">
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input check-all-especialidad" type="checkbox" value="1">
+                                                                                </div>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="list-especialidades">
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </form>

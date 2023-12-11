@@ -36,7 +36,7 @@
                     <div class="accordion-body">
                         <div class="form-group row mb-1">
                             <div class="col-lg-12">
-                                <strong>Nombres: </strong>
+                                <strong>Nombres </strong>
                                 <span>
                                     <?php echo $postulante->nombre ?>
                                 </span>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="form-group row mb-1">
                             <div class="col-lg-12">
-                                <strong>Apellido Paterno: </strong>
+                                <strong>Apellido Paterno </strong>
                                 <span>
                                     <?php echo $postulante->apellido_paterno ?>
                                 </span>
