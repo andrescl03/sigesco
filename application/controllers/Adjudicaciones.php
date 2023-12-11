@@ -16,6 +16,16 @@ class Adjudicaciones extends CI_Controller {
         $this->layout->view("/adjudicacion/index");
     }
 
+    public function pagination() {
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->adjudicaciones_model->pagination($_POST)));
+        } else {
+            show_404();
+        }    
+    }
+
     public function show($convocatoria_id, $inscripcion_id)
     {
         if (is_numeric($convocatoria_id) && is_numeric($inscripcion_id)) {

@@ -12,6 +12,50 @@ class Adjudicaciones_model extends CI_Model
     return [];
   }
 
+  public function pagination($request) {
+      $res = $this->tools->responseDefault();
+      try {
+
+          $draw   = $request['draw'];
+          $length = $request['length'];
+          $start  = $request['start'];
+          $search = $request['search'];
+
+          $filterText = '';
+          if ($search) {
+              $value = $search['value'];
+              if (strlen($value) > 0) {
+                  /*$filterText = " AND AC.name LIKE('%{$value}%') 
+                                  OR TC.name LIKE('%{$value}%')";*/
+              }
+          }
+
+          $sql = "SELECT 
+                    *
+                  FROM adjudicaciones AS AD
+                  WHERE AD.deleted_at IS NULL
+                  $filterText
+                  ORDER BY AD.id DESC";
+          $adjudicaciones = $this->db->query($sql)->result_object();
+          $recordsTotal = count($adjudicaciones);
+
+          $sql .= " LIMIT {$start}, {$length}";
+
+          $adjudicaciones = $this->db->query($sql)->result_object();
+
+          $recordsFiltered = ($recordsTotal / $length) * $length;
+
+          $res['success'] = true;
+          $res['data'] = $adjudicaciones;
+          $res['recordsTotal'] = $recordsTotal;
+          $res['recordsFiltered'] = $recordsFiltered;
+          $res['message'] = 'successfully';
+      } catch (\Exception $e) {
+          $res['message'] = $e->getMessage();
+      }
+      return $res;
+  }
+
   public function show($request)
   {
     $response = $this->tools->responseDefault();
