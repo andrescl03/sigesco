@@ -50,6 +50,9 @@ class Evaluacion extends CI_Controller {
 
         if($idCon != '0' && $idGin == '0'){
             $datos   = $this->evaluacion_model->listarGruposInscripcionxConvocatoria($idCon);
+            $gruposInscripcion = $this->evaluacion_model->listarGruposAsignadosXConvocatoria($idConv);
+
+
             /*foreach ($datos as $key_1 => $dato) {
                 $_idGin = $dato['gin_id'];
                 $usuario = $this->session->userdata("sigesco_dni");

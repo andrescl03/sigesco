@@ -151,7 +151,10 @@ ALTER TABLE evaluacion_pun_exp DROP COLUMN cuadro_pun_exp_cpe_id;
 
 SELECT*FROM evaluacion_pun_exp;
 
+/********** 21/11/2023 **********/
 
+ALTER TABLE convocatorias ADD COLUMN `con_horainicio` time default null;
+ALTER TABLE convocatorias ADD COLUMN `con_horafin` time default null;
 
 /************ 27/11/2023 **********************/
 
@@ -170,6 +173,8 @@ CREATE TABLE `postulacion_evaluaciones` (
 	PRIMARY KEY (`id`) USING BTREE
 );
 
+
+
 /******************** 30/11/2023 ********************/
 
 ALTER TABLE `periodo_fichas` ADD COLUMN `orden` INT(11) UNSIGNED NULL DEFAULT '0' AFTER `periodo_id`;
@@ -187,3 +192,70 @@ CREATE TABLE `periodo_ficha_especialidades` (
 /********************** 08/12/2023 **************/
 
 ALTER TABLE `postulacion_evaluaciones` ADD COLUMN `promedio` INT(11) UNSIGNED NULL DEFAULT '0' AFTER `orden`;
+
+
+
+
+/************ 10/12/2023 **********************/
+
+
+CREATE TABLE `localie` (
+  `loc_id` int(11) NOT NULL,
+  `loc_codigo` varchar(7) DEFAULT NULL,
+  `loc_red` int(2) DEFAULT NULL,
+  `loc_gestion` varchar(100) DEFAULT NULL,
+  `loc_depgest` varchar(100) DEFAULT NULL,
+  `loc_distrito` varchar(100) DEFAULT NULL,
+  `loc_cpoblado` varchar(150) DEFAULT NULL,
+  `loc_direccion` varchar(200) DEFAULT NULL,
+  `loc_referencia` varchar(200) DEFAULT NULL,
+  `loc_web` varchar(100) DEFAULT NULL,
+  `loc_aniocreacion` int(4) DEFAULT NULL,
+  `loc_rdcreacion` varchar(80) DEFAULT NULL,
+  `loc_convenio` int(1) DEFAULT 0,
+  `loc_latitudx` double DEFAULT NULL,
+  `loc_longitudy` double DEFAULT NULL,
+  `loc_estado` int(1) DEFAULT 1,
+  `loc_aniobaja` int(4) DEFAULT 2100,
+  `loc_uscreado` int(11) DEFAULT NULL,
+  `loc_fcreado` datetime DEFAULT NULL,
+  `loc_usmodif` int(11) DEFAULT NULL,
+  `loc_fmodif` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+
+CREATE TABLE `modularie` (
+  `mod_id` int(11) NOT NULL,
+  `mod_codigo` varchar(7) DEFAULT NULL,
+  `mod_nombre` varchar(150) DEFAULT NULL,
+  `mod_nivel` varchar(100) DEFAULT NULL,
+  `mod_flagnivel` int(2) DEFAULT NULL,
+  `mod_modform` varchar(100) DEFAULT NULL,
+  `mod_modformabrev` varchar(100) DEFAULT NULL,
+  `mod_turno` varchar(25) DEFAULT NULL,
+  `mod_aniocreacion` int(4) DEFAULT NULL,
+  `mod_rdcreacion` varchar(80) DEFAULT NULL,
+  `mod_telefono` varchar(9) DEFAULT NULL,
+  `mod_correo` varchar(100) DEFAULT NULL,
+  `mod_convenio` int(1) DEFAULT 0,
+  `mod_estado` int(1) DEFAULT 1,
+  `mod_aniobaja` int(4) DEFAULT 2100,
+  `mod_uscreado` int(11) DEFAULT NULL,
+  `mod_fcreado` datetime DEFAULT NULL,
+  `mod_usmodif` int(11) DEFAULT NULL,
+  `mod_fmodif` datetime DEFAULT NULL,
+  `localie_loc_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+
+ALTER TABLE `localie`
+  ADD PRIMARY KEY (`loc_id`);
+
+
+ALTER TABLE `modularie`
+  ADD PRIMARY KEY (`mod_id`),
+  ADD KEY `fk_modularie_localie1_idx` (`localie_loc_id`);
+
+
+ALTER TABLE `modularie`
+  ADD CONSTRAINT `fk_modularie_localie1` FOREIGN KEY (`localie_loc_id`) REFERENCES `localie` (`loc_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

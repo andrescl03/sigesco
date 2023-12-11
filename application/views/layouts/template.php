@@ -23,8 +23,9 @@
         <link rel="stylesheet" href="<?php echo base_url()?>public/js/select2-bootstrap5/select2.min.css" />
         <link rel="stylesheet" href="<?php echo base_url()?>public/js/select2-bootstrap5/select2-bootstrap-5-theme.css" />
         
-        <link href="<?php echo base_url()?>public/js/datepicker/css/bootstrap-datepicker.css"  rel="stylesheet">
-        
+        <link href="<?php echo base_url()?>public/js/datepicker/css/bootstrap-datepicker.css"  rel="stylesheet"> 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
         <link rel="stylesheet" href="<?php echo base_url()?>public/css/animate.css.4.1.1/animate.min.css" />
 
         <link href="<?php echo base_url()?>public/css/styles.css" rel="stylesheet" />
@@ -179,10 +180,16 @@
 
         <script src="<?php echo base_url()?>public/js/sweetalert/sweetalert2.all.min.js"></script>
 
-        <script src="<?php echo base_url()?>public/js/datepicker/js/bootstrap-datepicker.js"> </script>
+  
+    <script src="<?php echo base_url()?>public/js/datepicker/js/bootstrap-datepicker.js"> </script>
         <script src="<?php echo base_url()?>public/js/datepicker/locales/bootstrap-datepicker.es.min.js"> </script>                        
 
+ 
 
+
+    
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 
 

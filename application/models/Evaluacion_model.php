@@ -22,6 +22,24 @@ class Evaluacion_model extends CI_Model {
         return $sql->result_array();  
     }
 
+    
+    public function listarGruposAsignadosXConvocatoria($idCon){
+      $sql=$this->db
+      ->select("con.con_id, gin.gin_id, mod.mod_abreviatura, niv.niv_descripcion, esp.esp_descripcion, pro.pro_descripcion, con.con_numero, con.con_anio")          
+        ->from("modalidades mod")
+        ->join("niveles niv", "mod.mod_id = niv.modalidad_mod_id", "inner")
+        ->join("especialidades esp", "niv.niv_id = esp.niveles_niv_id", "inner")
+        ->join("grupo_inscripcion gin", "esp.esp_id = gin.especialidades_esp_id", "inner")
+        ->join("procesos pro", "pro.pro_id = gin.procesos_pro_id", "inner")
+        ->join("convocatorias_detalle cde", "gin.gin_id = cde.grupo_inscripcion_gin_id", "inner")
+        ->join("convocatorias con", "con.con_id = cde.convocatorias_con_id", "inner")
+        ->where(array("cde.cde_estado"=>1, "cde.convocatorias_con_id"=>$idCon))
+        ->order_by("mod.mod_id asc, niv.niv_id asc, esp.esp_id asc") 
+        ->get();
+        // echo $this->db->last_query(); exit(); 
+        return $sql->result_array();  
+    }
+    
 
     public function listarCuadroPunxIdGrupoConEvaluacion($idGin, $usuario){ //1: se presento
       $sql=$this->db
