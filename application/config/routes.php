@@ -62,6 +62,7 @@ $route['web/postulaciones/(:any)/update'] = 'PostulacionesWeb/update/$1';
 $route['web/postulaciones/(:any)'] = 'PostulacionesWeb/edit/$1';
 
 $route['admin/adjudicaciones/pagination'] = 'Adjudicaciones/pagination';
+$route['/adjudicaciones/nuevo'] = 'Adjudicaciones/store';
 
 $route['configuracion/periodos/(:num)'] = 'Configuracion/editarPeriodo/$1';
 $route['configuracion/periodos/(:num)/detail'] = 'Configuracion/detallePeriodo/$1';
