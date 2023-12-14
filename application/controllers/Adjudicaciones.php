@@ -7,7 +7,7 @@ class Adjudicaciones extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Lima');
-        $this->layout->setLayout("/web/main");
+        $this->layout->setLayout("template");
         $this->load->model("adjudicaciones_model");
     }
 

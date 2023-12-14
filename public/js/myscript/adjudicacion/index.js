@@ -88,22 +88,73 @@ const AppAdjudicacionAdmin = () => {
             data() {
                 return {
                     user: {},
-                    dataTable: {}
+                    dataTable: {},
+                    modalNewAdjudicacion: {}
                 }
             },
             mounted: function () {
-                console.log(dom);
+                self.modalNewAdjudicacion = self.modal('modalNewAdjudicacion');
                 self.initialize();
             },
             methods: {
                 initialize: () => {
                     console.log('init');
+                    self.clicks();
                     self.pagination();
                     // self.dataTable = datatable.list(()=>{self.onActionRows()});
                 },
+                clicks: () => {
+                    console.log('clicks');
+                    const btnNews = document.querySelectorAll('.btn-new');
+                    btnNews.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            console.log('123');
+                            document.querySelector(".search").addEventListener('input', function () {
+                                var searchTerm = this.value.toLowerCase();
+                                var tableRows = document.querySelectorAll('.results tbody tr');
+                        
+                                tableRows.forEach(function (row) {
+                                    var textContent = row.textContent || row.innerText;
+                                    var isVisible = textContent.toLowerCase().includes(searchTerm);
+                                    row.style.display = isVisible ? 'table-row' : 'none';
+                                });
+                        
+                                var jobCount = document.querySelectorAll('.results tbody tr[style="display: table-row;"]').length;
+                                document.querySelector('.counter').textContent = jobCount + ' item';
+                        
+                                var noResultMessage = document.querySelector('.no-result');
+                                noResultMessage.style.display = jobCount === 0 ? 'block' : 'none';
+                            });
+                            self.modalNewAdjudicacion.show();
+                        });
+                    });
+                },
                 pagination: (_callback = ()=>{}) => {
                     return $('#tableIndexAdjudicacion').DataTable({
-                        language: helper.datatable.language,
+                        language: {
+                            "sProcessing": "Procesando...",
+                            "sLengthMenu": "Mostrar _MENU_ registros",
+                            "sZeroRecords": "No se encontraron resultados",
+                            "sEmptyTable": "Ningún dato disponible en esta tabla",
+                            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix": "",
+                            "sSearch": "Buscar:",
+                            "sUrl": "",
+                            "sInfoThousands": ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                               "sFirst": "Primero",
+                               "sLast": "Último",
+                               "sNext": "Siguiente",
+                               "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                               "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                               "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        },
                         searching: true,
                         ordering: false,  
                         responsive: true,
@@ -247,13 +298,22 @@ const AppAdjudicacionAdmin = () => {
                         sweet2.error({text: error});  
                     });	*/
                 },
+            },
+            renders: {
+
+            },
+            utilities: {
+                modal: (el) => {
+                    return new bootstrap.Modal(dom.querySelector('#' + el));
+                },
             }
         };
         const self = {
             ...object.data,
             ...object.methods,
-            ...object.data,
-            ...object.data,
+            ...object.renders,
+            ...object.events,
+            ...object.utilities,
         }
         object.mounted();
     }

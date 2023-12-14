@@ -278,3 +278,29 @@ CREATE TABLE `adjudicaciones` (
 
 UPDATE `modulos` SET mdl_ruta = 'configuracion/plazas' WHERE mdl_id = 17;
 
+CREATE TABLE plazas (
+  plz_id bigint(20) NOT NULL AUTO_INCREMENT,
+  codigoPlaza varchar(40) DEFAULT NULL,
+  codigoModular varchar(8) DEFAULT NULL,
+  ie varchar(150) DEFAULT NULL,
+  mod_id int(11) DEFAULT NULL,
+  especialidad text,
+  cargo varchar(40) DEFAULT NULL,
+  caracteristica varchar(50) DEFAULT NULL,
+  tipo varchar(50) DEFAULT NULL,
+  jornada tinyint(3) DEFAULT NULL,
+  tipo_vacante varchar(200) DEFAULT NULL,
+  motivo_vacante varchar(8000) DEFAULT NULL,
+  observacion text,
+  fecha_reg datetime DEFAULT NULL,
+  tipo_id int(11) DEFAULT NULL,
+  registrado_por varchar(20) DEFAULT NULL,
+  fecha year(4) DEFAULT NULL,
+  estado tinyint(1) DEFAULT NULL,
+  modificado_por varchar(20) DEFAULT NULL,
+  fecha_mod datetime DEFAULT NULL,
+  fecha_publicacion datetime DEFAULT NULL,
+  PRIMARY KEY (plz_id),
+  KEY modalidades (mod_id) USING BTREE,
+  KEY tipo_convocatoria (tipo_id) USING BTREE
+);
