@@ -1,23 +1,29 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Versión del servidor:         10.4.28-MariaDB - mariadb.org binary distribution
--- SO del servidor:              Win64
--- HeidiSQL Versión:             12.5.0.6677
--- --------------------------------------------------------
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
 
 -- Volcando estructura de base de datos para sigesco
-CREATE DATABASE IF NOT EXISTS `sigesco` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
-USE `sigesco`;
+/* CREATE DATABASE IF NOT EXISTS `sigesco` 
+USE `sigesco`; */
+
+-- Table structure for expedientes
+-- ----------------------------
+DROP TABLE IF EXISTS `expedientes`;
+CREATE TABLE `expedientes` (
+  `exp_id` int(11) NOT NULL AUTO_INCREMENT,
+  `exp_numero` varchar(10) DEFAULT NULL,
+  `exp_anio` int(4) DEFAULT NULL,
+  `exp_codigo` varchar(25) DEFAULT NULL,
+  `exp_remitente` varchar(250) DEFAULT NULL,
+  `exp_documento` varchar(15) DEFAULT NULL,
+  `exp_telefono1` varchar(12) DEFAULT NULL,
+  `exp_telefono2` varchar(12) DEFAULT NULL,
+  `exp_correo` varchar(400) DEFAULT NULL,
+  `exp_esprinicipal` int(1) DEFAULT NULL,
+  `exp_tipo` int(1) DEFAULT NULL COMMENT '1: evaluacion inicial 2. reclamo',
+  `exp_fechaCreacion` datetime DEFAULT NULL,
+  `exp_fechaModificacion` datetime DEFAULT NULL,
+  `exp_estado` int(1) DEFAULT NULL,
+  PRIMARY KEY (`exp_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=utf8;
+
 
 -- Volcando estructura para tabla sigesco.archivos_detalle
 CREATE TABLE IF NOT EXISTS `archivos_detalle` (
@@ -35,8 +41,148 @@ CREATE TABLE IF NOT EXISTS `archivos_detalle` (
   CONSTRAINT `fk_archivos_detalle_expedientes1` FOREIGN KEY (`expedientes_exp_id`) REFERENCES `expedientes` (`exp_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=280 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Volcando datos para la tabla sigesco.archivos_detalle: ~273 rows (aproximadamente)
-INSERT IGNORE INTO `archivos_detalle` (`adt_id`, `adt_nombreArchivo`, `adt_extensionArchivo`, `adt_tipoArchivo`, `adt_procedenciaArchivo`, `adt_fechaCreacionArchivo`, `adt_fechaModificacionArchivo`, `adt_estado`, `expedientes_exp_id`) VALUES
+
+
+
+-- Volcando datos para la tabla sigesco.expedientes: ~134 rows (aproximadamente)
+INSERT  INTO `expedientes` (`exp_id`, `exp_numero`, `exp_anio`, `exp_codigo`, `exp_remitente`, `exp_documento`, `exp_telefono1`, `exp_telefono2`, `exp_correo`, `exp_esprinicipal`, `exp_tipo`, `exp_fechaCreacion`, `exp_fechaModificacion`, `exp_estado`) VALUES
+	(2, '59691', 2022, 'MPT2022-EXT-0059691', 'MADELEINE HAYDEE RIVERA CUZCO', '08125552', '999350067', '', 'mrivera@ugel05.edu.pe', 1, 1, '2022-09-28 04:32:08', NULL, 1),
+	(3, '59890', 2022, 'MPT2022-EXT-0059890', 'CARMEN ROSA SANCHEZ VILLAR', '07913657', '979886931', '', 'd07913657o@aprendoencasa.pe', 1, 1, '2022-09-28 04:39:25', NULL, 1),
+	(4, '59814', 2022, 'MPT2022-EXT-0059814', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-09-28 05:50:03', NULL, 1),
+	(5, '57940', 2022, 'MPT2022-EXT-0057940', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-09-28 05:50:03', NULL, 1),
+	(6, '58759', 2022, 'MPT2022-EXT-0058759', 'ALBERTO REYNOLDI ANGELES MACAVILCA', '07054303', '997405571', '', 'aangeles@ugel05.edu.pe', 1, 1, '2022-09-28 12:45:49', NULL, 1),
+	(7, '55671', 2022, 'MPT2022-EXT-0055671', 'ALBERTO REYNOLDI ANGELES MACAVILCA', '07054303', '997405571', '', 'aangeles@ugel05.edu.pe', 1, 1, '2022-09-28 12:45:49', NULL, 1),
+	(8, '59691', 2022, 'MPT2022-EXT-0059691', 'MADELEINE HAYDEE RIVERA CUZCO', '08125552', '999350067', '', 'mrivera@ugel05.edu.pe', 1, 1, '2022-09-29 00:51:49', NULL, 1),
+	(9, '59691', 2022, 'MPT2022-EXT-0059691', 'MADELEINE HAYDEE RIVERA CUZCO', '08125552', '999350067', '', 'mrivera@ugel05.edu.pe', 1, 1, '2022-09-29 01:15:12', NULL, 1),
+	(10, '57575', 2022, 'MPT2022-EXT-0057575', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-09-29 01:15:12', NULL, 1),
+	(11, '57153', 2022, 'MPT2022-EXT-0057153', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-09-29 01:15:12', NULL, 1),
+	(12, '55381', 2022, 'MPT2022-EXT-0055381', 'ALBERTO REYNOLDI ANGELES MACAVILCA', '07054303', '997405571', '', 'aangeles@ugel05.edu.pe', 1, 1, '2022-09-29 01:15:12', NULL, 1),
+	(13, '59691', 2022, 'MPT2022-EXT-0059691', 'MADELEINE HAYDEE RIVERA CUZCO', '08125552', '999350067', '', 'mrivera@ugel05.edu.pe', 1, 1, '2022-09-29 10:31:55', NULL, 1),
+	(14, '58563', 2022, 'MPT2022-EXT-0058563', 'MARISOL VERA ALVAREZ', '09560564', '966799294', '', 'marisolveraalvarez@hotmail.com', 1, 1, '2022-10-03 17:40:06', NULL, 1),
+	(15, '59944', 2022, 'MPT2022-EXT-0059944', 'NELLY NIEVES JAUREGUI FALCON DE ANDRADE', '09076839', '015949733', '965411521', 'njauregui@ugel05.edu.pe', 1, 1, '2022-10-05 11:23:43', NULL, 1),
+	(16, '59730', 2022, 'MPT2022-EXT-0059730', 'CARMEN ROSA GARMA CARDENAS', '07683102', '987985267', '932247552', 'camu_geminis@hotmail.com', 1, 1, '2022-10-05 11:23:44', NULL, 1),
+	(17, '59691', 2022, 'MPT2022-EXT-0059691', 'MADELEINE HAYDEE RIVERA CUZCO', '08125552', '999350067', '', 'mrivera@ugel05.edu.pe', 1, 1, '2022-10-05 11:23:44', NULL, 1),
+	(18, '59536', 2022, 'MPT2022-EXT-0059536', 'GUILMAR ASUNCION ESCOBAR CONDEÃ‘A', '06767000', '947290899', '', 'gescobar@ugel05.edu.pe', 1, 1, '2022-10-05 11:23:44', NULL, 1),
+	(19, '59323', 2022, 'MPT2022-EXT-0059323', 'MILAGROS DE LOS ÃNGELES ESCRIBA GAMBOA', '71004124', '980973694', '', 'laescribae@gmail.com', 1, 1, '2022-10-05 11:23:44', NULL, 1),
+	(20, '59029', 2022, 'MPT2022-EXT-0059029', 'JANETH MARLENI MUÃ‘OZ AGUSTÃN', '41004937', '927593834', '', 'mashosita@gmail.com', 1, 1, '2022-10-05 11:23:44', NULL, 1),
+	(21, '58926', 2022, 'MPT2022-EXT-0058926', 'JUAN MANUEL LAVADO DE LA CRUZ', '21080783', '964011034', '', 'juanlavado1961@gmail.com', 1, 1, '2022-10-05 11:23:44', NULL, 1),
+	(22, '58811', 2022, 'MPT2022-EXT-0058811', 'HUGO JAIME BENDEZU AMARO', '20111245', '985843645', '', 'hbendezu@ugel05.edu.pe', 1, 1, '2022-10-05 11:23:45', NULL, 1),
+	(23, '57952', 2022, 'MPT2022-EXT-0057952', 'MARISOL MILAGROS JAUREGUI GOMEZ', '41665991', '944269662', '', 'mmjaureguig@gmail.com', 1, 1, '2022-10-05 11:23:45', NULL, 1),
+	(24, '57852', 2022, 'MPT2022-EXT-0057852', 'MARITA LUCILA ROBLES GONZALES', '10366340', '013925420', '986036960', 'marirreth311061@gmail.com', 1, 1, '2022-10-05 11:23:45', NULL, 1),
+	(25, '57604', 2022, 'MPT2022-EXT-0057604', 'JUAN MANUEL LAVADO DE LA CRUZ', '21080783', '964011034', '', 'juan.lavado1961@gmail.com', 1, 1, '2022-10-05 11:23:45', NULL, 1),
+	(26, '57340', 2022, 'MPT2022-EXT-0057340', 'CARMEN DEL PILAR CASTAÃ‘EDA AGUEDO', '15944085', '977517252', '', 'ccastaneda@ugel05.edu.pe', 1, 1, '2022-10-05 11:23:45', NULL, 1),
+	(27, '57257', 2022, 'MPT2022-EXT-0057257', 'MARIA ELENA CORNEJO GUEVARA', '09326612', '918042109', '997509666', 'mcornejo@ugel05.edu.pe', 1, 1, '2022-10-05 11:23:45', NULL, 1),
+	(28, '57184', 2022, 'MPT2022-EXT-0057184', 'JAVIER LUIS SOLIS CORALES', '41542924', '991995222', '993692808', 'javiersoliscorales1@gmail.com', 1, 1, '2022-10-05 11:23:46', NULL, 1),
+	(29, '55691', 2022, 'MPT2022-EXT-0055691', 'SILVIA MARGOTH LEDESMA AGURTO', '47025341', '916984381', '', 'feyalegria39@hotmail.com', 1, 1, '2022-10-05 11:23:46', NULL, 1),
+	(30, '55600', 2022, 'MPT2022-EXT-0055600', 'CELINDA ESTHER BAUTISTA ANTICONA', '09329335', '945156982', '', 'feyalegria26.2020@gmail.com', 1, 1, '2022-10-05 11:23:46', NULL, 1),
+	(31, '60105', 2022, 'MPT2022-EXT-0060105', 'MIRYAM KARIM ROJAS GUILLEN', '20034928', '969679175', '', 'mrojas@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:52', NULL, 1),
+	(32, '58759', 2022, 'MPT2022-EXT-0058759', 'ALBERTO REYNOLDI ANGELES MACAVILCA', '07054303', '997405571', '', 'aangeles@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:52', NULL, 1),
+	(33, '58432', 2022, 'MPT2022-EXT-0058432', 'YESSENIA GUILLEN NOLBERTO', '72123517', '902239530', '', 'cuteguillen@gmail.com', 1, 1, '2022-10-05 11:57:52', NULL, 1),
+	(34, '57589', 2022, 'MPT2022-EXT-0057589', 'ROSA MAGALLANES ORMEÃ‘O', '71248172', '951653074', '', 'ie158santamaria.gestion2022@gmail.com', 1, 1, '2022-10-05 11:57:52', NULL, 1),
+	(35, '57449', 2022, 'MPT2022-EXT-0057449', 'MANUELA BECERRA BOLAÃ‘OS', '43416085', '969532493', '', 'manuelabecerrabolanos9@gmail.com', 1, 1, '2022-10-05 11:57:52', NULL, 1),
+	(36, '56943', 2022, 'MPT2022-EXT-0056943', 'MORAYMA ÃšRSULA ALIAGA MARMOLEJO', '19991524', '981530086', '', 'maliaga@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:53', NULL, 1),
+	(37, '56413', 2022, 'MPT2022-EXT-0056413', 'MIRYAM KARIM ROJAS GUILLEN', '20034928', '969679175', '', 'mrojas@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:53', NULL, 1),
+	(38, '55724', 2022, 'MPT2022-EXT-0055724', 'EMILY ARBIZU RODRIGUEZ', '41603575', '997782913', '', 'earbizu@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:53', NULL, 1),
+	(39, '55671', 2022, 'MPT2022-EXT-0055671', 'ALBERTO REYNOLDI ANGELES MACAVILCA', '07054303', '997405571', '', 'aangeles@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:53', NULL, 1),
+	(40, '55381', 2022, 'MPT2022-EXT-0055381', 'ALBERTO REYNOLDI ANGELES MACAVILCA', '07054303', '997405571', '', 'aangeles@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:53', NULL, 1),
+	(41, '55298', 2022, 'MPT2022-EXT-0055298', 'GRETA HUAMANI DURAND', '45940353', '977892488', '', 'fiorecasella09@gmail.com', 1, 1, '2022-10-05 11:57:53', NULL, 1),
+	(42, '55188', 2022, 'MPT2022-EXT-0055188', 'MIRYAM KARIM ROJAS GUILLEN', '20034928', '969679175', '', 'mrojas@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:54', NULL, 1),
+	(45, '55068', 2022, 'MPT2022-EXT-0055068', 'NORMA ERLINDA QUIÃ‘ONES SUAREZ', '20991248', '943997770', '', 'nquinones@ugel05.edu.pe', 1, 1, '2022-10-05 23:36:26', NULL, 1),
+	(46, '51965', 2022, 'MPT2022-EXT-0051965', 'NORMA ERLINDA QUIÃ‘ONES SUAREZ', '20991248', '943997770', '', 'nquinones@ugel05.edu.pe', 1, 1, '2022-10-05 23:37:54', NULL, 1),
+	(47, '55081', 2022, 'MPT2022-EXT-0055081', 'WILSON AGUILAR BARRANTES', '09667051', '961452420', '961452420', 'wilson2172abw@gmail.com', 1, 1, '2022-10-05 23:38:57', NULL, 1),
+	(48, '55047', 2022, 'MPT2022-EXT-0055047', 'YRENE YSABEL NICHO NAPA', '09095947', '951676235', '', 'ynicho@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:57', NULL, 1),
+	(49, '55037', 2022, 'MPT2022-EXT-0055037', 'OCTAVIO ALCIBIADES BENDEZU VEGA', '09554915', '955364711', '', 'granoctavio2@hotmail.com', 1, 1, '2022-10-05 23:38:57', NULL, 1),
+	(50, '54983', 2022, 'MPT2022-EXT-0054983', 'CESAR AUGUSTO RODAS TELLO', '10357907', '940193610', '', 'crodas@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:57', NULL, 1),
+	(51, '54932', 2022, 'MPT2022-EXT-0054932', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:57', NULL, 1),
+	(52, '54770', 2022, 'MPT2022-EXT-0054770', 'YRENE YSABEL NICHO NAPA', '09095947', '951676235', '', 'ynicho@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:58', NULL, 1),
+	(53, '54729', 2022, 'MPT2022-EXT-0054729', 'FRANCISCO CERDAN', '10763119', '945964252', '', 'fabanto@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:58', NULL, 1),
+	(54, '54702', 2022, 'MPT2022-EXT-0054702', 'LUCAS NESTOR PEREZ SALGADO', '09512157', '977416413', '', 'lperez@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:58', NULL, 1),
+	(55, '54696', 2022, 'MPT2022-EXT-0054696', 'ANGELITA VILLANUEVA  VELASQUEZ', '08288872', '996871218', '', 'avillanueva@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:58', NULL, 1),
+	(56, '54668', 2022, 'MPT2022-EXT-0054668', 'ELIZABETH LUCÃA PAITAN COMPI', '10119136', '987924689', '', 'epaitancompi@gmail.com', 1, 1, '2022-10-05 23:41:26', NULL, 1),
+	(57, '54646', 2022, 'MPT2022-EXT-0054646', 'BERSABET YANIRA VILLALOBOS CACERES', '47395488', '926819536', '', 'mesadepartes.ie0009jma@gmail.com', 1, 1, '2022-10-05 23:41:26', NULL, 1),
+	(58, '54621', 2022, 'MPT2022-EXT-0054621', 'FELIMON ANGEL DAMIAN CHUMBE', '09332301', '994455872', '', 'fadch_66@hotmail.com', 1, 1, '2022-10-05 23:41:26', NULL, 1),
+	(59, '54647', 2022, 'MPT2022-EXT-0054647', 'JACQUELINE TEODORA VEGA HUANCA', '09427758', '945520374', '', 'jvega@ugel05.edu.pe', 1, 1, '2022-10-05 23:41:26', NULL, 1),
+	(60, '54616', 2022, 'MPT2022-EXT-0054616', 'BERSABET YANIRA VILLALOBOS CACERES', '47395488', '926819536', '', 'mesadepartes.ie0009jma@gmail.com', 1, 1, '2022-10-05 23:41:27', NULL, 1),
+	(61, '54573', 2022, 'MPT2022-EXT-0054573', 'LUISA VERÃ“NICA POMA', '10678533', '965768588', '965768588', 'llahuana@ugel05.edu.pe', 1, 1, '2022-10-05 23:41:27', NULL, 1),
+	(62, '54556', 2022, 'MPT2022-EXT-0054556', 'WUILVER GABRIEL HERNANDEZ PARADO', '08867819', '960733869', '', 'mesadepartes.ie1044@gmail.com', 1, 1, '2022-10-05 23:41:27', NULL, 1),
+	(63, '54558', 2022, 'MPT2022-EXT-0054558', 'CLETO ROCA TAPIA', '31543158', '945196092', '', 'mesadepartes151mb@gmail.com', 1, 1, '2022-10-05 23:41:27', NULL, 1),
+	(64, '54544', 2022, 'MPT2022-EXT-0054544', 'CESAR ALBERTO SANTIAGO ESPINOZA', '09784963', '948896378', '', 'csantiago@ugel05.edu.pe', 1, 1, '2022-10-05 23:41:27', NULL, 1),
+	(65, '54499', 2022, 'MPT2022-EXT-0054499', 'NANCY DEL PILAR VALLADOLID ZETA', '10723417', '985628522', '', 'nvalladolid@ugel05.edu.pe', 1, 1, '2022-10-05 23:41:27', NULL, 1),
+	(66, '54427', 2022, 'MPT2022-EXT-0054427', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-10-05 23:54:01', NULL, 1),
+	(67, '54236', 2022, 'MPT2022-EXT-0054236', 'WUILVER GABRIEL HERNANDEZ PARADO', '08867819', '960733869', '', 'mesadepartes.ie1044@gmail.com', 1, 1, '2022-10-05 23:54:01', NULL, 1),
+	(68, '54232', 2022, 'MPT2022-EXT-0054232', 'OCTAVIO ALCIBIADES BENDEZU VEGA', '09554915', '955364711', '', 'granoctavio2@hotmail.com', 1, 1, '2022-10-05 23:54:01', NULL, 1),
+	(69, '60127', 2022, 'MPT2022-EXT-0060127', 'HAYDEE GLADYS HUARINGA SANTIAGO', '04065092', '947453496', '', 'hhuaringa@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:21', NULL, 1),
+	(70, '60123', 2022, 'MPT2022-EXT-0060123', 'HAYDEE GLADYS HUARINGA SANTIAGO', '04065092', '947453496', '', 'hhuaringa@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:22', NULL, 1),
+	(71, '60090', 2022, 'MPT2022-EXT-0060090', 'JUDITH ROSARIO ESCALANTE VILLANUEVA', '16128674', '991275445', '', 'jescalante@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:22', NULL, 1),
+	(72, '59890', 2022, 'MPT2022-EXT-0059890', 'CARMEN ROSA SANCHEZ VILLAR', '07913657', '979886931', '', 'd07913657o@aprendoencasa.pe', 1, 1, '2022-10-11 09:46:22', NULL, 1),
+	(73, '59654', 2022, 'MPT2022-EXT-0059654', 'YRENE YSABEL NICHO NAPA', '09095947', '951676235', '', 'ynicho@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:22', NULL, 1),
+	(74, '59433', 2022, 'MPT2022-EXT-0059433', 'MARÃA PÃA RIOS ROSALES', '70457623', '936881576', '', 'mariapiariosrosales@gmail.com', 1, 1, '2022-10-11 09:46:22', NULL, 1),
+	(75, '59276', 2022, 'MPT2022-EXT-0059276', 'LUCAS NESTOR PEREZ SALGADO', '09512157', '977416413', '', 'lperez@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:22', NULL, 1),
+	(76, '59151', 2022, 'MPT2022-EXT-0059151', 'PEDRO PAULINO PATRICIO SUDARIO', '09333438', '991577645', '', 'ppatricio@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:22', NULL, 1),
+	(77, '58879', 2022, 'MPT2022-EXT-0058879', 'REBECA NELLY DIAZ RODRIGUEZ', '07275186', '997272012', '', 'rdiaz@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:23', NULL, 1),
+	(78, '58514', 2022, 'MPT2022-EXT-0058514', 'DEISSY MAGALI ASCANIO YSHUISA', '41660893', '933323408', '013870628', 'deissymagali@gmail.com', 1, 1, '2022-10-11 09:46:23', NULL, 1),
+	(79, '57968', 2022, 'MPT2022-EXT-0057968', 'JAVIER ELEODORO CORNEJO VARGAS', '42349100', '936060714', '', 'javiercornejovargas@gmail.com', 1, 1, '2022-10-11 09:46:23', NULL, 1),
+	(80, '57889', 2022, 'MPT2022-EXT-0057889', 'MARIA GLORIA HARO MIÃ‘ANO', '07968040', '948177855', '', 'mharo@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:23', NULL, 1),
+	(81, '57888', 2022, 'MPT2022-EXT-0057888', 'JUDITH ROSARIO ESCALANTE VILLANUEVA', '16128674', '991275445', '', 'jescalante@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:23', NULL, 1),
+	(82, '57890', 2022, 'MPT2022-EXT-0057890', 'FELIX AGUSTIN CARRIZALES MORENO', '09247360', '988878398', '', 'fcarrizales@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:23', NULL, 1),
+	(83, '57599', 2022, 'MPT2022-EXT-0057599', 'LUCAS NESTOR PEREZ SALGADO', '09512157', '977416413', '', 'lperez@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:24', NULL, 1),
+	(84, '57451', 2022, 'MPT2022-EXT-0057451', 'LUCAS NESTOR PEREZ SALGADO', '09512157', '977416413', '', 'lperez@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:24', NULL, 1),
+	(85, '57272', 2022, 'MPT2022-EXT-0057272', 'PEDRO PAULINO PATRICIO SUDARIO', '09333438', '991577645', '', 'ppatricio@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:24', NULL, 1),
+	(86, '57003', 2022, 'MPT2022-EXT-0057003', 'KATHERINE ISABEL CRUCES SARRIA', '42972596', '956986837', '', 'katherinecruces4@gmail.com', 1, 1, '2022-10-11 09:46:24', NULL, 1),
+	(87, '56952', 2022, 'MPT2022-EXT-0056952', 'ANGELITA VILLANUEVA  VELASQUEZ', '08288872', '996871218', '', 'avillanueva@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:24', NULL, 1),
+	(88, '56468', 2022, 'MPT2022-EXT-0056468', 'JUAN FELICIANO HUARCAYA VALENTIN', '41129346', '970973620', '', 'jhuarcaya@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:24', NULL, 1),
+	(89, '56285', 2022, 'MPT2022-EXT-0056285', 'MARY CRUZ GOMEZ SIPION', '16586080', '990111783', '', 'mgomez@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:24', NULL, 1),
+	(90, '56231', 2022, 'MPT2022-EXT-0056231', 'LUCAS NESTOR PEREZ SALGADO', '09512157', '977416413', '', 'lperez@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:25', NULL, 1),
+	(91, '56107', 2022, 'MPT2022-EXT-0056107', 'JUDITH ROSARIO ESCALANTE VILLANUEVA', '16128674', '991275445', '', 'jescalante@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:25', NULL, 1),
+	(92, '55823', 2022, 'MPT2022-EXT-0055823', 'FELIX AGUSTIN CARRIZALES MORENO', '09247360', '988878398', '', 'fcarrizales@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:25', NULL, 1),
+	(93, '55821', 2022, 'MPT2022-EXT-0055821', 'FELIX AGUSTIN CARRIZALES MORENO', '09247360', '988878398', '', 'fcarrizales@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:25', NULL, 1),
+	(94, '55255', 2022, 'MPT2022-EXT-0055255', 'WUILVER GABRIEL HERNANDEZ PARADO', '08867819', '960733869', '', 'mesadepartes.ie1044@gmail.com', 1, 1, '2022-10-11 09:46:25', NULL, 1),
+	(95, '55222', 2022, 'MPT2022-EXT-0055222', 'WUILVER GABRIEL HERNANDEZ PARADO', '08867819', '960733869', '', 'mesadepartes.ie1044@gmail.com', 1, 1, '2022-10-11 09:46:25', NULL, 1),
+	(96, '55182', 2022, 'MPT2022-EXT-0055182', 'LILA LUZ MORENO SANCHEZ', '08293556', '990991498', '014595927', 'lmoreno@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
+	(97, '51638', 2022, 'MPT2022-EXT-0051638', 'YRENE YSABEL NICHO NAPA', '09095947', '951676235', '', 'ynicho@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
+	(98, '50941', 2022, 'MPT2022-EXT-0050941', 'JUDITH ROSARIO ESCALANTE VILLANUEVA', '16128674', '991275445', '', 'jescalante@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
+	(99, '50003', 2022, 'MPT2022-EXT-0050003', 'PEDRO PAULINO PATRICIO SUDARIO', '09333438', '991577645', '', 'ppatricio@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
+	(100, '49851', 2022, 'MPT2022-EXT-0049851', 'JUDITH ROSARIO ESCALANTE VILLANUEVA', '16128674', '991275445', '', 'jescalante@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
+	(101, '49478', 2022, 'MPT2022-EXT-0049478', 'PEDRO PAULINO PATRICIO SUDARIO', '09333438', '991577645', '', 'ppatricio@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
+	(102, '49277', 2022, 'MPT2022-EXT-0049277', 'LILA LUZ MORENO SANCHEZ', '08293556', '990991498', '014595927', 'lmoreno@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
+	(103, '59433', 2022, 'MPT2022-EXT-0059433', 'MARÃA PÃA RIOS ROSALES', '70457623', '936881576', '', 'mariapiariosrosales@gmail.com', 1, 1, '2022-10-11 09:49:07', NULL, 1),
+	(104, '58879', 2022, 'MPT2022-EXT-0058879', 'REBECA NELLY DIAZ RODRIGUEZ', '07275186', '997272012', '', 'rdiaz@ugel05.edu.pe', 1, 1, '2022-10-11 09:49:07', NULL, 1),
+	(105, '57889', 2022, 'MPT2022-EXT-0057889', 'MARIA GLORIA HARO MIÃ‘ANO', '07968040', '948177855', '', 'mharo@ugel05.edu.pe', 1, 1, '2022-10-11 09:49:07', NULL, 1),
+	(106, '60106', 2022, 'MPT2022-EXT-0060106', 'ELVA RUTH SALAZAR', '10351990', '959364898', '', 'emunguia@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:34', NULL, 1),
+	(107, '60056', 2022, 'MPT2022-EXT-0060056', 'MILAGROS MARITZA Ã‘AUPARI', '09770531', '958547343', '', 'mfernandez@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:34', NULL, 1),
+	(108, '60049', 2022, 'MPT2022-EXT-0060049', 'MANUEL TASAYCO ATUNCAR', '21802177', '984178048', '', 'mtasayco@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:34', NULL, 1),
+	(109, '60020', 2022, 'MPT2022-EXT-0060020', 'MILAGROS MARITZA Ã‘AUPARI', '09770531', '958547343', '', 'mfernandez@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:34', NULL, 1),
+	(110, '60017', 2022, 'MPT2022-EXT-0060017', 'LUISA VERÃ“NICA POMA', '10678533', '965768588', '965768588', 'llahuana@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:35', NULL, 1),
+	(111, '59893', 2022, 'MPT2022-EXT-0059893', 'NAIBETO VEGA VILLAORDUÃ‘A', '09569343', '970888692', '', 'secundariamesadepartesiefbc@gmail.com', 1, 1, '2022-10-11 09:55:35', NULL, 1),
+	(112, '59866', 2022, 'MPT2022-EXT-0059866', 'NAIBETO VEGA VILLAORDUÃ‘A', '09569343', '970888692', '', 'secundariamesadepartesiefbc@gmail.com', 1, 1, '2022-10-11 09:55:35', NULL, 1),
+	(113, '59814', 2022, 'MPT2022-EXT-0059814', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:35', NULL, 1),
+	(114, '59705', 2022, 'MPT2022-EXT-0059705', 'ROMÃN CÃ“RDOVA JESÃšS', '09099691', '994540290', '', 'rcordova@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:35', NULL, 1),
+	(115, '59354', 2022, 'MPT2022-EXT-0059354', 'NELLY CAROLINA CAUNALLA CALLOHUANCA', '10130084', '994495469', '', 'ncaunalla@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:35', NULL, 1),
+	(116, '57950', 2022, 'MPT2022-EXT-0057950', 'PERCY ROJAS SHUPINGAHUA', '40713080', '959197297', '959197297', 'falconi09@hotmail.com', 1, 1, '2022-10-13 15:02:46', NULL, 1),
+	(117, '57706', 2022, 'MPT2022-EXT-0057706', 'FRANCISCO CERDAN', '10763119', '945964252', '', 'fabanto@ugel05.edu.pe', 1, 1, '2022-10-13 15:02:46', NULL, 1),
+	(118, '57615', 2022, 'MPT2022-EXT-0057615', 'FRANCISCO CERDAN', '10763119', '945964252', '', 'fabanto@ugel05.edu.pe', 1, 1, '2022-10-13 15:02:46', NULL, 1),
+	(119, '57282', 2022, 'MPT2022-EXT-0057282', 'LUISA VERÃ“NICA POMA', '10678533', '965768588', '965768588', 'llahuana@ugel05.edu.pe', 1, 1, '2022-10-13 15:02:47', NULL, 1),
+	(120, '56471', 2022, 'MPT2022-EXT-0056471', 'GERMÃN ROSPIGLIOSI', '21876096', '987145240', '', 'ggaldos@ugel05.edu.pe', 1, 1, '2022-10-13 15:02:47', NULL, 1),
+	(121, '56470', 2022, 'MPT2022-EXT-0056470', 'GERMÃN ROSPIGLIOSI', '21876096', '987145240', '', 'ggaldos@ugel05.edu.pe', 1, 1, '2022-10-13 15:02:47', NULL, 1),
+	(122, '56306', 2022, 'MPT2022-EXT-0056306', 'NICOLAS CARPIO SANCHEZ', '10657021', '940145581', '', 'ncarpio@ugel05.edu.pe', 1, 1, '2022-10-13 15:02:47', NULL, 1),
+	(123, '55615', 2022, 'MPT2022-EXT-0055615', 'ROSA REQUEJO VASQUEZ', '09207009', '968033225', '968033225', 'rrequejo@feyalegria37.edu.pe', 1, 1, '2022-10-13 15:02:47', NULL, 1),
+	(124, '55258', 2022, 'MPT2022-EXT-0055258', 'ALICIA HUALLPA CACERES', '09201805', '992944331', '', 'tramiteshb112@gmail.com', 1, 1, '2022-10-13 15:02:47', NULL, 1),
+	(125, '44790', 2022, 'MPT2022-EXT-0044790', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-10-13 15:15:22', NULL, 1),
+	(126, '44771', 2022, 'MPT2022-EXT-0044771', 'MARITHSABEL ESPINOZA OSTOS', '41695705', '981928291', '', 'mespinozao@ugel05.edu.pe', 1, 1, '2022-10-13 15:15:22', NULL, 1),
+	(127, '44764', 2022, 'MPT2022-EXT-0044764', 'MARIA VICTORIA VALERIO QUINTO', '04073637', '937763652', '', 'valerioquintov@gmail.com', 1, 1, '2022-10-13 15:15:22', NULL, 1),
+	(128, '44753', 2022, 'MPT2022-EXT-0044753', 'MARIA VICTORIA VALERIO QUINTO', '04073637', '937763652', '', 'valerioquintov@gmail.com', 1, 1, '2022-10-13 15:15:22', NULL, 1),
+	(129, '44752', 2022, 'MPT2022-EXT-0044752', 'RAUL JOSE SERMEÃ‘O CAMARA', '28993058', '993453130', '013888369', 'mesadepartesramiropriale@gmail.com', 1, 1, '2022-10-13 15:15:22', NULL, 1),
+	(130, '44741', 2022, 'MPT2022-EXT-0044741', 'ANGELA ROSARIO GONZALES GUERRA', '10418815', '941435405', '', 'agonzales@ugel05.edu.pe', 1, 1, '2022-10-13 15:15:23', NULL, 1),
+	(131, '44714', 2022, 'MPT2022-EXT-0044714', 'MARIA VICTORIA VALERIO QUINTO', '04073637', '937763652', '', 'valerioquintov@gmail.com', 1, 1, '2022-10-13 15:15:23', NULL, 1),
+	(132, '44700', 2022, 'MPT2022-EXT-0044700', 'ANGELA ROSARIO GONZALES GUERRA', '10418815', '941435405', '', 'agonzales@ugel05.edu.pe', 1, 1, '2022-10-13 15:15:23', NULL, 1),
+	(133, '44630', 2022, 'MPT2022-EXT-0044630', 'ANA MARIA ALBORNOZ CHAVEZ', '09204166', '999966352', '', 'aalbornoz@ugel05.edu.pe', 1, 1, '2022-10-13 15:15:23', NULL, 1),
+	(134, '44508', 2022, 'MPT2022-EXT-0044508', 'RAFAEL MALAVER YUPANQUI', '10764838', '960736102', '972052354', 'ramayu2012@hotmail.com', 1, 1, '2022-10-13 15:15:23', NULL, 1),
+	(135, '44289', 2022, 'MPT2022-EXT-0044289', 'FANNY MARGOT CASTILLO VILLANUEVA', '09793633', '997754261', '', 'fannycastillovillanueva@gmail.com', 1, 1, '2022-10-13 15:15:23', NULL, 1),
+	(136, '58352', 2022, 'MPT2022-EXT-0058352', 'MARCELA SANDOVAL PÃ‰REZ', '41077305', '993332353', '', 'eventosycatering81@gmail.com', 1, 1, '2022-11-21 20:14:10', NULL, 1),
+	(137, '57950', 2022, 'MPT2022-EXT-0057950', 'PERCY ROJAS SHUPINGAHUA', '40713080', '959197297', '959197297', 'falconi09@hotmail.com', 1, 1, '2022-11-21 20:14:11', NULL, 1);
+
+
+INSERT INTO `archivos_detalle` (`adt_id`, `adt_nombreArchivo`, `adt_extensionArchivo`, `adt_tipoArchivo`, `adt_procedenciaArchivo`, `adt_fechaCreacionArchivo`, `adt_fechaModificacionArchivo`, `adt_estado`, `expedientes_exp_id`) VALUES
 	(3, 'archivos/adjuntos/2022/Setiembre/ad4c7771bedf02f8a94af7edc3f0137bd3.pdf', 'pdf', 1, 1, '2022-09-28 04:32:08', NULL, 1, 2),
 	(4, 'archivos/tramites/2022/Setiembre/tr4c7771bedf02f8a94af7edc3f0137bd3.pdf', 'pdf', 2, 1, '2022-09-28 04:32:08', NULL, 1, 2),
 	(5, 'archivos/adjuntos/2022/Setiembre/ad128c14f2f078ce3d9a2675a2bd1e73d8.pdf', 'pdf', 1, 1, '2022-09-28 04:39:25', NULL, 1, 3),
@@ -311,12 +457,266 @@ INSERT IGNORE INTO `archivos_detalle` (`adt_id`, `adt_nombreArchivo`, `adt_exten
 	(278, 'archivos/adjuntos/2022/Setiembre/ad7cd481e830d847ce7536e798ba89cb16.pdf', 'pdf', 1, 1, '2022-11-21 20:14:11', NULL, 1, 137),
 	(279, 'archivos/tramites/2022/Setiembre/tr7cd481e830d847ce7536e798ba89cb16.pdf', 'pdf', 2, 1, '2022-11-21 20:14:11', NULL, 1, 137);
 
+CREATE TABLE IF NOT EXISTS `periodos` (
+  `per_id` int(11) NOT NULL,
+  `per_anio` int(4) DEFAULT NULL,
+  `per_nombre` varchar(500) DEFAULT NULL,
+  `per_default` int(1) NOT NULL,
+  `per_estado` int(1) DEFAULT NULL COMMENT '0: inactivo 1: activo',
+  PRIMARY KEY (`per_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+INSERT  INTO `periodos` (`per_id`, `per_anio`, `per_nombre`, `per_default`, `per_estado`) VALUES
+	(1, 2022, 'Año del Fortalecimiento de la Soberanía Nacional', 1, 1);
+
+CREATE TABLE IF NOT EXISTS `modalidades` (
+  `mod_id` int(11) NOT NULL AUTO_INCREMENT,
+  `mod_nombre` varchar(250) DEFAULT NULL,
+  `mod_abreviatura` varchar(25) DEFAULT NULL,
+  `mod_estado` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`mod_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+INSERT  INTO `modalidades` (`mod_id`, `mod_nombre`, `mod_abreviatura`, `mod_estado`) VALUES
+	(1, 'Educación Básica Regular', 'EBR', '1'),
+	(2, 'Programa de Intervención Temprana', 'PRITE', '1'),
+	(3, 'Educación Básica Especial', 'EBE', '1'),
+	(4, 'Educación Básica Alternativa', 'EBA', '1'),
+	(5, 'Educación Técnico Productiva', 'ETP', '1'),
+	(6, 'OTROS', 'VARIOS', '1');
+
+
+-- Volcando estructura para tabla sigesco.niveles
+CREATE TABLE IF NOT EXISTS `niveles` (
+  `niv_id` int(11) NOT NULL AUTO_INCREMENT,
+  `niv_descripcion` varchar(250) DEFAULT NULL,
+  `niv_estado` int(1) DEFAULT NULL,
+  `modalidad_mod_id` int(11) NOT NULL,
+  PRIMARY KEY (`niv_id`),
+  KEY `fk_niveles_modalidad1_idx` (`modalidad_mod_id`),
+  CONSTRAINT `fk_niveles_modalidad1` FOREIGN KEY (`modalidad_mod_id`) REFERENCES `modalidades` (`mod_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Volcando datos para la tabla sigesco.niveles: ~4 rows (aproximadamente)
+INSERT  INTO `niveles` (`niv_id`, `niv_descripcion`, `niv_estado`, `modalidad_mod_id`) VALUES
+	(1, 'Inicial', 1, 1),
+	(2, 'Primaria', 1, 1),
+	(3, 'Secundaria', 1, 1),
+	(4, '(*)', 1, 6);
+
+
+-- Volcando estructura para tabla sigesco.especialidades
+CREATE TABLE IF NOT EXISTS `especialidades` (
+  `esp_id` int(11) NOT NULL AUTO_INCREMENT,
+  `esp_descripcion` varchar(250) DEFAULT NULL,
+  `esp_estado` int(1) DEFAULT NULL COMMENT '0: inactivo 1: activo',
+  `niveles_niv_id` int(11) NOT NULL,
+  PRIMARY KEY (`esp_id`),
+  KEY `fk_especialidades_niveles1_idx` (`niveles_niv_id`),
+  CONSTRAINT `fk_especialidades_niveles1` FOREIGN KEY (`niveles_niv_id`) REFERENCES `niveles` (`niv_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Volcando datos para la tabla sigesco.especialidades: ~15 rows (aproximadamente)
+INSERT INTO `especialidades` (`esp_id`, `esp_descripcion`, `esp_estado`, `niveles_niv_id`) VALUES
+	(1, '-', 1, 1),
+	(2, '-', 1, 2),
+	(3, 'Educación Física', 1, 2),
+	(4, 'Aula de Innovación Pedagógica', 1, 2),
+	(5, 'Matemática', 1, 3),
+	(6, 'Ciencias Sociales', 1, 3),
+	(7, 'Desarrollo Personal, Ciudadana y Cívica', 1, 3),
+	(8, 'Ciencia y Tecnología', 1, 3),
+	(9, 'Comunicación', 1, 3),
+	(10, 'Educación Religiosa', 1, 3),
+	(11, 'Ingles', 1, 3),
+	(12, 'Arte y Cultura', 1, 3),
+	(13, 'Educación Física', 1, 3),
+	(14, 'Aula de Innovación Pedagógica', 1, 3),
+	(15, '-', 1, 4);
+
+-- Volcando estructura para tabla sigesco.procesos
+CREATE TABLE IF NOT EXISTS `procesos` (
+  `pro_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pro_descripcion` varchar(500) DEFAULT NULL,
+  `pro_default` int(1) NOT NULL,
+  `pro_estado` int(1) DEFAULT NULL COMMENT '0: inactivo 1: activo',
+  PRIMARY KEY (`pro_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+-- Volcando datos para la tabla sigesco.procesos: ~2 rows (aproximadamente)
+INSERT  INTO `procesos` (`pro_id`, `pro_descripcion`, `pro_default`, `pro_estado`) VALUES
+	(1, 'Contrato Docente', 1, 1),
+	(2, 'Contrato Auxiliar de Educación', 0, 0);
+
+
+-- Volcando estructura para tabla sigesco.grupo_inscripcion
+CREATE TABLE IF NOT EXISTS `grupo_inscripcion` (
+  `gin_id` int(11) NOT NULL AUTO_INCREMENT,
+  `procesos_pro_id` int(11) NOT NULL,
+  `periodos_per_id` int(11) NOT NULL,
+  `especialidades_esp_id` int(11) NOT NULL,
+  `gin_estado` int(1) DEFAULT NULL,
+  PRIMARY KEY (`gin_id`),
+  KEY `fk_grupo_inscripcion_procesos1_idx` (`procesos_pro_id`),
+  KEY `fk_grupo_inscripcion_especialidades1_idx` (`especialidades_esp_id`),
+  KEY `fk_grupo_inscripcion_periodos1_idx` (`periodos_per_id`),
+  CONSTRAINT `fk_grupo_inscripcion_especialidades1` FOREIGN KEY (`especialidades_esp_id`) REFERENCES `especialidades` (`esp_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_grupo_inscripcion_periodos1` FOREIGN KEY (`periodos_per_id`) REFERENCES `periodos` (`per_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_grupo_inscripcion_procesos1` FOREIGN KEY (`procesos_pro_id`) REFERENCES `procesos` (`pro_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+ 
+-- Volcando datos para la tabla sigesco.grupo_inscripcion: ~15 rows (aproximadamente)
+INSERT  INTO `grupo_inscripcion` (`gin_id`, `procesos_pro_id`, `periodos_per_id`, `especialidades_esp_id`, `gin_estado`) VALUES
+	(1, 1, 1, 1, 1),
+	(2, 1, 1, 2, 1),
+	(3, 1, 1, 3, 1),
+	(4, 1, 1, 4, 1),
+	(5, 1, 1, 5, 1),
+	(6, 1, 1, 6, 1),
+	(7, 1, 1, 7, 1),
+	(8, 1, 1, 8, 1),
+	(9, 1, 1, 9, 1),
+	(10, 1, 1, 10, 1),
+	(11, 1, 1, 11, 1),
+	(12, 1, 1, 12, 1),
+	(13, 1, 1, 13, 1),
+	(14, 1, 1, 14, 1),
+	(15, 1, 1, 15, 0);
+
+
+
+-- Volcando estructura para tabla sigesco.cuadro_pun_exp
+CREATE TABLE IF NOT EXISTS `cuadro_pun_exp` (
+  `cpe_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cpe_tipoCuadro` int(1) DEFAULT NULL COMMENT '1: PUN 2. EXPEDIENTE',
+  `cpe_anio` varchar(4) DEFAULT NULL,
+  `cpe_documento` varchar(15) DEFAULT NULL,
+  `cpe_apaterno` varchar(200) DEFAULT NULL,
+  `cpe_amaterno` varchar(200) DEFAULT NULL,
+  `cpe_apellidos` varchar(400) DEFAULT NULL,
+  `cpe_nombres` varchar(200) DEFAULT NULL,
+  `cpe_s1` varchar(15) DEFAULT NULL,
+  `cpe_s2` varchar(15) DEFAULT NULL,
+  `cpe_s3` varchar(15) DEFAULT NULL,
+  `cpe_s4` varchar(15) DEFAULT NULL,
+  `cpe_s5` varchar(15) DEFAULT NULL,
+  `cpe_orden` int(11) DEFAULT NULL,
+  `cpe_sepresento` int(1) DEFAULT NULL COMMENT '0: no se presento 1: se presento 2: solo registrado',
+  `cpe_enviadoeval` int(1) DEFAULT NULL COMMENT '0: no enviado 1: enviado',
+  `cpe_fechaCarga` datetime DEFAULT NULL,
+  `cpe_fechaModificacion` datetime DEFAULT NULL,
+  `cpe_estado` int(1) DEFAULT NULL,
+  `grupo_inscripcion_gin_id` int(11) NOT NULL,
+  PRIMARY KEY (`cpe_id`),
+  KEY `fk_cuadropun_grupo_inscripcion1_idx` (`grupo_inscripcion_gin_id`),
+  CONSTRAINT `fk_cuadropun_grupo_inscripcion10` FOREIGN KEY (`grupo_inscripcion_gin_id`) REFERENCES `grupo_inscripcion` (`gin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+
+ 
+
+
+-- Volcando datos para la tabla sigesco.cuadro_pun_exp: ~88 rows (aproximadamente)
+INSERT  INTO `cuadro_pun_exp` (`cpe_id`, `cpe_tipoCuadro`, `cpe_anio`, `cpe_documento`, `cpe_apaterno`, `cpe_amaterno`, `cpe_apellidos`, `cpe_nombres`, `cpe_s1`, `cpe_s2`, `cpe_s3`, `cpe_s4`, `cpe_s5`, `cpe_orden`, `cpe_sepresento`, `cpe_enviadoeval`, `cpe_fechaCarga`, `cpe_fechaModificacion`, `cpe_estado`, `grupo_inscripcion_gin_id`) VALUES
+	(53, 1, '2022', '15944085', 'CASTAÑEDA', 'AGUEDO', 'CASTAÑEDA AGUEDO', 'CARMEN DEL PILAR', '12', '13', '14', '0', '0', 1, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(54, 1, '2022', '47025341', 'LEDESMA', 'AGURTO', 'LEDESMA AGURTO', 'SILVIA MARGOTH', '12', '13', '14', '0', '0', 2, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(55, 1, '2022', '41004937', 'MUÑOZ', 'AGUSTÃN', 'MUÑOZ AGUSTÃN', 'JANETH MARLENI', '12', '13', '14', '0', '0', 3, 0, 0, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(56, 1, '2022', '20111245', 'BENDEZU', 'AMARO', 'BENDEZU AMARO', 'HUGO JAIME', '12', '13', '14', '0', '0', 4, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(57, 1, '2022', '09329335', 'BAUTISTA', 'ANTICONA', 'BAUTISTA ANTICONA', 'CELINDA ESTHER', '12', '13', '14', '0', '0', 5, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(58, 1, '2022', '07683102', 'GARMA', 'CARDENAS', 'GARMA CARDENAS', 'CARMEN ROSA', '12', '13', '14', '0', '0', 6, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(59, 1, '2022', '06767000', 'ESCOBAR', 'CONDEÃ‘A', 'ESCOBAR CONDEÃ‘A', 'GUILMAR ASUNCION', '12', '13', '14', '0', '0', 7, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(60, 1, '2022', '41542924', 'SOLIS', 'CORALES', 'SOLIS CORALES', 'JAVIER LUIS', '12', '13', '14', '0', '0', 8, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(61, 1, '2022', '08125552', 'RIVERA', 'CUZCO', 'RIVERA CUZCO', 'MADELEINE HAYDEE', '12', '13', '14', '0', '0', 9, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(62, 1, '2022', '21080783', 'LAVADO', 'DE LA CRUZ', 'LAVADO DE LA CRUZ', 'JUAN MANUEL', '12', '13', '14', '0', '0', 10, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(63, 1, '2022', '09076839', 'JAUREGUI', 'FALCON DE ANDRADE', 'JAUREGUI FALCON DE ANDRADE', 'NELLY NIEVES', '12', '13', '14', '0', '0', 11, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(64, 1, '2022', '71004124', 'ESCRIBA', 'GAMBOA', 'ESCRIBA GAMBOA', 'MILAGROS DE LOS ÃNGELES', '12', '13', '14', '0', '0', 12, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(65, 1, '2022', '41665991', 'JAUREGUI', 'GOMEZ', 'JAUREGUI GOMEZ', 'MARISOL MILAGROS', '12', '13', '14', '0', '0', 13, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(66, 1, '2022', '10366340', 'ROBLES', 'GONZALES', 'ROBLES GONZALES', 'MARITA LUCILA', '12', '13', '14', '0', '0', 14, 0, 0, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(67, 1, '2022', '09326612', 'CORNEJO', 'GUEVARA', 'CORNEJO GUEVARA', 'MARIA ELENA', '12', '13', '14', '0', '0', 15, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
+	(68, 1, '2022', '20034928', 'ROJAS', 'GUILLEN', 'ROJAS GUILLEN', 'MIRYAM KARIM', '12', '13', '14', '0', '0', 1, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
+	(69, 1, '2022', '07054303', 'ANGELES', 'MACAVILCA', 'ANGELES MACAVILCA', 'ALBERTO REYNOLDI', '12', '13', '14', '0', '0', 2, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
+	(70, 1, '2022', '19991524', 'ALIAGA', 'MARMOLEJO', 'ALIAGA MARMOLEJO', 'MORAYMA ÃšRSULA', '12', '13', '14', '0', '0', 3, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
+	(71, 1, '2022', '07968040', 'HARO', 'MIÃ‘ANO', 'HARO MIÃ‘ANO', 'MARIA GLORIA', '12', '13', '14', '0', '0', 1, 0, 0, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(72, 1, '2022', '09247360', 'CARRIZALES', 'MORENO', 'CARRIZALES MORENO', 'FELIX AGUSTIN', '12', '13', '14', '0', '0', 2, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(73, 1, '2022', '09095947', 'NICHO', 'NAPA', 'NICHO NAPA', 'YRENE YSABEL', '12', '13', '14', '0', '0', 3, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(74, 1, '2022', '08867819', 'HERNANDEZ', 'PARADO', 'HERNANDEZ PARADO', 'WUILVER GABRIEL', '12', '13', '14', '0', '0', 4, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(75, 1, '2022', '07275186', 'DIAZ', 'RODRIGUEZ', 'DIAZ RODRIGUEZ', 'REBECA NELLY', '12', '13', '14', '0', '0', 5, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(76, 1, '2022', '70457623', 'RIOS', 'ROSALES', 'RIOS ROSALES', 'MARÃA PÃA', '12', '13', '14', '0', '0', 6, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(77, 1, '2022', '09512157', 'PEREZ', 'SALGADO', 'PEREZ SALGADO', 'LUCAS NESTOR', '12', '13', '14', '0', '0', 7, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(78, 1, '2022', '08293556', 'MORENO', 'SANCHEZ', 'MORENO SANCHEZ', 'LILA LUZ', '12', '13', '14', '0', '0', 8, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(79, 1, '2022', '04065092', 'HUARINGA', 'SANTIAGO', 'HUARINGA SANTIAGO', 'HAYDEE GLADYS', '12', '13', '14', '0', '0', 9, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(80, 1, '2022', '42972596', 'CRUCES', 'SARRIA', 'CRUCES SARRIA', 'KATHERINE ISABEL', '12', '13', '14', '0', '0', 10, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(81, 1, '2022', '16586080', 'GOMEZ', 'SIPION', 'GOMEZ SIPION', 'MARY CRUZ', '12', '13', '14', '0', '0', 11, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(82, 1, '2022', '09333438', 'PATRICIO', 'SUDARIO', 'PATRICIO SUDARIO', 'PEDRO PAULINO', '12', '13', '14', '0', '0', 12, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(83, 1, '2022', '41129346', 'HUARCAYA', 'VALENTIN', 'HUARCAYA VALENTIN', 'JUAN FELICIANO', '12', '13', '14', '0', '0', 13, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(84, 1, '2022', '42349100', 'CORNEJO', 'VARGAS', 'CORNEJO VARGAS', 'JAVIER ELEODORO', '12', '13', '14', '0', '0', 14, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(85, 1, '2022', '16128674', 'ESCALANTE', 'VILLANUEVA', 'ESCALANTE VILLANUEVA', 'JUDITH ROSARIO', '12', '13', '14', '0', '0', 15, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(86, 1, '2022', '07913657', 'SANCHEZ', 'VILLAR', 'SANCHEZ VILLAR', 'CARMEN ROSA', '12', '13', '14', '0', '0', 16, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(87, 1, '2022', '41660893', 'ASCANIO', 'YSHUISA', 'ASCANIO YSHUISA', 'DEISSY MAGALI', '12', '13', '14', '0', '0', 17, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(88, 1, '2022', '08288872', 'VILLANUEVA', 'VELASQUEZ', 'VILLANUEVA VELASQUEZ', 'ANGELITA', '12', '13', '14', '0', '0', 18, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
+	(89, 1, '2022', '09099691', 'CÃ“RDOVA', 'JESÃšS', 'CÃ“RDOVA JESÃšS', 'ROMÃN', '12', '13', '14', '0', '0', 1, 0, 0, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
+	(90, 1, '2022', '09201805', 'HUALLPA', 'CACERES', 'HUALLPA CACERES', 'ALICIA', '12', '13', '14', '0', '0', 2, 1, 1, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
+	(91, 1, '2022', '09207009', 'REQUEJO', 'VASQUEZ', 'REQUEJO VASQUEZ', 'ROSA', '12', '13', '14', '0', '0', 3, 1, 1, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
+	(92, 1, '2022', '10657021', 'CARPIO', 'SANCHEZ', 'CARPIO SANCHEZ', 'NICOLAS', '12', '13', '14', '0', '0', 4, 1, 1, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
+	(93, 1, '2022', '10678533', 'VERÃ“NICA', 'POMA', 'VERÃ“NICA POMA', 'LUISA', '12', '13', '14', '0', '0', 5, 1, 1, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
+	(94, 1, '2022', '10763119', 'CERDAN', '', 'CERDAN', 'FRANCISCO', '12', '13', '14', '0', '0', 6, 1, 1, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
+	(95, 1, '2022', '21802177', 'TASAYCO', 'ATUNCAR', 'TASAYCO ATUNCAR', 'MANUEL', '12', '13', '14', '0', '0', 7, 0, 0, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
+	(96, 1, '2022', '21876096', 'ROSPIGLIOSI', '', 'ROSPIGLIOSI', 'GERMÃN', '12', '13', '14', '0', '0', 8, 1, 1, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
+	(97, 1, '2022', '31543158', 'ROCA', 'TAPIA', 'ROCA TAPIA', 'CLETO', '12', '13', '14', '0', '0', 9, 0, 0, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
+	(98, 1, '2022', '40713080', 'ROJAS', 'SHUPINGAHUA', 'ROJAS SHUPINGAHUA', 'PERCY', '12', '13', '14', '0', '0', 10, 1, 1, '2022-10-05 10:37:15', '2022-11-21 20:17:18', 1, 7),
+	(99, 1, '2022', '41077305', 'SANDOVAL', 'PÃ‰REZ', 'SANDOVAL PÃ‰REZ', 'MARCELA', '12', '13', '14', '0', '0', 11, 1, 1, '2022-10-05 10:37:15', '2022-11-21 20:17:18', 1, 7),
+	(100, 1, '2022', '41603575', 'ARBIZU', 'RODRIGUEZ', 'ARBIZU RODRIGUEZ', 'EMILY', '12', '13', '14', '0', '0', 4, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
+	(101, 1, '2022', '43416085', 'BECERRA', 'BOLAÃ‘OS', 'BECERRA BOLAÃ‘OS', 'MANUELA', '12', '13', '14', '0', '0', 5, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
+	(102, 1, '2022', '45940353', 'HUAMANI', 'DURAND', 'HUAMANI DURAND', 'GRETA', '12', '13', '14', '0', '0', 6, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
+	(103, 1, '2022', '71248172', 'MAGALLANES', 'ORMEÃ‘O', 'MAGALLANES ORMEÃ‘O', 'ROSA', '12', '13', '14', '0', '0', 7, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
+	(104, 1, '2022', '72123517', 'GUILLEN', 'NOLBERTO', 'GUILLEN NOLBERTO', 'YESSENIA', '12', '13', '14', '0', '0', 8, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
+	(105, 2, '2022', '20991248', NULL, NULL, 'QUIÃ‘ONES SUAREZ', 'NORMA ERLINDA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:36:26', '2022-10-06 00:01:55', 1, 1),
+	(106, 2, '2022', '09667051', NULL, NULL, 'AGUILAR BARRANTES', 'WILSON', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:38:57', '2022-10-06 00:02:28', 1, 1),
+	(107, 2, '2022', '09095947', NULL, NULL, 'NICHO NAPA', 'YRENE YSABEL', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:38:57', '2022-10-06 00:05:55', 1, 1),
+	(108, 2, '2022', '09554915', NULL, NULL, 'BENDEZU VEGA', 'OCTAVIO ALCIBIADES', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:38:57', '2022-10-06 00:08:33', 1, 1),
+	(109, 2, '2022', '10357907', NULL, NULL, 'RODAS TELLO', 'CESAR AUGUSTO', NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, '2022-10-05 23:38:57', NULL, 1, 1),
+	(110, 2, '2022', '09652817', NULL, NULL, 'LLANOS ALMONACID', 'SABY OFELIA', NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, '2022-10-05 23:38:57', NULL, 1, 1),
+	(111, 2, '2022', '10763119', NULL, NULL, 'CERDAN', 'FRANCISCO', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:38:58', '2022-10-06 00:10:44', 1, 1),
+	(112, 2, '2022', '09512157', NULL, NULL, 'PEREZ SALGADO', 'LUCAS NESTOR', NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, '2022-10-05 23:38:58', NULL, 1, 1),
+	(113, 2, '2022', '08288872', NULL, NULL, 'VILLANUEVA  VELASQUEZ', 'ANGELITA', NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, '2022-10-05 23:38:58', NULL, 1, 1),
+	(114, 2, '2022', '10119136', NULL, NULL, 'PAITAN COMPI', 'ELIZABETH LUCÃA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:26', '2022-10-06 00:40:49', 1, 15),
+	(115, 2, '2022', '47395488', NULL, NULL, 'VILLALOBOS CACERES', 'BERSABET YANIRA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:26', '2022-10-06 00:40:49', 1, 15),
+	(116, 2, '2022', '09332301', NULL, NULL, 'DAMIAN CHUMBE', 'FELIMON ANGEL', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:26', '2022-10-06 00:40:49', 1, 15),
+	(117, 2, '2022', '09427758', NULL, NULL, 'VEGA HUANCA', 'JACQUELINE TEODORA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:26', '2022-10-06 00:40:49', 1, 15),
+	(118, 2, '2022', '10678533', NULL, NULL, 'POMA', 'LUISA VERÃ“NICA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:27', '2022-10-06 00:40:49', 1, 15),
+	(119, 2, '2022', '08867819', NULL, NULL, 'HERNANDEZ PARADO', 'WUILVER GABRIEL', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:27', '2022-10-06 00:40:49', 1, 15),
+	(120, 2, '2022', '31543158', NULL, NULL, 'ROCA TAPIA', 'CLETO', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:27', '2022-10-06 00:40:49', 1, 15),
+	(121, 2, '2022', '09784963', NULL, NULL, 'SANTIAGO ESPINOZA', 'CESAR ALBERTO', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:27', '2022-10-06 00:40:49', 1, 15),
+	(122, 2, '2022', '10723417', NULL, NULL, 'VALLADOLID ZETA', 'NANCY DEL PILAR', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:27', '2022-10-06 00:40:49', 1, 15),
+	(123, 2, '2022', '09652817', NULL, NULL, 'LLANOS ALMONACID', 'SABY OFELIA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:54:01', '2022-10-06 00:40:49', 1, 15),
+	(124, 2, '2022', '09554915', NULL, NULL, 'BENDEZU VEGA', 'OCTAVIO ALCIBIADES', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:54:01', '2022-10-06 00:40:49', 1, 15),
+	(125, 2, '2022', '10351990', NULL, NULL, 'SALAZAR', 'ELVA RUTH', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:34', '2022-10-11 09:56:06', 1, 15),
+	(126, 2, '2022', '09770531', NULL, NULL, 'Ã‘AUPARI', 'MILAGROS MARITZA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:34', '2022-10-11 09:56:06', 1, 15),
+	(127, 2, '2022', '21802177', NULL, NULL, 'TASAYCO ATUNCAR', 'MANUEL', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:34', '2022-10-11 09:56:06', 1, 15),
+	(128, 2, '2022', '10678533', NULL, NULL, 'POMA', 'LUISA VERÃ“NICA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:35', '2022-10-11 09:56:06', 1, 15),
+	(129, 2, '2022', '09569343', NULL, NULL, 'VEGA VILLAORDUÃ‘A', 'NAIBETO', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:35', '2022-10-11 09:56:06', 1, 15),
+	(130, 2, '2022', '09652817', NULL, NULL, 'LLANOS ALMONACID', 'SABY OFELIA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:35', '2022-10-11 09:56:06', 1, 15),
+	(131, 2, '2022', '09099691', NULL, NULL, 'CÃ“RDOVA JESÃšS', 'ROMÃN', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:35', '2022-10-11 09:56:06', 1, 15),
+	(132, 2, '2022', '10130084', NULL, NULL, 'CAUNALLA CALLOHUANCA', 'NELLY CAROLINA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:35', '2022-10-11 09:56:06', 1, 15),
+	(133, 2, '2022', '09652817', NULL, NULL, 'LLANOS ALMONACID', 'SABY OFELIA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:22', '2022-10-13 15:16:05', 1, 15),
+	(134, 2, '2022', '41695705', NULL, NULL, 'ESPINOZA OSTOS', 'MARITHSABEL', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:22', '2022-10-13 15:16:05', 1, 15),
+	(135, 2, '2022', '04073637', NULL, NULL, 'VALERIO QUINTO', 'MARIA VICTORIA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:22', '2022-10-13 15:16:05', 1, 15),
+	(136, 2, '2022', '28993058', NULL, NULL, 'SERMEÃ‘O CAMARA', 'RAUL JOSE', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:22', '2022-10-13 15:16:05', 1, 15),
+	(137, 2, '2022', '10418815', NULL, NULL, 'GONZALES GUERRA', 'ANGELA ROSARIO', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:23', '2022-10-13 15:16:05', 1, 15),
+	(138, 2, '2022', '09204166', NULL, NULL, 'ALBORNOZ CHAVEZ', 'ANA MARIA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:23', '2022-10-13 15:16:05', 1, 15),
+	(139, 2, '2022', '10764838', NULL, NULL, 'MALAVER YUPANQUI', 'RAFAEL', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:23', '2022-10-13 15:16:05', 1, 15),
+	(140, 2, '2022', '09793633', NULL, NULL, 'CASTILLO VILLANUEVA', 'FANNY MARGOT', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:23', '2022-10-13 15:16:05', 1, 15);
+ 
 -- Volcando estructura para tabla sigesco.asignacion_expediente_pun
 CREATE TABLE IF NOT EXISTS `asignacion_expediente_pun` (
   `aep_id` int(11) NOT NULL AUTO_INCREMENT,
   `expedientes_exp_id` int(11) NOT NULL,
   `cuadro_pun_exp_cpe_id` int(11) NOT NULL,
-  `aep_tipoAsignacion` int(1) DEFAULT NULL COMMENT '1: asignacion automatica\n2: asignacion manual',
+  `aep_tipoAsignacion` int(1) DEFAULT NULL COMMENT '1: asignacion automatica 2: asignacion manual',
   `aep_fechaCreacion` datetime DEFAULT NULL,
   `aep_fechaModificacion` datetime DEFAULT NULL,
   `aep_estado` int(1) DEFAULT NULL,
@@ -328,7 +728,7 @@ CREATE TABLE IF NOT EXISTS `asignacion_expediente_pun` (
 ) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla sigesco.asignacion_expediente_pun: ~121 rows (aproximadamente)
-INSERT IGNORE INTO `asignacion_expediente_pun` (`aep_id`, `expedientes_exp_id`, `cuadro_pun_exp_cpe_id`, `aep_tipoAsignacion`, `aep_fechaCreacion`, `aep_fechaModificacion`, `aep_estado`) VALUES
+INSERT  INTO `asignacion_expediente_pun` (`aep_id`, `expedientes_exp_id`, `cuadro_pun_exp_cpe_id`, `aep_tipoAsignacion`, `aep_fechaCreacion`, `aep_fechaModificacion`, `aep_estado`) VALUES
 	(1, 15, 63, 1, '2022-10-05 11:23:43', NULL, 1),
 	(2, 16, 58, 1, '2022-10-05 11:23:44', NULL, 1),
 	(3, 17, 61, 1, '2022-10-05 11:23:44', NULL, 1),
@@ -472,7 +872,6 @@ CREATE TABLE IF NOT EXISTS `aux_adjudicacion` (
   `fecha` year(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Volcando datos para la tabla sigesco.aux_adjudicacion: ~0 rows (aproximadamente)
 
 -- Volcando estructura para tabla sigesco.convocatorias
 CREATE TABLE IF NOT EXISTS `convocatorias` (
@@ -486,8 +885,11 @@ CREATE TABLE IF NOT EXISTS `convocatorias` (
   PRIMARY KEY (`con_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+ 
+
+
 -- Volcando datos para la tabla sigesco.convocatorias: ~7 rows (aproximadamente)
-INSERT IGNORE INTO `convocatorias` (`con_id`, `con_numero`, `con_anio`, `con_fechainicio`, `con_fechafin`, `con_estado`, `con_tipo`) VALUES
+INSERT  INTO `convocatorias` (`con_id`, `con_numero`, `con_anio`, `con_fechainicio`, `con_fechafin`, `con_estado`, `con_tipo`) VALUES
 	(1, '1', '2022', '2022-09-22', '2022-09-29', 1, 1),
 	(2, '2', '2022', '2022-10-01', '2022-10-07', 1, 1),
 	(3, '3', '2022', '2022-09-26', '2022-09-29', 1, 2),
@@ -510,7 +912,7 @@ CREATE TABLE IF NOT EXISTS `convocatorias_detalle` (
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla sigesco.convocatorias_detalle: ~19 rows (aproximadamente)
-INSERT IGNORE INTO `convocatorias_detalle` (`cde_id`, `convocatorias_con_id`, `grupo_inscripcion_gin_id`, `cde_estado`) VALUES
+INSERT  INTO `convocatorias_detalle` (`cde_id`, `convocatorias_con_id`, `grupo_inscripcion_gin_id`, `cde_estado`) VALUES
 	(1, 1, 1, 1),
 	(2, 1, 4, 1),
 	(3, 1, 6, 1),
@@ -530,6 +932,18 @@ INSERT IGNORE INTO `convocatorias_detalle` (`cde_id`, `convocatorias_con_id`, `g
 	(17, 6, 12, 1),
 	(18, 7, 1, 1),
 	(19, 7, 5, 1);
+
+-- Volcando estructura para tabla sigesco.ficha
+CREATE TABLE IF NOT EXISTS `ficha` (
+  `fic_id` int(11) NOT NULL AUTO_INCREMENT,
+  `fic_descripcion` varchar(50) DEFAULT NULL,
+  `fic_estado` int(1) DEFAULT NULL,
+  PRIMARY KEY (`fic_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Volcando datos para la tabla sigesco.ficha: ~0 rows (aproximadamente)
+INSERT INTO `ficha` (`fic_id`, `fic_descripcion`, `fic_estado`) VALUES
+	(1, 'Ficha 2022 - Anexo 10', 1);
 
 -- Volcando estructura para tabla sigesco.criterios_ficha
 CREATE TABLE IF NOT EXISTS `criterios_ficha` (
@@ -552,12 +966,12 @@ CREATE TABLE IF NOT EXISTS `criterios_ficha` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla sigesco.criterios_ficha: ~41 rows (aproximadamente)
-INSERT IGNORE INTO `criterios_ficha` (`cfi_id`, `cfi_descripcion`, `cfi_tipoColumna`, `cfi_padre`, `cfi_maxPuntaje`, `cfi_rangoInicio`, `cfi_rangoFin`, `cfi_tipoInput`, `cfi_etiquetaInput`, `cfi_limite`, `cfi_multiplicador`, `cfi_estado`, `ficha_fic_id`) VALUES
+INSERT  INTO `criterios_ficha` (`cfi_id`, `cfi_descripcion`, `cfi_tipoColumna`, `cfi_padre`, `cfi_maxPuntaje`, `cfi_rangoInicio`, `cfi_rangoFin`, `cfi_tipoInput`, `cfi_etiquetaInput`, `cfi_limite`, `cfi_multiplicador`, `cfi_estado`, `ficha_fic_id`) VALUES
 	(1, 'FormaciÃ³n AcadÃ©mica y Profesional', 'RUBRO', 0, 45, 1, 14, '', '', NULL, 0, '1', 1),
 	(2, 'Estudios de pregrado', 'CRITERIO', 1, 0, 0, 0, '', '', NULL, 0, '1', 1),
-	(3, 'Otro TÃ­tulo Profesional PedagÃ³gico o TÃ­tulo de Segunda Especialidad en EducaciÃ³n, no afÃ­n al nivel o ciclo de la especialidad que postula', 'SUBCRITERIO', 2, 5, 3, 3, 'checkbox', '', NULL, 5, '1', 1),
-	(4, 'TÃ­tulo Profesional Universitario no PedagÃ³gico, afÃ­n al nivel o ciclo de la especialidad que postula', 'SUBCRITERIO', 2, 5, 4, 4, 'checkbox', '', NULL, 5, '1', 1),
-	(5, 'TÃ­tulo Profesional TÃ©cnico', 'SUBCRITERIO', 2, 4, 5, 5, 'checkbox', '', NULL, 4, '1', 1),
+	(3, 'Otro Título Profesional PedagÃ³gico o Título de Segunda Especialidad en EducaciÃ³n, no afín al nivel o ciclo de la especialidad que postula', 'SUBCRITERIO', 2, 5, 3, 3, 'checkbox', '', NULL, 5, '1', 1),
+	(4, 'Título Profesional Universitario no pedagógico, a fín al nivel o ciclo de la especialidad que postula', 'SUBCRITERIO', 2, 5, 4, 4, 'checkbox', '', NULL, 5, '1', 1),
+	(5, 'Título Profesional TÃ©cnico', 'SUBCRITERIO', 2, 4, 5, 5, 'checkbox', '', NULL, 4, '1', 1),
 	(6, 'Estudios de pregrado en educaciÃ³n financiados a travÃ©s de PRONABEC', 'SUBCRITERIO', 2, 3, 6, 6, 'checkbox', '', NULL, 3, '1', 1),
 	(7, 'Constancia de quinto superior de su promociÃ³n en sus estudios pedagÃ³gicos.', 'SUBCRITERIO', 2, 3, 7, 7, 'checkbox', '', NULL, 3, '1', 1),
 	(8, 'Constancia de tercio superior de su promociÃ³n en sus estudios pedagÃ³gicos.', 'SUBCRITERIO', 2, 2, 8, 8, 'checkbox', '', NULL, 2, '1', 1),
@@ -565,18 +979,18 @@ INSERT IGNORE INTO `criterios_ficha` (`cfi_id`, `cfi_descripcion`, `cfi_tipoColu
 	(10, 'Grado de Doctor registrado en SUNEDU', 'SUBCRITERIO', 9, 10, 10, 10, 'checkbox', '', NULL, 10, '1', 1),
 	(11, 'Estudios concluidos de Doctorado', 'SUBCRITERIO', 9, 6, 11, 11, 'checkbox', '', NULL, 6, '1', 1),
 	(12, 'Grado de Maestro/Magister registrado en SUNEDU en Ã¡rea', 'SUBCRITERIO', 9, 6, 12, 12, 'checkbox', '', NULL, 6, '1', 1),
-	(13, 'Estudios concluidos de MaestrÃ­a', 'SUBCRITERIO', 9, 4, 13, 13, 'checkbox', '', NULL, 4, '1', 1),
+	(13, 'Estudios concluidos de Maestría', 'SUBCRITERIO', 9, 4, 13, 13, 'checkbox', '', NULL, 4, '1', 1),
 	(14, 'Diplomado de Posgrado (hasta un mÃ¡ximo de tres (3) diplomados) - 3 puntos c/u', 'SUBCRITERIO', 9, 9, 14, 14, 'select+', '# de diplomados', 3, 3, '1', 1),
 	(15, 'FormaciÃ³n Continua', 'RUBRO', 0, 30, 15, 24, '', '', NULL, 0, '1', 1),
-	(16, 'Programas de FormaciÃ³n Docente, ActualizaciÃ³n, EspecializaciÃ³n o Segunda EspecializaciÃ³n, afÃ­n al Ã¡rea curricular o campo de conocimiento que postula', 'CRITERIO', 15, 0, 0, 0, '', '', NULL, 0, '1', 1),
-	(17, '- Realizado en los Ãºltimos cinco (5) aÃ±os.\r\n- Presenciales, virtuales o semipresenciales.\r\n- DuraciÃ³n mÃ­nima de 126 horas cronolÃ³gicas o 7 crÃ©ditos.\r\n- Dos (2) puntos por cada certificaciÃ³n hasta un mÃ¡ximo de seis (6).', 'SUBCRITERIO', 16, 12, 17, 17, 'select+', '# de certificados', 6, 2, '1', 1),
-	(18, 'Cursos o MÃ³dulos de FormaciÃ³n Docente, afÃ­n al Ã¡rea curricular o campo de conocimiento que postula', 'CRITERIO', 15, 0, 0, 0, '', '', NULL, 0, '1', 1),
-	(19, '- Realizado en los Ãºltimos cinco (05) aÃ±os.\r\n- Presenciales, virtuales o semipresenciales.\r\n- DuraciÃ³n mÃ­nima de 36 horas cronolÃ³gicas.\r\n- Dos (2) puntos por cada certificaciÃ³n hasta un mÃ¡ximo de cuatro (4).', 'SUBCRITERIO', 18, 8, 19, 19, 'select+', '# de certificados', 4, 2, '1', 1),
+	(16, 'Programas de FormaciÃ³n Docente, ActualizaciÃ³n, especialización o Segunda especialización, Área al área curricular o campo de conocimiento que postula', 'CRITERIO', 15, 0, 0, 0, '', '', NULL, 0, '1', 1),
+	(17, '- Realizado en los Ãºltimos cinco (5) aÃ±os.\r\n- Presenciales, virtuales o semipresenciales.\r\n- Duración mínima de 126 horas cronolÃ³gicas o 7 créditos.\r\n- Dos (2) puntos por cada certificaciÃ³n hasta un mÃ¡ximo de seis (6).', 'SUBCRITERIO', 16, 12, 17, 17, 'select+', '# de certificados', 6, 2, '1', 1),
+	(18, 'Cursos o MÃ³dulos de FormaciÃ³n Docente, afín al Área curricular o campo de conocimiento que postula', 'CRITERIO', 15, 0, 0, 0, '', '', NULL, 0, '1', 1),
+	(19, '- Realizado en los Ãºltimos cinco (05) aÃ±os.\r\n- Presenciales, virtuales o semipresenciales.\r\n- Duración mínima de 36 horas cronolÃ³gicas.\r\n- Dos (2) puntos por cada certificaciÃ³n hasta un mÃ¡ximo de cuatro (4).', 'SUBCRITERIO', 18, 8, 19, 19, 'select+', '# de certificados', 4, 2, '1', 1),
 	(20, 'Talleres de capacitaciÃ³n, seminarios y congresos', 'CRITERIO', 15, 0, 0, 0, '', '', NULL, 0, '1', 1),
-	(21, '- Realizado en los Ãºltimos cinco (5) aÃ±os.\r\n- DuraciÃ³n mÃ­nima de 16 horas cronolÃ³gicas.\r\n- Presenciales, virtuales o semipresenciales.\r\n- Dos (2) puntos por cada certificaciÃ³n hasta un mÃ¡ximo de tres (3)', 'SUBCRITERIO', 20, 6, 21, 21, 'select+', '# de certificados', 3, 2, '1', 1),
+	(21, '- Realizado en los Ãºltimos cinco (5) aÃ±os.\r\n- DuraciÃ³n mínima de 16 horas cronolÃ³gicas.\r\n- Presenciales, virtuales o semipresenciales.\r\n- Dos (2) puntos por cada certificaciÃ³n hasta un mÃ¡ximo de tres (3)', 'SUBCRITERIO', 20, 6, 21, 21, 'select+', '# de certificados', 3, 2, '1', 1),
 	(22, 'Otros programas de formaciÃ³n continua, incluyendo temas de pedagogÃ­a', 'CRITERIO', 15, 0, 0, 0, '', '', NULL, 0, '1', 1),
-	(23, '- Cursos de OfimÃ¡tica igual o mayores a 24 horas o su equivalente en crÃ©ditos.', 'SUBCRITERIO', 22, 2, 23, 23, 'checkbox', '', NULL, 2, '1', 1),
-	(24, '- CertificaciÃ³n de dominio de idioma extranjero.\nÂ– MÃ­nimo Nivel Intermedio CertificaciÃ³n emitida por un centro de idiomas certificado.', 'SUBCRITERIO', 22, 2, 24, 24, 'checkbox', '', NULL, 2, '1', 1),
+	(23, '- Cursos de OfimÃ¡tica igual o mayores a 24 horas o su equivalente en créditos.', 'SUBCRITERIO', 22, 2, 23, 23, 'checkbox', '', NULL, 2, '1', 1),
+	(24, '- CertificaciÃ³n de dominio de idioma extranjero.\nÂ– máximo Nivel Intermedio certificación emitida por un centro de idiomas certificado.', 'SUBCRITERIO', 22, 2, 24, 24, 'checkbox', '', NULL, 2, '1', 1),
 	(25, 'Experiencia Laboral', 'RUBRO', 0, 20, 25, 35, '', '', NULL, 0, '1', 1),
 	(26, '', 'PRE_SUBCRITERIO', 25, 20, 26, 33, '', '', NULL, 0, '1', 1),
 	(27, 'Experiencia Laboral docente, en la modalidad educativa o el nivel educativo o ciclo al que postula, durante los meses de marzo a diciembre, teniendo en cuenta', 'CRITERIO', 26, 0, 0, 0, '', '', NULL, 0, '1', 1),
@@ -590,157 +1004,29 @@ INSERT IGNORE INTO `criterios_ficha` (`cfi_id`, `cfi_descripcion`, `cfi_tipoColu
 	(35, 'Corresponde 0.20 puntos por cada mes acreditado de labor.', 'SUBCRITERIO', 34, 2, 35, 35, 'number', '# de meses', NULL, 0.2, '1', 1),
 	(36, 'MÃ©ritos', 'RUBRO', 0, 5, 36, 41, '', '', NULL, 0, '1', 1),
 	(37, '', 'PRE_SUBCRITERIO', 36, 5, 37, 41, '', '', NULL, 0, '1', 1),
-	(38, 'FelicitaciÃ³n por desempeÃ±o o trabajo destacado en el campo pedagÃ³gico', 'CRITERIO', 37, 0, 0, 0, '', '', NULL, 0, '1', 1),
-	(39, '- ResoluciÃ³n Ministerial o Directoral emitida por MINEDU (3 puntos).', 'POST_SUBCRITERIO', 38, 0, 0, 0, 'checkbox', '', NULL, 3, '1', 1),
-	(40, '- ResoluciÃ³n Directoral Regional o de UGEL (2 puntos).', 'POST_SUBCRITERIO', 38, 0, 0, 0, 'checkbox', '', NULL, 2, '1', 1),
-	(41, '- ResoluciÃ³n Institucional (1 punto).', 'POST_SUBCRITERIO', 38, 0, 0, 0, 'checkbox', '', NULL, 1, '1', 1);
+	(38, 'Felicitaciones por desempeño o trabajo destacado en el campo pedagógica', 'CRITERIO', 37, 0, 0, 0, '', '', NULL, 0, '1', 1),
+	(39, '- Resolución Ministerial o Directoral emitida por MINEDU (3 puntos).', 'POST_SUBCRITERIO', 38, 0, 0, 0, 'checkbox', '', NULL, 3, '1', 1),
+	(40, '- Resolución Directoral Regional o de UGEL (2 puntos).', 'POST_SUBCRITERIO', 38, 0, 0, 0, 'checkbox', '', NULL, 2, '1', 1),
+	(41, '- Resolución Institucional (1 punto).', 'POST_SUBCRITERIO', 38, 0, 0, 0, 'checkbox', '', NULL, 1, '1', 1);
 
--- Volcando estructura para tabla sigesco.cuadro_pun_exp
-CREATE TABLE IF NOT EXISTS `cuadro_pun_exp` (
-  `cpe_id` int(11) NOT NULL AUTO_INCREMENT,
-  `cpe_tipoCuadro` int(1) DEFAULT NULL COMMENT '1: PUN\n2. EXPEDIENTE',
-  `cpe_anio` varchar(4) DEFAULT NULL,
-  `cpe_documento` varchar(15) DEFAULT NULL,
-  `cpe_apaterno` varchar(200) DEFAULT NULL,
-  `cpe_amaterno` varchar(200) DEFAULT NULL,
-  `cpe_apellidos` varchar(400) DEFAULT NULL,
-  `cpe_nombres` varchar(200) DEFAULT NULL,
-  `cpe_s1` varchar(15) DEFAULT NULL,
-  `cpe_s2` varchar(15) DEFAULT NULL,
-  `cpe_s3` varchar(15) DEFAULT NULL,
-  `cpe_s4` varchar(15) DEFAULT NULL,
-  `cpe_s5` varchar(15) DEFAULT NULL,
-  `cpe_orden` int(11) DEFAULT NULL,
-  `cpe_sepresento` int(1) DEFAULT NULL COMMENT '0: no se presento\n1: se presento\n2: solo registrado',
-  `cpe_enviadoeval` int(1) DEFAULT NULL COMMENT '0: no enviado\n1: enviado',
-  `cpe_fechaCarga` datetime DEFAULT NULL,
-  `cpe_fechaModificacion` datetime DEFAULT NULL,
-  `cpe_estado` int(1) DEFAULT NULL,
-  `grupo_inscripcion_gin_id` int(11) NOT NULL,
-  PRIMARY KEY (`cpe_id`),
-  KEY `fk_cuadropun_grupo_inscripcion1_idx` (`grupo_inscripcion_gin_id`),
-  CONSTRAINT `fk_cuadropun_grupo_inscripcion10` FOREIGN KEY (`grupo_inscripcion_gin_id`) REFERENCES `grupo_inscripcion` (`gin_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+ 
+ 
+-- Volcando estructura para tabla sigesco.evaluacion_pun_exp
+CREATE TABLE IF NOT EXISTS `evaluacion_pun_exp` (
+  `epe_id` int(11) NOT NULL AUTO_INCREMENT,
+  `epe_tipoevaluacion` int(1) DEFAULT NULL COMMENT '1: preliminar\n2: final',
+  `epe_especialistaAsignado` varchar(12) DEFAULT NULL,
+  `epe_fechaAsignacion` datetime DEFAULT NULL,
+  `epe_fechaApertura` datetime DEFAULT NULL COMMENT 'fecha de inicio de evaluacion',
+  `epe_fechaCierre` datetime DEFAULT NULL COMMENT 'fecha de cierre de evaluacion',
+  `epe_fechaModificacion` datetime DEFAULT NULL,
+  `epe_estadoEvaluacion` int(1) DEFAULT NULL COMMENT '1: abierto\n0: cerrado',
+  `epe_estado` int(1) DEFAULT NULL,
+  `postulacion_id` int(11) unsigned NOT NULL DEFAULT 0,
+  `convocatorias_con_id` int(11) DEFAULT 0,
+  PRIMARY KEY (`epe_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Volcando datos para la tabla sigesco.cuadro_pun_exp: ~88 rows (aproximadamente)
-INSERT IGNORE INTO `cuadro_pun_exp` (`cpe_id`, `cpe_tipoCuadro`, `cpe_anio`, `cpe_documento`, `cpe_apaterno`, `cpe_amaterno`, `cpe_apellidos`, `cpe_nombres`, `cpe_s1`, `cpe_s2`, `cpe_s3`, `cpe_s4`, `cpe_s5`, `cpe_orden`, `cpe_sepresento`, `cpe_enviadoeval`, `cpe_fechaCarga`, `cpe_fechaModificacion`, `cpe_estado`, `grupo_inscripcion_gin_id`) VALUES
-	(53, 1, '2022', '15944085', 'CASTAÃ‘EDA', 'AGUEDO', 'CASTAÃ‘EDA AGUEDO', 'CARMEN DEL PILAR', '12', '13', '14', '0', '0', 1, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(54, 1, '2022', '47025341', 'LEDESMA', 'AGURTO', 'LEDESMA AGURTO', 'SILVIA MARGOTH', '12', '13', '14', '0', '0', 2, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(55, 1, '2022', '41004937', 'MUÃ‘OZ', 'AGUSTÃN', 'MUÃ‘OZ AGUSTÃN', 'JANETH MARLENI', '12', '13', '14', '0', '0', 3, 0, 0, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(56, 1, '2022', '20111245', 'BENDEZU', 'AMARO', 'BENDEZU AMARO', 'HUGO JAIME', '12', '13', '14', '0', '0', 4, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(57, 1, '2022', '09329335', 'BAUTISTA', 'ANTICONA', 'BAUTISTA ANTICONA', 'CELINDA ESTHER', '12', '13', '14', '0', '0', 5, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(58, 1, '2022', '07683102', 'GARMA', 'CARDENAS', 'GARMA CARDENAS', 'CARMEN ROSA', '12', '13', '14', '0', '0', 6, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(59, 1, '2022', '06767000', 'ESCOBAR', 'CONDEÃ‘A', 'ESCOBAR CONDEÃ‘A', 'GUILMAR ASUNCION', '12', '13', '14', '0', '0', 7, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(60, 1, '2022', '41542924', 'SOLIS', 'CORALES', 'SOLIS CORALES', 'JAVIER LUIS', '12', '13', '14', '0', '0', 8, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(61, 1, '2022', '08125552', 'RIVERA', 'CUZCO', 'RIVERA CUZCO', 'MADELEINE HAYDEE', '12', '13', '14', '0', '0', 9, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(62, 1, '2022', '21080783', 'LAVADO', 'DE LA CRUZ', 'LAVADO DE LA CRUZ', 'JUAN MANUEL', '12', '13', '14', '0', '0', 10, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(63, 1, '2022', '09076839', 'JAUREGUI', 'FALCON DE ANDRADE', 'JAUREGUI FALCON DE ANDRADE', 'NELLY NIEVES', '12', '13', '14', '0', '0', 11, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(64, 1, '2022', '71004124', 'ESCRIBA', 'GAMBOA', 'ESCRIBA GAMBOA', 'MILAGROS DE LOS ÃNGELES', '12', '13', '14', '0', '0', 12, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(65, 1, '2022', '41665991', 'JAUREGUI', 'GOMEZ', 'JAUREGUI GOMEZ', 'MARISOL MILAGROS', '12', '13', '14', '0', '0', 13, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(66, 1, '2022', '10366340', 'ROBLES', 'GONZALES', 'ROBLES GONZALES', 'MARITA LUCILA', '12', '13', '14', '0', '0', 14, 0, 0, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(67, 1, '2022', '09326612', 'CORNEJO', 'GUEVARA', 'CORNEJO GUEVARA', 'MARIA ELENA', '12', '13', '14', '0', '0', 15, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:24:57', 1, 1),
-	(68, 1, '2022', '20034928', 'ROJAS', 'GUILLEN', 'ROJAS GUILLEN', 'MIRYAM KARIM', '12', '13', '14', '0', '0', 1, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
-	(69, 1, '2022', '07054303', 'ANGELES', 'MACAVILCA', 'ANGELES MACAVILCA', 'ALBERTO REYNOLDI', '12', '13', '14', '0', '0', 2, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
-	(70, 1, '2022', '19991524', 'ALIAGA', 'MARMOLEJO', 'ALIAGA MARMOLEJO', 'MORAYMA ÃšRSULA', '12', '13', '14', '0', '0', 3, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
-	(71, 1, '2022', '07968040', 'HARO', 'MIÃ‘ANO', 'HARO MIÃ‘ANO', 'MARIA GLORIA', '12', '13', '14', '0', '0', 1, 0, 0, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(72, 1, '2022', '09247360', 'CARRIZALES', 'MORENO', 'CARRIZALES MORENO', 'FELIX AGUSTIN', '12', '13', '14', '0', '0', 2, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(73, 1, '2022', '09095947', 'NICHO', 'NAPA', 'NICHO NAPA', 'YRENE YSABEL', '12', '13', '14', '0', '0', 3, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(74, 1, '2022', '08867819', 'HERNANDEZ', 'PARADO', 'HERNANDEZ PARADO', 'WUILVER GABRIEL', '12', '13', '14', '0', '0', 4, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(75, 1, '2022', '07275186', 'DIAZ', 'RODRIGUEZ', 'DIAZ RODRIGUEZ', 'REBECA NELLY', '12', '13', '14', '0', '0', 5, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(76, 1, '2022', '70457623', 'RIOS', 'ROSALES', 'RIOS ROSALES', 'MARÃA PÃA', '12', '13', '14', '0', '0', 6, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(77, 1, '2022', '09512157', 'PEREZ', 'SALGADO', 'PEREZ SALGADO', 'LUCAS NESTOR', '12', '13', '14', '0', '0', 7, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(78, 1, '2022', '08293556', 'MORENO', 'SANCHEZ', 'MORENO SANCHEZ', 'LILA LUZ', '12', '13', '14', '0', '0', 8, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(79, 1, '2022', '04065092', 'HUARINGA', 'SANTIAGO', 'HUARINGA SANTIAGO', 'HAYDEE GLADYS', '12', '13', '14', '0', '0', 9, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(80, 1, '2022', '42972596', 'CRUCES', 'SARRIA', 'CRUCES SARRIA', 'KATHERINE ISABEL', '12', '13', '14', '0', '0', 10, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(81, 1, '2022', '16586080', 'GOMEZ', 'SIPION', 'GOMEZ SIPION', 'MARY CRUZ', '12', '13', '14', '0', '0', 11, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(82, 1, '2022', '09333438', 'PATRICIO', 'SUDARIO', 'PATRICIO SUDARIO', 'PEDRO PAULINO', '12', '13', '14', '0', '0', 12, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(83, 1, '2022', '41129346', 'HUARCAYA', 'VALENTIN', 'HUARCAYA VALENTIN', 'JUAN FELICIANO', '12', '13', '14', '0', '0', 13, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(84, 1, '2022', '42349100', 'CORNEJO', 'VARGAS', 'CORNEJO VARGAS', 'JAVIER ELEODORO', '12', '13', '14', '0', '0', 14, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(85, 1, '2022', '16128674', 'ESCALANTE', 'VILLANUEVA', 'ESCALANTE VILLANUEVA', 'JUDITH ROSARIO', '12', '13', '14', '0', '0', 15, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(86, 1, '2022', '07913657', 'SANCHEZ', 'VILLAR', 'SANCHEZ VILLAR', 'CARMEN ROSA', '12', '13', '14', '0', '0', 16, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(87, 1, '2022', '41660893', 'ASCANIO', 'YSHUISA', 'ASCANIO YSHUISA', 'DEISSY MAGALI', '12', '13', '14', '0', '0', 17, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(88, 1, '2022', '08288872', 'VILLANUEVA', 'VELASQUEZ', 'VILLANUEVA VELASQUEZ', 'ANGELITA', '12', '13', '14', '0', '0', 18, 1, 1, '2022-10-05 10:37:15', '2022-10-11 09:50:51', 1, 6),
-	(89, 1, '2022', '09099691', 'CÃ“RDOVA', 'JESÃšS', 'CÃ“RDOVA JESÃšS', 'ROMÃN', '12', '13', '14', '0', '0', 1, 0, 0, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
-	(90, 1, '2022', '09201805', 'HUALLPA', 'CACERES', 'HUALLPA CACERES', 'ALICIA', '12', '13', '14', '0', '0', 2, 1, 1, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
-	(91, 1, '2022', '09207009', 'REQUEJO', 'VASQUEZ', 'REQUEJO VASQUEZ', 'ROSA', '12', '13', '14', '0', '0', 3, 1, 1, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
-	(92, 1, '2022', '10657021', 'CARPIO', 'SANCHEZ', 'CARPIO SANCHEZ', 'NICOLAS', '12', '13', '14', '0', '0', 4, 1, 1, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
-	(93, 1, '2022', '10678533', 'VERÃ“NICA', 'POMA', 'VERÃ“NICA POMA', 'LUISA', '12', '13', '14', '0', '0', 5, 1, 1, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
-	(94, 1, '2022', '10763119', 'CERDAN', '', 'CERDAN', 'FRANCISCO', '12', '13', '14', '0', '0', 6, 1, 1, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
-	(95, 1, '2022', '21802177', 'TASAYCO', 'ATUNCAR', 'TASAYCO ATUNCAR', 'MANUEL', '12', '13', '14', '0', '0', 7, 0, 0, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
-	(96, 1, '2022', '21876096', 'ROSPIGLIOSI', '', 'ROSPIGLIOSI', 'GERMÃN', '12', '13', '14', '0', '0', 8, 1, 1, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
-	(97, 1, '2022', '31543158', 'ROCA', 'TAPIA', 'ROCA TAPIA', 'CLETO', '12', '13', '14', '0', '0', 9, 0, 0, '2022-10-05 10:37:15', '2022-10-13 15:04:44', 1, 7),
-	(98, 1, '2022', '40713080', 'ROJAS', 'SHUPINGAHUA', 'ROJAS SHUPINGAHUA', 'PERCY', '12', '13', '14', '0', '0', 10, 1, 1, '2022-10-05 10:37:15', '2022-11-21 20:17:18', 1, 7),
-	(99, 1, '2022', '41077305', 'SANDOVAL', 'PÃ‰REZ', 'SANDOVAL PÃ‰REZ', 'MARCELA', '12', '13', '14', '0', '0', 11, 1, 1, '2022-10-05 10:37:15', '2022-11-21 20:17:18', 1, 7),
-	(100, 1, '2022', '41603575', 'ARBIZU', 'RODRIGUEZ', 'ARBIZU RODRIGUEZ', 'EMILY', '12', '13', '14', '0', '0', 4, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
-	(101, 1, '2022', '43416085', 'BECERRA', 'BOLAÃ‘OS', 'BECERRA BOLAÃ‘OS', 'MANUELA', '12', '13', '14', '0', '0', 5, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
-	(102, 1, '2022', '45940353', 'HUAMANI', 'DURAND', 'HUAMANI DURAND', 'GRETA', '12', '13', '14', '0', '0', 6, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
-	(103, 1, '2022', '71248172', 'MAGALLANES', 'ORMEÃ‘O', 'MAGALLANES ORMEÃ‘O', 'ROSA', '12', '13', '14', '0', '0', 7, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
-	(104, 1, '2022', '72123517', 'GUILLEN', 'NOLBERTO', 'GUILLEN NOLBERTO', 'YESSENIA', '12', '13', '14', '0', '0', 8, 1, 1, '2022-10-05 10:37:15', '2022-10-05 11:58:04', 1, 4),
-	(105, 2, '2022', '20991248', NULL, NULL, 'QUIÃ‘ONES SUAREZ', 'NORMA ERLINDA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:36:26', '2022-10-06 00:01:55', 1, 1),
-	(106, 2, '2022', '09667051', NULL, NULL, 'AGUILAR BARRANTES', 'WILSON', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:38:57', '2022-10-06 00:02:28', 1, 1),
-	(107, 2, '2022', '09095947', NULL, NULL, 'NICHO NAPA', 'YRENE YSABEL', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:38:57', '2022-10-06 00:05:55', 1, 1),
-	(108, 2, '2022', '09554915', NULL, NULL, 'BENDEZU VEGA', 'OCTAVIO ALCIBIADES', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:38:57', '2022-10-06 00:08:33', 1, 1),
-	(109, 2, '2022', '10357907', NULL, NULL, 'RODAS TELLO', 'CESAR AUGUSTO', NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, '2022-10-05 23:38:57', NULL, 1, 1),
-	(110, 2, '2022', '09652817', NULL, NULL, 'LLANOS ALMONACID', 'SABY OFELIA', NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, '2022-10-05 23:38:57', NULL, 1, 1),
-	(111, 2, '2022', '10763119', NULL, NULL, 'CERDAN', 'FRANCISCO', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:38:58', '2022-10-06 00:10:44', 1, 1),
-	(112, 2, '2022', '09512157', NULL, NULL, 'PEREZ SALGADO', 'LUCAS NESTOR', NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, '2022-10-05 23:38:58', NULL, 1, 1),
-	(113, 2, '2022', '08288872', NULL, NULL, 'VILLANUEVA  VELASQUEZ', 'ANGELITA', NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, '2022-10-05 23:38:58', NULL, 1, 1),
-	(114, 2, '2022', '10119136', NULL, NULL, 'PAITAN COMPI', 'ELIZABETH LUCÃA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:26', '2022-10-06 00:40:49', 1, 15),
-	(115, 2, '2022', '47395488', NULL, NULL, 'VILLALOBOS CACERES', 'BERSABET YANIRA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:26', '2022-10-06 00:40:49', 1, 15),
-	(116, 2, '2022', '09332301', NULL, NULL, 'DAMIAN CHUMBE', 'FELIMON ANGEL', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:26', '2022-10-06 00:40:49', 1, 15),
-	(117, 2, '2022', '09427758', NULL, NULL, 'VEGA HUANCA', 'JACQUELINE TEODORA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:26', '2022-10-06 00:40:49', 1, 15),
-	(118, 2, '2022', '10678533', NULL, NULL, 'POMA', 'LUISA VERÃ“NICA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:27', '2022-10-06 00:40:49', 1, 15),
-	(119, 2, '2022', '08867819', NULL, NULL, 'HERNANDEZ PARADO', 'WUILVER GABRIEL', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:27', '2022-10-06 00:40:49', 1, 15),
-	(120, 2, '2022', '31543158', NULL, NULL, 'ROCA TAPIA', 'CLETO', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:27', '2022-10-06 00:40:49', 1, 15),
-	(121, 2, '2022', '09784963', NULL, NULL, 'SANTIAGO ESPINOZA', 'CESAR ALBERTO', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:27', '2022-10-06 00:40:49', 1, 15),
-	(122, 2, '2022', '10723417', NULL, NULL, 'VALLADOLID ZETA', 'NANCY DEL PILAR', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:41:27', '2022-10-06 00:40:49', 1, 15),
-	(123, 2, '2022', '09652817', NULL, NULL, 'LLANOS ALMONACID', 'SABY OFELIA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:54:01', '2022-10-06 00:40:49', 1, 15),
-	(124, 2, '2022', '09554915', NULL, NULL, 'BENDEZU VEGA', 'OCTAVIO ALCIBIADES', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-05 23:54:01', '2022-10-06 00:40:49', 1, 15),
-	(125, 2, '2022', '10351990', NULL, NULL, 'SALAZAR', 'ELVA RUTH', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:34', '2022-10-11 09:56:06', 1, 15),
-	(126, 2, '2022', '09770531', NULL, NULL, 'Ã‘AUPARI', 'MILAGROS MARITZA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:34', '2022-10-11 09:56:06', 1, 15),
-	(127, 2, '2022', '21802177', NULL, NULL, 'TASAYCO ATUNCAR', 'MANUEL', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:34', '2022-10-11 09:56:06', 1, 15),
-	(128, 2, '2022', '10678533', NULL, NULL, 'POMA', 'LUISA VERÃ“NICA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:35', '2022-10-11 09:56:06', 1, 15),
-	(129, 2, '2022', '09569343', NULL, NULL, 'VEGA VILLAORDUÃ‘A', 'NAIBETO', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:35', '2022-10-11 09:56:06', 1, 15),
-	(130, 2, '2022', '09652817', NULL, NULL, 'LLANOS ALMONACID', 'SABY OFELIA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:35', '2022-10-11 09:56:06', 1, 15),
-	(131, 2, '2022', '09099691', NULL, NULL, 'CÃ“RDOVA JESÃšS', 'ROMÃN', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:35', '2022-10-11 09:56:06', 1, 15),
-	(132, 2, '2022', '10130084', NULL, NULL, 'CAUNALLA CALLOHUANCA', 'NELLY CAROLINA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-11 09:55:35', '2022-10-11 09:56:06', 1, 15),
-	(133, 2, '2022', '09652817', NULL, NULL, 'LLANOS ALMONACID', 'SABY OFELIA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:22', '2022-10-13 15:16:05', 1, 15),
-	(134, 2, '2022', '41695705', NULL, NULL, 'ESPINOZA OSTOS', 'MARITHSABEL', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:22', '2022-10-13 15:16:05', 1, 15),
-	(135, 2, '2022', '04073637', NULL, NULL, 'VALERIO QUINTO', 'MARIA VICTORIA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:22', '2022-10-13 15:16:05', 1, 15),
-	(136, 2, '2022', '28993058', NULL, NULL, 'SERMEÃ‘O CAMARA', 'RAUL JOSE', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:22', '2022-10-13 15:16:05', 1, 15),
-	(137, 2, '2022', '10418815', NULL, NULL, 'GONZALES GUERRA', 'ANGELA ROSARIO', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:23', '2022-10-13 15:16:05', 1, 15),
-	(138, 2, '2022', '09204166', NULL, NULL, 'ALBORNOZ CHAVEZ', 'ANA MARIA', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:23', '2022-10-13 15:16:05', 1, 15),
-	(139, 2, '2022', '10764838', NULL, NULL, 'MALAVER YUPANQUI', 'RAFAEL', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:23', '2022-10-13 15:16:05', 1, 15),
-	(140, 2, '2022', '09793633', NULL, NULL, 'CASTILLO VILLANUEVA', 'FANNY MARGOT', NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2022-10-13 15:15:23', '2022-10-13 15:16:05', 1, 15);
-
--- Volcando estructura para tabla sigesco.especialidades
-CREATE TABLE IF NOT EXISTS `especialidades` (
-  `esp_id` int(11) NOT NULL AUTO_INCREMENT,
-  `esp_descripcion` varchar(250) DEFAULT NULL,
-  `esp_estado` int(1) DEFAULT NULL COMMENT '0: inactivo\n1: activo',
-  `niveles_niv_id` int(11) NOT NULL,
-  PRIMARY KEY (`esp_id`),
-  KEY `fk_especialidades_niveles1_idx` (`niveles_niv_id`),
-  CONSTRAINT `fk_especialidades_niveles1` FOREIGN KEY (`niveles_niv_id`) REFERENCES `niveles` (`niv_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- Volcando datos para la tabla sigesco.especialidades: ~15 rows (aproximadamente)
-INSERT IGNORE INTO `especialidades` (`esp_id`, `esp_descripcion`, `esp_estado`, `niveles_niv_id`) VALUES
-	(1, '-', 1, 1),
-	(2, '-', 1, 2),
-	(3, 'EducaciÃ³n FÃ­sica', 1, 2),
-	(4, 'Aula de InnovaciÃ³n PedagÃ³gica', 1, 2),
-	(5, 'MatemÃ¡tica', 1, 3),
-	(6, 'Ciencias Sociales', 1, 3),
-	(7, 'Desarrollo Personal, CiudadanÃ­a y CÃ­vica', 1, 3),
-	(8, 'Ciencia y TecnologÃ­a', 1, 3),
-	(9, 'ComunicaciÃ³n', 1, 3),
-	(10, 'EducaciÃ³n Religiosa', 1, 3),
-	(11, 'InglÃ©s', 1, 3),
-	(12, 'Arte y Cultura', 1, 3),
-	(13, 'EducaciÃ³n FÃ­sica', 1, 3),
-	(14, 'Aula de InnovaciÃ³n PedagÃ³gica', 1, 3),
-	(15, '-', 1, 4);
 
 -- Volcando estructura para tabla sigesco.evaluacion_ficha
 CREATE TABLE IF NOT EXISTS `evaluacion_ficha` (
@@ -758,26 +1044,9 @@ CREATE TABLE IF NOT EXISTS `evaluacion_ficha` (
   CONSTRAINT `fk_evaluacion_ficha_evaluacion_pun_exp1` FOREIGN KEY (`evaluacion_pun_exp_epe_id`) REFERENCES `evaluacion_pun_exp` (`epe_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Volcando datos para la tabla sigesco.evaluacion_ficha: ~0 rows (aproximadamente)
-
--- Volcando estructura para tabla sigesco.evaluacion_pun_exp
-CREATE TABLE IF NOT EXISTS `evaluacion_pun_exp` (
-  `epe_id` int(11) NOT NULL AUTO_INCREMENT,
-  `epe_tipoevaluacion` int(1) DEFAULT NULL COMMENT '1: preliminar\n2: final',
-  `epe_especialistaAsignado` varchar(12) DEFAULT NULL,
-  `epe_fechaAsignacion` datetime DEFAULT NULL,
-  `epe_fechaApertura` datetime DEFAULT NULL COMMENT 'fecha de inicio de evaluacion',
-  `epe_fechaCierre` datetime DEFAULT NULL COMMENT 'fecha de cierre de evaluacion',
-  `epe_fechaModificacion` datetime DEFAULT NULL,
-  `epe_estadoEvaluacion` int(1) DEFAULT NULL COMMENT '1: abierto\n0: cerrado',
-  `epe_estado` int(1) DEFAULT NULL,
-  `postulacion_id` int(11) unsigned NOT NULL DEFAULT 0,
-  `convocatorias_con_id` int(11) DEFAULT 0,
-  PRIMARY KEY (`epe_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla sigesco.evaluacion_pun_exp: ~76 rows (aproximadamente)
-INSERT IGNORE INTO `evaluacion_pun_exp` (`epe_id`, `epe_tipoevaluacion`, `epe_especialistaAsignado`, `epe_fechaAsignacion`, `epe_fechaApertura`, `epe_fechaCierre`, `epe_fechaModificacion`, `epe_estadoEvaluacion`, `epe_estado`, `postulacion_id`, `convocatorias_con_id`) VALUES
+INSERT  INTO `evaluacion_pun_exp` (`epe_id`, `epe_tipoevaluacion`, `epe_especialistaAsignado`, `epe_fechaAsignacion`, `epe_fechaApertura`, `epe_fechaCierre`, `epe_fechaModificacion`, `epe_estadoEvaluacion`, `epe_estado`, `postulacion_id`, `convocatorias_con_id`) VALUES
 	(1, 1, '43597360', '2022-10-05 11:53:06', '2022-10-05 11:48:56', NULL, '2022-10-05 11:53:06', 1, 1, 0, 7),
 	(2, 1, '45146572', '2022-10-09 23:26:23', '2022-10-05 11:49:21', NULL, '2022-10-09 23:26:23', 1, 1, 0, 7),
 	(3, 1, '45146572', '2022-10-05 11:49:21', '2022-10-05 11:49:21', NULL, NULL, 1, 1, 0, 7),
@@ -856,226 +1125,7 @@ INSERT IGNORE INTO `evaluacion_pun_exp` (`epe_id`, `epe_tipoevaluacion`, `epe_es
 	(78, 1, '45146572', '2022-10-13 15:16:41', '2022-10-13 15:16:41', NULL, NULL, 1, 1, 0, 7),
 	(79, 1, '47649297', '2023-11-21 14:50:24', '2023-11-21 14:50:24', NULL, NULL, 1, 1, 1, 0);
 
--- Volcando estructura para tabla sigesco.expedientes
-CREATE TABLE IF NOT EXISTS `expedientes` (
-  `exp_id` int(11) NOT NULL AUTO_INCREMENT,
-  `exp_numero` varchar(10) DEFAULT NULL,
-  `exp_anio` int(4) DEFAULT NULL,
-  `exp_codigo` varchar(25) DEFAULT NULL,
-  `exp_remitente` varchar(250) DEFAULT NULL,
-  `exp_documento` varchar(15) DEFAULT NULL,
-  `exp_telefono1` varchar(12) DEFAULT NULL,
-  `exp_telefono2` varchar(12) DEFAULT NULL,
-  `exp_correo` varchar(400) DEFAULT NULL,
-  `exp_esprinicipal` int(1) DEFAULT NULL,
-  `exp_tipo` int(1) DEFAULT NULL COMMENT '1: evaluacion inicial\r\n2. reclamo',
-  `exp_fechaCreacion` datetime DEFAULT NULL,
-  `exp_fechaModificacion` datetime DEFAULT NULL,
-  `exp_estado` int(1) DEFAULT NULL,
-  PRIMARY KEY (`exp_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- Volcando datos para la tabla sigesco.expedientes: ~134 rows (aproximadamente)
-INSERT IGNORE INTO `expedientes` (`exp_id`, `exp_numero`, `exp_anio`, `exp_codigo`, `exp_remitente`, `exp_documento`, `exp_telefono1`, `exp_telefono2`, `exp_correo`, `exp_esprinicipal`, `exp_tipo`, `exp_fechaCreacion`, `exp_fechaModificacion`, `exp_estado`) VALUES
-	(2, '59691', 2022, 'MPT2022-EXT-0059691', 'MADELEINE HAYDEE RIVERA CUZCO', '08125552', '999350067', '', 'mrivera@ugel05.edu.pe', 1, 1, '2022-09-28 04:32:08', NULL, 1),
-	(3, '59890', 2022, 'MPT2022-EXT-0059890', 'CARMEN ROSA SANCHEZ VILLAR', '07913657', '979886931', '', 'd07913657o@aprendoencasa.pe', 1, 1, '2022-09-28 04:39:25', NULL, 1),
-	(4, '59814', 2022, 'MPT2022-EXT-0059814', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-09-28 05:50:03', NULL, 1),
-	(5, '57940', 2022, 'MPT2022-EXT-0057940', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-09-28 05:50:03', NULL, 1),
-	(6, '58759', 2022, 'MPT2022-EXT-0058759', 'ALBERTO REYNOLDI ANGELES MACAVILCA', '07054303', '997405571', '', 'aangeles@ugel05.edu.pe', 1, 1, '2022-09-28 12:45:49', NULL, 1),
-	(7, '55671', 2022, 'MPT2022-EXT-0055671', 'ALBERTO REYNOLDI ANGELES MACAVILCA', '07054303', '997405571', '', 'aangeles@ugel05.edu.pe', 1, 1, '2022-09-28 12:45:49', NULL, 1),
-	(8, '59691', 2022, 'MPT2022-EXT-0059691', 'MADELEINE HAYDEE RIVERA CUZCO', '08125552', '999350067', '', 'mrivera@ugel05.edu.pe', 1, 1, '2022-09-29 00:51:49', NULL, 1),
-	(9, '59691', 2022, 'MPT2022-EXT-0059691', 'MADELEINE HAYDEE RIVERA CUZCO', '08125552', '999350067', '', 'mrivera@ugel05.edu.pe', 1, 1, '2022-09-29 01:15:12', NULL, 1),
-	(10, '57575', 2022, 'MPT2022-EXT-0057575', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-09-29 01:15:12', NULL, 1),
-	(11, '57153', 2022, 'MPT2022-EXT-0057153', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-09-29 01:15:12', NULL, 1),
-	(12, '55381', 2022, 'MPT2022-EXT-0055381', 'ALBERTO REYNOLDI ANGELES MACAVILCA', '07054303', '997405571', '', 'aangeles@ugel05.edu.pe', 1, 1, '2022-09-29 01:15:12', NULL, 1),
-	(13, '59691', 2022, 'MPT2022-EXT-0059691', 'MADELEINE HAYDEE RIVERA CUZCO', '08125552', '999350067', '', 'mrivera@ugel05.edu.pe', 1, 1, '2022-09-29 10:31:55', NULL, 1),
-	(14, '58563', 2022, 'MPT2022-EXT-0058563', 'MARISOL VERA ALVAREZ', '09560564', '966799294', '', 'marisolveraalvarez@hotmail.com', 1, 1, '2022-10-03 17:40:06', NULL, 1),
-	(15, '59944', 2022, 'MPT2022-EXT-0059944', 'NELLY NIEVES JAUREGUI FALCON DE ANDRADE', '09076839', '015949733', '965411521', 'njauregui@ugel05.edu.pe', 1, 1, '2022-10-05 11:23:43', NULL, 1),
-	(16, '59730', 2022, 'MPT2022-EXT-0059730', 'CARMEN ROSA GARMA CARDENAS', '07683102', '987985267', '932247552', 'camu_geminis@hotmail.com', 1, 1, '2022-10-05 11:23:44', NULL, 1),
-	(17, '59691', 2022, 'MPT2022-EXT-0059691', 'MADELEINE HAYDEE RIVERA CUZCO', '08125552', '999350067', '', 'mrivera@ugel05.edu.pe', 1, 1, '2022-10-05 11:23:44', NULL, 1),
-	(18, '59536', 2022, 'MPT2022-EXT-0059536', 'GUILMAR ASUNCION ESCOBAR CONDEÃ‘A', '06767000', '947290899', '', 'gescobar@ugel05.edu.pe', 1, 1, '2022-10-05 11:23:44', NULL, 1),
-	(19, '59323', 2022, 'MPT2022-EXT-0059323', 'MILAGROS DE LOS ÃNGELES ESCRIBA GAMBOA', '71004124', '980973694', '', 'laescribae@gmail.com', 1, 1, '2022-10-05 11:23:44', NULL, 1),
-	(20, '59029', 2022, 'MPT2022-EXT-0059029', 'JANETH MARLENI MUÃ‘OZ AGUSTÃN', '41004937', '927593834', '', 'mashosita@gmail.com', 1, 1, '2022-10-05 11:23:44', NULL, 1),
-	(21, '58926', 2022, 'MPT2022-EXT-0058926', 'JUAN MANUEL LAVADO DE LA CRUZ', '21080783', '964011034', '', 'juanlavado1961@gmail.com', 1, 1, '2022-10-05 11:23:44', NULL, 1),
-	(22, '58811', 2022, 'MPT2022-EXT-0058811', 'HUGO JAIME BENDEZU AMARO', '20111245', '985843645', '', 'hbendezu@ugel05.edu.pe', 1, 1, '2022-10-05 11:23:45', NULL, 1),
-	(23, '57952', 2022, 'MPT2022-EXT-0057952', 'MARISOL MILAGROS JAUREGUI GOMEZ', '41665991', '944269662', '', 'mmjaureguig@gmail.com', 1, 1, '2022-10-05 11:23:45', NULL, 1),
-	(24, '57852', 2022, 'MPT2022-EXT-0057852', 'MARITA LUCILA ROBLES GONZALES', '10366340', '013925420', '986036960', 'marirreth311061@gmail.com', 1, 1, '2022-10-05 11:23:45', NULL, 1),
-	(25, '57604', 2022, 'MPT2022-EXT-0057604', 'JUAN MANUEL LAVADO DE LA CRUZ', '21080783', '964011034', '', 'juan.lavado1961@gmail.com', 1, 1, '2022-10-05 11:23:45', NULL, 1),
-	(26, '57340', 2022, 'MPT2022-EXT-0057340', 'CARMEN DEL PILAR CASTAÃ‘EDA AGUEDO', '15944085', '977517252', '', 'ccastaneda@ugel05.edu.pe', 1, 1, '2022-10-05 11:23:45', NULL, 1),
-	(27, '57257', 2022, 'MPT2022-EXT-0057257', 'MARIA ELENA CORNEJO GUEVARA', '09326612', '918042109', '997509666', 'mcornejo@ugel05.edu.pe', 1, 1, '2022-10-05 11:23:45', NULL, 1),
-	(28, '57184', 2022, 'MPT2022-EXT-0057184', 'JAVIER LUIS SOLIS CORALES', '41542924', '991995222', '993692808', 'javiersoliscorales1@gmail.com', 1, 1, '2022-10-05 11:23:46', NULL, 1),
-	(29, '55691', 2022, 'MPT2022-EXT-0055691', 'SILVIA MARGOTH LEDESMA AGURTO', '47025341', '916984381', '', 'feyalegria39@hotmail.com', 1, 1, '2022-10-05 11:23:46', NULL, 1),
-	(30, '55600', 2022, 'MPT2022-EXT-0055600', 'CELINDA ESTHER BAUTISTA ANTICONA', '09329335', '945156982', '', 'feyalegria26.2020@gmail.com', 1, 1, '2022-10-05 11:23:46', NULL, 1),
-	(31, '60105', 2022, 'MPT2022-EXT-0060105', 'MIRYAM KARIM ROJAS GUILLEN', '20034928', '969679175', '', 'mrojas@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:52', NULL, 1),
-	(32, '58759', 2022, 'MPT2022-EXT-0058759', 'ALBERTO REYNOLDI ANGELES MACAVILCA', '07054303', '997405571', '', 'aangeles@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:52', NULL, 1),
-	(33, '58432', 2022, 'MPT2022-EXT-0058432', 'YESSENIA GUILLEN NOLBERTO', '72123517', '902239530', '', 'cuteguillen@gmail.com', 1, 1, '2022-10-05 11:57:52', NULL, 1),
-	(34, '57589', 2022, 'MPT2022-EXT-0057589', 'ROSA MAGALLANES ORMEÃ‘O', '71248172', '951653074', '', 'ie158santamaria.gestion2022@gmail.com', 1, 1, '2022-10-05 11:57:52', NULL, 1),
-	(35, '57449', 2022, 'MPT2022-EXT-0057449', 'MANUELA BECERRA BOLAÃ‘OS', '43416085', '969532493', '', 'manuelabecerrabolanos9@gmail.com', 1, 1, '2022-10-05 11:57:52', NULL, 1),
-	(36, '56943', 2022, 'MPT2022-EXT-0056943', 'MORAYMA ÃšRSULA ALIAGA MARMOLEJO', '19991524', '981530086', '', 'maliaga@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:53', NULL, 1),
-	(37, '56413', 2022, 'MPT2022-EXT-0056413', 'MIRYAM KARIM ROJAS GUILLEN', '20034928', '969679175', '', 'mrojas@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:53', NULL, 1),
-	(38, '55724', 2022, 'MPT2022-EXT-0055724', 'EMILY ARBIZU RODRIGUEZ', '41603575', '997782913', '', 'earbizu@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:53', NULL, 1),
-	(39, '55671', 2022, 'MPT2022-EXT-0055671', 'ALBERTO REYNOLDI ANGELES MACAVILCA', '07054303', '997405571', '', 'aangeles@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:53', NULL, 1),
-	(40, '55381', 2022, 'MPT2022-EXT-0055381', 'ALBERTO REYNOLDI ANGELES MACAVILCA', '07054303', '997405571', '', 'aangeles@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:53', NULL, 1),
-	(41, '55298', 2022, 'MPT2022-EXT-0055298', 'GRETA HUAMANI DURAND', '45940353', '977892488', '', 'fiorecasella09@gmail.com', 1, 1, '2022-10-05 11:57:53', NULL, 1),
-	(42, '55188', 2022, 'MPT2022-EXT-0055188', 'MIRYAM KARIM ROJAS GUILLEN', '20034928', '969679175', '', 'mrojas@ugel05.edu.pe', 1, 1, '2022-10-05 11:57:54', NULL, 1),
-	(45, '55068', 2022, 'MPT2022-EXT-0055068', 'NORMA ERLINDA QUIÃ‘ONES SUAREZ', '20991248', '943997770', '', 'nquinones@ugel05.edu.pe', 1, 1, '2022-10-05 23:36:26', NULL, 1),
-	(46, '51965', 2022, 'MPT2022-EXT-0051965', 'NORMA ERLINDA QUIÃ‘ONES SUAREZ', '20991248', '943997770', '', 'nquinones@ugel05.edu.pe', 1, 1, '2022-10-05 23:37:54', NULL, 1),
-	(47, '55081', 2022, 'MPT2022-EXT-0055081', 'WILSON AGUILAR BARRANTES', '09667051', '961452420', '961452420', 'wilson2172abw@gmail.com', 1, 1, '2022-10-05 23:38:57', NULL, 1),
-	(48, '55047', 2022, 'MPT2022-EXT-0055047', 'YRENE YSABEL NICHO NAPA', '09095947', '951676235', '', 'ynicho@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:57', NULL, 1),
-	(49, '55037', 2022, 'MPT2022-EXT-0055037', 'OCTAVIO ALCIBIADES BENDEZU VEGA', '09554915', '955364711', '', 'granoctavio2@hotmail.com', 1, 1, '2022-10-05 23:38:57', NULL, 1),
-	(50, '54983', 2022, 'MPT2022-EXT-0054983', 'CESAR AUGUSTO RODAS TELLO', '10357907', '940193610', '', 'crodas@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:57', NULL, 1),
-	(51, '54932', 2022, 'MPT2022-EXT-0054932', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:57', NULL, 1),
-	(52, '54770', 2022, 'MPT2022-EXT-0054770', 'YRENE YSABEL NICHO NAPA', '09095947', '951676235', '', 'ynicho@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:58', NULL, 1),
-	(53, '54729', 2022, 'MPT2022-EXT-0054729', 'FRANCISCO CERDAN', '10763119', '945964252', '', 'fabanto@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:58', NULL, 1),
-	(54, '54702', 2022, 'MPT2022-EXT-0054702', 'LUCAS NESTOR PEREZ SALGADO', '09512157', '977416413', '', 'lperez@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:58', NULL, 1),
-	(55, '54696', 2022, 'MPT2022-EXT-0054696', 'ANGELITA VILLANUEVA  VELASQUEZ', '08288872', '996871218', '', 'avillanueva@ugel05.edu.pe', 1, 1, '2022-10-05 23:38:58', NULL, 1),
-	(56, '54668', 2022, 'MPT2022-EXT-0054668', 'ELIZABETH LUCÃA PAITAN COMPI', '10119136', '987924689', '', 'epaitancompi@gmail.com', 1, 1, '2022-10-05 23:41:26', NULL, 1),
-	(57, '54646', 2022, 'MPT2022-EXT-0054646', 'BERSABET YANIRA VILLALOBOS CACERES', '47395488', '926819536', '', 'mesadepartes.ie0009jma@gmail.com', 1, 1, '2022-10-05 23:41:26', NULL, 1),
-	(58, '54621', 2022, 'MPT2022-EXT-0054621', 'FELIMON ANGEL DAMIAN CHUMBE', '09332301', '994455872', '', 'fadch_66@hotmail.com', 1, 1, '2022-10-05 23:41:26', NULL, 1),
-	(59, '54647', 2022, 'MPT2022-EXT-0054647', 'JACQUELINE TEODORA VEGA HUANCA', '09427758', '945520374', '', 'jvega@ugel05.edu.pe', 1, 1, '2022-10-05 23:41:26', NULL, 1),
-	(60, '54616', 2022, 'MPT2022-EXT-0054616', 'BERSABET YANIRA VILLALOBOS CACERES', '47395488', '926819536', '', 'mesadepartes.ie0009jma@gmail.com', 1, 1, '2022-10-05 23:41:27', NULL, 1),
-	(61, '54573', 2022, 'MPT2022-EXT-0054573', 'LUISA VERÃ“NICA POMA', '10678533', '965768588', '965768588', 'llahuana@ugel05.edu.pe', 1, 1, '2022-10-05 23:41:27', NULL, 1),
-	(62, '54556', 2022, 'MPT2022-EXT-0054556', 'WUILVER GABRIEL HERNANDEZ PARADO', '08867819', '960733869', '', 'mesadepartes.ie1044@gmail.com', 1, 1, '2022-10-05 23:41:27', NULL, 1),
-	(63, '54558', 2022, 'MPT2022-EXT-0054558', 'CLETO ROCA TAPIA', '31543158', '945196092', '', 'mesadepartes151mb@gmail.com', 1, 1, '2022-10-05 23:41:27', NULL, 1),
-	(64, '54544', 2022, 'MPT2022-EXT-0054544', 'CESAR ALBERTO SANTIAGO ESPINOZA', '09784963', '948896378', '', 'csantiago@ugel05.edu.pe', 1, 1, '2022-10-05 23:41:27', NULL, 1),
-	(65, '54499', 2022, 'MPT2022-EXT-0054499', 'NANCY DEL PILAR VALLADOLID ZETA', '10723417', '985628522', '', 'nvalladolid@ugel05.edu.pe', 1, 1, '2022-10-05 23:41:27', NULL, 1),
-	(66, '54427', 2022, 'MPT2022-EXT-0054427', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-10-05 23:54:01', NULL, 1),
-	(67, '54236', 2022, 'MPT2022-EXT-0054236', 'WUILVER GABRIEL HERNANDEZ PARADO', '08867819', '960733869', '', 'mesadepartes.ie1044@gmail.com', 1, 1, '2022-10-05 23:54:01', NULL, 1),
-	(68, '54232', 2022, 'MPT2022-EXT-0054232', 'OCTAVIO ALCIBIADES BENDEZU VEGA', '09554915', '955364711', '', 'granoctavio2@hotmail.com', 1, 1, '2022-10-05 23:54:01', NULL, 1),
-	(69, '60127', 2022, 'MPT2022-EXT-0060127', 'HAYDEE GLADYS HUARINGA SANTIAGO', '04065092', '947453496', '', 'hhuaringa@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:21', NULL, 1),
-	(70, '60123', 2022, 'MPT2022-EXT-0060123', 'HAYDEE GLADYS HUARINGA SANTIAGO', '04065092', '947453496', '', 'hhuaringa@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:22', NULL, 1),
-	(71, '60090', 2022, 'MPT2022-EXT-0060090', 'JUDITH ROSARIO ESCALANTE VILLANUEVA', '16128674', '991275445', '', 'jescalante@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:22', NULL, 1),
-	(72, '59890', 2022, 'MPT2022-EXT-0059890', 'CARMEN ROSA SANCHEZ VILLAR', '07913657', '979886931', '', 'd07913657o@aprendoencasa.pe', 1, 1, '2022-10-11 09:46:22', NULL, 1),
-	(73, '59654', 2022, 'MPT2022-EXT-0059654', 'YRENE YSABEL NICHO NAPA', '09095947', '951676235', '', 'ynicho@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:22', NULL, 1),
-	(74, '59433', 2022, 'MPT2022-EXT-0059433', 'MARÃA PÃA RIOS ROSALES', '70457623', '936881576', '', 'mariapiariosrosales@gmail.com', 1, 1, '2022-10-11 09:46:22', NULL, 1),
-	(75, '59276', 2022, 'MPT2022-EXT-0059276', 'LUCAS NESTOR PEREZ SALGADO', '09512157', '977416413', '', 'lperez@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:22', NULL, 1),
-	(76, '59151', 2022, 'MPT2022-EXT-0059151', 'PEDRO PAULINO PATRICIO SUDARIO', '09333438', '991577645', '', 'ppatricio@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:22', NULL, 1),
-	(77, '58879', 2022, 'MPT2022-EXT-0058879', 'REBECA NELLY DIAZ RODRIGUEZ', '07275186', '997272012', '', 'rdiaz@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:23', NULL, 1),
-	(78, '58514', 2022, 'MPT2022-EXT-0058514', 'DEISSY MAGALI ASCANIO YSHUISA', '41660893', '933323408', '013870628', 'deissymagali@gmail.com', 1, 1, '2022-10-11 09:46:23', NULL, 1),
-	(79, '57968', 2022, 'MPT2022-EXT-0057968', 'JAVIER ELEODORO CORNEJO VARGAS', '42349100', '936060714', '', 'javiercornejovargas@gmail.com', 1, 1, '2022-10-11 09:46:23', NULL, 1),
-	(80, '57889', 2022, 'MPT2022-EXT-0057889', 'MARIA GLORIA HARO MIÃ‘ANO', '07968040', '948177855', '', 'mharo@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:23', NULL, 1),
-	(81, '57888', 2022, 'MPT2022-EXT-0057888', 'JUDITH ROSARIO ESCALANTE VILLANUEVA', '16128674', '991275445', '', 'jescalante@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:23', NULL, 1),
-	(82, '57890', 2022, 'MPT2022-EXT-0057890', 'FELIX AGUSTIN CARRIZALES MORENO', '09247360', '988878398', '', 'fcarrizales@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:23', NULL, 1),
-	(83, '57599', 2022, 'MPT2022-EXT-0057599', 'LUCAS NESTOR PEREZ SALGADO', '09512157', '977416413', '', 'lperez@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:24', NULL, 1),
-	(84, '57451', 2022, 'MPT2022-EXT-0057451', 'LUCAS NESTOR PEREZ SALGADO', '09512157', '977416413', '', 'lperez@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:24', NULL, 1),
-	(85, '57272', 2022, 'MPT2022-EXT-0057272', 'PEDRO PAULINO PATRICIO SUDARIO', '09333438', '991577645', '', 'ppatricio@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:24', NULL, 1),
-	(86, '57003', 2022, 'MPT2022-EXT-0057003', 'KATHERINE ISABEL CRUCES SARRIA', '42972596', '956986837', '', 'katherinecruces4@gmail.com', 1, 1, '2022-10-11 09:46:24', NULL, 1),
-	(87, '56952', 2022, 'MPT2022-EXT-0056952', 'ANGELITA VILLANUEVA  VELASQUEZ', '08288872', '996871218', '', 'avillanueva@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:24', NULL, 1),
-	(88, '56468', 2022, 'MPT2022-EXT-0056468', 'JUAN FELICIANO HUARCAYA VALENTIN', '41129346', '970973620', '', 'jhuarcaya@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:24', NULL, 1),
-	(89, '56285', 2022, 'MPT2022-EXT-0056285', 'MARY CRUZ GOMEZ SIPION', '16586080', '990111783', '', 'mgomez@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:24', NULL, 1),
-	(90, '56231', 2022, 'MPT2022-EXT-0056231', 'LUCAS NESTOR PEREZ SALGADO', '09512157', '977416413', '', 'lperez@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:25', NULL, 1),
-	(91, '56107', 2022, 'MPT2022-EXT-0056107', 'JUDITH ROSARIO ESCALANTE VILLANUEVA', '16128674', '991275445', '', 'jescalante@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:25', NULL, 1),
-	(92, '55823', 2022, 'MPT2022-EXT-0055823', 'FELIX AGUSTIN CARRIZALES MORENO', '09247360', '988878398', '', 'fcarrizales@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:25', NULL, 1),
-	(93, '55821', 2022, 'MPT2022-EXT-0055821', 'FELIX AGUSTIN CARRIZALES MORENO', '09247360', '988878398', '', 'fcarrizales@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:25', NULL, 1),
-	(94, '55255', 2022, 'MPT2022-EXT-0055255', 'WUILVER GABRIEL HERNANDEZ PARADO', '08867819', '960733869', '', 'mesadepartes.ie1044@gmail.com', 1, 1, '2022-10-11 09:46:25', NULL, 1),
-	(95, '55222', 2022, 'MPT2022-EXT-0055222', 'WUILVER GABRIEL HERNANDEZ PARADO', '08867819', '960733869', '', 'mesadepartes.ie1044@gmail.com', 1, 1, '2022-10-11 09:46:25', NULL, 1),
-	(96, '55182', 2022, 'MPT2022-EXT-0055182', 'LILA LUZ MORENO SANCHEZ', '08293556', '990991498', '014595927', 'lmoreno@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
-	(97, '51638', 2022, 'MPT2022-EXT-0051638', 'YRENE YSABEL NICHO NAPA', '09095947', '951676235', '', 'ynicho@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
-	(98, '50941', 2022, 'MPT2022-EXT-0050941', 'JUDITH ROSARIO ESCALANTE VILLANUEVA', '16128674', '991275445', '', 'jescalante@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
-	(99, '50003', 2022, 'MPT2022-EXT-0050003', 'PEDRO PAULINO PATRICIO SUDARIO', '09333438', '991577645', '', 'ppatricio@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
-	(100, '49851', 2022, 'MPT2022-EXT-0049851', 'JUDITH ROSARIO ESCALANTE VILLANUEVA', '16128674', '991275445', '', 'jescalante@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
-	(101, '49478', 2022, 'MPT2022-EXT-0049478', 'PEDRO PAULINO PATRICIO SUDARIO', '09333438', '991577645', '', 'ppatricio@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
-	(102, '49277', 2022, 'MPT2022-EXT-0049277', 'LILA LUZ MORENO SANCHEZ', '08293556', '990991498', '014595927', 'lmoreno@ugel05.edu.pe', 1, 1, '2022-10-11 09:46:26', NULL, 1),
-	(103, '59433', 2022, 'MPT2022-EXT-0059433', 'MARÃA PÃA RIOS ROSALES', '70457623', '936881576', '', 'mariapiariosrosales@gmail.com', 1, 1, '2022-10-11 09:49:07', NULL, 1),
-	(104, '58879', 2022, 'MPT2022-EXT-0058879', 'REBECA NELLY DIAZ RODRIGUEZ', '07275186', '997272012', '', 'rdiaz@ugel05.edu.pe', 1, 1, '2022-10-11 09:49:07', NULL, 1),
-	(105, '57889', 2022, 'MPT2022-EXT-0057889', 'MARIA GLORIA HARO MIÃ‘ANO', '07968040', '948177855', '', 'mharo@ugel05.edu.pe', 1, 1, '2022-10-11 09:49:07', NULL, 1),
-	(106, '60106', 2022, 'MPT2022-EXT-0060106', 'ELVA RUTH SALAZAR', '10351990', '959364898', '', 'emunguia@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:34', NULL, 1),
-	(107, '60056', 2022, 'MPT2022-EXT-0060056', 'MILAGROS MARITZA Ã‘AUPARI', '09770531', '958547343', '', 'mfernandez@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:34', NULL, 1),
-	(108, '60049', 2022, 'MPT2022-EXT-0060049', 'MANUEL TASAYCO ATUNCAR', '21802177', '984178048', '', 'mtasayco@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:34', NULL, 1),
-	(109, '60020', 2022, 'MPT2022-EXT-0060020', 'MILAGROS MARITZA Ã‘AUPARI', '09770531', '958547343', '', 'mfernandez@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:34', NULL, 1),
-	(110, '60017', 2022, 'MPT2022-EXT-0060017', 'LUISA VERÃ“NICA POMA', '10678533', '965768588', '965768588', 'llahuana@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:35', NULL, 1),
-	(111, '59893', 2022, 'MPT2022-EXT-0059893', 'NAIBETO VEGA VILLAORDUÃ‘A', '09569343', '970888692', '', 'secundariamesadepartesiefbc@gmail.com', 1, 1, '2022-10-11 09:55:35', NULL, 1),
-	(112, '59866', 2022, 'MPT2022-EXT-0059866', 'NAIBETO VEGA VILLAORDUÃ‘A', '09569343', '970888692', '', 'secundariamesadepartesiefbc@gmail.com', 1, 1, '2022-10-11 09:55:35', NULL, 1),
-	(113, '59814', 2022, 'MPT2022-EXT-0059814', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:35', NULL, 1),
-	(114, '59705', 2022, 'MPT2022-EXT-0059705', 'ROMÃN CÃ“RDOVA JESÃšS', '09099691', '994540290', '', 'rcordova@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:35', NULL, 1),
-	(115, '59354', 2022, 'MPT2022-EXT-0059354', 'NELLY CAROLINA CAUNALLA CALLOHUANCA', '10130084', '994495469', '', 'ncaunalla@ugel05.edu.pe', 1, 1, '2022-10-11 09:55:35', NULL, 1),
-	(116, '57950', 2022, 'MPT2022-EXT-0057950', 'PERCY ROJAS SHUPINGAHUA', '40713080', '959197297', '959197297', 'falconi09@hotmail.com', 1, 1, '2022-10-13 15:02:46', NULL, 1),
-	(117, '57706', 2022, 'MPT2022-EXT-0057706', 'FRANCISCO CERDAN', '10763119', '945964252', '', 'fabanto@ugel05.edu.pe', 1, 1, '2022-10-13 15:02:46', NULL, 1),
-	(118, '57615', 2022, 'MPT2022-EXT-0057615', 'FRANCISCO CERDAN', '10763119', '945964252', '', 'fabanto@ugel05.edu.pe', 1, 1, '2022-10-13 15:02:46', NULL, 1),
-	(119, '57282', 2022, 'MPT2022-EXT-0057282', 'LUISA VERÃ“NICA POMA', '10678533', '965768588', '965768588', 'llahuana@ugel05.edu.pe', 1, 1, '2022-10-13 15:02:47', NULL, 1),
-	(120, '56471', 2022, 'MPT2022-EXT-0056471', 'GERMÃN ROSPIGLIOSI', '21876096', '987145240', '', 'ggaldos@ugel05.edu.pe', 1, 1, '2022-10-13 15:02:47', NULL, 1),
-	(121, '56470', 2022, 'MPT2022-EXT-0056470', 'GERMÃN ROSPIGLIOSI', '21876096', '987145240', '', 'ggaldos@ugel05.edu.pe', 1, 1, '2022-10-13 15:02:47', NULL, 1),
-	(122, '56306', 2022, 'MPT2022-EXT-0056306', 'NICOLAS CARPIO SANCHEZ', '10657021', '940145581', '', 'ncarpio@ugel05.edu.pe', 1, 1, '2022-10-13 15:02:47', NULL, 1),
-	(123, '55615', 2022, 'MPT2022-EXT-0055615', 'ROSA REQUEJO VASQUEZ', '09207009', '968033225', '968033225', 'rrequejo@feyalegria37.edu.pe', 1, 1, '2022-10-13 15:02:47', NULL, 1),
-	(124, '55258', 2022, 'MPT2022-EXT-0055258', 'ALICIA HUALLPA CACERES', '09201805', '992944331', '', 'tramiteshb112@gmail.com', 1, 1, '2022-10-13 15:02:47', NULL, 1),
-	(125, '44790', 2022, 'MPT2022-EXT-0044790', 'SABY OFELIA LLANOS ALMONACID', '09652817', '922396570', '', 'sllanos@ugel05.edu.pe', 1, 1, '2022-10-13 15:15:22', NULL, 1),
-	(126, '44771', 2022, 'MPT2022-EXT-0044771', 'MARITHSABEL ESPINOZA OSTOS', '41695705', '981928291', '', 'mespinozao@ugel05.edu.pe', 1, 1, '2022-10-13 15:15:22', NULL, 1),
-	(127, '44764', 2022, 'MPT2022-EXT-0044764', 'MARIA VICTORIA VALERIO QUINTO', '04073637', '937763652', '', 'valerioquintov@gmail.com', 1, 1, '2022-10-13 15:15:22', NULL, 1),
-	(128, '44753', 2022, 'MPT2022-EXT-0044753', 'MARIA VICTORIA VALERIO QUINTO', '04073637', '937763652', '', 'valerioquintov@gmail.com', 1, 1, '2022-10-13 15:15:22', NULL, 1),
-	(129, '44752', 2022, 'MPT2022-EXT-0044752', 'RAUL JOSE SERMEÃ‘O CAMARA', '28993058', '993453130', '013888369', 'mesadepartesramiropriale@gmail.com', 1, 1, '2022-10-13 15:15:22', NULL, 1),
-	(130, '44741', 2022, 'MPT2022-EXT-0044741', 'ANGELA ROSARIO GONZALES GUERRA', '10418815', '941435405', '', 'agonzales@ugel05.edu.pe', 1, 1, '2022-10-13 15:15:23', NULL, 1),
-	(131, '44714', 2022, 'MPT2022-EXT-0044714', 'MARIA VICTORIA VALERIO QUINTO', '04073637', '937763652', '', 'valerioquintov@gmail.com', 1, 1, '2022-10-13 15:15:23', NULL, 1),
-	(132, '44700', 2022, 'MPT2022-EXT-0044700', 'ANGELA ROSARIO GONZALES GUERRA', '10418815', '941435405', '', 'agonzales@ugel05.edu.pe', 1, 1, '2022-10-13 15:15:23', NULL, 1),
-	(133, '44630', 2022, 'MPT2022-EXT-0044630', 'ANA MARIA ALBORNOZ CHAVEZ', '09204166', '999966352', '', 'aalbornoz@ugel05.edu.pe', 1, 1, '2022-10-13 15:15:23', NULL, 1),
-	(134, '44508', 2022, 'MPT2022-EXT-0044508', 'RAFAEL MALAVER YUPANQUI', '10764838', '960736102', '972052354', 'ramayu2012@hotmail.com', 1, 1, '2022-10-13 15:15:23', NULL, 1),
-	(135, '44289', 2022, 'MPT2022-EXT-0044289', 'FANNY MARGOT CASTILLO VILLANUEVA', '09793633', '997754261', '', 'fannycastillovillanueva@gmail.com', 1, 1, '2022-10-13 15:15:23', NULL, 1),
-	(136, '58352', 2022, 'MPT2022-EXT-0058352', 'MARCELA SANDOVAL PÃ‰REZ', '41077305', '993332353', '', 'eventosycatering81@gmail.com', 1, 1, '2022-11-21 20:14:10', NULL, 1),
-	(137, '57950', 2022, 'MPT2022-EXT-0057950', 'PERCY ROJAS SHUPINGAHUA', '40713080', '959197297', '959197297', 'falconi09@hotmail.com', 1, 1, '2022-11-21 20:14:11', NULL, 1);
-
--- Volcando estructura para tabla sigesco.ficha
-CREATE TABLE IF NOT EXISTS `ficha` (
-  `fic_id` int(11) NOT NULL AUTO_INCREMENT,
-  `fic_descripcion` varchar(50) DEFAULT NULL,
-  `fic_estado` int(1) DEFAULT NULL,
-  PRIMARY KEY (`fic_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- Volcando datos para la tabla sigesco.ficha: ~0 rows (aproximadamente)
-INSERT IGNORE INTO `ficha` (`fic_id`, `fic_descripcion`, `fic_estado`) VALUES
-	(1, 'Ficha 2022 - Anexo 10', 1);
-
--- Volcando estructura para tabla sigesco.grupo_inscripcion
-CREATE TABLE IF NOT EXISTS `grupo_inscripcion` (
-  `gin_id` int(11) NOT NULL AUTO_INCREMENT,
-  `procesos_pro_id` int(11) NOT NULL,
-  `periodos_per_id` int(11) NOT NULL,
-  `especialidades_esp_id` int(11) NOT NULL,
-  `gin_estado` int(1) DEFAULT NULL,
-  PRIMARY KEY (`gin_id`),
-  KEY `fk_grupo_inscripcion_procesos1_idx` (`procesos_pro_id`),
-  KEY `fk_grupo_inscripcion_especialidades1_idx` (`especialidades_esp_id`),
-  KEY `fk_grupo_inscripcion_periodos1_idx` (`periodos_per_id`),
-  CONSTRAINT `fk_grupo_inscripcion_especialidades1` FOREIGN KEY (`especialidades_esp_id`) REFERENCES `especialidades` (`esp_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_grupo_inscripcion_periodos1` FOREIGN KEY (`periodos_per_id`) REFERENCES `periodos` (`per_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_grupo_inscripcion_procesos1` FOREIGN KEY (`procesos_pro_id`) REFERENCES `procesos` (`pro_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- Volcando datos para la tabla sigesco.grupo_inscripcion: ~15 rows (aproximadamente)
-INSERT IGNORE INTO `grupo_inscripcion` (`gin_id`, `procesos_pro_id`, `periodos_per_id`, `especialidades_esp_id`, `gin_estado`) VALUES
-	(1, 1, 1, 1, 1),
-	(2, 1, 1, 2, 1),
-	(3, 1, 1, 3, 1),
-	(4, 1, 1, 4, 1),
-	(5, 1, 1, 5, 1),
-	(6, 1, 1, 6, 1),
-	(7, 1, 1, 7, 1),
-	(8, 1, 1, 8, 1),
-	(9, 1, 1, 9, 1),
-	(10, 1, 1, 10, 1),
-	(11, 1, 1, 11, 1),
-	(12, 1, 1, 12, 1),
-	(13, 1, 1, 13, 1),
-	(14, 1, 1, 14, 1),
-	(15, 1, 1, 15, 0);
-
--- Volcando estructura para tabla sigesco.modalidades
-CREATE TABLE IF NOT EXISTS `modalidades` (
-  `mod_id` int(11) NOT NULL AUTO_INCREMENT,
-  `mod_nombre` varchar(250) DEFAULT NULL,
-  `mod_abreviatura` varchar(25) DEFAULT NULL,
-  `mod_estado` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`mod_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- Volcando datos para la tabla sigesco.modalidades: ~6 rows (aproximadamente)
-INSERT IGNORE INTO `modalidades` (`mod_id`, `mod_nombre`, `mod_abreviatura`, `mod_estado`) VALUES
-	(1, 'EducaciÃ³n BÃ¡sica Regular', 'EBR', '1'),
-	(2, 'Programa de IntervenciÃ³n Temprana', 'PRITE', '1'),
-	(3, 'EducaciÃ³n BÃ¡sica Especial', 'EBE', '1'),
-	(4, 'EducaciÃ³n BÃ¡sica Alternativa', 'EBA', '1'),
-	(5, 'EducaciÃ³n TÃ©cnico Productiva', 'ETP', '1'),
-	(6, 'OTROS', 'VARIOS', '1');
-
+ 
 -- Volcando estructura para tabla sigesco.modulos
 CREATE TABLE IF NOT EXISTS `modulos` (
   `mdl_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1092,58 +1142,27 @@ CREATE TABLE IF NOT EXISTS `modulos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla sigesco.modulos: ~19 rows (aproximadamente)
-INSERT IGNORE INTO `modulos` (`mdl_id`, `mdl_nombre`, `mdl_ruta`, `mdl_icono`, `mdl_hijode`, `mdl_orden`, `mdl_fechaRegistro`, `mdl_fechaModificacion`, `mdl_estado`, `mdl_flag`) VALUES
+INSERT  INTO `modulos` (`mdl_id`, `mdl_nombre`, `mdl_ruta`, `mdl_icono`, `mdl_hijode`, `mdl_orden`, `mdl_fechaRegistro`, `mdl_fechaModificacion`, `mdl_estado`, `mdl_flag`) VALUES
 	(1, 'ADMINISTRAR', NULL, 'fas fa-tasks', 0, 1, NULL, NULL, 1, 0),
 	(2, 'GRUPOS', 'administracion/tusuarios', 'far fa-object-group', 1, 1.2, NULL, NULL, 1, 0),
 	(3, 'MODULOS', 'administracion/modulos', 'fas fa-th-large', 1, 1.3, NULL, NULL, 1, 0),
 	(4, 'PERMISOS', 'administracion/permisos', 'fas fa-user-check', 1, 1.4, NULL, NULL, 1, 0),
 	(5, 'USUARIOS', 'administracion/usuarios', 'fas fa-user', 1, 1.5, NULL, NULL, 1, 0),
-	(6, 'CONFIGURACIÃ“N', '', '.', 0, 6, '2022-07-04 08:57:16', NULL, 1, 1),
+	(6, 'CONFIGURACIÓN', '', '.', 0, 6, '2022-07-04 08:57:16', NULL, 1, 1),
 	(7, 'PERIODOS', 'configuracion/periodos', '.', 6, 6.7, '2022-07-04 08:57:52', NULL, 1, 1),
 	(8, 'PROCESOS', 'configuracion/procesos', '.', 6, 6.8, '2022-07-04 08:58:57', NULL, 1, 1),
-	(9, 'GRUPO DE INSCRIPCIÃ“N', 'configuracion/grupoinscripcion', '.', 6, 6.9, '2022-07-14 15:00:04', '2022-07-18 17:23:08', 1, 1),
+	(9, 'GRUPO DE INSCRIPCIÓN', 'configuracion/grupoinscripcion', '.', 6, 6.9, '2022-07-14 15:00:04', '2022-07-18 17:23:08', 1, 1),
 	(10, 'PRUEBA PUN', 'configuracion/pun', '.', 6, 6.1, '2022-07-14 15:01:50', NULL, 1, 1),
 	(11, 'CONVOCATORIAS', '', '.', 0, 11, '2022-07-18 17:22:44', NULL, 1, 1),
 	(12, 'REGISTRO CONVOCATORIA', 'convocatorias/listar', '.', 11, 11.12, '2022-07-18 17:24:52', NULL, 1, 1),
 	(13, 'CARGAR EXPEDIENTES', 'convocatorias/cargarexpedientes', '.', 11, 11.13, '2022-07-20 01:31:54', NULL, 1, 1),
-	(14, 'EVALUACIÃ“N', '', '.', 0, 14, '2022-07-25 22:33:16', NULL, 1, 1),
-	(15, 'EVALUACIÃ“N DE POSTULANTES', 'evaluacion/convocatoria', '.', 14, 14.15, '2022-07-25 22:33:47', '2022-09-29 11:05:55', 1, 1),
+	(14, 'EVALUACIÓN', '', '.', 0, 14, '2022-07-25 22:33:16', NULL, 1, 1),
+	(15, 'EVALUACIÓN DE POSTULANTES', 'evaluacion/convocatoria', '.', 14, 14.15, '2022-07-25 22:33:47', '2022-09-29 11:05:55', 1, 1),
 	(16, 'PLAZAS', '', '.', 0, 16, '2022-07-25 22:33:59', NULL, 1, 1),
 	(17, 'ADMINISTRAR PLAZAS', '/', '.', 16, 16.17, '2022-07-25 22:34:15', NULL, 1, 1),
-	(18, 'ADJUDICACIÃ“N', '', '.', 0, 18, '2022-07-25 22:34:30', NULL, 1, 1),
-	(19, 'ADJUDICACIÃ“N', '/', '.', 18, 18.19, '2022-07-25 22:34:39', NULL, 1, 1);
-
--- Volcando estructura para tabla sigesco.niveles
-CREATE TABLE IF NOT EXISTS `niveles` (
-  `niv_id` int(11) NOT NULL AUTO_INCREMENT,
-  `niv_descripcion` varchar(250) DEFAULT NULL,
-  `niv_estado` int(1) DEFAULT NULL,
-  `modalidad_mod_id` int(11) NOT NULL,
-  PRIMARY KEY (`niv_id`),
-  KEY `fk_niveles_modalidad1_idx` (`modalidad_mod_id`),
-  CONSTRAINT `fk_niveles_modalidad1` FOREIGN KEY (`modalidad_mod_id`) REFERENCES `modalidades` (`mod_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- Volcando datos para la tabla sigesco.niveles: ~4 rows (aproximadamente)
-INSERT IGNORE INTO `niveles` (`niv_id`, `niv_descripcion`, `niv_estado`, `modalidad_mod_id`) VALUES
-	(1, 'Inicial', 1, 1),
-	(2, 'Primaria', 1, 1),
-	(3, 'Secundaria', 1, 1),
-	(4, '(*)', 1, 6);
-
--- Volcando estructura para tabla sigesco.periodos
-CREATE TABLE IF NOT EXISTS `periodos` (
-  `per_id` int(11) NOT NULL,
-  `per_anio` int(4) DEFAULT NULL,
-  `per_nombre` varchar(500) DEFAULT NULL,
-  `per_default` int(1) NOT NULL,
-  `per_estado` int(1) DEFAULT NULL COMMENT '0: inactivo\n1: activo',
-  PRIMARY KEY (`per_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- Volcando datos para la tabla sigesco.periodos: ~0 rows (aproximadamente)
-INSERT IGNORE INTO `periodos` (`per_id`, `per_anio`, `per_nombre`, `per_default`, `per_estado`) VALUES
-	(1, 2022, 'AÃ±o del Fortalecimiento de la SoberanÃ­a Nacional', 1, 1);
+	(18, 'ADJUDICACIÓN', '', '.', 0, 18, '2022-07-25 22:34:30', NULL, 1, 1),
+	(19, 'ADJUDICACIÓN', '/', '.', 18, 18.19, '2022-07-25 22:34:39', NULL, 1, 1);
+ 
 
 -- Volcando estructura para tabla sigesco.periodo_fichas
 CREATE TABLE IF NOT EXISTS `periodo_fichas` (
@@ -1159,9 +1178,27 @@ CREATE TABLE IF NOT EXISTS `periodo_fichas` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Volcando datos para la tabla sigesco.periodo_fichas: ~2 rows (aproximadamente)
-INSERT IGNORE INTO `periodo_fichas` (`id`, `nombre`, `plantilla`, `tipo_id`, `periodo_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+INSERT  INTO `periodo_fichas` (`id`, `nombre`, `plantilla`, `tipo_id`, `periodo_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Anexo 13', '{"sections":[{"id":278487897935,"name":"Formaci\\u00f3n Acad\\u00e9mica y Profesional","position":0,"score":"47","groups":[{"id":510700731415,"name":"Estudios de posgrado","type_id":1,"position":0,"score":"38","questions":[{"id":669901504318,"name":"Grado de Doctor. (m\\u00e1ximo 1)","position":0,"score":"10","options":[{"id":904426686744,"name":"3 cursos","position":0,"score":"1","type":0},{"id":690401995183,"name":"6 cursos","position":0,"score":"2","type":0},{"id":574092590529,"name":"9 cursos","position":0,"score":"3","type":0}],"type":"selectiva","observation_status":1},{"id":471685961826,"name":"Estudios concluidos de Doctorado","position":0,"score":"7","options":[],"type":"marcado"},{"id":1386041234498,"name":"Grado de Maestro\\/Magister. (m\\u00e1ximo 1)","position":0,"score":"8","options":[],"type":"marcado"},{"id":461785294614,"name":"Estudios concluidos de Maestr\\u00eda","position":0,"score":"5","options":[],"type":"numerico"},{"id":299944151858,"name":"Diplomado\\/Especializaci\\u00f3n, a nivel de Posgrado (hasta un m\\u00e1ximo de dos(2)","position":0,"score":"3","options":[],"type":"marcado"}]},{"id":966180316910,"name":"Estudios de pregrado","type_id":1,"position":0,"score":0,"questions":[{"id":210214086833,"name":"Otro T\\u00edtulo Profesional Pedag\\u00f3gico o T\\u00edtulo de Segunda Especialidad en Educaci\\u00f3n, no af\\u00edn al nivel o ciclo de la especialidad que postula (m\\u00e1ximo 1)","position":0,"score":"6","options":[],"type":"numerico"},{"id":929587823747,"name":"Otro T\\u00edtulo Universitario no Pedag\\u00f3gico (m\\u00e1ximo 1)","position":0,"score":"5","options":[],"type":"numerico"},{"id":1184435783500,"name":"Otro T\\u00edtulo Profesional T\\u00e9cnico (m\\u00e1ximo 1)","position":0,"score":"3","options":[],"type":"numerico"}]}]},{"id":641888213236,"name":"Formaci\\u00f3n Continua","position":0,"score":"3","groups":[{"id":359612152638,"name":"Talleres, capacitaci\\u00f3n, seminarios o congresos","type_id":1,"position":0,"score":0,"questions":[{"id":1493827940389,"name":"Realizado en los \\u00faltimos cinco (5) a\\u00f1os.\\nDuraci\\u00f3n m\\u00ednima de 16 horas pedag\\u00f3gicas.\\nPresenciales, virtuales o semipresenciales.\\nM\\u00e1ximo de tres (3)","position":0,"score":"1","options":[],"type":"numerico"},{"id":1389722125327,"name":"Tiene de 4 a m\\u00e1s a\\u00f1os adicionales al m\\u00ednimo requerido","position":0,"score":"2","options":[],"type":"numerico"}]}]},{"id":1570308861059,"name":"Experiencia Laboral","position":0,"score":"24","groups":[{"id":141790068280,"name":"Experiencia Laboral docente,\\ndurante los meses de marzo a diciembre, teniendo en cuenta","type_id":1,"position":0,"score":0,"questions":[{"id":1384426154455,"name":"Corresponde 0.20 puntos por cada mes acreditado de labor en IE ubicada en zona urbana. Corresponde 0.30 puntos por cada mes acreditado de labor en IE ubicada en zona de frontera. Corresponde 0.30 puntos por cada mes acreditado de labor en IE ubicada en zona rural. Corresponde 0.40 puntos por cada mes acreditado de labor en IE ubicada en zona VRAEM.","position":0,"score":"13","options":[],"type":"numerico"},{"id":1040688223918,"name":"Tiene de 4 a m\\u00e1s a\\u00f1os adicionales al m\\u00ednimo requerido","position":0,"score":"4","options":[],"type":"numerico"}]},{"id":1590150668232,"name":"Experiencia laboral como PEC","type_id":1,"position":0,"score":0,"questions":[{"id":1300044711716,"name":"Corresponde 0.10 puntos por cada mes acreditado (solo para postular al\\nnivel inicial).","position":0,"score":"4","options":[],"type":"numerico"},{"id":861982020443,"name":"Tiene de 4 a m\\u00e1s a\\u00f1os adicionales al m\\u00ednimo requerido","position":0,"score":"3","options":[],"type":"numerico"}]}]},{"id":107797951453,"name":"M\\u00e9ritos","position":0,"score":"8","groups":[{"id":1610513886669,"name":"Felicitaci\\u00f3n por desempe\\u00f1o o trabajo destacado en el campo pedag\\u00f3gico","type_id":"2","position":0,"score":"5","questions":[{"id":891404070946,"name":"Resoluci\\u00f3n Ministerial emitida por MINEDU (3 puntos). Resoluci\\u00f3n emitida por la DRE o de UGEL (2 puntos)","position":0,"score":"5","options":[],"type":"numerico"},{"id":1194430752118,"name":"Cumple con el tercer Cursos y\\/o Estudios de Especializaci\\u00f3n","position":0,"score":"3","options":[],"type":"numerico"}]}]}]}', 0, 1, '2023-10-31 04:17:49', '2023-11-23 18:03:29', NULL),
 	(2, 'Anexo 14', '{"sections":[{"id":1209307724712,"name":"FORMACI0N ACADEMICA","position":0,"score":"52","groups":[{"id":564889126834,"name":"1.1 Estudios de pregrado","position":0,"score":"3","questions":[{"id":1362724145467,"name":"T\\u00edtulo profesional","position":0,"score":"7","answers":[]},{"id":1092942509780,"name":"T\\u00edtulo profesional t\\u00e9cnico","position":0,"score":"6","answers":[]},{"id":1192888700698,"name":"T\\u00edtulo t\\u00e9cnico","position":0,"score":"5","answers":[]}]},{"id":729231710471,"name":"1.2 Estudios de posgrado","position":0,"score":0,"questions":[{"id":997400661726,"name":"Grado de doctor","position":0,"score":"3","answers":[]},{"id":1470842958033,"name":"Estudios de doctorado","position":0,"score":"2","answers":[]},{"id":1350515465517,"name":"Grado de maestro\\/mag\\u00edster","position":0,"score":"2","answers":[]},{"id":42703057291,"name":"Estudios concluidos de maestr\\u00eda","position":0,"score":"1","answers":[]}]},{"id":585788727369,"name":"1.3 Capacitaci\\u00f3n y actualizaci\\u00f3n en la especialidad","position":0,"score":0,"questions":[{"id":743906276429,"name":"Programas afines a la especialidad con duraci\\u00f3n mayor a 96 horas o su equivalente en cr\\u00e9ditos. Dos (2) puntos por cada 96 horas acumuladas en los \\u00faltimos 5 a\\u00f1os, hasta 12 puntos.","position":0,"score":"12","answers":[]},{"id":1461227966461,"name":"Programas afines a la especialidad con duraci\\u00f3n\\nigual o mayor a 16 horas y hasta 96 horas o su\\nequivalente en cr\\u00e9ditos. Un (1) punto por cada 16 horas acumuladas en los\\n\\u00faltimos 5 a\\u00f1os, hasta 8 puntos.","position":0,"score":"8","answers":[]}]},{"id":97700825143,"name":"1.4 Otros programas de formaci\\u00f3n continua, incluyendo temas de pedagog\\u00eda","position":0,"score":0,"questions":[{"id":175989034156,"name":"Programas con duraci\\u00f3n mayor a 96 horas o su\\nequivalente en cr\\u00e9ditos Dos (2) puntos por cada 96 horas acumuladas en los\\n\\u00faltimos 5 a\\u00f1os, hasta 6 puntos","position":0,"score":"6","answers":[]},{"id":1542708142724,"name":"Programas con duraci\\u00f3n igual o mayor a 16 horas y\\nhasta 96 horas o su equivalente en cr\\u00e9ditos. Un (1) punto por cada 16 horas acumuladas en los\\n\\u00faltimos 5 a\\u00f1os, hasta 4 puntos","position":0,"score":"4","answers":[]},{"id":409491722610,"name":"Cursos de Ofim\\u00e1tica igual o mayores a 24 horas o\\nsu equivalente en cr\\u00e9ditos. 1 punto por cada 24 horas acumuladas en los \\u00faltimos 5\\na\\u00f1os, hasta 4 puntos","position":0,"score":"4","answers":[]},{"id":184167895204,"name":"Certificaci\\u00f3n de dominio del idioma ingl\\u00e9s. Nivel Avanzado","position":0,"score":"4","answers":[]},{"id":491086770935,"name":"Lenguas Originarias. Incorporados en el RNDBLO","position":0,"score":"4","answers":[]}]}]},{"id":107168914640,"name":"2. EXPERIENCIA LABORAL","position":0,"score":"40","groups":[{"id":1064372763231,"name":"2.1 Experiencia laboral en el sector productivo (IIEE o privadas)  ","position":0,"score":0,"questions":[{"id":1502895473448,"name":"Tres (3) puntos por cada a\\u00f1o de experiencia profesional\\nno docente en el sector productivo de la especialidad en\\nlos \\u00faltimos 10 a\\u00f1os.","position":0,"score":"30","answers":[]}]},{"id":73426368134,"name":"2.2 Experiencia docente en Educaci\\u00f3n Superior o\\nT\\u00e9cnico \\u2013 productiva","position":0,"score":0,"questions":[{"id":716200461622,"name":"Un (1) punto por a\\u00f1o de experiencia docente dentro de\\nlos \\u00faltimos 10 a\\u00f1os.","position":0,"score":"10","answers":[]}]}]},{"id":790085968000,"name":"3. M\\u00c9RITOS","position":0,"score":"8","groups":[{"id":1264032213169,"name":"Reconocimiento o felicitaci\\u00f3n por logro o\\ncontribuci\\u00f3n en la gesti\\u00f3n o pr\\u00e1ctica pedag\\u00f3gica o\\nproyecto de innovaci\\u00f3n o investigaci\\u00f3n.","position":0,"score":0,"questions":[{"id":1181679959004,"name":"Dos (2) puntos por cada reconocimiento, hasta 8 puntos","position":0,"score":"8","answers":[]}]}]}]}', 0, 1, '2023-10-31 04:17:58', '2023-10-31 06:42:08', NULL);
+
+
+-- Volcando estructura para tabla sigesco.tipo_usuarios
+CREATE TABLE IF NOT EXISTS `tipo_usuarios` (
+  `tus_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tus_usuariodescrip` varchar(225) DEFAULT NULL,
+  `tus_fechaRegistro` datetime DEFAULT NULL,
+  `tus_fechaModificacion` datetime DEFAULT NULL,
+  `tus_estado` int(1) DEFAULT NULL,
+  `tus_flag` int(1) DEFAULT NULL,
+  PRIMARY KEY (`tus_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Volcando datos para la tabla sigesco.tipo_usuarios: ~3 rows (aproximadamente)
+INSERT  INTO `tipo_usuarios` (`tus_id`, `tus_usuariodescrip`, `tus_fechaRegistro`, `tus_fechaModificacion`, `tus_estado`, `tus_flag`) VALUES
+	(1, 'ADMINISTRADOR', NULL, NULL, 1, 0),
+	(2, 'ESPECIALISTA ADMINISTRADOR', '2022-07-04 08:55:35', NULL, 1, 1),
+	(3, 'ESPECIALISTA EVALUADOR', '2022-10-03 11:08:57', NULL, 1, 1);
 
 -- Volcando estructura para tabla sigesco.permisos
 CREATE TABLE IF NOT EXISTS `permisos` (
@@ -1178,7 +1215,7 @@ CREATE TABLE IF NOT EXISTS `permisos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla sigesco.permisos: ~33 rows (aproximadamente)
-INSERT IGNORE INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES
+INSERT  INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES
 	(1, 1, NULL, NULL, 1, 0),
 	(2, 1, NULL, NULL, 1, 0),
 	(3, 1, NULL, NULL, 1, 0),
@@ -1244,7 +1281,7 @@ CREATE TABLE IF NOT EXISTS `postulaciones` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Volcando datos para la tabla sigesco.postulaciones: ~0 rows (aproximadamente)
-INSERT IGNORE INTO `postulaciones` (`id`, `nombre`, `apellido_paterno`, `apellido_materno`, `numero_documento`, `tipo_documento`, `genero`, `estado_civil`, `nacionalidad`, `fecha_nacimiento`, `correo`, `numero_celular`, `numero_telefono`, `via`, `nombre_via`, `zona`, `direccion`, `fecha_registro`, `uid`, `distrito_id`, `convocatoria_id`, `inscripcion_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+INSERT  INTO `postulaciones` (`id`, `nombre`, `apellido_paterno`, `apellido_materno`, `numero_documento`, `tipo_documento`, `genero`, `estado_civil`, `nacionalidad`, `fecha_nacimiento`, `correo`, `numero_celular`, `numero_telefono`, `via`, `nombre_via`, `zona`, `direccion`, `fecha_registro`, `uid`, `distrito_id`, `convocatoria_id`, `inscripcion_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'HUGO JAIME', 'BENDEZU', 'AMARO', '20111245', 1, 'M', 'soltero', 'Peruana', '2005-11-08', 'josearchivo01@gmail.com', '945403799', '5228360', 'Avenida', 'Carretera', 'Residencia', 'Los Andes 188', '2023-11-21 14:49:51', '655d09dfe210a1', 140112, 7, 1, '2023-11-21 14:49:51', '2023-11-21 14:49:51', NULL);
 
 -- Volcando estructura para tabla sigesco.postulacion_archivos
@@ -1263,7 +1300,7 @@ CREATE TABLE IF NOT EXISTS `postulacion_archivos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Volcando datos para la tabla sigesco.postulacion_archivos: ~2 rows (aproximadamente)
-INSERT IGNORE INTO `postulacion_archivos` (`id`, `nombre`, `url`, `formato`, `peso`, `tipo_id`, `postulacion_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+INSERT  INTO `postulacion_archivos` (`id`, `nombre`, `url`, `formato`, `peso`, `tipo_id`, `postulacion_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'dummy.pdf', '/uploads/1700596191655d09dfdf4da-dummy.pdf', 'pdf', 13264, 1, 1, '2023-11-21 14:49:51', '2023-11-21 14:49:51', NULL),
 	(2, 'sample.pdf', '/uploads/1700596191655d09dfdf9f3-sample.pdf', 'pdf', 3028, 3, 1, '2023-11-21 14:49:51', '2023-11-21 14:49:51', NULL);
 
@@ -1284,7 +1321,7 @@ CREATE TABLE IF NOT EXISTS `postulacion_especializaciones` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Volcando datos para la tabla sigesco.postulacion_especializaciones: ~0 rows (aproximadamente)
-INSERT IGNORE INTO `postulacion_especializaciones` (`id`, `tipo_especializacion`, `tema_especializacion`, `nombre_entidad`, `fecha_inicio`, `fecha_termino`, `numero_horas`, `postulacion_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+INSERT  INTO `postulacion_especializaciones` (`id`, `tipo_especializacion`, `tema_especializacion`, `nombre_entidad`, `fecha_inicio`, `fecha_termino`, `numero_horas`, `postulacion_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Privada', 'Tesis Ugel', 'Cibertec', '2023-11-09', '2023-11-17', 8, 1, '2023-11-21 14:49:51', '2023-11-21 14:49:51', NULL);
 
 -- Volcando estructura para tabla sigesco.postulacion_experiencias_laborales
@@ -1303,7 +1340,7 @@ CREATE TABLE IF NOT EXISTS `postulacion_experiencias_laborales` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Volcando datos para la tabla sigesco.postulacion_experiencias_laborales: ~0 rows (aproximadamente)
-INSERT IGNORE INTO `postulacion_experiencias_laborales` (`id`, `institucion_educativa`, `sector`, `puesto`, `numero_rd`, `numero_contrato`, `postulacion_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+INSERT  INTO `postulacion_experiencias_laborales` (`id`, `institucion_educativa`, `sector`, `puesto`, `numero_rd`, `numero_contrato`, `postulacion_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'cibertec', 'Privada', 'Docente', '1212121', '33323232', 1, '2023-11-21 14:49:51', '2023-11-21 14:49:51', NULL);
 
 -- Volcando estructura para tabla sigesco.postulacion_formaciones_academicas
@@ -1324,7 +1361,7 @@ CREATE TABLE IF NOT EXISTS `postulacion_formaciones_academicas` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Volcando datos para la tabla sigesco.postulacion_formaciones_academicas: ~0 rows (aproximadamente)
-INSERT IGNORE INTO `postulacion_formaciones_academicas` (`id`, `nivel_educativo`, `grado_academico`, `universidad`, `carrera_profesional`, `registro_titulo`, `rd_titulo`, `obtencion_grado`, `postulacion_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+INSERT  INTO `postulacion_formaciones_academicas` (`id`, `nivel_educativo`, `grado_academico`, `universidad`, `carrera_profesional`, `registro_titulo`, `rd_titulo`, `obtencion_grado`, `postulacion_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Técnico superior', 'Egresado', 'UPN', 'Ingenieria de sistemas', '21221221', '3232332', '444', 1, '2023-11-21 14:49:51', '2023-11-21 14:49:51', NULL);
 
 -- Volcando estructura para tabla sigesco.procesos
@@ -1336,10 +1373,7 @@ CREATE TABLE IF NOT EXISTS `procesos` (
   PRIMARY KEY (`pro_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Volcando datos para la tabla sigesco.procesos: ~2 rows (aproximadamente)
-INSERT IGNORE INTO `procesos` (`pro_id`, `pro_descripcion`, `pro_default`, `pro_estado`) VALUES
-	(1, 'Contrato Docente', 1, 1),
-	(2, 'Contrato Auxiliar de EducaciÃ³n', 0, 0);
+
 
 -- Volcando estructura para tabla sigesco.tipo_convocatoria
 CREATE TABLE IF NOT EXISTS `tipo_convocatoria` (
@@ -1352,26 +1386,20 @@ CREATE TABLE IF NOT EXISTS `tipo_convocatoria` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Volcando datos para la tabla sigesco.tipo_convocatoria: ~2 rows (aproximadamente)
-INSERT IGNORE INTO `tipo_convocatoria` (`tipo_id`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES
+
+INSERT  INTO `tipo_convocatoria` (`tipo_id`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'PUN', '2023-11-16 15:31:03', '2023-11-21 14:29:28', NULL),
 	(2, 'EVALUACIÓN DE EXPEDIENTE', '2023-11-16 15:31:03', '2023-11-21 14:29:49', NULL);
 
--- Volcando estructura para tabla sigesco.tipo_usuarios
-CREATE TABLE IF NOT EXISTS `tipo_usuarios` (
-  `tus_id` int(11) NOT NULL AUTO_INCREMENT,
-  `tus_usuariodescrip` varchar(225) DEFAULT NULL,
-  `tus_fechaRegistro` datetime DEFAULT NULL,
-  `tus_fechaModificacion` datetime DEFAULT NULL,
-  `tus_estado` int(1) DEFAULT NULL,
-  `tus_flag` int(1) DEFAULT NULL,
-  PRIMARY KEY (`tus_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+-- Añadir la restricción de clave externa
+ALTER TABLE convocatorias
+ADD CONSTRAINT fk_con_tipo
+FOREIGN KEY (con_tipo)
+REFERENCES tipo_convocatoria(tipo_id);
 
--- Volcando datos para la tabla sigesco.tipo_usuarios: ~3 rows (aproximadamente)
-INSERT IGNORE INTO `tipo_usuarios` (`tus_id`, `tus_usuariodescrip`, `tus_fechaRegistro`, `tus_fechaModificacion`, `tus_estado`, `tus_flag`) VALUES
-	(1, 'ADMINISTRADOR', NULL, NULL, 1, 0),
-	(2, 'ESPECIALISTA ADMINISTRADOR', '2022-07-04 08:55:35', NULL, 1, 1),
-	(3, 'ESPECIALISTA EVALUADOR', '2022-10-03 11:08:57', NULL, 1, 1);
+ALTER TABLE convocatorias ADD COLUMN `con_horainicio` time default null;
+ALTER TABLE convocatorias ADD COLUMN `con_horafin` time default null;
+
 
 -- Volcando estructura para tabla sigesco.ubigeo_peru_departments
 CREATE TABLE IF NOT EXISTS `ubigeo_peru_departments` (
@@ -1381,7 +1409,7 @@ CREATE TABLE IF NOT EXISTS `ubigeo_peru_departments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla sigesco.ubigeo_peru_departments: ~25 rows (aproximadamente)
-INSERT IGNORE INTO `ubigeo_peru_departments` (`id`, `name`) VALUES
+INSERT  INTO `ubigeo_peru_departments` (`id`, `name`) VALUES
 	('01', 'Amazonas'),
 	('02', 'Ãncash'),
 	('03', 'ApurÃ­mac'),
@@ -1418,7 +1446,7 @@ CREATE TABLE IF NOT EXISTS `ubigeo_peru_districts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla sigesco.ubigeo_peru_districts: ~1,874 rows (aproximadamente)
-INSERT IGNORE INTO `ubigeo_peru_districts` (`id`, `name`, `province_id`, `department_id`) VALUES
+INSERT INTO `ubigeo_peru_districts` (`id`, `name`, `province_id`, `department_id`) VALUES
 	('010101', 'Chachapoyas', '0101', '01'),
 	('010102', 'AsunciÃ³n', '0101', '01'),
 	('010103', 'Balsas', '0101', '01'),
@@ -3303,7 +3331,7 @@ CREATE TABLE IF NOT EXISTS `ubigeo_peru_provinces` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla sigesco.ubigeo_peru_provinces: ~196 rows (aproximadamente)
-INSERT IGNORE INTO `ubigeo_peru_provinces` (`id`, `name`, `department_id`) VALUES
+INSERT  INTO `ubigeo_peru_provinces` (`id`, `name`, `department_id`) VALUES
 	('0101', 'Chachapoyas', '01'),
 	('0102', 'Bagua', '01'),
 	('0103', 'BongarÃ¡', '01'),
@@ -3519,15 +3547,882 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla sigesco.usuarios: ~5 rows (aproximadamente)
-INSERT IGNORE INTO `usuarios` (`usu_id`, `usu_nombre`, `usu_apellidos`, `usu_dni`, `usu_pass`, `usu_fechaRegistro`, `usu_fechaModificacion`, `usu_estado`, `usu_flag`, `tipo_usuarios_tus_id`) VALUES
+INSERT  INTO `usuarios` (`usu_id`, `usu_nombre`, `usu_apellidos`, `usu_dni`, `usu_pass`, `usu_fechaRegistro`, `usu_fechaModificacion`, `usu_estado`, `usu_flag`, `tipo_usuarios_tus_id`) VALUES
 	(1, 'Administrador', NULL, 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', NULL, NULL, 1, 0, 1),
 	(2, 'LUIS ALBERTO', 'ARRASCUE BAZAN', '45146572', 'fe4c8fb5f6863a3e986dc09a63ba6f97c83be861', '2022-07-04 08:56:16', NULL, 1, 1, 2),
 	(3, 'LUIS ALBERTO', 'CARLOS TORRES', '47649297', '7bc716dd4a426baace7baead51b7e7fedfc15d97', '2022-10-03 11:08:36', NULL, 1, 1, 2),
 	(4, 'ZARELA FRANCISCA', 'PINILLOS MIÃ‘ANO', '43769349', '2085377fddb8486bc2d79b578503d33c24f6847a', '2022-10-03 11:10:11', NULL, 1, 1, 3),
 	(5, 'JOHANA LADIS', 'MENDOZA QUISPE', '43597360', '9aefefa502c1c2073b46ab251f039ffaa9a937fd', '2022-10-03 11:11:05', NULL, 1, 1, 3);
 
-/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+/************ 27/11/2023 **********************/
+CREATE TABLE `postulacion_evaluaciones` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`plantilla` TEXT NULL DEFAULT NULL,
+	`puntaje` DECIMAL(9,2) NULL DEFAULT NULL,
+	`estado` INT(11) UNSIGNED NULL DEFAULT '0',
+	`orden` INT(11) UNSIGNED NULL DEFAULT '0',
+	`fecha_registro` DATETIME NULL DEFAULT NULL,
+	`ficha_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`postulacion_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+);
+
+
+
+ALTER TABLE `periodo_fichas` ADD COLUMN `orden` INT(11) UNSIGNED NULL DEFAULT '0' AFTER `periodo_id`;
+ALTER TABLE `periodo_fichas` ADD COLUMN `promedio` INT(11) UNSIGNED NULL DEFAULT '0' AFTER `periodo_id`;
+ALTER TABLE `periodo_fichas` ADD COLUMN `descripcion` VARCHAR(255) NULL DEFAULT NULL AFTER `periodo_id`;
+
+
+CREATE TABLE `periodo_ficha_especialidades` (
+	`periodo_ficha_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`especialidad_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL
+);
+
+ALTER TABLE `postulacion_evaluaciones` ADD COLUMN `promedio` INT(11) UNSIGNED NULL DEFAULT '0' AFTER `orden`;
+
+CREATE TABLE `localie` (
+  `loc_id` int(11) NOT NULL,
+  `loc_codigo` varchar(7) DEFAULT NULL,
+  `loc_red` int(2) DEFAULT NULL,
+  `loc_gestion` varchar(100) DEFAULT NULL,
+  `loc_depgest` varchar(100) DEFAULT NULL,
+  `loc_distrito` varchar(100) DEFAULT NULL,
+  `loc_cpoblado` varchar(150) DEFAULT NULL,
+  `loc_direccion` varchar(200) DEFAULT NULL,
+  `loc_referencia` varchar(200) DEFAULT NULL,
+  `loc_web` varchar(100) DEFAULT NULL,
+  `loc_aniocreacion` int(4) DEFAULT NULL,
+  `loc_rdcreacion` varchar(80) DEFAULT NULL,
+  `loc_convenio` int(1) DEFAULT 0,
+  `loc_latitudx` double DEFAULT NULL,
+  `loc_longitudy` double DEFAULT NULL,
+  `loc_estado` int(1) DEFAULT 1,
+  `loc_aniobaja` int(4) DEFAULT 2100,
+  `loc_uscreado` int(11) DEFAULT NULL,
+  `loc_fcreado` datetime DEFAULT NULL,
+  `loc_usmodif` int(11) DEFAULT NULL,
+  `loc_fmodif` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+
+CREATE TABLE `modularie` (
+  `mod_id` int(11) NOT NULL,
+  `mod_codigo` varchar(7) DEFAULT NULL,
+  `mod_nombre` varchar(150) DEFAULT NULL,
+  `mod_nivel` varchar(100) DEFAULT NULL,
+  `mod_flagnivel` int(2) DEFAULT NULL,
+  `mod_modform` varchar(100) DEFAULT NULL,
+  `mod_modformabrev` varchar(100) DEFAULT NULL,
+  `mod_turno` varchar(25) DEFAULT NULL,
+  `mod_aniocreacion` int(4) DEFAULT NULL,
+  `mod_rdcreacion` varchar(80) DEFAULT NULL,
+  `mod_telefono` varchar(9) DEFAULT NULL,
+  `mod_correo` varchar(100) DEFAULT NULL,
+  `mod_convenio` int(1) DEFAULT 0,
+  `mod_estado` int(1) DEFAULT 1,
+  `mod_aniobaja` int(4) DEFAULT 2100,
+  `mod_uscreado` int(11) DEFAULT NULL,
+  `mod_fcreado` datetime DEFAULT NULL,
+  `mod_usmodif` int(11) DEFAULT NULL,
+  `mod_fmodif` datetime DEFAULT NULL,
+  `localie_loc_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+
+ALTER TABLE `localie`
+  ADD PRIMARY KEY (`loc_id`);
+
+ALTER TABLE `modularie`
+  ADD PRIMARY KEY (`mod_id`),
+  ADD KEY `fk_modularie_localie1_idx` (`localie_loc_id`);
+
+
+ALTER TABLE `modularie`
+  ADD CONSTRAINT `fk_modularie_localie1` FOREIGN KEY (`localie_loc_id`) REFERENCES `localie` (`loc_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  
+CREATE TABLE `adjudicaciones` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`postulacion_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`plaza_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`fecha_inicio` DATE NULL DEFAULT NULL,
+	`fecha_final` DATE NULL DEFAULT NULL,
+	`fecha_registro` DATETIME NULL DEFAULT NULL,
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+);
+
+UPDATE `modulos` SET mdl_ruta = 'configuracion/plazas' WHERE mdl_id = 17;
+
+CREATE TABLE plazas (
+  plz_id bigint(20) NOT NULL AUTO_INCREMENT,
+  codigoPlaza varchar(40) DEFAULT NULL,
+  codigoModular varchar(8) DEFAULT NULL,
+  ie varchar(150) DEFAULT NULL,
+  mod_id int(11) DEFAULT NULL,
+  especialidad text,
+  cargo varchar(40) DEFAULT NULL,
+  caracteristica varchar(50) DEFAULT NULL,
+  tipo varchar(50) DEFAULT NULL,
+  jornada tinyint(3) DEFAULT NULL,
+  tipo_vacante varchar(200) DEFAULT NULL,
+  motivo_vacante varchar(8000) DEFAULT NULL,
+  observacion text,
+  fecha_reg datetime DEFAULT NULL,
+  tipo_id int(11) DEFAULT NULL,
+  registrado_por varchar(20) DEFAULT NULL,
+  fecha year(4) DEFAULT NULL,
+  estado tinyint(1) DEFAULT NULL,
+  modificado_por varchar(20) DEFAULT NULL,
+  fecha_mod datetime DEFAULT NULL,
+  fecha_publicacion datetime DEFAULT NULL,
+  PRIMARY KEY (plz_id),
+  KEY modalidades (mod_id) USING BTREE,
+  KEY tipo_convocatoria (tipo_id) USING BTREE
+);
+
+
+
+
+INSERT INTO `localie` (`loc_id`, `loc_codigo`, `loc_red`, `loc_gestion`, `loc_depgest`, `loc_distrito`, `loc_cpoblado`, `loc_direccion`, `loc_referencia`, `loc_web`, `loc_aniocreacion`, `loc_rdcreacion`, `loc_convenio`, `loc_latitudx`, `loc_longitudy`, `loc_estado`, `loc_aniobaja`, `loc_uscreado`, `loc_fcreado`, `loc_usmodif`, `loc_fmodif`) VALUES
+(1, '323769', 1, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ZARATE', 'AVENIDA CAJAMARQUILLA S/N', '', '', 1979, 'R.D.Zonal. 01  Nº 03629', 0, -12.02285, -76.98596, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-17 10:17:49'),
+(2, '323793', 1, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ZARATE', 'JIRON YACHAYHUASI S/N', '', '', 1979, 'R.D.Z. 01 Nº 03629', 0, -12.02552, -76.99776, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 15:58:28'),
+(3, '323953', 1, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MANGOMARCA', 'AVENIDA TEMPLO DE LUNA S/N', '', '', 1982, 'R.D.Z. Nº 03878', 0, -12.0102, -76.9799, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 15:59:03'),
+(4, '324014', 1, 'Pública de gestión directa', 'Pública - Otro Sector Público', 'San Juan de Lurigancho', 'MANGOMARCA', 'JIRON SOCHIN MZ C1 LOTE 35', '', '', 1985, 'R.D.Z. Nº 00571 Y R.D. USE 03 Nº 00148', 0, -12.00852, -76.98364, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:00:35'),
+(5, '325419', 1, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ZARATE', 'JIRON LOS AMAUTAS 248', '', '', 1965, 'R.M. Nº  01505 Y R.M.Nº138', 0, -12.02861, -77.00994, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:13:14'),
+(6, '325278', 1, 'Pública de gestión directa', 'Pública - Otro Sector Público', 'San Juan de Lurigancho', 'MANGOMARCA', 'AVENIDA LAS LOMAS S/N', '', '', 1978, 'R.D.Nº 02944 Y R.D USE 05 N° 00265', 0, -12.01139, -76.98282, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:12:16'),
+(7, '325259', 1, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ZARATE', 'AVENIDA GRAN CHIMU S/N', '', '', 1970, 'R.M. Nº 01937 Y  R.D. Nº 03667', 0, -12.02482, -76.9974, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:11:03'),
+(8, '324561', 1, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MANGOMARCA', 'JIRON PALLKA', '', '', 1979, 'R.D. Nº 00734 Y R.D.Z. Nº 05333 Y RDR N°2175', 0, -12.01538, -76.9852, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:04:59'),
+(9, '324429', 1, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ZARATE', 'AVENIDA LOS AMAUTAS 1560', '', '', 1972, 'R.M. Nº 01287 Y R.D.USE 03 Nº 00771', 0, -12.02453, -76.98722, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:02:16'),
+(10, '325179', 1, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ZARATE', 'JIRON HUILLCA QUIRO 441', '', '', 1969, 'R.M. Nº 09919 Y R.M. Nº 02503', 0, -12.02404, -76.99925, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:08:33'),
+(11, '325099', 1, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ZARATE', 'AVENIDA GRAN CHIMU S/N', '', '', 1975, 'R.Depar.Nº 01692', 0, -12.02424, -76.98456, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:06:55'),
+(12, '566116', 1, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MANGOMARCA', 'AVENIDA TEMPLO DE LUNA S/N', '', '', 1992, 'R.D.Z. Nº 01402', 0, -12.01911, -76.98481, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:13:58'),
+(13, '323986', 2, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAMPOY', 'CAMPOY MZ C1', '', '', 2000, 'R.D. USE 05 Nº 03590', 0, -12.01911, -76.96828, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:14:39'),
+(14, '326796', 2, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAMPOY', 'AVENIDA LOS PROCERES MZ M LOTE 15', '', '', 1985, 'R.D. USE 03 Nº 03323', 0, -12.01408, -76.96331, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-08-03 15:29:24'),
+(15, '324226', 2, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', '28 DE JULIO', 'CALLE LOS HALCONES S/N', '', '', 1991, 'R.D. USE 03 Nº 00013', 0, -12.02185, -76.97813, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:15:23'),
+(16, '327965', 2, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAMPOY', 'CALLE 8 S/N MZ J LOTE 11 ETAPA III', '', '', 1992, 'R.M.Nº 0309', 0, -12.01579, -76.96293, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-08-03 15:29:35'),
+(17, '324325', 2, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Antonio', 'LA VIZCACHERA', 'AVENIDA LOS 5 VIAJEROS S/N', '', '', 1992, 'R.D.Nº 01418', 0, -12.00723, -76.95588, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:16:01'),
+(18, '324467', 2, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAMPOY', 'AVENIDA D MZ Q, LOTE 1-2', '', '', 1974, 'R.D.Zonal 01Nº 01189', 0, -12.01871, -76.96763, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:16:37'),
+(19, '324472', 2, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAMPOY', 'AVENIDA PRINCIPAL MZ D LOTE 6', '', '', 1974, 'R.D.Zonal 01Nº 01191', 0, -12.02081, -76.95637, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:17:26'),
+(20, '324486', 2, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAMPOY', 'AVENIDA PRINCIPAL S/N', '', '', 1974, 'R.D.Z. Nº 01190 Y R.D.Nº 01093', 0, -12.02449, -76.97901, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:18:32'),
+(21, '324995', 2, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAMPOY', 'CAMPOY MZ G ZONA III', '', '', 1988, 'R.D.Nº 00155', 0, -12.01577, -76.96509, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:20:23'),
+(22, '324858', 2, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAMPOY', 'PARQUE 6 SECTOR III MZ S, LOTE G', '', '', 1986, 'R.D.Zonal 01 Nº 01394', 0, -12.01124, -76.96067, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:19:41'),
+(23, '325315', 2, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAMPOY', 'AVENIDA LOS PROCERES MZ R LOTE 15', '', '', 1992, 'R.D.USE 03 Nº 01682', 0, -12.01253, -76.96254, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:21:12'),
+(24, '323750', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAJA DE AGUA', 'JIRON PASCO S/N', '', '', 1967, 'R.M.  Nº 02646', 0, -12.03118, -77.01698, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:25:10'),
+(25, '323788', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CHACARILLA DE OTERO', 'PASAJE RAUL PORRAS BARRENECHEA S/N', '', '', 1996, 'R.D. Nº 00961', 0, -12.0242, -77.01139, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:25:50'),
+(26, '323830', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LAS FLORES', 'JIRON LOS EBANOS S/N', '', '', 1980, 'R.D.Nº 01058', 0, -12.00575, -77.01436, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:26:32'),
+(27, '323849', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN HILARION', 'JIRON LAS GROCELLAS 1740', '', '', 1981, 'R.D.Zonal 01Nº 03188', 0, -12.00595, -77.00965, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:27:06'),
+(28, '323873', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LAS VIOLETAS', 'JIRON LOS RICINOS S/N', '', '', 1981, 'R.D.Z. Nº 03188', 0, -12.01479, -77.008, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:28:18'),
+(29, '323910', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN HILARION', 'JIRON LAS ORTIGAS S/N', '', '', 1982, 'R.D.Z. Nº 02811', 0, -12.00288, -77.0104, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:29:13'),
+(30, '324047', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAJA DE AGUA', 'AVENIDA PROCERES DE LA INDEPENDENCIA S/N', '', '', 1986, 'R.D.Zonal 01 Nº 01255', 0, -12.03125, -77.01241, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:30:10'),
+(31, '324269', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LAS FLORES DE LIMA', 'JIRON LAS ORTIGAS S/N', '', '', 1991, 'R.D. Nº 01222', 0, -12.00935, -77.00776, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:30:54'),
+(32, '326782', 3, 'Pública de gestión privada', 'Pública - En convenio', 'San Juan de Lurigancho', 'CHACARILLA DE OTERO', 'PASAJE RAUL PORRAS BARRENECHEA S/N', '', '', 1966, 'R.M. Nº 03714 Y R.D. Nº 01381-95', 0, -12.02277, -77.01005, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 17:47:40'),
+(33, '324603', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN HILARION', 'JIRON LAS RIMARINAS', '', '', 1981, 'R.D.Z. Nº 00881 Y R.D.N°3152-11', 0, -12.0059, -77.00737, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:36:19'),
+(34, '325184', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ASCURRUN', 'PLAZA PRINCIPAL EL PUEBLITO', '', '', 1958, 'R.M. Nº 18073 Y R.D.Z. 02 Nº 03796', 0, -12.018, -77.00373, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:43:21'),
+(35, '325202', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAJA DE AGUA', 'AVENIDA PROCERES DE LA INDEPENDENCIA S/N', '', '', 1964, 'R.M.Nº 03845 Y R.D.N°436', 0, -12.02992, -77.0122, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 17:33:59'),
+(36, '324405', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAJA DE AGUA', 'AVENIDA RIMAC S/N', '', '', 1966, 'R.M. Nº 02919', 0, -12.03152, -77.01524, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:31:32'),
+(37, '324981', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LAS FLORES', 'AVENIDA CANTO GRANDE S/N', '', '', 1972, 'R.M. Nº 00118 Y R.M. Nº 000997', 0, -12.01763, -77.01364, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:38:56'),
+(38, '324434', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', '15 DE ENERO', 'JIRON SAN MARTIN S/N', '', '', 1972, 'R.M. Nº 00118 Y R.D.Z. Nº 04436', 0, -12.00923, -77.01744, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:32:53'),
+(39, '325438', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LAS FLORES DE LIMA', 'JIRON LAS CAROLINAS MZ L1 LOTE 1', '', '', 1974, 'R.D.Zonal 01 Nº 00978 Y R.D.Zonal 01 Nº 00978', 0, -12.00952, -77.00917, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 17:46:39'),
+(40, '324636', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LAS VIOLETAS', 'JIRON LAS SENSITIVAS S/N', '', '', 1982, 'R.D.Z. Nº 00378 Y R.D. Nº 00046', 0, -12.01095, -77.00628, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:37:07'),
+(41, '324518', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CHACARILLA DE OTERO', 'AVENIDA MIGUEL GRAU S/N', '', '', 1976, 'R.D.Z.Nº 03133', 0, -12.02155, -77.00724, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:34:16'),
+(42, '325198', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CAJA DE AGUA', 'JIRON AREQUIPA S/N', '', '', 1973, 'R.Depar. Nº 02084', 0, -12.02764, -77.01384, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:44:31'),
+(43, '325221', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LAS FLORES', 'JIRON LOS EBANOS S/N', '', '', 1976, 'R.D.Zonal 01 Nº 04050 Y R.D. Zonal  01Nº 000996', 0, -12.00536, -77.014, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 17:35:12'),
+(44, '327611', 3, 'Pública de gestión privada', 'Pública - En convenio', 'San Juan de Lurigancho', 'CHACARILLA DE OTERO', 'PASAJE HIPOLITO UNANUE S/N', '', '', 1967, 'R.M.Nº 00904', 0, -12.025, -77.01039, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 17:48:35'),
+(45, '325075', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN HILARION', 'CALLE LAS MANDRAGORAS 417', '', '', 1989, 'R.Depar. Nº 01268', 0, -12.00572, -77.00984, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:41:22'),
+(46, '325018', 3, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LAS FLORES', 'JIRON JOSE ANTONIO ENCINAS 400', '', '', 1982, 'R.D.Zonal 01 Nº 04502', 0, -12.01896, -77.01046, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-27 16:40:02'),
+(47, '323892', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SANTA FE DE TOTORITAS', 'PASAJE LAS ORQUIDEAS S/N', '', '', 0, '', 0, -11.99729, -76.9959, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(48, '323854', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HUAYRONA', 'JIRON PIEDRA BIGUA S/N', '', '', 0, '', 0, -11.99352, -77.00265, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(49, '323868', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ASCURRUN', 'JIRON LOS CISNES S/N', '', '', 0, '', 0, -12.0153, -77.00028, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(50, '323967', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'INCA MANCO CAPAC', 'JIRON BIGUA S/N', '', '', 0, '', 0, -11.99893, -77.0021, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(51, '324194', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN CARLOS', 'CALLE LOS ZAFIROS S/N', '', '', 0, '', 0, -11.98802, -77.0077, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(52, '324306', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JORGE BASADRE', 'JIRON LAS GRAVAS 2460', '', '', 0, '', 0, -11.99104, -77.00926, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(53, '325443', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HORIZONTE DE ZARATE', 'MZ D LOTE 10 ETAPA I', '', '', 0, '', 0, -12.01521, -76.99814, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(54, '324491', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN HILARION', 'JIRON LAS GRAVAS 2032', '', '', 0, '', 0, -11.9988, -77.00728, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(55, '324943', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SANTA ROSA DEL SAUCE', 'AVENIDA LAS ROSAS S/N', '', '', 0, '', 0, -12.00857, -76.9894, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(56, '324599', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'INCA MANCO CAPAC', 'JIRON ENERGITAS S/N MZ A ETAPA II', '', '', 0, '', 0, -12.0086, -76.99784, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(57, '686294', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LOS SAUCES SEGUNDO', 'MZ H LOTE 20', '', '', 0, '', 0, -12.0055, -76.9907, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(58, '325339', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SANTA FE DE TOTORITAS', 'JIRON LOS GIRASOLES S/N', '', '', 0, '', 0, -11.9969, -76.99678, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(59, '324679', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'INCA MANCO CAPAC', 'JIRON REJALGAR 785', '', '', 0, '', 0, -12.00389, -76.99677, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(60, '324924', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LAS FLORES 78', 'JIRON LAS GRAVAS CUADRA 18', '', '', 0, '', 0, -12.00325, -77.00542, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(61, '324938', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN CARLOS', 'AVENIDA JORGE BASADRE MZ V-1 LOTE 1-22', '', '', 0, '', 0, -11.98876, -77.00652, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(62, '325155', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'EL SAUCE', 'EL SAUCE MZ A LOTE S-N', '', '', 0, '', 0, -12.00636, -76.99214, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(63, '324523', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'INCA MANCO CAPAC', 'JIRON LOS JASPES MZ I4 LOTE 1', '', '', 0, '', 0, -11.99875, -76.99966, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(64, '324537', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ASCURRUN', 'PASAJE LOS COLIBRIS S/N', '', '', 0, '', 0, -12.01368, -76.99923, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(65, '324580', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HUAYRONA', 'JIRON CANTO RODADO 620', '', '', 0, '', 0, -11.99336, -77.00213, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(66, '823489', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN GABRIEL', 'MZ X LOTE 1', '', '', 0, '', 0, -11.98839, -77.000345, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(67, '616055', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ZARATE', 'JIRON LOS URUBUES MZ I LOTE 11', '', '', 0, '', 0, -12.0165, -76.9968, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(68, '325061', 4, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN HILARION', 'JIRON AGUA MARINA 121', '', '', 0, '', 0, -11.99463, -77.00968, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(69, '323825', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CANTO REY', 'AVENIDA LOS CIRUELOS S/N', '', '', 0, '', 0, -11.98121, -76.99889, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(70, '324028', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'VILLA HUANTA', 'HUANTA MZ P LOTE 1', '', '', 0, '', 0, -11.98614, -76.99467, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(71, '324090', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ISRAEL', 'CALLE 12 Y 7 MZ L', '', '', 0, '', 0, -11.9751, -76.98832, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(72, '324108', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MIGUEL GRAU', 'JIRON ALMIRANTE GRAU MZ A LOTE 13', '', '', 0, '', 0, -11.98002, -76.99051, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(73, '324231', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JUAN PABLO II', '32', '', '', 0, '', 0, -11.98328, -76.97595, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(74, '324151', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JUAN PABLO II', 'AVENIDA PROLONGACION SAN MARTIN MZ S-2 LOTE 00', '', '', 0, '', 0, -11.98147, -76.98431, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(75, '324293', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JUAN PABLO II', 'AVENIDA LOS GRANADOS S/N', '', '', 0, '', 0, -11.98024, -76.98066, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(76, '324349', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JUAN PABLO II', 'CALLE JUAN PABLO II ZONA III', '', '', 0, '', 0, -11.98241, -76.97975, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(77, '324387', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAGRADO MADERO', 'COOPERATIVA SAGRADA FAMILIA MZ Z, LOTE 2', '', '', 0, '', 0, -11.97656, -76.98838, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(78, '748287', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'EL ARENAL  DE CANTO GRANDE', 'MZ K LOTE 13 SECTOR ARENAL ALTO', '', '', 0, '', 0, -11.97945, -76.98678, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(79, '325320', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HUANTA', 'AVENIDA HEROES DE LA BREÑA S/N', '', '', 0, '', 0, -11.98795, -76.99409, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(80, '324797', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ISRAEL', 'AVENIDA ISRAEL MZ M LOTE 13', '', '', 0, '', 0, -11.97429, -76.9883, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(81, '324815', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'EL PORVENIR', 'EL PORVENIR MZ F', '', '', 0, '', 0, -11.97338, -76.98937, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(82, '324820', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JUAN PABLO II', 'JIRON LOS GRANADOS MZ Q2 LOTE 1', '', '', 0, '', 0, -11.98039, -76.97831, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(83, '325235', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CANTO REY', 'JIRON LOS CIRUELOS 898', '', '', 0, '', 0, -11.98021, -76.99826, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(84, '325481', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JUAN PABLO II', 'AVENIDA PROLONGACION SAN MARTIN S/N', '', '', 0, '', 0, -11.98258, -76.98487, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(85, '325382', 5, 'Pública de gestión directa', 'Pública - Otro Sector Público', 'San Juan de Lurigancho', 'HUANTA', 'AVENIDA SANTA ROSA S/N', '', '', 0, '', 0, -11.99104, -76.99741, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-08-03 15:30:10'),
+(86, '325056', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CANTO GRANDE', 'AVENIDA SANTA ROSA S/N', '', '', 0, '', 0, -11.98351, -76.98918, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(87, '325037', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HUANTA', 'OTROS MZ P LOTE 13', '', '', 0, '', 0, -11.98525, -76.99396, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(88, '324071', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SANTA MARIA', 'SANTA MARIA MZ L1', '', '', 0, '', 0, -11.96256, -76.97868, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(89, '714329', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LOS HERALDOS', 'CALLE LAS LILAS MZ D', '', '', 0, '', 0, -11.96521, -76.98631, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(90, '324132', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'EDUARDO DE LA PINIELLA', 'EDUARDO DE LA PINELLA MZ C10 LOTE 6', '', '', 0, '', 0, -11.96987, -76.99183, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(91, '324165', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MARISCAL CACERES', 'MZ B-9,B-17', '', '', 0, '', 0, -11.96079, -76.98174, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(92, '325122', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SEÑOR DE LOS MILAGROS', 'JIRON LOS LIRIOS S/N', '', '', 0, '', 0, -11.97221, -76.98478, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(93, '325462', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SANTA MARIA', 'CALLE D MZ V-2 ETAPA II', '', '', 0, '', 0, -11.96587, -76.97091, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(94, '325358', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MARISCAL CACERES', 'MARISCAL CACERES MZ D8', '', '', 0, '', 0, -11.95837, -76.98055, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(95, '325495', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', '27 DE MARZO', 'PUEBLO JOVEN 27 DE MARZO S/N LOTE CEI', '', '', 0, '', 0, -11.9605, -76.978, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(96, '586336', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', '27 DE MARZO', 'PASAJE PROGRESO S/N MZ O LOTE CE', '', '', 0, '', 0, -11.9596, -76.9763, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(97, '686307', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SANTA MARIA', 'PARCELA II MZ I-3 LOTE 11', '', '', 0, '', 0, -11.9641, -76.968, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-17 10:32:12'),
+(98, '777034', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MARISCAL CACERES - AMPLIACION SANTA MARIA', 'MZ F3 LOTE 08 ETAPA II Y III SECTOR IV', '', '', 0, '', 0, -11.96806, -76.96926, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(99, '777053', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', '27  DE MARZO - AMPLIACION LA ROCA', 'AVENIDA LAS FLORES S/N ETAPA II', '', '', 0, '', 0, -11.96097, -76.972887, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(100, '777072', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SEÑOR DE LOS MILAGROS', 'MZ K LOTE 5 SECTOR COMBATE DE ANGAMOS AA.HH.', '', '', 0, '', 0, -11.966774, -76.981002, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(101, '324684', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HUANCARAY', 'AVENIDA CENTRO CIVICO S/N', '', '', 0, '', 0, -11.96656, -76.98921, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(102, '324698', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LA UNION', 'MZ K LOTE 7', '', '', 0, '', 0, -11.96846, -76.98844, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(103, '324839', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SANTA MARIA', 'CALLE D S/N', '', '', 0, '', 0, -11.96602, -76.97705, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(104, '324896', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JAIME ZUBIETA', 'JAIME ZUBIETA MZ F, LOTE 2-3', '', '', 0, '', 0, -11.96425, -76.98743, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(105, '324288', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SEÑOR DE LOS MILAGROS', 'JIRON LOS LIRIOS S/N', '', '', 0, '', 0, -11.97221, -76.98478, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(106, '325301', 6, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LA UNION', 'AVENIDA CIRCUNVALACION S/N', '', '', 0, '', 0, -11.96994, -76.98804, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(107, '325377', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CRUZ DE MOTUPE', 'PARQUE PRINCIPAL S/N', '', '', 0, '', 0, -11.94205, -76.97654, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(108, '324085', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MARISCAL CACERES', 'MARISCAL CACERES MZ R5', '', '', 0, '', 0, -11.94787, -76.97786, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(109, '324127', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MARISCAL CACERES', 'JIRON LAS LILAS S/N', '', '', 0, '', 0, -11.94989, -76.97907, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(110, '324245', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MARISCAL CACERES', 'MARISCAL CACERES MZ MY ETAPA II', '', '', 0, '', 0, -11.94755, -76.98271, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(111, '325283', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Antonio', 'JICAMARCA', 'JICAMARCA MZ H LOTE 4', '', '', 0, '', 0, -11.93263, -76.96549, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(112, '324274', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CRUZ DE MOTUPE', 'CRUZ DE MOTUPE MZ C', '', '', 0, '', 0, -11.94074, -76.97163, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(113, '324311', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MARISCAL CACERES', 'MARISCAL CACERES MZ K8 SECTOR II', '', '', 0, '', 0, -11.95168, -76.98309, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(114, '324368', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MARISCAL CACERES', 'JIRON PEREZ DE TUDELA S/N', '', '', 0, '', 0, -11.95593, -76.97915, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(115, '324373', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CESAR VALLEJO', 'CESAR VALLEJO MZ U, LOTE 1', '', '', 0, '', 0, -11.94018, -76.96667, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(116, '324392', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'TUPAC AMARU 2', 'TUPAC AMARU II MZ H LOTE 1', '', '', 0, '', 0, -11.956, -76.97738, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(117, '324919', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CIUDAD LOS CONSTRUCTORES', 'MZ Z', '', '', 0, '', 0, -11.95313, -76.97713, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(118, '779877', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'AMP. PRIMERO DE MAYO', 'AGRUPACIËN FAMILIAR AMP. PRIMERO DE MAYO MZ P LOTE 01', '', '', 0, '', 0, -11.94283, -76.96775, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(119, '797937', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MARISCAL CACERES -  CIUDAD LOS CONSTRUCTORES', 'PASAJE 86 S/N LOTE EDUCACIÓN PROGRAMA ETAPA 1ERA. SECTOR IV', '', '', 0, '', 0, -11.948966, -76.974768, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(120, '324764', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CRUZ DE MOTUPE', 'CALLE 60 MZ J', '', '', 0, '', 0, -11.93999, -76.97648, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(121, '324877', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN JOSE OBRERO', 'AVENIDA AMPLIACION S/N', '', '', 0, '', 0, -11.94764, -76.9757, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(122, '324882', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MONTENEGRO', 'AVENIDA PROLONGACION WIESSE S/N', '', '', 0, '', 0, -11.93795, -76.97173, 1, 0, 0, '2021-06-17 10:17:49', 1, '2023-03-01 10:35:58'),
+(123, '325160', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JAVIER PEREZ DE CUELLAR', 'AVENIDA NACIONES UNIDAS S/N', '', '', 0, '', 0, -11.95569, -76.97284, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(124, '325136', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CESAR VALLEJO', 'CESAR VALLEJO MZ P LOTE 2', '', '', 0, '', 0, -11.9401, -76.96548, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(125, '324900', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MARISCAL CACERES', 'AVENIDA CIRCUNVALACION MZ D', '', '', 0, '', 0, -11.95498, -76.98109, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(126, '325396', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MARISCAL CACERES', 'AVENIDA CENTRAL MZ N6 LOTE 1', '', '', 0, '', 0, -11.94893, -76.97999, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(127, '802439', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CESAR VALLEJO', 'MZ V LOTE 1', '', '', 0, '', 0, -11.938035, -76.966609, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(128, '823427', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CRUZ DE MOTUPE', 'MZ D LOTE 15 ETAPA II GRUPO 5', '', '', 0, '', 0, -11.939186, -76.973312, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(129, '823432', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CRUZ DE MOTUPE', 'MZ D LOTE 15 ETAPA II GRUPO 5', '', '', 0, '', 0, -11.944346, -76.974944, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(130, '510011', 7, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CRUZ DE MOTUPE', 'CRUZ DE MOTUPE GRUPO 5', '', '', 0, '', 0, -11.9403, -76.97498, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(131, '324033', 16, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SU SANTIDAD JUAN PABLO II', 'AVENIDA EL PARQUE S/N', '', '', 0, '', 0, -11.94085, -76.99273, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 11:43:27'),
+(132, '324052', 8, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', '10 DE OCTUBRE', 'AVENIDA FRAY DIEGO DE BARRANCA MZ A5 LOTE 12-10', '', '', 0, '', 0, -11.94752, -76.98744, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(133, '324113', 8, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CRUZ DE MOTUPE', 'CALLE 67 MZ ANF', '', '', 0, '', 0, -11.9368, -76.97806, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(134, '324207', 8, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CRUZ DE MOTUPE', 'MOTUPE', '', '', 0, '', 0, -11.93699, -76.97613, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(135, '324250', 16, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JOSE CARLOS MARIATEGUI', 'JOSE CARLOS MARIATEGUI MZ X LOTE 3 ETAPA V', '', '', 0, '', 0, -11.93097, -76.99123, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 11:44:34'),
+(136, '324170', 8, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', '10 DE OCTUBRE', 'AVENIDA DEL PARQUE S/N', '', '', 0, '', 0, -11.9421, -76.99019, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(137, '324189', 16, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CASA BLANCA', 'MZ N17 - V44 LOTE E-5', '', '', 0, '', 0, -11.94062, -76.99747, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 11:44:21'),
+(138, '324330', 16, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LAS GALERAS', 'LAS GALERAS MZ Q5 LOTE EI5', '', '', 0, '', 0, -11.93844, -76.99129, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 11:44:44'),
+(139, '326843', 8, 'Pública de gestión privada', 'Pública - En convenio', 'San Juan de Lurigancho', 'MONTENEGRO', 'MONTENEGRO MZ LMNÑOP-1', '', '', 0, '', 0, -11.93701, -76.97254, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(140, '713848', 8, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', '10 DE MARZO', '10 DE MARZO', '', '', 0, '', 0, -11.93228, -76.97823, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(141, '325344', 16, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SU SANTIDAD JUAN PABLO II', 'JIRON DELTA S/N', '', '', 0, '', 0, -11.93857, -76.99729, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 11:45:33'),
+(142, '742940', 16, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JOSE CARLOS MARIATEGUI', 'MZ E LOTE 3 ZONA 4', '', '', 0, '', 0, -11.93617, -76.98775, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-18 11:00:47'),
+(143, '777048', 8, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MARISCAL CACERES', 'MZ E LOTE 1 SECTOR III', '', '', 0, '', 0, -11.94034, -76.98262, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(144, '777067', 16, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'PROYECTO INTEGRAL NUEVO SAN JUAN', 'MZ C LOTE 34 SECTOR CRISTO REY', '', '', 0, '', 0, -11.93936, -77.01093, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 11:46:21'),
+(145, '777086', 16, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'INTEGRACION SOLIDARIDAD Y PROGRESO', 'MZ J LOTE 8 SECTOR ANTONIO RAYMONDI', '', '', 0, '', 0, -11.94222, -77.00367, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 11:46:34'),
+(146, '777543', 8, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'INTEGRACION, SOLIDARIDAD Y PROGRESO', 'MZ H LOTE 9 SECTOR LOS JARDINES AA.HH.', '', '', 0, '', 0, -11.94576, -76.99278, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(147, '777661', 16, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SANTA MARIA DE JESUS PROYECTO INTEGRAL NUEVO SAN J', 'PARCELA - A MZ F LOTE 03 SECTOR HUAYRONA', '', '', 0, '', 0, -11.93908, -77.01463, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 11:46:44'),
+(148, '325400', 8, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SU SANTIDAD JUAN PABLO II', 'JIRON PARALELO S/N', '', '', 0, '', 0, -11.94396, -76.99146, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(149, '324778', 8, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JOSE CARLOS MARIATEGUI', 'AVENIDA AMPLIACION OESTE S/N', '', '', 0, '', 0, -11.94065, -76.985, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(150, '324844', 8, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', '10 DE OCTUBRE', 'JIRON EL PEÑON S/N', '', '', 0, '', 0, -11.9474, -76.99004, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(151, '324962', 16, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JOSE CARLOS MARIATEGUI', 'JIRON DEL PARQUE S/N', '', '', 0, '', 0, -11.9351, -76.98799, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 11:45:06'),
+(152, '325240', 16, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAUL CANTORAL HUAMANI', 'AVENIDA SAUL CANTORAL HUAMANI S/N', '', '', 0, '', 0, -11.9391, -77.00205, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 11:45:23'),
+(153, '326838', 16, 'Pública de gestión privada', 'Pública - En convenio', 'San Juan de Lurigancho', 'JUAN PABLO II', 'AVENIDA EL MERCADO S/N', '', '', 0, '', 0, -11.94028, -76.99114, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 11:45:48'),
+(154, '823494', 8, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CRUZ DE MOTUPE', 'MZ I LOTE 21', '', '', 0, '', 0, -11.938783, -76.98027, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(155, '598117', 8, 'Privada', 'Privada - Parroquial', 'San Juan de Lurigancho', 'SAUL CANTORAL HUAMANI', 'MZ A-3 LOTE 05', '', '', 0, '', 0, -11.9393, -77.0016, 0, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-17 01:11:51'),
+(156, '645722', 8, 'Privada', 'Privada - Parroquial', 'San Juan de Lurigancho', '10 DE OCTUBRE', 'CALLE FRANCISCO INGA S/N MZ B11', '', '', 0, '', 0, -11.94895, -76.98897, 0, 0, 0, '2021-06-17 10:17:49', 1, '2021-07-23 00:10:06'),
+(157, '714013', 8, 'Privada', 'Privada - Particular', 'San Juan de Lurigancho', 'JOSE CARLOS MARIATEGUI', 'CALLE 55 MZ I8 LOTE 3 ZONA I', '', '', 0, '', 0, -11.94291, -76.98698, 0, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 12:27:32'),
+(158, '510006', 16, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CASA BLANCA', 'JIRON DELTA S/N', '', '', 0, '', 0, -11.9397, -77.0003, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 11:46:01'),
+(159, '323887', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HUASCAR', 'PASAJE SANTA ROSA S/N', '', '', 0, '', 0, -11.96581, -77.01079, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(160, '323905', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HUASCAR', 'AVENIDA CANTO GRANDE S/N', '', '', 0, '', 0, -11.961, -77.0019, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(161, '323948', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LAS TERRAZAS', 'MZ Q LOTE 15', '', '', 0, '', 0, -11.97328, -77.01349, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(162, '325508', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LA MANO DE DIOS', 'HUASCAR MZ B, LOTE 01', '', '', 0, '', 0, -11.9517, -77.006, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(163, '324542', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', '9 DE OCTUBRE', 'AVENIDA FRANCISCO BOLOGNESI S/N', '', '', 0, '', 0, -11.95843, -77.00013, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(164, '326819', 9, 'Pública de gestión privada', 'Pública - En convenio', 'San Juan de Lurigancho', 'HUASCAR', 'HUASCAR S/N', '', '', 0, '', 0, -11.96953, -77.01032, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(165, '325264', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HUASCAR', 'AVENIDA FRANCISCO BOLOGNESI S/N', '', '', 0, '', 0, -11.9651, -77.00436, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(166, '715994', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'UPIS  - HUASCAR GRUPO 16', 'UPIS - HUASCAR GRUPO 16 SECTOR B', '', '', 0, '', 0, -11.95484, -77.00299, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(167, '748112', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'UPIS HUASCAR - GRUPO 10', 'UPIS HUASCAR - GRUPO 10 SECTOR A AA.HH.', '', '', 0, '', 0, -11.962435, -77.005214, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(168, '777656', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CANTO GRANDE - UNIDAD 2A', 'CALLE LOTE EDUCACIËN S/N MZ Y', '', '', 0, '', 0, -11.969889, -77.008032, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(169, '324759', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MACHUPICCHU', 'JIRON QUILLABAMBA 281', '', '', 0, '', 0, -11.97143, -77.00932, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(170, '324976', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LAS TERRAZAS', 'AVENIDA LOS LIBERTADORES S/N', '', '', 0, '', 0, -11.97313, -77.01367, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(171, '324575', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HUASCAR', 'AVENIDA JOSE C MARIATEGUI S/N ALT PARADERO S/N', '', '', 0, '', 0, -11.9584, -77.00505, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(172, '324617', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HUASCAR', 'AVENIDA SAN MARTIN S/N', '', '', 0, '', 0, -11.96496, -77.01058, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(173, '324721', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HUASCAR', 'AVENIDA LOS NARDOS SECTOR B GRUPO 18', '', '', 0, '', 0, -11.95079, -77.00391, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(174, '823446', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'BELEN', 'MZ ED', '', '', 0, '', 0, -11.964646, -77.015952, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(175, '325103', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HUASCAR SECTOR A', 'AVENIDA 12 S/N', '', '', 0, '', 0, -11.96662, -77.00535, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-08-03 15:58:09'),
+(176, '325457', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'BAYOVAR', 'BAYOVAR MZ 58, LOTE 8', '', '', 0, '', 0, -11.95366, -76.99542, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(177, '323929', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ARRIBA PERU', 'PARQUE CENTRAL S/N', '', '', 0, '', 0, -11.95728, -76.99501, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(178, '323934', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'BAYOVAR', 'BAYOVAR', '', '', 0, '', 0, -11.95079, -76.99181, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(179, '323991', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'PROYECTOS ESPECIALES', 'JIRON SEVILLA S/N', '', '', 0, '', 0, -11.95743, -76.99156, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(180, '325363', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', '5 DE NOVIEMBRE', 'MARISCAL CACERES MZ N LOTE N-4', '', '', 0, '', 0, -11.96085, -76.99029, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(181, '324212', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HORACIO ZEBALLOS', 'HORACIO ZEVALLOS S/N', '', '', 0, '', 0, -11.96288, -76.99184, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(182, '748697', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'PROYECTOS ESPECIALES', 'MZ G LOTE 3 ETAPA I AA.HH.', '', '', 0, '', 0, -11.961651, -76.998608, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(183, '797923', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'AMPLIACION BAYOVAR', 'AVENIDA 30 DE JUNIO PARELA - A S/N MZ R LOTE 1 SECTOR CRUZ BLANCA', '', '', 0, '', 0, -11.951065, -76.998852, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(184, '325424', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'BAYOVAR', 'AVENIDA 1 DE MAYO S/N', '', '', 0, '', 0, -11.95306, -76.99228, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(185, '324702', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'PROYECTOS ESPECIALES', 'AVENIDA REPUBLICA DE POLONIA S/N', '', '', 0, '', 0, -11.95744, -76.98961, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(186, '324740', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'ARRIBA PERU', 'CALLE ROTEROAM S/N', '', '', 0, '', 0, -11.95741, -76.993, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(187, '324783', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'PROYECTOS ESPECIALES', 'AVENIDA REPUBLICA DE POLONIA MZ W4 LOTE 1', '', '', 0, '', 0, -11.96231, -76.99322, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(188, '324957', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'BUENOS AIRES', 'CALLE RUAM S/N', '', '', 0, '', 0, -11.96441, -76.99267, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(189, '326824', 10, 'Pública de gestión privada', 'Pública - En convenio', 'San Juan de Lurigancho', 'ARRIBA PERU', 'AVENIDA NACIONES UNIDAS MZ 37-38', '', '', 0, '', 0, -11.95877, -76.99457, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(190, '325023', 10, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'HUASCAR', 'AVENIDA 1 DE MAYO S/N', '', '', 0, '', 0, -11.95086, -76.99035, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(191, '323806', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CANTO CHICO', 'AVENIDA LIMA MZ C LOTE 44', '', '', 0, '', 0, -12.00682, -77.01813, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(192, '323774', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN HILARION', 'JIRON LAS SABILAS S/N', '', '', 0, '', 0, -12.00082, -77.01207, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(193, '324009', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN HILARION', 'JIRON CRIPTON MZ E1 LOTE 01', '', '', 0, '', 0, -11.9978, -77.01774, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(194, '324354', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN FERNANDO', 'AMPLIACION SAN FERNANDO', '', '', 0, '', 0, -11.9757, -77.0206, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(195, '325476', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN IGNACIO', 'CALLE PIMPINELA MZ D LOTE 22', '', '', 0, '', 0, -11.99094, -77.01365, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(196, '325141', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LOS ANGELES', 'JIRON LAS NEBULOSAS S/N', '', '', 0, '', 0, -11.98712, -77.00951, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49');
+INSERT INTO `localie` (`loc_id`, `loc_codigo`, `loc_red`, `loc_gestion`, `loc_depgest`, `loc_distrito`, `loc_cpoblado`, `loc_direccion`, `loc_referencia`, `loc_web`, `loc_aniocreacion`, `loc_rdcreacion`, `loc_convenio`, `loc_latitudx`, `loc_longitudy`, `loc_estado`, `loc_aniobaja`, `loc_uscreado`, `loc_fcreado`, `loc_usmodif`, `loc_fmodif`) VALUES
+(197, '324504', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SANTA ELIZABETH', 'JIRON LOS CENTAUROS S/N', '', '', 0, '', 0, -11.98801, -77.0143, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(198, '324622', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SANTA ELIZABETH', 'JIRON NEVADO DE HUASCARAN S/N', '', '', 0, '', 0, -11.98142, -77.01833, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(199, '324863', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'AYACUCHO', 'MZ Q MZ Q', '', '', 0, '', 0, -11.98882, -77.01726, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(200, '324453', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN HILARION', 'JIRON LOS GERMANIOS S/N', '', '', 0, '', 0, -11.99519, -77.01636, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(201, '686312', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SEÑOR DE LUREN', 'SEÑOR DE LUREN', '', '', 0, '', 0, -11.9876, -77.0208, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(202, '324410', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CANTO CHICO', 'PASAJE TUMBES S/N', '', '', 0, '', 0, -12.00468, -77.01691, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(203, '325117', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CANTO BELLO', 'AVENIDA CANTO BELLO S/N', '', '', 0, '', 0, -11.97725, -77.0184, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(204, '324660', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'GANIMEDES', 'JIRON MARTE Y PLUTON S/N', '', '', 0, '', 0, -11.98397, -77.01347, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(205, '324735', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN HILARION', 'JIRON LOS JOBOS S/N', '', '', 0, '', 0, -11.99997, -77.0125, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(206, '324801', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MANTARO', 'JIRON LAS ACASIAS S/N', '', '', 0, '', 0, -11.99332, -77.01188, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(207, '324556', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'NUEVO PERU', 'AVENIDA NUEVO PERU MZ D LOTE 8-9', '', '', 0, '', 0, -12.00197, -77.01857, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(208, '566060', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN IGNACIO', 'AVENIDA MZ L LOTE 16', '', '', 0, '', 0, -11.993, -77.014, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(209, '325042', 11, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN CARLOS', 'JIRON GALAXIA Y EL SOL S/N', '', '', 0, '', 0, -11.98373, -77.01021, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(210, '323811', 12, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CANTO GRANDE', 'AVENIDA LAS HORTENCIAS 200', '', '', 0, '', 0, -11.97192, -77.00232, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(211, '324716', 12, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LOS ALAMOS', 'PARQUE PRINCIPAL S/N', '', '', 0, '', 0, -11.9642, -76.99807, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(212, '325004', 12, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LOS PINOS', 'AVENIDA REPUBLICA DE POLONIA S/N', '', '', 0, '', 0, -11.97641, -77.004, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(213, '324655', 12, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JESUS OROPEZA', 'PARQUE JESUS OROPEZA CHONTA S/N', '', '', 0, '', 0, -11.96671, -77.00184, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(214, '324448', 12, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'CANTO GRANDE', 'AVENIDA LAS HORTENCIAS 200', '', '', 0, '', 0, -11.97175, -77.00238, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(215, '324641', 12, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'MARISCAL LUZURRIAGA', 'JIRON RIO SANTA MZ C LOTE 11', '', '', 0, '', 0, -11.96855, -76.9985, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(216, '325297', 12, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LOS PINOS', 'AVENIDA WIESE S/N', '', '', 0, '', 0, -11.97646, -77.00293, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(217, '325080', 12, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LOS PINOS', 'AVENIDA REPUBLICA DE POLONIA S/N', '', '', 0, '', 0, -11.97696, -77.00457, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(218, '714701', 12, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'JESUS OROPEZA', 'JESUS OROPEZA CHONTA MZ H LOTE 4', '', '', 0, '', 0, -11.96742, -77.00152, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(219, '304718', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'CANAN', 'NAZARETH', '', '', 0, '', 0, -12.02803, -76.98938, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(220, '304742', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'LA MENACHO', 'AVENIDA JOSE CARLOS MARIATEGUI S/N', '', '', 0, '', 0, -12.03934, -76.99667, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(221, '304817', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'BETANIA', 'JIRON LOS ARTESANOS 140', '', '', 0, '', 0, -12.02776, -76.99299, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(222, '304803', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'VICENTELO BAJO', 'PASAJE ALBERTO GAMARRA MALLMA S/N', '', '', 0, '', 0, -12.0299, -77.00307, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(223, '304841', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'MARIA HERRERA DE ACOSTA', 'CALLE PLACIDO JIMENEZ Y LOS FICUS MZ C LOTE 1', '', '', 0, '', 0, -12.0372, -77.00614, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(224, '304884', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'VICENTELO BAJO', 'INDEPENDENCIA MZ D LOTE 19', '', '', 0, '', 0, -12.02855, -76.997, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(225, '304921', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'ANCIETA BAJA', 'LOS BRILLANTES', '', '', 0, '', 0, -12.03325, -77.00318, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(226, '304916', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'LA PRIMAVERA', 'CALLE LOS LIRIOS 105', '', '', 0, '', 0, -12.03454, -77.00591, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(227, '304983', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'LA ATARJEA', 'CALLE AGUA MARINA S/N', '', '', 0, '', 0, -12.03328, -76.98871, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(228, '304860', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'TAYACAJA', 'CALLE LOS ALGARROBOS MZ Q', '', '', 0, '', 0, -12.03787, -76.99053, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(229, '304879', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'LA MENACHO', 'AVENIDA LOS ALGARROBOS S/N', '', '', 0, '', 0, -12.03924, -76.99658, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-04-27 13:01:07'),
+(230, '304898', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'HUANCAYO', 'CALLE CARACOL 1040', '', '', 0, '', 0, -12.03069, -76.99713, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(231, '304935', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'ANCIETA BAJA', 'CALLE 7 DE JUNIO MZ A LOTE 49', '', '', 0, '', 0, -12.03166, -77.00763, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(232, '305138', 13, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'VILLA HERMOSA', 'AVENIDA CESAR VALLEJO 1390', '', '', 0, '', 0, -12.0351, -76.9935, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(233, '304756', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'LA CORPORACION', 'JIRON MARIANO BALDARRAGO S/N', '', '', 0, '', 0, -12.0514, -76.99937, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(234, '304940', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'SANTOYO', 'JIRON CAJACAY', '', '', 0, '', 0, -12.05019, -77.00619, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(235, '304704', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'VILLA HERMOSA', 'PARQUE PROGRESO S/N', '', '', 0, '', 0, -12.0408, -76.98958, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(236, '304822', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'NOCHETO', 'PASAJE AMAUTA S/N MZ D2 LOTE 1', '', '', 0, '', 0, -12.04507, -76.9855, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(237, '304836', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'CATALINA HUANCA', 'JIRON TERESA GONZALES DE FANNING S/N', '', '', 0, '', 0, -12.05106, -76.99548, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(238, '304855', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'ANCIETA ALTA', 'CALLE CANADA MZ D LOTE 10 ZONA II', '', '', 0, '', 0, -12.04267, -76.99784, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(239, '305119', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'LA PRADERA', 'MZ RR LOTE 23 ZONA I', '', '', 0, '', 0, -12.03029, -76.96282, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(240, '304799', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'EL INDEPENDIENTE', 'JIRON ALONSO PALOMINO 228', '', '', 0, '', 0, -12.05187, -77.00178, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(241, '304959', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'ANCIETA ALTA', 'CALLE 21 MZ H4', '', '', 0, '', 0, -12.04472, -77.00309, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(242, '304964', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'VILLA HERMOSA', 'JIRON AGUAS VERDES S/N', '', '', 0, '', 0, -12.04202, -76.9892, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(243, '305162', 14, 'Pública de gestión privada', 'Pública - En convenio', 'El Agustino', 'VILLA HERMOSA', 'RIO CHEPEN', '', '', 0, '', 0, -12.04198, -76.98976, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(244, '305020', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'SANTA ISABEL', 'AVENIDA INDEPENDENCIA 586', '', '', 0, '', 0, -12.05531, -77.00129, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(245, '304997', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'ANCIETA ALTA', 'AVENIDA RIVA AGUERO 1575', '', '', 0, '', 0, -12.04543, -76.99866, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(246, '305039', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'LA CORPORACION', 'JIRON MARIANO BALDARRAGA S/N', '', '', 0, '', 0, -12.05135, -76.99814, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(247, '305082', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'ANCIETA ALTA', 'AVENIDA RIVA AGUERO 1758', '', '', 0, '', 0, -12.04317, -76.99724, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(248, '510935', 14, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'CORPORACIÓN', 'MARIANO BALDERRAGO MZ M LOTE 25', '', '', 0, '', 0, -12.04996, -77.00027, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(249, '305001', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'SANTA ISABEL', 'CALLE INCA RIPAC S/N', '', '', 0, '', 0, -12.05145, -77.00453, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-15 12:27:37'),
+(250, '304723', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'SAN CAYETANO', 'CALLE ZAPOTE S/N', '', '', 0, '', 0, -12.05725, -77.0048, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(251, '304902', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'Ate', 'VALDIVIESO', 'JIRON MELITON CARBAJAL 547', '', '', 0, '', 0, -12.06213, -76.98832, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(252, '304978', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'SANTOYO', 'JIRON CERRO AZUL 2126', '', '', 0, '', 0, -12.05064, -77.00895, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(253, '305015', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'SANTOYO', 'AVENIDA RIVA AGUERO 517', '', '', 0, '', 0, -12.05479, -77.00436, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(254, '305096', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'SAN CAYETANO', 'AVENIDA RIVA AGUERO 176', '', '', 0, '', 0, -12.05809, -77.00658, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(255, '305044', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'SAN PEDRO', 'JIRON ABRAHAM VALDELOMAR 565', '', '', 0, '', 0, -12.05965, -77.0024, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(256, '305100', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'LA ATARJEA', 'CALLE GUADALUPE S/N', '', '', 0, '', 0, -12.05427, -77.00689, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(257, '304761', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', '7 DE OCTUBRE', 'PASAJE LOS ANGELES S/N', '', '', 0, '', 0, -12.05639, -76.99427, 1, 0, 0, '2021-06-17 10:17:49', 1, '2019-09-13 15:06:09'),
+(258, '305063', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', '7 DE OCTUBRE', 'AVENIDA GARCILAZO DE LA VEGA 1151', '', '', 0, '', 0, -12.0597, -76.9969, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(259, '305077', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'SAN CAYETANO', 'JIRON SIMON BOLIVAR 125', '', '', 0, '', 0, -12.05666, -77.00763, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(260, '304775', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'EL AGUSTINO', 'AVENIDA GARCILAZO DE LA VEGA 320', '', '', 0, '', 0, -12.06069, -77.0037, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(261, '304780', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'SAN PEDRO', 'AVENIDA 15 DE ABRIL 344', '', '', 0, '', 0, -12.05957, -77.00421, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(262, '305124', 15, 'Pública de gestión directa', 'Pública - Sector Educación', 'El Agustino', 'SANTOYO', 'JIRON PATIVILCA S/N', '', '', 0, '', 0, -12.05076, -77.01079, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(263, '714225', 15, 'Privada', 'Privada - Parroquial', 'El Agustino', '7 DE OCTUBRE', 'GARCILAZO DE LA VEGA', '', '', 0, '', 0, -12.05879, -76.99526, 0, 0, 0, '2021-06-17 10:17:49', 1, '2021-08-02 16:15:23'),
+(264, '714287', 15, 'Pública de gestión directa', 'Pública - Otro Sector Público', 'El Agustino', 'SANTOYO', 'JIRON LLAMELLIN 330', '', '', 0, '', 0, -12.05292, -77.00809, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49'),
+(265, '305124', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 1, 0, 0, '2021-08-03 10:04:58', NULL, NULL),
+(266, '840827', 9, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'LOS AMAUTAS - HUASCAR', 'Mz G Lote 1', '', '', 0, '', 0, -11.96679, -77.00556, 1, 0, 0, '2021-08-03 15:44:16', 1, '2021-08-03 16:26:47'),
+(267, '304879', 0, '', 'Elegir...', '0', '', '', '', '', 0, '', 0, 0, 0, 0, 0, 0, '2022-04-27 12:56:05', 1, '2022-04-27 13:01:25'),
+(268, '858191', 5, 'Pública de gestión directa', 'Pública - Sector Educación', 'San Juan de Lurigancho', 'SAN JUAN DE LURIGANCHO', 'CACTUS DE AYACUCHO', '', '', 0, '', 0, 0, 0, 1, 0, 0, '2023-02-20 10:20:10', 1, '2023-04-19 15:36:41'),
+(269, '858191', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 1, 0, 0, '2023-02-20 10:22:04', NULL, NULL);
+
+
+
+INSERT INTO `modularie` (`mod_id`, `mod_codigo`, `mod_nombre`, `mod_nivel`, `mod_flagnivel`, `mod_modform`, `mod_modformabrev`, `mod_turno`, `mod_aniocreacion`, `mod_rdcreacion`, `mod_telefono`, `mod_correo`, `mod_convenio`, `mod_estado`, `mod_aniobaja`, `mod_uscreado`, `mod_fcreado`, `mod_usmodif`, `mod_fmodif`, `localie_loc_id`) VALUES
+(1, '0335273', '017 CUNA JARDIN', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '2539610', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-09 10:54:55', 233),
+(2, '0335364', '0015 LAS AZUCENAS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3749565', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 24),
+(3, '0335380', '0038 VIRGEN MEDALLA MILAGROSA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:38:40', 191),
+(4, '0335398', '0039 JOSE MARIA ARGUEDAS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3892935', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 210),
+(5, '0335406', '0036 MADRE MARIA AUXILIADORA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4591986', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 25),
+(6, '0335422', '0063 VIRGEN DE LOURDES', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3769519', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 47),
+(7, '0339457', '1169 ALMIRANTE MIGUEL GRAU S', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-16 11:52:17', 249),
+(8, '0482406', '0041 EL BOSQUECITO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3871070', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 69),
+(9, '0496513', '0032 NIÑO JESUS DE ZARATE', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '2539610', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-16 14:47:51', 1),
+(10, '0496679', '0009 JOSE MARIA ARGUEDAS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3646949', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 219),
+(11, '0496687', '013 SANTA ROSITA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3851858', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 220),
+(12, '0510529', '035 ISABEL FLORES DE OLIVA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3767474', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 192),
+(13, '0511204', '010 MARTIR OLAYA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3277370', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 250),
+(14, '0524090', '0040', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 176),
+(15, '0524199', '0037 SANTA ROSA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '2866207', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2018-04-09 11:34:00', 2),
+(16, '0525790', '1025 MARIA PARADO DE BELLIDO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3271429', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 234),
+(17, '0537878', '0043 JUAN PABLO II', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4597218', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 26),
+(18, '0556654', '08 VILLA HERMOSA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '5949733', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 235),
+(19, '0562058', '114 VIRGEN DE CHAPI', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 251),
+(20, '0562082', '069 NOCHETO LUIS ENRIQUE VI', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3620911', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 236),
+(21, '0562140', '068', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4589184', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 221),
+(22, '0589895', '0062', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '6547734', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 159),
+(23, '0590042', '00057 PASITOS DE JESUS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '2867042', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 48),
+(24, '0590257', '067 SANTISIMA CRUZ DE MOTUPE', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '4598490', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 222),
+(25, '0590968', '0070 HUASCAR', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '2860500', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 160),
+(26, '0590992', '0073 ARRIBA PERU', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 177),
+(27, '0591024', '0051 LOS PASTORCITOS DE NUESTRA SEÑORA DE FATIMA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3766170', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 27),
+(28, '0591057', '060 CORAZON DE JESUS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '5790302', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:39:14', 49),
+(29, '0591081', '0061 LAS VIOLETAS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '6379666', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 28),
+(30, '0605477', '076 MICAELA BASTIDAS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 237),
+(31, '0605535', '081', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '4598619', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 223),
+(32, '0607267', '0071 VIRGEN DEL CARMEN', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4586648', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 29),
+(33, '0607374', '0079 CUNA JARDIN', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 178),
+(34, '0607382', '0080 LAS TERRAZAS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3879400', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 161),
+(35, '0631697', '0083', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4977469', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 3),
+(36, '0631721', '0084 VIRGEN MARIA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4586406', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 50),
+(37, '0647693', '0092', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 179),
+(38, '0647701', '093 NIÑOS DE LA VIRGEN DEL ROSARIO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3891283', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:40:32', 193),
+(39, '0647727', '0086 CAMPOY', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 13),
+(40, '0664276', '0149 JORGE CIEZA LACHOS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3790761', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-06-16 12:37:56', 4),
+(41, '0664326', 'MAMA ELSA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3860500', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 14),
+(42, '0664466', '098', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 70),
+(43, '0664474', '0099 KAROL WOJTYLA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3929592', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 131),
+(44, '0665257', '0101 RAYITO DE LUZ', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3765087', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 30),
+(45, '0665349', '102 VIRGEN DEL ROSARIO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3923622', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 132),
+(46, '0665356', '0105 YOY MARINA GARATE BARDALES', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '6516053', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 107),
+(47, '0665364', '0107 ISRAEL', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '7512208', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 71),
+(48, '0665778', '0104', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 88),
+(49, '0665786', '106 INDOAMERICA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '2537565', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 108),
+(50, '0742379', '0108', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3885570', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 72),
+(51, '0742387', '0109', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 133),
+(52, '0762310', '0111', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '7996495', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 109),
+(53, '0762351', '0110', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 180),
+(54, '0762393', '0112', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 89),
+(55, '0762922', '084 COQUITO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '2864885', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 238),
+(56, '0776518', '0115 06', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '6478606', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 134),
+(57, '0776542', '115-7 KUMAMOTO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:43:09', 181),
+(58, '0776575', '0115 08 WILLIAM DYER AMPUDIA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 15),
+(59, '0776609', '115-9 NUEVA ESPERANZA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3044829', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:55:13', 73),
+(60, '0776633', '0115 10 MUNDO DEL SABER', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3927598', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 110),
+(61, '0776666', '115-11 SAGRADO CORAZON DE JESUS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3924482', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:55:40', 135),
+(62, '0777490', '0113 DIVINO NIÑO JESUS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '6349769', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 90),
+(63, '0777524', 'SAN ANTONIO DE JICAMARCA', 'Inicial', 1, 'Educació', 'EBR', 'Tarde', 0, '', '3923509', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 111),
+(64, '0777557', '115', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3306468', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 74),
+(65, '0777581', '0115 01 LA SEMILLITA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 91),
+(66, '0777615', '0115 02 NIÑO JESUS MARISCAL CHAPERITO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3924776', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:42:20', 136),
+(67, '0777649', '115-3 ANGELITOS DE CASABLANCA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3930817', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 137),
+(68, '0777706', '115-5 REPUBLICA HELENICA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '6328298', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 51),
+(69, '0840256', 'PADRE CARLOS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3862300', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 16),
+(70, '0846071', '0115 12 FLORES DE LIMA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3768693', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 31),
+(71, '0846105', '115-13 VIRGEN DE LAS MERCEDES', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3921584', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 112),
+(72, '0846139', '0115 14 LOS RUISEÑORES', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3878419', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 92),
+(73, '0846162', '115-15 NIÑO JESUS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:56:25', 75),
+(74, '0846196', '115-16 VIRGEN DEL CARMEN', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '4580720', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:56:43', 52),
+(75, '0846220', '115-17 SAN JUDAS TADEO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3420775', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 53),
+(76, '0846253', '115-18 JUANA ALARCO DE DAMMERT', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '7477056', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:57:04', 113),
+(77, '0846287', '0115 19 MAMA LUCIE', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 17),
+(78, '0846311', '0115 20', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 138),
+(79, '0846345', '0115 21', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 76),
+(80, '0846378', '0115 22 SANTISIMA VIRGEN DE LOURDES', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 194),
+(81, '0846816', '0115 23 SEÑOR DE LOS MILAGROS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 114),
+(82, '0900589', '115-24 SEMILLITA DEL SABER', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3927573', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:57:26', 115),
+(83, '0903237', '1046 JULIO RAMON RIBEYRO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 252),
+(84, '0903260', '1170', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3276579', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 253),
+(85, '0903328', 'GRAN MARISCAL ANDRES AVELINO CACERES DORREGARAY', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3890533', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-17 16:07:51', 254),
+(86, '0904565', '', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '', '', 0, 0, 0, 0, '2021-06-17 10:17:49', 1, '2021-08-02 16:15:32', 263),
+(87, '1008887', '0098 PERU JAPON', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3856225', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 224),
+(88, '1062702', '127 SAN JOSE', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3856243', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 225),
+(89, '1062785', '1177 HEROES DEL CENEPA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '6941464', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 255),
+(90, '1062827', 'HOGAR SAN MARTIN', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3271857', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 256),
+(91, '1062868', 'LA PRADERA II', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '7319452', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 239),
+(92, '1066794', '0049 ANTONIA MORENO DE CACERES', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4029533', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 240),
+(93, '1066836', '115 TORIBIO RODRIGUEZ DE MENDOZA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3856446', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 226),
+(94, '1066877', '1047 JUANA INFANTES VERA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4780253', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 227),
+(95, '1070432', '0115 25 CUNA DE JESUS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3767718', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 77),
+(96, '1070473', '0115 26', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 93),
+(97, '1070515', '115-27 MI PEQUEÑO MUNDO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-06-16 12:39:34', 116),
+(98, '1070556', '0115 28 NIÑO JESUS DE SAN IGNACIO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3874202', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 195),
+(99, '1070598', '115 29 LOS ANGELITOS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '6574867', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 94),
+(100, '1070630', 'FE Y ALEGRIA 04', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3750517', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 32),
+(101, '1070671', '171-05 LOS ANGELES', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '6245241', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:07:09', 196),
+(102, '1188366', '046 LOS LIBERTADORES DE AYACUCHO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2019-09-13 15:03:58', 257),
+(103, '1188408', '1044 MARIA REICHE NEWMANN', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 241),
+(104, '1192723', '144', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3893214', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 211),
+(105, '1192921', 'FE Y ALEGRIA 37', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3851858', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 139),
+(106, '1222140', '115 31 GOTITAS DE AMOR', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 95),
+(107, '1225705', '1045 NUESTRA SEÑORA DE FATIMA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3623641', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 242),
+(108, '1261270', '1186 SANTA ROSA DE LIMA MILAGROSA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-06-17 10:41:45', 258),
+(109, '1261379', '117 SIGNOS DE FE', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3887137', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 162),
+(110, '1329044', '10 DE MARZO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '2864803', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 140),
+(111, '1454958', '27 DE MARZO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3382084', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 96),
+(112, '1470855', 'SAUL CANTORAL HUAMANI', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3923766', '', 0, 0, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-17 01:11:48', 155),
+(113, '1494616', '1174 VIRGEN DEL CARMEN', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3760027', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 5),
+(114, '1500685', '100', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3883064', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 197),
+(115, '1501022', 'FE Y ALEGRIA 39', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3620621', '', 0, 0, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 243),
+(116, '1501287', 'CASA BLANCA DE JESUS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3922620', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 141),
+(117, '1501378', 'ASOCIACION RELIGIOSA MARIA Y JESUS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 0, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-17 16:21:34', 157),
+(118, '1502293', '0132 TORIBIO DE LUZURIAGA Y MEJIA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3882762', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 198),
+(119, '1502301', 'CABO GC. MARTIN ESQUICHA BERNEDO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4592587', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:07:29', 6),
+(120, '1502939', '1187 SAN CAYETANO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3077327', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 259),
+(121, '1502947', '1171 JORGE BASADRE GROHMANN', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3271630', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 244),
+(122, '1503101', '116 ABRAHAM VALDELOMAR', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3889251', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 163),
+(123, '1503549', '0161 MOISES COLONIA TRINIDAD', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3881929', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:05:14', 199),
+(124, '1503929', 'ANTENOR ORREGO ESPINOZA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4890318', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 7),
+(125, '1504026', 'FE Y ALEGRIA 25', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3871500', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 164),
+(126, '1532738', '0130 HEROES DEL CENEPA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4582823', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 33),
+(127, '1532746', '0140 SANTIAGO ANTUNEZ DE MAYOLO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3877748', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 212),
+(128, '1535566', 'FRANCISCO BOLOGNESI CERVANTES', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3870750', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 165),
+(129, '1537745', '0092 ALFRED NOBEL', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '4597913', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 54),
+(130, '1538891', '0136 SANTA ROSA MILAGROSA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3742958', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 213),
+(131, '1560234', '1173 JULIO CESAR TELLO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '4583083', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 34),
+(132, '1569961', '170 SANTA ROSA DEL SAUCE', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '4590152', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:05:55', 55),
+(133, '1572890', '', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '', '', 0, 0, 0, 0, '2021-06-17 10:17:49', 1, '2021-08-02 16:16:46', 156),
+(134, '1578632', '0128 LA LIBERTAD', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3750183', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 56),
+(135, '1578871', '0087 JOSE MARIA ARGUEDAS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3881100', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 200),
+(136, '1621903', 'SAN MARTIN DE PORRES', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 57),
+(137, '1621911', 'RAYITO DE SOL', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 97),
+(138, '1621929', '0167 MARIA REICHE', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 117),
+(139, '1621937', 'JESUSITO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '4586406', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 201),
+(140, '1634021', '1179 TOMAS ALVA EDISON', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3888187', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 35),
+(141, '1637479', 'REINO DE LOS NIÑOS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '4598490', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 166),
+(142, '1646447', '047 SEÑOR DE LOS MILAGROS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3245385', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 260),
+(143, '1646454', '0085 JOSE DE LA TORRE UGARTE', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3856238', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 228),
+(144, '1650258', '122 ANDRES AVELINO CACERES', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '4593325', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 8),
+(145, '1660604', 'MI PEQUEÑO ANGELITO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3928063', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 142),
+(146, '1665496', 'LAS SEMILLITAS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '4591986', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 167),
+(147, '1665637', 'SEMILLITAS DE LA PAZ', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 78),
+(148, '1666031', 'MI SEGUNDO HOGAR', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 182),
+(149, '1693407', 'GOTITAS DE AMOR', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '7940754', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 98),
+(150, '1693415', 'NIÑO MANUELITO - A', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 143),
+(151, '1693423', 'MIS PRIMEROS PASOS - AZUL', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 99),
+(152, '1693431', 'CRISTO REY - A', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '3620621', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 144),
+(153, '1693449', 'HUELLITAS DE JESUS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 100),
+(154, '1693456', 'ESPERANZA DEL PERU', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '6984493', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 145),
+(155, '1694033', 'ESTRELLITA DE BELEN - A', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 146),
+(156, '1694215', 'JOYITAS DE MARIA - I', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '6379666', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 168),
+(157, '1694223', 'JULIA VALENZUELA - I', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 147),
+(158, '1696830', 'PASITOS DEL SABER', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '6389058', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 118),
+(159, '1716752', 'LOS NIÑOS DE JESUS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 183),
+(160, '1716760', 'JOYITAS DE JESUS', 'Inicial', 1, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 119),
+(161, '1748573', 'CASITA AMIGA DE RURICANCHO', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 128),
+(162, '1748581', 'CAMINITO DE MOTUPE', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3384527', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 129),
+(163, '1748599', 'EL HOGAR DE JOSE Y MARIA', 'Inicial', 1, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4598314', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 174),
+(164, '0334896', '0009 JOSE MARIA ARGUEDAS', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 219),
+(165, '0334987', '0043 SAN CRISTOBAL', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3528497', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 36),
+(166, '0334995', 'FE Y ALEGRIA 04', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3750517', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 32),
+(167, '0335000', '0045 SAN ANTONIO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 202),
+(168, '0335018', '046 LOS LIBERTADORES DE AYACUCHO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2019-09-13 15:04:04', 257),
+(169, '0335026', '047 SEÑOR DE LOS MILAGROS', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 260),
+(170, '0335034', '048 SAN JUAN BOSCO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 261),
+(171, '0335042', '0049 ANTONIA MORENO DE CACERES', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 240),
+(172, '0335067', '0069 MACHU PICCHU', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 169),
+(173, '0335083', '0071 NUESTRA SEÑORA DE LA MERCED', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3760696', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 37),
+(174, '0335091', '0073 BENITO JUAREZ', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4582847', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 9),
+(175, '0335109', '0076 MARIA AUXILIADORA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '2865956', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 38),
+(176, '0335117', '0085 JOSE DE LA TORRE UGARTE', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 228),
+(177, '0335125', '0086 JOSE MARIA ARGUEDAS', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 214),
+(178, '0335133', '0087 JOSE MARIA ARGUEDAS', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 200),
+(179, '0335141', '0088 NUESTRA SRA. DEL CARMEN', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3861918', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 18),
+(180, '0335158', '0089 MANUEL GONZALES PRADA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3862264', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 19),
+(181, '0335166', '0090 DANIEL ALCIDES CARRION', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3861247', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 20),
+(182, '0335174', '0091 SANTA FE', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '2531816', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 58),
+(183, '0335182', '0092 ALFRED NOBEL', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '4597913', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 54),
+(184, '0338087', '1025 MARIA PARADO DE BELLIDO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 234),
+(185, '0338467', '1044 MARIA REICHE NEWMANN', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 241),
+(186, '0338491', '1045 NUESTRA SEÑORA DE FATIMA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 242),
+(187, '0338517', '1046 JULIO RAMON RIBEYRO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 252),
+(188, '0338525', '1047 JUANA INFANTES VERA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 227),
+(189, '0339432', '1168 GRAN MARISCAL RAMON CASTILLA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 245),
+(190, '0339440', '1169 ALMIRANTE MIGUEL GRAU SEMINARIO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-16 11:51:56', 249),
+(191, '0339465', '1170', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 253),
+(192, '0339499', '1171 JORGE BASADRE GROHMANN', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 244),
+(193, '0339507', '1172 CIRO ALEGRIA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 10),
+(194, '0339523', '1173 JULIO CESAR TELLO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '4583083', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 34),
+(195, '0339549', '1174 VIRGEN DEL CARMEN', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3760027', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 5),
+(196, '0339572', 'GLORIOSOS HUSARES DE JUNIN', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 246),
+(197, '0339606', '1177 HEROES DEL CENEPA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 255),
+(198, '0339622', '1178 JAVIER HERAUD', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '4584367', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 42),
+(199, '0339655', '1179 TOMAS ALVA EDISON', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3888187', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 35),
+(200, '0339697', '1181 ALBERT EINSTEIN', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '4585926', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 43),
+(201, '0339796', '1186 SANTA ROSA DE LIMA MILAGROSA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-06-17 10:41:54', 258),
+(202, '0339804', '1187 SAN CAYETANO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 259),
+(203, '0466508', '0093 FERNANDO BELAUNDE TERRY', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-04-27 13:08:36', 229),
+(204, '0478404', '0098 PERU JAPON', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 224),
+(205, '0496521', 'ANTENOR ORREGO ESPINOZA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4890318', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 7),
+(206, '0496570', '102', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '4584730', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 41),
+(207, '0509901', '0120 MANUEL ROBLES ALARCON', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 184),
+(208, '0510206', 'CABO GC. MARTIN ESQUICHA BERNEDO', 'Primaria', 2, 'Educació', 'EBR', 'Tarde', 0, '', '4592587', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:07:33', 6),
+(209, '0510305', '116 ABRAHAM VALDELOMAR', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 163),
+(210, '0510404', 'FE Y ALEGRIA 25', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 164),
+(211, '0510503', '114 VIRGEN DE CHAPI', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 251),
+(212, '0510602', '115 TORIBIO RODRIGUEZ DE MENDOZA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 226),
+(213, '0510701', '112 HEROES DE LA BREÑA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 230),
+(214, '0510800', '0113 DANIEL ALOMIA ROBLES', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '4582753', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:07:57', 39),
+(215, '0518548', '110 SAN MARCOS', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3760886', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 64),
+(216, '0518647', '100', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 197),
+(217, '0528281', '121 VIRGEN DE FATIMA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 207),
+(218, '0528380', '122 ANDRES AVELINO CACERES', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '4593325', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 8),
+(219, '0541011', '125 RICARDO PALMA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 171),
+(220, '0541110', '126 JAVIER PEREZ DE CUELLAR', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3872825', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 65),
+(221, '0541219', 'FE Y ALEGRIA 26', 'Primaria', 2, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 189),
+(222, '0556241', 'FRANCISCO BOLOGNESI CERVANTES', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 165),
+(223, '0556548', '109 INCA MANCO CAPAC', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3880947', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 63),
+(224, '0584946', '127 SAN JOSE', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 225),
+(225, '0587279', '0130 HEROES DEL CENEPA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '4582823', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 33),
+(226, '0587303', '0128 LA LIBERTAD', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3750183', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 56),
+(227, '0590109', '0132 TORIBIO DE LUZURIAGA Y MEJIA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 198),
+(228, '0590133', '131 MONITOR HUASCAR', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 172),
+(229, '0607416', '0134 MARIO FLORIAN', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '4591539', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 40),
+(230, '0607424', '0135 TORIBIO RODRIGUEZ DE MENDOZA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 215),
+(231, '0607432', '0136 SANTA ROSA MILAGROSA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 213),
+(232, '0607440', '0137 MIGUEL GRAU SEMINARIO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 204),
+(233, '0607457', '0138 PROCERES DE LA INDEPENDENCIA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3762541', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 59),
+(234, '0607465', '139 GRAN AMAUTA MARIATEGUI', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3931804', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:57:51', 101),
+(235, '0629261', '142 MARTIR DANIEL ALCIDES CARRION', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:58:41', 185),
+(236, '0629295', '0141 VIRGEN DE COCHARCAS', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 102),
+(237, '0632299', '144', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 211),
+(238, '0632323', '145 INDEPENDENCIA AMERICANA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 173),
+(239, '0632356', '0146 SU SANTIDAD JUAN PABLO II', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 148),
+(240, '0647784', '0147 CAPITAN E.P. LUIS ALBERTO GARCIA ROJAS', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:59:12', 205),
+(241, '0647792', '0148 MAESTRO VICTOR RAUL HAYA DE LA TORRE', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:59:42', 186),
+(242, '0664284', '0149 JORGE CIEZA LACHOS', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3790761', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-06-16 12:38:06', 4),
+(243, '0664482', '0150 HEROES DE LA BREÑA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 79),
+(244, '0664490', '0151 MICAELA BASTIDAS', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 120),
+(245, '0664508', '0152 JOSE CARLOS MARIATEGUI', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 149),
+(246, '0665372', '0154 CARLOS NORIEGA JIMENEZ', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3893214', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 80),
+(247, '0665398', '0156 EL PORVENIR', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '6081617', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 81),
+(248, '0665406', '0171-10', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 82),
+(249, '0665414', '0158 SANTA MARIA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3888781', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 103),
+(250, '0665422', '0159 10 DE OCTUBRE', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 150),
+(251, '0665430', '0160 SOLIDARIDAD I', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 22),
+(252, '0665448', '0161 MOISES COLONIA TRINIDAD', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:05:18', 199),
+(253, '0665455', 'FE Y ALEGRIA 32', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 153),
+(254, '0697557', '0162 SAN JOSE OBRERO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 121),
+(255, '0703124', '0163 CORONEL NESTOR ESCUDERO OTERO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 122),
+(256, '0703132', '0164 EL AMAUTA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3876300', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 104),
+(257, '0762468', 'ANTONIA MORENO DE CACERES', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 126),
+(258, '0762500', 'FE Y ALEGRIA 37', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 139),
+(259, '0762658', '0168 AMISTAD PERU JAPON', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3761082', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 60),
+(260, '0762757', '134 RAMIRO PRIALE', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 231),
+(261, '0775296', 'FE Y ALEGRIA 39', 'Primaria', 2, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 243),
+(262, '0777110', '170 SANTA ROSA DEL SAUCE', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '4590152', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:06:00', 55),
+(263, '0777144', '0171 BUENOS AIRES', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 188),
+(264, '0777177', 'CASA BLANCA DE JESUS', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 141),
+(265, '0777201', '0171-01 JUAN VELASCO ALVARADO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 151),
+(266, '0777235', '0171 02', 'Primaria', 2, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:06:23', 170),
+(267, '0777268', '0171-03', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 105),
+(268, '0826024', 'SAN ANTONIO DE JICAMARCA', 'Primaria', 2, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 111),
+(269, '0826081', '0140 SANTIAGO ANTUNEZ DE MAYOLO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 212),
+(270, '0826115', '0169', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '3876718', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 61),
+(271, '0826263', '0119 CANTO BELLO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 203),
+(272, '0826321', '0153 ALEJANDRO SANCHEZ ARTEAGA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 187),
+(273, '0826479', '1182 EL BOSQUE', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '3878900', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 83),
+(274, '0826834', '0155 JOSE ANTONIO ENCINAS FRANCO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 206),
+(275, '0835033', 'GRAN MARISCAL ANDRES AVELINO CACERES DORREGARAY', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-17 16:08:30', 254),
+(276, '0846014', '166 KAROL WOJTYLA', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 125),
+(277, '0846048', '0167 MARIA REICHE', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 117),
+(278, '0847087', '171-05 LOS ANGELES', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:07:13', 196),
+(279, '0902049', '1183 SAUL CANTORAL HUAMANI', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 152),
+(280, '1063023', 'LA PRADERA II', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 239),
+(281, '1070275', '171 - 4 CONSUELO SOLEDAD CRISANTO SALINAS', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:06:47', 124),
+(282, '1070358', '0171 08', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 123),
+(283, '1070390', '0171-07 COVARRUBIA LAFUENTE', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '4581655', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 62),
+(284, '1258649', '117 SIGNOS DE FE', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 162),
+(285, '1454966', '27 DE MARZO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 96),
+(286, '1500982', '10 DE MARZO', 'Primaria', 2, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 140),
+(287, '1502038', 'ASOCIACION RELIGIOSA MARIA Y JESUS', 'Primaria', 2, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 0, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-17 16:21:38', 157),
+(288, '0334672', 'NICOLAS DE PIEROLA', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 262),
+(289, '0336578', '1178 JAVIER HERAUD', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 42);
+INSERT INTO `modularie` (`mod_id`, `mod_codigo`, `mod_nombre`, `mod_nivel`, `mod_flagnivel`, `mod_modform`, `mod_modformabrev`, `mod_turno`, `mod_aniocreacion`, `mod_rdcreacion`, `mod_telefono`, `mod_correo`, `mod_convenio`, `mod_estado`, `mod_aniobaja`, `mod_uscreado`, `mod_fcreado`, `mod_usmodif`, `mod_fmodif`, `localie_loc_id`) VALUES
+(290, '0336586', 'JOSE CARLOS MARIATEGUI', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 247),
+(291, '0336610', 'NICOLAS COPERNICO', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 216),
+(292, '0336628', 'ANTENOR ORREGO ESPINOZA', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 7),
+(293, '0336891', 'FE Y ALEGRIA 05', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 44),
+(294, '0519645', 'GRAN MARISCAL ANDRES A.CACERES D.', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-06-11 12:25:04', 254),
+(295, '0535724', 'FE Y ALEGRIA 25', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 164),
+(296, '0555946', '1174 VIRGEN DEL CARMEN', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 5),
+(297, '0556340', '0071 NUESTRA SEÑORA DE LA MERCED', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 37),
+(298, '0556449', '1181 ALBERT EINSTEIN', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 43),
+(299, '0578260', '0085 JOSE DE LA TORRE UGARTE', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 228),
+(300, '0578278', '1171 JORGE BASADRE GROHMANN', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 244),
+(301, '0578443', '1179 TOMAS ALVA EDISON', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 35),
+(302, '0578450', 'FE Y ALEGRIA 26', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 189),
+(303, '0578468', 'CABO GC. MARTIN ESQUICHA BERNEDO', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:07:38', 6),
+(304, '0578492', '0076 MARIA AUXILIADORA', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 38),
+(305, '0578500', '0086 JOSE MARIA ARGUEDAS', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 214),
+(306, '0578518', '0089 MANUEL GONZALES PRADA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 19),
+(307, '0578526', '0092 ALFRED NOBEL', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 54),
+(308, '0578534', '0113 DANIEL ALOMIA ROBLES', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:08:01', 39),
+(309, '0578542', '122 ANDRES AVELINO CACERES', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 8),
+(310, '0578559', '1173 JULIO CESAR TELLO', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 34),
+(311, '0607531', '0087 JOSE MARIA ARGUEDAS', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 200),
+(312, '0607549', '0091 SANTA FE', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 58),
+(313, '0607556', '109 INCA MANCO CAPAC', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 63),
+(314, '0607697', '1182 EL BOSQUE', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 83),
+(315, '0642892', 'FRANCISCO BOLOGNESI CERVANTES', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 165),
+(316, '0642926', '0090 DANIEL ALCIDES CARRION', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 20),
+(317, '0663971', '112 HEROES DE LA BREÑA', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 230),
+(318, '0664292', '0128 LA LIBERTAD', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 56),
+(319, '0664748', '142 MARTIR DANIEL ALCIDES CARRION', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:58:45', 185),
+(320, '0664912', '0009 JOSE MARIA ARGUEDAS', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 219),
+(321, '0665265', '110 SAN MARCOS', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 64),
+(322, '0665273', '126 JAVIER PEREZ DE CUELLAR', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 65),
+(323, '0665281', '0130 HEROES DEL CENEPA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 33),
+(324, '0665463', '0120 MANUEL ROBLES ALARCON', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 184),
+(325, '0665471', '0132 TORIBIO DE LUZURIAGA Y MEJIA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 198),
+(326, '0665489', '0151 MICAELA BASTIDAS', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 120),
+(327, '0703215', '116 ABRAHAM VALDELOMAR', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 163),
+(328, '0703223', '131 MONITOR HUASCAR', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 172),
+(329, '0703231', '0152 JOSE CARLOS MARIATEGUI', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 149),
+(330, '0703249', '0146 SU SANTIDAD JUAN PABLO II', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 148),
+(331, '0703256', '0137 MIGUEL GRAU SEMINARIO', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 204),
+(332, '0725523', '046 LOS LIBERTADORES DE AYACUCHO', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2019-09-13 15:04:10', 257),
+(333, '0728196', '0135 TORIBIO RODRIGUEZ DE MENDOZA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 215),
+(334, '0728337', '145 INDEPENDENCIA AMERICANA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 173),
+(335, '0762849', '121 VIRGEN DE FATIMA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 207),
+(336, '0762856', '125 RICARDO PALMA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 171),
+(337, '0762864', '0138 PROCERES DE LA INDEPENDENCIA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 59),
+(338, '0762880', 'FE Y ALEGRIA 37', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 139),
+(339, '0762906', 'ANTONIA MORENO DE CACERES', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 126),
+(340, '0762914', 'RAMIRO PRIALE PRIALE', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 106),
+(341, '0775320', 'FE Y ALEGRIA 39', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 243),
+(342, '0777656', '0148 MAESTRO VICTOR RAUL HAYA DE LA TORRE', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:59:46', 186),
+(343, '0777680', '0073 BENITO JUAREZ', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 9),
+(344, '0777714', '157 CAPITAN F.A.P. JOSE ABELARDO QU', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 84),
+(345, '0778738', '0159 10 DE OCTUBRE', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 150),
+(346, '0778761', '0161 MOISES COLONIA TRINIDAD', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:05:23', 199),
+(347, '0778795', '0163 CORONEL NESTOR ESCUDERO OTERO', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 122),
+(348, '0900647', 'FE Y ALEGRIA 32', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 153),
+(349, '0900670', '0069 MACHU PICCHU', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 169),
+(350, '0900704', '100', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 197),
+(351, '0900738', '0134 MARIO FLORIAN', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 40),
+(352, '0900761', '0136 SANTA ROSA MILAGROSA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 213),
+(353, '0900795', '139 GRAN AMAUTA MARIATEGUI', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:57:56', 101),
+(354, '0900829', '0143 SOLIDARIDAD II', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 21),
+(355, '0900852', '0150 HEROES DE LA BREÑA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 79),
+(356, '0900886', '0153 ALEJANDRO SANCHEZ ARTEAGA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 187),
+(357, '0900910', '0154 CARLOS NORIEGA JIMENEZ', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 80),
+(358, '0900944', '0164 EL AMAUTA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 104),
+(359, '0900977', '166 KAROL WOJTYLA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 125),
+(360, '0901009', '0171-01 JUAN VELASCO ALVARADO', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 151),
+(361, '0901017', 'SAN ANTONIO DE JICAMARCA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 111),
+(362, '0901033', '0119 CANTO BELLO', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 203),
+(363, '0901066', '0147 CAPITAN E.P. LUIS ALBERTO GARCIA ROJAS', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 13:59:16', 205),
+(364, '0901082', 'SOLIDARIDAD III', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 23),
+(365, '0901090', '0158 SANTA MARIA', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 103),
+(366, '0901124', '0171 02', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:06:29', 170),
+(367, '1008929', '1025 MARIA PARADO DE BELLIDO', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 234),
+(368, '1063106', '0098 PERU JAPON', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 224),
+(369, '1063148', '115 TORIBIO RODRIGUEZ DE MENDOZA', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 226),
+(370, '1063221', '134 RAMIRO PRIALE', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 231),
+(371, '1063262', '1044 MARIA REICHE NEWMANN', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 241),
+(372, '1063304', '1047 JUANA INFANTES VERA', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 227),
+(373, '1063346', 'GLORIOSOS HUSARES DE JUNIN', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 246),
+(374, '1070036', '0162 SAN JOSE OBRERO', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 121),
+(375, '1070077', '0149 JORGE CIEZA LACHOS', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-06-16 12:38:13', 4),
+(376, '1070119', '0168 AMISTAD PERU JAPON', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 60),
+(377, '1070150', '0169', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 61),
+(378, '1070192', '1183 SAUL CANTORAL HUAMANI', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 152),
+(379, '1071919', '0156 EL PORVENIR', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 81),
+(380, '1073212', '0045 SAN ANTONIO', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 202),
+(381, '1223023', '170 SANTA ROSA DEL SAUCE', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2022-05-11 14:06:05', 55),
+(382, '1227461', 'LA PRADERA II', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 239),
+(383, '1501451', '117 SIGNOS DE FE', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 162),
+(384, '1720390', 'CESAR VALLEJO', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 127),
+(385, '1720416', 'CASA BLANCA DE JESUS', 'Secundaria', 3, 'Educació', 'EBR', 'Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 141),
+(386, '1748730', 'SAN GABRIEL', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 66),
+(387, '1748748', 'TUPAC AMARU II', 'Secundaria', 3, 'Educació', 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 154),
+(388, '0901801', 'PRITE LOS ANGELITOS', 'Básica Especial', 4, 'Programa', 'PRITE', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 67),
+(389, '0901777', 'PRITE CRUZ DE MOTUPE', 'Básica Especial', 4, 'Programa', 'PRITE', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 130),
+(390, '0901835', 'PRITE CANTO GRANDE', 'Básica Especial', 4, 'Programa', 'PRITE', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 158),
+(392, '1230994', 'PRITE AYUDAME', 'Básica Especial', 4, 'Programa', 'PRITE', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 248),
+(393, '1737386', 'SAN MATIAS DE JESUS', 'Básica Especial - Inicial', 5, 'Educació', 'EBE', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 11),
+(394, '1737394', 'FE Y ALEGRIA 37', 'Básica Especial - Inicial', 5, 'Educació', 'EBE', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 139),
+(395, '1737402', 'LOS PINOS', 'Básica Especial - Inicial', 5, 'Educació', 'EBE', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 217),
+(396, '1737410', 'HIPOLITO UNANUE', 'Básica Especial - Inicial', 5, 'Educació', 'EBE', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 232),
+(397, '1737428', 'SEÑOR DE LA ESPERANZA', 'Básica Especial - Inicial', 5, 'Educació', 'EBE', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 175),
+(398, '0478438', 'SAN MATIAS DE JESUS', 'Básica Especial - Primaria', 6, 'Educació', 'EBE', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 11),
+(399, '1072297', 'FE Y ALEGRIA 37', 'Básica Especial - Primaria', 6, 'Educació', 'EBE', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 139),
+(400, '0664755', 'LOS PINOS', 'Básica Especial - Primaria', 6, 'Educació', 'EBE', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 217),
+(401, '0605493', 'HIPOLITO UNANUE', 'Básica Especial - Primaria', 6, 'Educació', 'EBE', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 232),
+(402, '0664771', 'SEÑOR DE LA ESPERANZA', 'Básica Especial - Primaria', 6, 'Educació', 'EBE', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 175),
+(403, '0664763', 'FE Y ALEGRIA 25', 'Básica Especial - Primaria', 6, 'Educació', 'EBE', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 164),
+(404, '0334458', 'CEBA - 1172 CIRO ALEGRIA', 'Básica Alternativa - Inicial e Intermedio', 7, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 10),
+(405, '0334466', 'CEBA - 1175 GLORIOSOS HUSARES DE JUNIN', 'Básica Alternativa - Inicial e Intermedio', 7, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 246),
+(406, '0556647', 'CEBA - 1181 ALBERT EINSTEIN', 'Básica Alternativa - Inicial e Intermedio', 7, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 43),
+(407, '0607564', 'CEBA - 0086 JOSE MARIA ARGUEDAS', 'Básica Alternativa - Inicial e Intermedio', 7, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 214),
+(408, '0632208', 'CEBA - FRANCISCO BOLOGNESI CERVANTES', 'Básica Alternativa - Inicial e Intermedio', 7, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 165),
+(409, '0665620', 'CEBA - 115 TORIBIO RODRIGUEZ DE MENDOZA', 'Básica Alternativa - Inicial e Intermedio', 7, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 226),
+(410, '0697532', 'CEBA - 1173 JULIO CESAR TELLO', 'Básica Alternativa - Inicial e Intermedio', 7, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 34),
+(411, '0703207', 'CEBA - 122 ANDRES AVELINO CACERES', 'Básica Alternativa - Inicial e Intermedio', 7, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 8),
+(412, '0777292', 'CEBA - 0137 MIGUEL GRAU SEMINARIO', 'Básica Alternativa - Inicial e Intermedio', 7, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 204),
+(413, '0900613', 'CEBA - 0151 MICAELA BASTIDAS', 'Básica Alternativa - Inicial e Intermedio', 7, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 120),
+(414, '0901058', 'CEBA - 109 INCA MANCO CAPAC', 'Básica Alternativa - Inicial e Intermedio', 7, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 63),
+(415, '1063064', 'CEBA - GRAN MARISCAL ANDRES AVELINO CACERES DORREGARAY', 'Básica Alternativa - Inicial e Intermedio', 7, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 254),
+(416, '1501907', 'CEBA - MANUEL GONZALES PRADA', 'Básica Alternativa - Inicial e Intermedio', 7, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 85),
+(417, '0337873', 'CEBA - GRAN MARISCAL ANDRES AVELINO CACERES DORREGARAY', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 254),
+(418, '0495515', 'CEBA - 1175 GLORIOSOS HUSARES DE JUNIN', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 246),
+(419, '0495523', 'CEBA - 1045 NUESTRA SEÑORA DE FATIMA', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 242),
+(420, '0607580', 'CEBA - 0086 JOSE MARIA ARGUEDAS', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 214),
+(421, '0607598', 'CEBA - 1181 ALBERT EINSTEIN', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Noche', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 43),
+(422, '0643049', 'CEBA - FRANCISCO BOLOGNESI CERVANTES', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 165),
+(423, '0697540', 'CEBA - 1173 JULIO CESAR TELLO', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Noche', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 34),
+(424, '0703314', 'CEBA - 122 ANDRES AVELINO CACERES', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Noche', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 8),
+(425, '0901660', 'CEBA - 0146 SU SANTIDAD JUAN PABLO II', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 148),
+(426, '0901744', 'CEBA - 109 INCA MANCO CAPAC', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Noche', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 63),
+(427, '1008523', 'CEBA - 115 TORIBIO RODRIGUEZ DE MENDOZA', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 226),
+(428, '1065325', 'CEBA - 0151 MICAELA BASTIDAS', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 120),
+(429, '1258607', 'CEBA - 0137 MIGUEL GRAU SEMINARIO', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Noche', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 204),
+(430, '1315332', 'CEBA - PILOTO MADRE TERESA DE CALCUTA', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 60),
+(431, '1359850', 'CEBA - ANTENOR ORREGO ESPINOZA', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 7),
+(432, '1503911', 'CEBA - MANUEL GONZALES PRADA', 'Básica Alternativa - Avanzado', 8, 'Educació', 'EBA', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 85),
+(433, '0901819', 'MANGOMARCA', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 12),
+(434, '1221985', '090 DANIEL ALCIDES CARRION', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 20),
+(435, '0901850', 'TECNICO SAN HILARION', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 45),
+(436, '0482398', 'MICAELA BASTIDAS', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 46),
+(437, '0901892', 'SEÑOR DE LOS MILAGROS', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 68),
+(438, '1072172', 'JUAN PABLO II', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 86),
+(439, '0901876', 'HUANTA', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Tarde-Noche', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 87),
+(440, '1223221', '163 NESTOR ESCUDERO OTERO', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Noche', 0, '', '0', '', 0, 0, 0, 0, '2021-06-17 10:17:49', 1, '2023-03-01 08:48:48', 122),
+(441, '1191808', 'FE Y ALEGRIA 32', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Mañana-Noche', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 153),
+(442, '0901918', 'FE Y ALEGRIA 25', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 164),
+(443, '0901843', 'BAYOVAR', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 190),
+(444, '0901926', 'SAGRADA FAMILIA', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Mañana-Noche', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 208),
+(445, '1072131', 'INDUSTRIAL SAN CARLOS', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Mañana-Noche', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 209),
+(446, '0901884', 'JESUS OROPEZA CHONTA', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Mañana-Tarde', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 218),
+(447, '0332767', 'EL AGUSTINO', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Tarde-Noche', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 1, '2021-08-02 16:37:07', 242),
+(448, '1501832', 'BARBONES', 'Técnico Productiva', 9, 'Educació', 'ETP', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 264),
+(449, '0901900', 'JOSE OLAYA', 'Técnico Productiva', 9, 'Educació', 'ETP', '', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 10:17:49', 0, '2021-06-17 10:17:49', 85),
+(451, '1762947', '0119 CANTO BELLO', 'Inicial', 1, NULL, 'EBR', 'Mañana', 0, '', '0', '', 0, 1, 0, 0, '2021-06-17 12:31:05', 1, '2021-06-17 14:47:00', 203),
+(453, '1789320', 'NICOLAS DE PIEROLA', 'Primaria', 2, NULL, 'EBR', 'Mañana', 2021, '', '', '', 0, 1, 0, 0, '2021-08-02 16:22:11', 1, '2021-08-03 11:59:46', 262),
+(457, '1772177', '134 RAMIRO PRIALE', 'Inicial', 1, NULL, 'EBR', 'Mañana', 2019, '', '', '', 0, 1, 0, 0, '2021-08-03 11:58:04', 1, '2021-08-03 11:59:00', 231),
+(458, '1769959', '0158 SANTA MARIA', 'Inicial', 1, NULL, 'EBR', 'Mañana', 2019, '', '', '', 0, 1, 0, 0, '2021-08-03 15:35:03', NULL, NULL, 103),
+(459, '1788264', 'CEBA - FE Y ALEGRIA 32', 'Básica Alternativa - Avanzado', 8, NULL, 'EBA', 'Noche', 2021, '', '', '', 0, 1, 0, 0, '2021-08-03 15:39:24', NULL, NULL, 153),
+(460, '1501212', 'PRITE HERMANO ANDRES', 'Básica Especial', 4, NULL, 'PRITE', NULL, 0, NULL, NULL, NULL, 0, 1, 0, 0, '2021-08-03 15:44:16', NULL, NULL, 266),
+(461, '1792746', 'CEBA - PILOTO MADRE TERESA DE CALCUTA', 'Básica Alternativa - Inicial e Intermedio', 7, NULL, 'EBA', 'Mañana-Tarde', 2021, '', '', '', 0, 1, 0, 0, '2022-01-11 09:28:48', NULL, NULL, 60),
+(462, '0466508', '0093 FBT', 'Primaria', 2, NULL, 'EBR', '', 0, '', '', '', 0, 0, 0, 0, '2022-04-27 12:56:05', 1, '2022-04-27 13:08:57', 267),
+(463, '1223221', '163  NESTOR ESCUDERO OTERO', 'Técnico Productiva', 9, NULL, 'ETP', NULL, 0, NULL, NULL, NULL, 0, 1, 0, 0, '2023-02-20 10:20:10', NULL, NULL, 268);
+
