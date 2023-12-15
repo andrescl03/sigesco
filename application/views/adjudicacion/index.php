@@ -33,56 +33,66 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"></h5>
+                    <h5 class="modal-title">Nueva Adjudicación</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group pull-right">
-                        <input type="text" class="search form-control" placeholder="What you looking for?">
+
+                    <div class="row mb-3">
+                        <div class="col-md-12 mb-2">
+                            <h5>Listado de Docentes</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group pull-right mb-2">
+                                <input type="text" class="search search-postulaciones form-control" placeholder="Buscar">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <table class="table table-hover table-bordered results table-postulaciones">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="col-md-5 col-xs-5">Docente</th>
+                                        <th class="col-md-4 col-xs-4">Número de Documento</th>
+                                        <th class="col-md-3 col-xs-3">Fecha de Registro</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <span class="counter pull-right"></span>
-                    <table class="table table-hover table-bordered results">
-                    <thead>
-                        <tr>
-                        <th>#</th>
-                        <th class="col-md-5 col-xs-5">Name / Surname</th>
-                        <th class="col-md-4 col-xs-4">Job</th>
-                        <th class="col-md-3 col-xs-3">City</th>
-                        </tr>
-                        <tr class="warning no-result">
-                        <td colspan="4"><i class="fa fa-warning"></i> No result</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <th scope="row">1</th>
-                        <td>Vatanay Özbeyli</td>
-                        <td>UI & UX</td>
-                        <td>Istanbul</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">2</th>
-                        <td>Burak Özkan</td>
-                        <td>Software Developer</td>
-                        <td>Istanbul</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">3</th>
-                        <td>Egemen Özbeyli</td>
-                        <td>Purchasing</td>
-                        <td>Kocaeli</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">4</th>
-                        <td>Engin Kızıl</td>
-                        <td>Sales</td>
-                        <td>Bozuyük</td>
-                        </tr>
-                    </tbody>
-                    </table>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-2">
+                            <h5>Listado de Plazas</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group pull-right mb-2">
+                                <input type="text" class="search search-plazas form-control" placeholder="Buscar">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <table class="table table-hover table-bordered table-plazas">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="col-md-5 col-xs-5">Código Modular</th>
+                                        <th class="col-md-4 col-xs-4">Especialidad</th>
+                                        <th class="col-md-3 col-xs-3">Cargo</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary btn-save">Guardar</button>
                     <!-- Puedes agregar más botones en el footer si es necesario. -->
                 </div>
             </div>

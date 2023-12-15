@@ -277,6 +277,7 @@ CREATE TABLE `adjudicaciones` (
 );
 
 UPDATE `modulos` SET mdl_ruta = 'configuracion/plazas' WHERE mdl_id = 17;
+UPDATE `modulos` SET mdl_ruta = 'adjudicaciones' WHERE mdl_id = 19;
 
 CREATE TABLE plazas (
   plz_id bigint(20) NOT NULL AUTO_INCREMENT,
