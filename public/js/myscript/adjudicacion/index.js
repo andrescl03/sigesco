@@ -1,95 +1,13 @@
-console.log("Modulo adjudicacion");
 const AppAdjudicacionAdmin = () => {
-    /*plugins: {
-        datatable: {
-            list: (_callback) => {
-                return $('#table-request').DataTable({
-                    language: helper.datatable.language,
-                    searching: true,
-                    ordering: false,  
-                    responsive: true,
-                    "processing" : true,
-                    "serverSide" : true,
-                    "order" : [],
-                    "retrieve": true,
-                    "ajax": {
-                       "url": '/admin/cuentas/pagination',
-                       "method": "POST",
-                       "dataType": "json",
-                       "data": { "companyId": AppMain.companyId }
-                    },
-                    "fnDrawCallback": function(oSettings, json) {
-                        _callback();
-                        {
-                            "targets": 0,
-                            "data": "id",
-                            "render": function ( data, type, row, meta ) {
-                                return row.id;
-                            }
-                        },
-                        {
-                            "targets": 1,
-                            "data": "name",
-                            "render": function ( data, type, row, meta ) {
-                                return row.name;
-                            }
-                        },
-                        {
-                            "targets": 2,
-                            "data": "typeName",
-                            "render": function ( data, type, row, meta ) {
-                                return row.typeName;
-                            }
-                        },
-                        {
-                            "targets": 3,
-                            "data": "typeName",
-                            "render": function ( data, type, row, meta ) {
-                                return row.status == 1 ? 'Activado' : 'Desactivado';
-                            }
-                        },
-                        {
-                            "targets": 4,
-                            "data": "createdAt",
-                            "render": function ( data, type, row, meta ) {
-                                return row.createdAt;
-                            }
-                        },
-                        ...(window.AppMain.user.profileId == 1 ? [{
-                            "targets": 5,
-                            "data": "id",
-                            "className": "text-center",
-                            "render": function ( data, type, row, meta ) {
-                                return  `
-                                <button type="button" class="btn btn-sm btn-light btn-active-light me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Acción
-                                </button>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4 dropdown-menu dropdown-menu-start">
-                                    <!--div class="menu-item px-3">
-                                        <a href="javascript:void(0);" class="menu-link px-3 btn-edit" data-id="${row.id}">Editar</a>
-                                    </div-->
-                                    <div class="menu-item px-3">
-                                        <a href="javascript:void(0);" class="menu-link text-danger px-3 btn-remove" data-id="${row.id}">Eliminar</a>
-                                    </div>
-                                </div>`;
-                            }
-                        }] : [])
-                    ]
-                });
-            }       },
-                    "columnDefs": [
-             
-        }
-    }*/
-    
     const index = (container) => {
         const dom = document.getElementById(container);
         const object = {
             data() {
                 return {
                     user: {},
-                    dataTable: {},
-                    modalNewAdjudicacion: {}
+                    modalNewAdjudicacion: {},
+                    plazas: [],
+                    postulaciones: []
                 }
             },
             mounted: function () {
@@ -98,34 +16,127 @@ const AppAdjudicacionAdmin = () => {
             },
             methods: {
                 initialize: () => {
-                    console.log('init');
                     self.clicks();
                     self.pagination();
-                    // self.dataTable = datatable.list(()=>{self.onActionRows()});
                 },
                 clicks: () => {
-                    console.log('clicks');
                     const btnNews = document.querySelectorAll('.btn-new');
                     btnNews.forEach(btn => {
                         btn.addEventListener('click', (e) => {
-                            console.log('123');
-                            document.querySelector(".search").addEventListener('input', function () {
-                                var searchTerm = this.value.toLowerCase();
-                                var tableRows = document.querySelectorAll('.results tbody tr');
-                        
-                                tableRows.forEach(function (row) {
-                                    var textContent = row.textContent || row.innerText;
-                                    var isVisible = textContent.toLowerCase().includes(searchTerm);
-                                    row.style.display = isVisible ? 'table-row' : 'none';
+                            sweet2.loading();
+                            self.getResource()
+                            .then((response) => {
+                                self.plazas = response.plazas;
+                                self.postulaciones = response.postulaciones;
+                                console.log(response);
+                                sweet2.loading(false);
+                                document.querySelector(".search-plazas").addEventListener('input', function () {
+                                    var searchTerm = this.value.toLowerCase();
+                                    var tableRows = document.querySelectorAll('.table-plazas tbody tr');
+                            
+                                    tableRows.forEach(function (row) {
+                                        var textContent = row.textContent || row.innerText;
+                                        var isVisible = textContent.toLowerCase().includes(searchTerm);
+                                        row.style.display = isVisible ? 'table-row' : 'none';
+                                    });
                                 });
-                        
-                                var jobCount = document.querySelectorAll('.results tbody tr[style="display: table-row;"]').length;
-                                document.querySelector('.counter').textContent = jobCount + ' item';
-                        
-                                var noResultMessage = document.querySelector('.no-result');
-                                noResultMessage.style.display = jobCount === 0 ? 'block' : 'none';
+
+                                document.querySelector(".search-postulaciones").addEventListener('input', function () {
+                                    var searchTerm = this.value.toLowerCase();
+                                    var tableRows = document.querySelectorAll('.table-postulaciones tbody tr');
+                            
+                                    tableRows.forEach(function (row) {
+                                        var textContent = row.textContent || row.innerText;
+                                        var isVisible = textContent.toLowerCase().includes(searchTerm);
+                                        row.style.display = isVisible ? 'table-row' : 'none';
+                                    });
+                                });
+
+                                document.querySelector(".btn-save").addEventListener('click', function (e) {
+                                    console.log('click');
+                                });
+
+                                let html = ``;
+                                let tbodies = document.querySelectorAll('.table-plazas tbody');
+                                tbodies.forEach(tbody => {
+                                    if (self.plazas.length > 0) {
+                                        self.plazas.forEach(plaza => {
+                                            html +=`<tr>
+                                                        <td>${plaza.plz_id}</td>
+                                                        <td>${plaza.codigoModular}</td>
+                                                        <td>${plaza.especialidad}</td>
+                                                        <td>${plaza.cargo}</td>
+                                                        <td>
+                                                            <input class="form-check-input" name="check_plaza" type="checkbox" value="${plaza.plz_id}">
+                                                        </td>
+                                                    </tr>`;
+                                        });
+                                    } else {
+                                        html = `<tr>
+                                                    <td colspan="5">No hay resultados</td>
+                                                </tr>`;
+                                    }
+                                    tbody.innerHTML = html;
+                                });
+
+                                html = ``;
+                                tbodies = document.querySelectorAll('.table-postulaciones tbody');
+                                tbodies.forEach(tbody => {
+                                    if (self.postulaciones.length > 0) {
+                                        self.postulaciones.forEach(postulacion => {
+                                            html +=`<tr>
+                                                        <td>${postulacion.id}</td>
+                                                        <td>${postulacion.apellido_paterno} ${postulacion.apellido_materno} ${postulacion.nombre}</td>
+                                                        <td>${postulacion.numero_documento}</td>
+                                                        <td>${postulacion.fecha_registro}</td>
+                                                        <td>
+                                                            <input class="form-check-input" name="check_postulacion" type="checkbox" value="${postulacion.id}">
+                                                        </td>
+                                                    </tr>`;
+                                        });
+                                    } else {
+                                        html = `<tr>
+                                                    <td colspan="5">No hay resultados</td>
+                                                </tr>`;
+                                    }
+                                    tbody.innerHTML = html;
+                                });
+
+                                
+                                document.querySelector("input[name='check_plaza']").addEventListener('change', function (e) {
+                                    if (e.target.checked) {
+                                        console.log(e.target.value);
+                                    }
+                                });
+                                
+                                document.querySelector("input[name='check_postulacion']").addEventListener('change', function (e) {
+                                    if (e.target.checked) {
+                                        console.log(e.target.value);
+                                    }
+                                });
+
+
+                                self.modalNewAdjudicacion.show();
                             });
-                            self.modalNewAdjudicacion.show();
+                        });
+                    });
+                },
+                getResource: (formData) => {
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + `admin/adjudicaciones/resource`,
+                            method: 'POST',
+                            dataType: 'json',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function ({success, data, message}) {
+                            resolve(data);
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
                         });
                     });
                 },

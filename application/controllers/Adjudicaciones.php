@@ -26,6 +26,14 @@ class Adjudicaciones extends CI_Controller {
         }    
     }
 
+    public function resource() {
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($this->adjudicaciones_model->resource()));
+    }
+
+
+
     public function show($convocatoria_id, $inscripcion_id)
     {
         if (is_numeric($convocatoria_id) && is_numeric($inscripcion_id)) {
@@ -48,16 +56,7 @@ class Adjudicaciones extends CI_Controller {
 		}
     }  
 
-    public function find() {
-        if ($this->input->post()) {
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($this->postulaciones_model->find($_POST)));
-        } else {
-            show_404();
-        }    
-    }
-
+ 
     public function update($uid) {
         if ($this->input->post()) {
             $this->output
