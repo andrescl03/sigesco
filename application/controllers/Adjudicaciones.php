@@ -32,48 +32,14 @@ class Adjudicaciones extends CI_Controller {
             ->set_output(json_encode($this->adjudicaciones_model->resource()));
     }
 
-
-
-    public function show($convocatoria_id, $inscripcion_id)
-    {
-        if (is_numeric($convocatoria_id) && is_numeric($inscripcion_id)) {
-            $this->layout->js(array(base_url() . "public/web/js/convocatorias/show.js"));
-            $response = $this->convocatorias_web_model->show(compact('convocatoria_id', 'inscripcion_id'));
-            if ($response['success']) {
-                return $this->layout->view("/web/convocatoria/show", $response);
-            }
-        }
-        show_404();
-    }
-
     public function store() {
         if ($this->input->post()) {
             $this->output
                 ->set_content_type('application/json')
-                ->set_output(json_encode($this->postulaciones_model->store()));
-        } else {
-			show_404();
-		}
-    }  
-
- 
-    public function update($uid) {
-        if ($this->input->post()) {
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($this->postulaciones_model->update(compact('uid'))));
+                ->set_output(json_encode($this->adjudicaciones_model->store($_POST)));
         } else {
             show_404();
-        }  
-    }
-
-    public function edit($uid) {
-        if (!empty(trim($uid))) {
-            $this->layout->js(array(base_url()."public/web/js/convocatorias/edit.js"));
-            $this->layout->view("/web/convocatoria/edit", $this->postulaciones_model->edit(compact('uid')));    
-		} else {
-			show_404();
-		}
+        }    
     }
 
 }

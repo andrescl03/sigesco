@@ -4,10 +4,12 @@ const AppAdjudicacionAdmin = () => {
         const object = {
             data() {
                 return {
-                    user: {},
+                    table: {},
                     modalNewAdjudicacion: {},
                     plazas: [],
-                    postulaciones: []
+                    postulaciones: [],
+                    plaza: {},
+                    postulacion: {}
                 }
             },
             mounted: function () {
@@ -18,6 +20,9 @@ const AppAdjudicacionAdmin = () => {
                 initialize: () => {
                     self.clicks();
                     self.pagination();
+                },
+                isValid: () => {
+                    return Object.keys(self.plaza).length > 0 && Object.keys(self.postulacion).length > 0;
                 },
                 clicks: () => {
                     const btnNews = document.querySelectorAll('.btn-new');
@@ -52,69 +57,112 @@ const AppAdjudicacionAdmin = () => {
                                     });
                                 });
 
-                                document.querySelector(".btn-save").addEventListener('click', function (e) {
-                                    console.log('click');
-                                });
+                                const formAdjudicacion = document.getElementById('formAdjudicacion');
+                                if (formAdjudicacion) {
+                                    formAdjudicacion.addEventListener('submit', (e) => {
+                                        e.preventDefault();
+                                        if (!self.isValid()) {
+                                            sweet2.show({type:'error', text:'Debe de seleccionar un docente y una plaza'});
+                                            return;
+                                        }
+                                        const formData = new FormData(e.target);
+                                        formData.append('plaza_id', self.plaza.plz_id);
+                                        formData.append('postulacion_id', self.postulacion.id);
+
+                                        self.newAdjudicacion(formData)
+                                        .then((response) =>{
+                                            e.target.reset();
+                                            self.modalNewAdjudicacion.hide();
+                                            sweet2.show({type:'success', text: 'Se guardo correctamente'});
+                                            self.table.ajax.reload();
+                                        });
+                                    });
+                                }
 
                                 let html = ``;
                                 let tbodies = document.querySelectorAll('.table-plazas tbody');
-                                tbodies.forEach(tbody => {
-                                    if (self.plazas.length > 0) {
-                                        self.plazas.forEach(plaza => {
-                                            html +=`<tr>
-                                                        <td>${plaza.plz_id}</td>
-                                                        <td>${plaza.codigoModular}</td>
-                                                        <td>${plaza.especialidad}</td>
-                                                        <td>${plaza.cargo}</td>
-                                                        <td>
-                                                            <input class="form-check-input" name="check_plaza" type="checkbox" value="${plaza.plz_id}">
-                                                        </td>
+                                if (tbodies) {
+                                    tbodies.forEach(tbody => {
+                                        if (self.plazas.length > 0) {
+                                            self.plazas.forEach(plaza => {
+                                                html +=`<tr>
+                                                            <td>${plaza.plz_id}</td>
+                                                            <td>${plaza.codigoPlaza}</td>
+                                                            <td>${plaza.ie}</td>
+                                                            <td>${plaza.mod_id}</td>
+                                                            <td>${plaza.cargo}</td>
+                                                            <td>${plaza.especialidad}</td>
+                                                            <td>${plaza.jornada}</td>
+                                                            <td>${plaza.tipo_vacante}</td>
+                                                            <td>${plaza.motivo_vacante}</td>
+                                                            <td>
+                                                                <input class="form-check-input" name="check_plaza" type="checkbox" value="${plaza.plz_id}">
+                                                            </td>
+                                                        </tr>`;
+                                            });
+                                        } else {
+                                            html = `<tr>
+                                                        <td colspan="5">No hay resultados</td>
                                                     </tr>`;
-                                        });
-                                    } else {
-                                        html = `<tr>
-                                                    <td colspan="5">No hay resultados</td>
-                                                </tr>`;
-                                    }
-                                    tbody.innerHTML = html;
-                                });
+                                        }
+                                        tbody.innerHTML = html;
+                                    });
+                                }
 
                                 html = ``;
                                 tbodies = document.querySelectorAll('.table-postulaciones tbody');
-                                tbodies.forEach(tbody => {
-                                    if (self.postulaciones.length > 0) {
-                                        self.postulaciones.forEach(postulacion => {
-                                            html +=`<tr>
-                                                        <td>${postulacion.id}</td>
-                                                        <td>${postulacion.apellido_paterno} ${postulacion.apellido_materno} ${postulacion.nombre}</td>
-                                                        <td>${postulacion.numero_documento}</td>
-                                                        <td>${postulacion.fecha_registro}</td>
-                                                        <td>
-                                                            <input class="form-check-input" name="check_postulacion" type="checkbox" value="${postulacion.id}">
-                                                        </td>
+                                if (tbodies) {
+                                    tbodies.forEach(tbody => {
+                                        if (self.postulaciones.length > 0) {
+                                            self.postulaciones.forEach(postulacion => {
+                                                html +=`<tr>
+                                                            <td>${postulacion.id}</td>
+                                                            <td>${postulacion.apellido_paterno} ${postulacion.apellido_materno} ${postulacion.nombre}</td>
+                                                            <td>${postulacion.numero_documento}</td>
+                                                            <td>${postulacion.modalidad_nombre}</td>
+                                                            <td>${postulacion.nivel_nombre}</td>
+                                                            <td>${postulacion.especialidad_nombre}</td>
+                                                            <td>${postulacion.puntaje ?? 0}</td>
+                                                            <td>${postulacion.fecha_registro}</td>
+                                                            <td>
+                                                                <input class="form-check-input" name="check_postulacion" type="checkbox" value="${postulacion.id}">
+                                                            </td>
+                                                        </tr>`;
+                                            });
+                                        } else {
+                                            html = `<tr>
+                                                        <td colspan="5">No hay resultados</td>
                                                     </tr>`;
-                                        });
-                                    } else {
-                                        html = `<tr>
-                                                    <td colspan="5">No hay resultados</td>
-                                                </tr>`;
-                                    }
-                                    tbody.innerHTML = html;
-                                });
-
+                                        }
+                                        tbody.innerHTML = html;
+                                    });
+                                }
                                 
-                                document.querySelector("input[name='check_plaza']").addEventListener('change', function (e) {
-                                    if (e.target.checked) {
-                                        console.log(e.target.value);
-                                    }
-                                });
+                                const check_plaza = document.querySelector("input[name='check_plaza']");
+                                if (check_plaza) {
+                                    self.plaza = {};
+                                    check_plaza.addEventListener('change', function (e) {
+                                        if (e.target.checked) {
+                                            const plaza_id = e.target.value;
+                                            if (plaza_id > 0) {
+                                                self.plaza = self.plazas.find((o) => { return o.plz_id === plaza_id });
+                                                console.log(self.plaza);
+                                            }
+                                        }
+                                    });
+                                }
                                 
-                                document.querySelector("input[name='check_postulacion']").addEventListener('change', function (e) {
-                                    if (e.target.checked) {
-                                        console.log(e.target.value);
-                                    }
-                                });
-
+                                const check_postulacion = document.querySelector("input[name='check_postulacion']");
+                                if (check_postulacion) {
+                                    self.postulacion = {};
+                                    check_postulacion.addEventListener('change', function (e) {
+                                        if (e.target.checked) {
+                                            const postulacion_id = e.target.value;
+                                            self.postulacion = self.postulaciones.find((o) => { return o.id === postulacion_id });
+                                            console.log(self.postulacion);
+                                        }
+                                    });
+                                }
 
                                 self.modalNewAdjudicacion.show();
                             });
@@ -140,8 +188,27 @@ const AppAdjudicacionAdmin = () => {
                         });
                     });
                 },
+                newAdjudicacion: (formData) => {
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + `admin/adjudicaciones/store`,
+                            method: 'POST',
+                            dataType: 'json',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function ({success, data, message}) {
+                            resolve(data);
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
+                        });
+                    });
+                },
                 pagination: (_callback = ()=>{}) => {
-                    return $('#tableIndexAdjudicacion').DataTable({
+                    self.table = $('#tableIndexAdjudicacion').DataTable({
                         language: {
                             "sProcessing": "Procesando...",
                             "sLengthMenu": "Mostrar _MENU_ registros",
@@ -192,35 +259,42 @@ const AppAdjudicacionAdmin = () => {
                             },
                             {
                                 "targets": 1,
-                                "data": "name",
+                                "data": "plaza_id",
                                 "render": function ( data, type, row, meta ) {
-                                    return row.name;
+                                    return row.codigoPlaza;
                                 }
                             },
                             {
                                 "targets": 2,
-                                "data": "typeName",
+                                "data": "postulacion_id",
                                 "render": function ( data, type, row, meta ) {
-                                    return row.typeName;
+                                    return row.nombre + ' ' + row.apellido_paterno + ' ' + row.apellido_materno;
                                 }
                             },
                             {
                                 "targets": 3,
-                                "data": "typeName",
+                                "data": "fecha_inicio",
                                 "render": function ( data, type, row, meta ) {
-                                    return row.status == 1 ? 'Activado' : 'Desactivado';
+                                    return row.fecha_inicio;
                                 }
                             },
                             {
                                 "targets": 4,
-                                "data": "createdAt",
+                                "data": "fecha_final",
                                 "render": function ( data, type, row, meta ) {
-                                    return row.createdAt;
+                                    return row.fecha_final;
                                 }
                             },
                             {
                                 "targets": 5,
-                                "data": "id",
+                                "data": "fecha_registro",
+                                "render": function ( data, type, row, meta ) {
+                                    return row.fecha_registro;
+                                }
+                            },
+                            {
+                                "targets": 6,
+                                "data": "created_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
                                     return  `
@@ -228,9 +302,6 @@ const AppAdjudicacionAdmin = () => {
                                         Acción
                                     </button>
                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4 dropdown-menu dropdown-menu-start">
-                                        <!--div class="menu-item px-3">
-                                            <a href="javascript:void(0);" class="menu-link px-3 btn-edit" data-id="${row.id}">Editar</a>
-                                        </div-->
                                         <div class="menu-item px-3">
                                             <a href="javascript:void(0);" class="menu-link text-danger px-3 btn-remove" data-id="${row.id}">Eliminar</a>
                                         </div>
@@ -269,45 +340,6 @@ const AppAdjudicacionAdmin = () => {
                             });
                         });
                     });*/
-                },
-                onSearchTable: ({target}) => {
-                    // self.dataTable.search(target.value).draw();
-                },
-                onCreate: (e) => {
-                    /*e.preventDefault();
-                    sweet2.loading();
-                    const formData = new FormData(e.target);
-                    formData.append('companyId', AppMain.companyId);
-                    formData.append('userId', AppMain.userId);
-                    window.helper.post('/admin/cuentas/store', formData)
-                    .then(rsp => {
-                        const { success, message } = rsp;
-                        if (!success) {
-                            throw message;
-                        }
-                        sweet2.success({text: message});  
-                        bootstrap.Modal.getOrCreateInstance(document.getElementById('modalCreate')).hide();
-                        e.target.reset();
-                        self.dataTable.ajax.reload(null, false);
-                    })
-                    .catch(error => {
-                        sweet2.error({text: error});  
-                    });	*/
-                },
-                onDelete: (id) => {
-                    /*sweet2.loading();
-                    const formData = new FormData();
-                    window.helper.post('/admin/cuentas/' + id + '/remove', formData)
-                    .then(({ success, message }) => {
-                        if (!success) {
-                            throw message;
-                        }
-                        sweet2.success({text: message});  
-                        self.dataTable.ajax.reload(null, false);
-                    })
-                    .catch(error => {
-                        sweet2.error({text: error});  
-                    });	*/
                 },
             },
             renders: {

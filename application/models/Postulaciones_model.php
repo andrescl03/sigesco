@@ -833,7 +833,8 @@ class Postulaciones_model extends CI_Model
                 'postulacion_id' => $id,
                 'fecha_registro' => $this->tools->getDateHour(),
                 'estado'         => 1,
-                'orden'          => $orden
+                'orden'          => $orden,
+                'promedio'       => $ficha->promedio
             ];
             $this->db->insert('postulacion_evaluaciones', $insert);
 

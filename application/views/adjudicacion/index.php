@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="modal fade" id="modalNewAdjudicacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Nueva Adjudicación</h5>
@@ -48,13 +48,48 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <table class="table table-hover table-bordered results table-postulaciones">
+                            <table class="table table-bordered results table-postulaciones">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th class="col-md-5 col-xs-5">Docente</th>
-                                        <th class="col-md-4 col-xs-4">Número de Documento</th>
-                                        <th class="col-md-3 col-xs-3">Fecha de Registro</th>
+                                        <th>Docente</th>
+                                        <th>Número de Documento</th>
+                                        <th>Modalidad</th>
+                                        <th>Nivel</th>
+                                        <th>Especialidad</th>
+                                        <th>Puntaje</th>
+                                        <th>Fecha de Registro</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12 mb-2">
+                            <h5>Listado de Plazas</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group pull-right mb-2">
+                                <input type="text" class="search search-plazas form-control" placeholder="Buscar">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-plazas">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Código Plaza</th>
+                                        <th>Insitución Educativa</th>
+                                        <th>Modalidad</th>
+                                        <th>Nivel</th>
+                                        <th>Especialidad</th>
+                                        <th>Jornada</th>
+                                        <th>Tipo Vacante</th>
+                                        <th>Motivo</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -66,33 +101,28 @@
 
                     <div class="row">
                         <div class="col-md-12 mb-2">
-                            <h5>Listado de Plazas</h5>
+                            <h5>Resumen</h5>
                         </div>
                         <div class="col-md-12">
-                            <div class="form-group pull-right mb-2">
-                                <input type="text" class="search search-plazas form-control" placeholder="Buscar">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <table class="table table-hover table-bordered table-plazas">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th class="col-md-5 col-xs-5">Código Modular</th>
-                                        <th class="col-md-4 col-xs-4">Especialidad</th>
-                                        <th class="col-md-3 col-xs-3">Cargo</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                            <form id="formAdjudicacion">
+                                <div class="row">
+                                    <div class="col-md-3 mb-3">
+                                        <label for="" class="form-label">Inicio Contrato</label>
+                                        <input type="date" name="fecha_inicio" class="form-control" placeholder="" required/>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="" class="form-label">Término Contrato</label>
+                                        <input type="date" name="fecha_final" class="form-control" placeholder="" required/>
+                                    </div>
+                                </div>                         
+                            </form>
                         </div>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary btn-save">Guardar</button>
+                    <button type="submit" class="btn btn-primary" form="formAdjudicacion">Guardar</button>
                     <!-- Puedes agregar más botones en el footer si es necesario. -->
                 </div>
             </div>
