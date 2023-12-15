@@ -1,7 +1,7 @@
 
 -- Volcando estructura de base de datos para sigesco
-CREATE DATABASE IF NOT EXISTS `sigesco` 
-USE `sigesco`;
+/* CREATE DATABASE IF NOT EXISTS `sigesco` 
+USE `sigesco`; */
 
 -- Table structure for expedientes
 -- ----------------------------
