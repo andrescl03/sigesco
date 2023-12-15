@@ -6,6 +6,7 @@
             </div>
         </div>
         <div class="card-body">
+            <div class="row">
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead style="background-color:red" class="text-white">
@@ -64,6 +65,7 @@
                         } ?>
                     </tbody>
                 </table>
+            </div>
             </div>
         </div>
     </div>
