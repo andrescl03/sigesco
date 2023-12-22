@@ -113,13 +113,14 @@ class Adjudicaciones_model extends CI_Model
       $postulacion_id  = $this->input->post("postulacion_id", true);
       $fecha_inicio  = $this->input->post("fecha_inicio", true);
       $fecha_final  = $this->input->post("fecha_final", true);
+      $fecha_registro  = $this->input->post("fecha_registro", true);
 
       $this->db->insert('adjudicaciones', [
         'postulacion_id' => $postulacion_id,
         'plaza_id' => $plaza_id,
         'fecha_inicio' => $fecha_inicio,
         'fecha_final' => $fecha_final,
-        'fecha_registro' => $this->tools->getDateHour()
+        'fecha_registro' => $fecha_registro
       ]);
       $id =  $this->db->insert_id(); // para saber el id ingresado
       

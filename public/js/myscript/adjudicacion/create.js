@@ -31,13 +31,15 @@ const AppAdjudicacionAdmin = () => {
                         self.postulaciones = response.postulaciones;
                         self.plazas = response.plazas;
                         self.usuarios = response.usuarios;
+                        self.plaza = {};
+                        self.postulacion = {};
                         self.firmas = [];
                         self.clicks();
                         sweet2.loading(false);
                     });
                 },
                 isValid: () => {
-                    return Object.keys(self.plaza).length > 0 && Object.keys(self.postulacion).length > 0;
+                    return Object.keys(self.plaza).length > 0 && Object.keys(self.postulacion).length > 0 && self.firmas.length > 0;
                 },
                 clicks: () => {
 
@@ -250,11 +252,22 @@ const AppAdjudicacionAdmin = () => {
                             }
                             if (isvalid) {
                                 if (isvalid > 0) {
-                                    console.log(self.usuarios, isvalid);
-                                    const usu = self.usuarios.find((o) => { return o.usu_id === isvalid });
-                                    self.firmas.push(usu);
-                                    self.firmasRender();
-                                    self.modalFirmas.hide();
+
+                                    self.firmas.forEach(firma => {
+                                        if (firma.usu_id == isvalid) {
+                                            isvalid = false;
+                                            return;
+                                        }
+                                    });
+
+                                    if (isvalid) {
+                                        const usu = self.usuarios.find((o) => { return o.usu_id === isvalid });
+                                        self.firmas.push(usu);
+                                        self.firmasRender();
+                                        self.modalFirmas.hide();    
+                                    } else {
+                                        sweet2.show({type:'error', text:'El usuario ya se encuentra registrado'});
+                                    }
                                 }
                             } else {
                                 sweet2.show({type:'error', text:'Debe de seleccionar una firma'});
@@ -267,18 +280,26 @@ const AppAdjudicacionAdmin = () => {
                         formAdjudicacion.addEventListener('submit', (e) => {
                             e.preventDefault();
                             if (!self.isValid()) {
-                                sweet2.show({type:'error', text:'Debe de seleccionar un docente y una plaza'});
+                                sweet2.show({type:'error', text:'Debe de seleccionar un docente, una plaza y una firma'});
                                 return;
                             }
                             const formData = new FormData(e.target);
                             formData.append('plaza_id', self.plaza.plz_id);
                             formData.append('postulacion_id', self.postulacion.id);
-
+                            formData.append('firmas', JSON.stringify(self.firmas));
                             self.newAdjudicacion(formData)
                             .then((response) =>{
                                 e.target.reset();
-                                self.modalNewAdjudicacion.hide();
-                                sweet2.show({type:'success', text: 'Se guardo correctamente'});
+                                sweet2.show({
+                                    type: 'success', 
+                                    text: 'Se guardo correctamente',
+                                    showConfirmButton: false,
+                                });
+
+                                setTimeout(() => {
+                                    sweet2.loading();
+                                    window.location.href = '/adjudicaciones';                                
+                                }, 2500);
                             
                             });
                         });
@@ -344,6 +365,8 @@ const AppAdjudicacionAdmin = () => {
                         html = `                        
                         <p><strong>Apellidos y nombres </strong> ${self.postulacion.apellido_paterno} ${self.postulacion.apellido_materno} ${self.postulacion.nombre}</p>
                         <p><strong>Número de documento </strong> ${self.postulacion.numero_documento}</p>
+                        <p><strong>Estado civil </strong> ${self.postulacion.estado_civil}</p>
+                        <p><strong>Correo </strong> ${self.postulacion.correo}</p>
                         <p><strong>Modalidad </strong> ${self.postulacion.modalidad_nombre}</p>
                         <p><strong>Nivel </strong> ${self.postulacion.nivel_nombre}</p>
                         <p><strong>Especialidad </strong> ${self.postulacion.especialidad_nombre}</p>`;

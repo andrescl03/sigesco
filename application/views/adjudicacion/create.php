@@ -62,7 +62,11 @@
                                             </div>
                                             <div class="card-body">
                                                 <form id="formAdjudicacion">
-                                                    <div class="row">
+                                                    <div class="row">                                                    
+                                                        <div class="col-md-4 mb-3">
+                                                            <label for="" class="form-label">Fecha de Registro</label>
+                                                            <input type="date" name="fecha_registro" class="form-control" placeholder="" required/>
+                                                        </div>
                                                         <div class="col-md-4 mb-3">
                                                             <label for="" class="form-label">Inicio Contrato</label>
                                                             <input type="date" name="fecha_inicio" class="form-control" placeholder="" required/>
@@ -70,10 +74,6 @@
                                                         <div class="col-md-4 mb-3">
                                                             <label for="" class="form-label">Término Contrato</label>
                                                             <input type="date" name="fecha_final" class="form-control" placeholder="" required/>
-                                                        </div>
-                                                        <div class="col-md-4 mb-3">
-                                                            <label for="" class="form-label">Fecha de Registro</label>
-                                                            <input type="date" name="fecha_registro" class="form-control" placeholder="" required/>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -105,7 +105,7 @@
                                         <a href="<?php echo base_url(); ?>/adjudicaciones" type="button" class="btn btn-outline-secondary">
                                             Cancelar
                                         </a>
-                                        <button type="button" class="btn btn-outline-primary">
+                                        <button type="submit" class="btn btn-outline-primary" form="formAdjudicacion">
                                             Guardar
                                         </button>
                                     </div>
