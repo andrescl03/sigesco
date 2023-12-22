@@ -91,8 +91,11 @@ class Adjudicaciones_model extends CI_Model
       $sql = "SELECT * FROM plazas";
       $plazas = $this->db->query($sql)->result_object();
 
+      $sql = "SELECT * FROM usuarios";
+      $usuarios = $this->db->query($sql)->result_object();
+
       $response['success'] = true;
-      $response['data']  = compact('postulaciones', 'plazas');
+      $response['data']  = compact('postulaciones', 'plazas', 'usuarios');
       $response['status']  = 200;
       $response['message'] = 'detail';
     } catch (\Exception $e) {

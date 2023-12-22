@@ -5,11 +5,15 @@ const AppAdjudicacionAdmin = () => {
             data() {
                 return {
                     table: {},
+                    modalNewAdjudicacion: {},
+                    plazas: [],
+                    postulaciones: [],
                     plaza: {},
                     postulacion: {}
                 }
             },
             mounted: function () {
+                self.modalNewAdjudicacion = self.modal('modalNewAdjudicacion');
                 self.initialize();
             },
             methods: {
@@ -21,7 +25,149 @@ const AppAdjudicacionAdmin = () => {
                     return Object.keys(self.plaza).length > 0 && Object.keys(self.postulacion).length > 0;
                 },
                 clicks: () => {
-           
+                    const btnNews = document.querySelectorAll('.btn-new');
+                    btnNews.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            sweet2.loading();
+                            self.getResource()
+                            .then((response) => {
+                                self.plazas = response.plazas;
+                                self.postulaciones = response.postulaciones;
+                                console.log(response);
+                                sweet2.loading(false);
+                                document.querySelector(".search-plazas").addEventListener('input', function () {
+                                    var searchTerm = this.value.toLowerCase();
+                                    var tableRows = document.querySelectorAll('.table-plazas tbody tr');
+                            
+                                    tableRows.forEach(function (row) {
+                                        var textContent = row.textContent || row.innerText;
+                                        var isVisible = textContent.toLowerCase().includes(searchTerm);
+                                        row.style.display = isVisible ? 'table-row' : 'none';
+                                    });
+                                });
+
+                                document.querySelector(".search-postulaciones").addEventListener('input', function () {
+                                    var searchTerm = this.value.toLowerCase();
+                                    var tableRows = document.querySelectorAll('.table-postulaciones tbody tr');
+                            
+                                    tableRows.forEach(function (row) {
+                                        var textContent = row.textContent || row.innerText;
+                                        var isVisible = textContent.toLowerCase().includes(searchTerm);
+                                        row.style.display = isVisible ? 'table-row' : 'none';
+                                    });
+                                });
+
+                                const formAdjudicacion = document.getElementById('formAdjudicacion');
+                                if (formAdjudicacion) {
+                                    formAdjudicacion.addEventListener('submit', (e) => {
+                                        e.preventDefault();
+                                        if (!self.isValid()) {
+                                            sweet2.show({type:'error', text:'Debe de seleccionar un docente y una plaza'});
+                                            return;
+                                        }
+                                        const formData = new FormData(e.target);
+                                        formData.append('plaza_id', self.plaza.plz_id);
+                                        formData.append('postulacion_id', self.postulacion.id);
+
+                                        self.newAdjudicacion(formData)
+                                        .then((response) =>{
+                                            e.target.reset();
+                                            self.modalNewAdjudicacion.hide();
+                                            sweet2.show({type:'success', text: 'Se guardo correctamente'});
+                                            self.table.ajax.reload();
+                                        });
+                                    });
+                                }
+
+                                let html = ``;
+                                let tbodies = document.querySelectorAll('.table-plazas tbody');
+                                if (tbodies) {
+                                    tbodies.forEach(tbody => {
+                                        if (self.plazas.length > 0) {
+                                            self.plazas.forEach(plaza => {
+                                                html +=`<tr>
+                                                            <td>${plaza.plz_id}</td>
+                                                            <td>${plaza.codigoPlaza}</td>
+                                                            <td>${plaza.ie}</td>
+                                                            <td>${plaza.mod_id}</td>
+                                                            <td>${plaza.cargo}</td>
+                                                            <td>${plaza.especialidad}</td>
+                                                            <td>${plaza.jornada}</td>
+                                                            <td>${plaza.tipo_vacante}</td>
+                                                            <td>${plaza.motivo_vacante}</td>
+                                                            <td>
+                                                                <input class="form-check-input" name="check_plaza" type="checkbox" value="${plaza.plz_id}">
+                                                            </td>
+                                                        </tr>`;
+                                            });
+                                        } else {
+                                            html = `<tr>
+                                                        <td colspan="5">No hay resultados</td>
+                                                    </tr>`;
+                                        }
+                                        tbody.innerHTML = html;
+                                    });
+                                }
+
+                                html = ``;
+                                tbodies = document.querySelectorAll('.table-postulaciones tbody');
+                                if (tbodies) {
+                                    tbodies.forEach(tbody => {
+                                        if (self.postulaciones.length > 0) {
+                                            self.postulaciones.forEach(postulacion => {
+                                                html +=`<tr>
+                                                            <td>${postulacion.id}</td>
+                                                            <td>${postulacion.apellido_paterno} ${postulacion.apellido_materno} ${postulacion.nombre}</td>
+                                                            <td>${postulacion.numero_documento}</td>
+                                                            <td>${postulacion.modalidad_nombre}</td>
+                                                            <td>${postulacion.nivel_nombre}</td>
+                                                            <td>${postulacion.especialidad_nombre}</td>
+                                                            <td>${postulacion.puntaje ?? 0}</td>
+                                                            <td>${postulacion.fecha_registro}</td>
+                                                            <td>
+                                                                <input class="form-check-input" name="check_postulacion" type="checkbox" value="${postulacion.id}">
+                                                            </td>
+                                                        </tr>`;
+                                            });
+                                        } else {
+                                            html = `<tr>
+                                                        <td colspan="5">No hay resultados</td>
+                                                    </tr>`;
+                                        }
+                                        tbody.innerHTML = html;
+                                    });
+                                }
+                                
+                                const check_plaza = document.querySelector("input[name='check_plaza']");
+                                if (check_plaza) {
+                                    self.plaza = {};
+                                    check_plaza.addEventListener('change', function (e) {
+                                        if (e.target.checked) {
+                                            const plaza_id = e.target.value;
+                                            if (plaza_id > 0) {
+                                                self.plaza = self.plazas.find((o) => { return o.plz_id === plaza_id });
+                                                console.log(self.plaza);
+                                            }
+                                        }
+                                    });
+                                }
+                                
+                                const check_postulacion = document.querySelector("input[name='check_postulacion']");
+                                if (check_postulacion) {
+                                    self.postulacion = {};
+                                    check_postulacion.addEventListener('change', function (e) {
+                                        if (e.target.checked) {
+                                            const postulacion_id = e.target.value;
+                                            self.postulacion = self.postulaciones.find((o) => { return o.id === postulacion_id });
+                                            console.log(self.postulacion);
+                                        }
+                                    });
+                                }
+
+                                self.modalNewAdjudicacion.show();
+                            });
+                        });
+                    });
                 },
                 getResource: (formData) => {
                     return new Promise((resolve, reject)=>{
@@ -94,7 +240,6 @@ const AppAdjudicacionAdmin = () => {
                         "serverSide" : true,
                         "order" : [],
                         "retrieve": true,
-                        "dom": '<l<t>ip>',	
                         "ajax": {
                            "url": '/admin/adjudicaciones/pagination',
                            "method": "POST",

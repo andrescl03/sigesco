@@ -16,6 +16,11 @@ class Adjudicaciones extends CI_Controller {
         $this->layout->view("/adjudicacion/index");
     }
 
+    public function create() {
+        $this->layout->js(array(base_url()."public/js/myscript/adjudicacion/create.js?t=".date("mdYHis")));
+        $this->layout->view("/adjudicacion/create");
+    }
+
     public function pagination() {
         if ($this->input->post()) {
             $this->output
