@@ -40,8 +40,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php 
-                                                        writer($datos);
+                                                    <?php
                                                         $i=0; foreach ($datos as $dato) { 
                                                             $cadena = $dato['con_id']."||".$dato['gin_id'];
                                                             $parte_1 = ($dato['tp_asigando'] > 0 ? $dato['tp_asigando'] : 0) + ($dato['te_asigando'] > 0 ? $dato['te_asigando'] : 0);
