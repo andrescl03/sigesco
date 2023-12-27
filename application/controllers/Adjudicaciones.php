@@ -22,19 +22,25 @@ class Adjudicaciones extends CI_Controller {
     }
 
     public function pagination() {
-        if ($this->input->post()) {
+        // if ($this->input->post()) {
             $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($this->adjudicaciones_model->pagination($_POST)));
-        } else {
-            show_404();
-        }    
+        // } else {
+        //     show_404();
+        // }    
     }
 
     public function resource() {
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($this->adjudicaciones_model->resource()));
+    }
+
+    public function remove($id) {
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($this->adjudicaciones_model->remove(compact('id'))));
     }
 
     public function store() {

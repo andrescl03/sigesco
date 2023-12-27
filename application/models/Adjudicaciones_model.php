@@ -132,4 +132,28 @@ class Adjudicaciones_model extends CI_Model
     }
     return $response;
   }
+
+  public function remove($request)
+  {
+      $response = $this->tools->responseDefault();
+      try {
+
+          $id = isset($request['id']) ? $request['id'] : 0;
+
+          $sql = "SELECT * FROM adjudicaciones WHERE id = ? AND deleted_at IS NULL";
+          $adjudicacion = $this->db->query($sql, compact('id'))->row();
+          if (!$adjudicacion) {
+            throw new Exception("No sé encuentra registrado en está adjudicación");
+          }
+
+          $this->db->update('adjudicaciones', ['deleted_at' => $this->tools->getDateHour()], array('id' => $id));
+       
+          $response['success'] = true;
+          $response['status']  = 200;
+          $response['message'] = 'Se elimino correctamente';
+      } catch (\Exception $e) {
+          $response['message'] = $e->getMessage();
+      }
+      return $response;
+  }
 }
