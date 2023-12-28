@@ -1,6 +1,4 @@
-<div id="AppCreateAdjudicacionAdmin">
-
-
+<div id="AppCreateAdjudicacionAdmin" data-id="<?php echo isset($data['adjudicacion']) ? $data['adjudicacion']->id : 0 ?>">
     <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Crear Adjudicación</b></h4>
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
@@ -102,7 +100,7 @@
                                     </div>
 
                                     <div class="col-md-12 mt-3 text-end">
-                                        <a href="<?php echo base_url(); ?>/adjudicaciones" type="button" class="btn btn-outline-secondary">
+                                        <a href="<?php echo base_url(); ?>adjudicaciones" type="button" class="btn btn-outline-secondary">
                                             Cancelar
                                         </a>
                                         <button type="submit" class="btn btn-outline-primary" form="formAdjudicacion">

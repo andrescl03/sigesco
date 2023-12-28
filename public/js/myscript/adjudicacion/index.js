@@ -96,7 +96,7 @@ const AppAdjudicacionAdmin = () => {
                         "retrieve": true,
                         "dom": '<l<t>ip>',	
                         "ajax": {
-                           "url": '/admin/adjudicaciones/pagination',
+                           "url": window.AppMain.url + 'admin/adjudicaciones/pagination',
                            "method": "POST",
                            "dataType": "json",
                            "data": {}
@@ -159,8 +159,11 @@ const AppAdjudicacionAdmin = () => {
                                     <button type="button" class="btn btn-sm btn-light btn-active-light me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                         Acción
                                     </button>
-                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4 dropdown-menu dropdown-menu-start">
-                                        <div class="menu-item px-3">
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-2 dropdown-menu dropdown-menu-start">
+                                        <div class="menu-item px-3 py-2">
+                                            <a href="${window.AppMain.url}adjudicaciones/${row.id}/editar" class="menu-link text-danger px-3">Editar</a>
+                                        </div>    
+                                        <div class="menu-item px-3 py-2">
                                             <a href="javascript:void(0);" class="menu-link text-danger px-3 btn-remove" data-id="${row.id}">Eliminar</a>
                                         </div>
                                     </div>`;

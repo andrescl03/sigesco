@@ -350,13 +350,34 @@ const AppAdjudicacionAdmin = () => {
                     if (self.firmas.length > 0) {
                         html = `<ul class="list-group list-group-numbered list-group-flush">`;
                         self.firmas.forEach(firma => {
-                            html += `  <li class="list-group-item">${firma.usu_nombre || ''} ${firma.usu_apellidos || ''} <button class="btn btn-sm btn-danger float-end">X</button> </li>`;
+                            html += `  <li class="list-group-item">${firma.usu_nombre || ''} ${firma.usu_apellidos || ''} <button class="btn btn-sm btn-danger float-end btn-remove-firma" data-id="${firma.usu_id}">X</button> </li>`;
                         });
                         html += `</ul>`;
                     }
                     const divs = dom.querySelectorAll('.list-firmas');
                     divs.forEach(div => {
                         div.innerHTML = html;
+                    });
+                    const btnFirmaRemove = document.querySelectorAll('.btn-remove-firma');
+                    btnFirmaRemove.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const id = e.target.getAttribute('data-id');
+                            sweet2.show({
+                                type: 'question',
+                                text: '¿Estás seguro de eliminar este elemento?',
+                                showCancelButton: true,
+                                onOk: () => {
+                                    const filters = [];
+                                    self.firmas.forEach(element => {
+                                        if (element.usu_id != id) {
+                                            filters.push(element);
+                                        }
+                                    });
+                                    self.firmas = filters;
+                                    self.firmasRender();
+                                }
+                            });
+                        })
                     });
                 },
                 docenteRender: () => {

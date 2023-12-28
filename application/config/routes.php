@@ -62,10 +62,10 @@ $route['web/postulaciones/(:any)/update'] = 'PostulacionesWeb/update/$1';
 $route['web/postulaciones/(:any)'] = 'PostulacionesWeb/edit/$1';
 
 $route['adjudicaciones/create'] = 'Adjudicaciones/create';
+$route['adjudicaciones/(:num)/edit'] = 'Adjudicaciones/edit/$1';
 $route['admin/adjudicaciones/pagination'] = 'Adjudicaciones/pagination';
 $route['admin/adjudicaciones/resource'] = 'Adjudicaciones/resource';
 $route['admin/adjudicaciones/store'] = 'Adjudicaciones/store';
-$route['admin/adjudicaciones/{:num}/edit'] = 'Adjudicaciones/edit/$1';
 $route['admin/adjudicaciones/(:num)/remove'] = 'Adjudicaciones/remove/$1';
 
 $route['configuracion/periodos/(:num)'] = 'Configuracion/editarPeriodo/$1';

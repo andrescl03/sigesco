@@ -156,4 +156,26 @@ class Adjudicaciones_model extends CI_Model
       }
       return $response;
   }
+
+  public function edit($request)
+  {
+      $response = $this->tools->responseDefault();
+      try {
+
+          $id = isset($request['id']) ? $request['id'] : 0;
+          $sql = "SELECT * FROM adjudicaciones WHERE id = ? AND deleted_at IS NULL";
+          $adjudicacion = $this->db->query($sql, compact('id'))->row();
+          if (!$adjudicacion) {
+            show_404();
+          }
+       
+          $response['success'] = true;
+          $response['data']    = compact('adjudicacion', 'id');
+          $response['status']  = 200;
+          $response['message'] = 'Editar adjudicación';
+      } catch (\Exception $e) {
+          $response['message'] = $e->getMessage();
+      }
+      return $response;
+  }
 }
