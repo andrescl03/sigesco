@@ -67,6 +67,7 @@ $route['admin/adjudicaciones/pagination'] = 'Adjudicaciones/pagination';
 $route['admin/adjudicaciones/resource'] = 'Adjudicaciones/resource';
 $route['admin/adjudicaciones/store'] = 'Adjudicaciones/store';
 $route['admin/adjudicaciones/(:num)/remove'] = 'Adjudicaciones/remove/$1';
+$route['admin/adjudicaciones/(:num)/update'] = 'Adjudicaciones/update/$1';
 
 $route['configuracion/periodos/(:num)'] = 'Configuracion/editarPeriodo/$1';
 $route['configuracion/periodos/(:num)/detail'] = 'Configuracion/detallePeriodo/$1';

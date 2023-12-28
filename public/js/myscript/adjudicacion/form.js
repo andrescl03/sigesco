@@ -1,6 +1,8 @@
 const AppAdjudicacionAdmin = () => {
     const index = (container) => {
         const dom = document.getElementById(container);
+        const adjudicacion_id = dom.getAttribute('data-id');
+        dom.removeAttribute('data-id');
         const object = {
             data() {
                 return {
@@ -14,7 +16,9 @@ const AppAdjudicacionAdmin = () => {
 
                     plaza: {},
                     postulacion: {},
-                    firmas: []
+                    firmas: [],
+                    edit: adjudicacion_id > 0,
+                    adjudicacion: {}
                 }
             },
             mounted: function () {
@@ -31,15 +35,19 @@ const AppAdjudicacionAdmin = () => {
                         self.postulaciones = response.postulaciones;
                         self.plazas = response.plazas;
                         self.usuarios = response.usuarios;
-                        self.plaza = {};
-                        self.postulacion = {};
-                        self.firmas = [];
+                        if (self.edit) {
+                            console.log('editar');
+                            if (Object.keys(response.adjudicacion).length > 0) {
+                                self.adjudicacion = response.adjudicacion;
+                                self.editForm();
+                            }
+                        }
                         self.clicks();
                         sweet2.loading(false);
                     });
                 },
                 isValid: () => {
-                    return Object.keys(self.plaza).length > 0 && Object.keys(self.postulacion).length > 0 && self.firmas.length > 0;
+                    return Object.keys(self.plaza).length > 0 && Object.keys(self.postulacion).length > 0;
                 },
                 clicks: () => {
 
@@ -117,7 +125,6 @@ const AppAdjudicacionAdmin = () => {
                             console.log('click');
                         });
                     });
-
 
                     const btnPlaza = document.querySelectorAll('.btn-plaza');
                     btnPlaza.forEach(btn => {
@@ -280,14 +287,15 @@ const AppAdjudicacionAdmin = () => {
                         formAdjudicacion.addEventListener('submit', (e) => {
                             e.preventDefault();
                             if (!self.isValid()) {
-                                sweet2.show({type:'error', text:'Debe de seleccionar un docente, una plaza y una firma'});
+                                sweet2.show({type:'error', text:'Debe de seleccionar un docente y una plaza'});
                                 return;
                             }
                             const formData = new FormData(e.target);
                             formData.append('plaza_id', self.plaza.plz_id);
                             formData.append('postulacion_id', self.postulacion.id);
                             formData.append('firmas', JSON.stringify(self.firmas));
-                            self.newAdjudicacion(formData)
+                            const url = self.edit ? `admin/adjudicaciones/${adjudicacion_id}/update` : `admin/adjudicaciones/store`;
+                            self.createUpdate(url, formData)
                             .then((response) =>{
                                 e.target.reset();
                                 sweet2.show({
@@ -305,7 +313,20 @@ const AppAdjudicacionAdmin = () => {
                         });
                     }
                 },
-                getResource: (formData) => {
+                editForm: () => {
+                    self.plaza = self.adjudicacion.plaza;
+                    self.postulacion = self.adjudicacion.postulacion;
+                    self.firmas = self.adjudicacion.firmas;
+                    dom.querySelector('input[name="fecha_registro"]').value = self.adjudicacion.fecha_registro;
+                    dom.querySelector('input[name="fecha_inicio"]').value = self.adjudicacion.fecha_inicio;
+                    dom.querySelector('input[name="fecha_final"]').value = self.adjudicacion.fecha_final;
+                    self.plazaRender();
+                    self.docenteRender();
+                    self.firmasRender();
+                },
+                getResource: () => {
+                    const formData = new FormData();
+                    formData.append('adjudicacion_id', adjudicacion_id);
                     return new Promise((resolve, reject)=>{
                         sweet2.loading();
                         $.ajax({
@@ -324,11 +345,11 @@ const AppAdjudicacionAdmin = () => {
                         });
                     });
                 },
-                newAdjudicacion: (formData) => {
+                createUpdate: (url, formData) => {
                     return new Promise((resolve, reject)=>{
                         sweet2.loading();
                         $.ajax({
-                            url: window.AppMain.url + `admin/adjudicaciones/store`,
+                            url: window.AppMain.url + url,
                             method: 'POST',
                             dataType: 'json',
                             data: formData,
@@ -422,7 +443,7 @@ const AppAdjudicacionAdmin = () => {
             }
         };
         const self = {
-            ...object.data,
+            ...object.data(),
             ...object.methods,
             ...object.renders,
             ...object.events,
@@ -431,7 +452,7 @@ const AppAdjudicacionAdmin = () => {
         object.mounted();
     }
 
-    const indexContainer = 'AppCreateAdjudicacionAdmin';
+    const indexContainer = 'AppFormAdjudicacionAdmin';
     index(indexContainer);
 };
 

@@ -17,23 +17,23 @@ class Adjudicaciones extends CI_Controller {
     }
 
     public function create() {
-        $this->layout->js(array(base_url()."public/js/myscript/adjudicacion/create.js?t=".date("mdYHis")));
+        $this->layout->js(array(base_url()."public/js/myscript/adjudicacion/form.js?t=".date("mdYHis")));
         $this->layout->view("/adjudicacion/form");
     }
 
     public function edit($id) {
-        $this->layout->js(array(base_url()."public/js/myscript/adjudicacion/create.js?t=".date("mdYHis")));
+        $this->layout->js(array(base_url()."public/js/myscript/adjudicacion/form.js?t=".date("mdYHis")));
         $this->layout->view("/adjudicacion/form", $this->adjudicaciones_model->edit(compact('id')));
     }
 
     public function pagination() {
-        // if ($this->input->post()) {
+        if ($this->input->post()) {
             $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($this->adjudicaciones_model->pagination($_POST)));
-        // } else {
-        //     show_404();
-        // }    
+        } else {
+            show_404();
+        }    
     }
 
     public function resource() {
@@ -52,7 +52,17 @@ class Adjudicaciones extends CI_Controller {
         if ($this->input->post()) {
             $this->output
                 ->set_content_type('application/json')
-                ->set_output(json_encode($this->adjudicaciones_model->store($_POST)));
+                ->set_output(json_encode($this->adjudicaciones_model->store()));
+        } else {
+            show_404();
+        }    
+    }
+
+    public function update($id) {
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->adjudicaciones_model->update(compact('id'))));
         } else {
             show_404();
         }    
