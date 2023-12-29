@@ -63,11 +63,6 @@ class Evaluacion_model extends CI_Model {
             $items[$k]['total_asignados'] = count($keys_postulaciones_total_asignados[$o['gin_id']]);
           }
         }
-        // echo json_encode($keys_postulaciones); exit;
-        // echo json_encode($postulaciones); exit;
-        
-        // echo json_encode($sql->result_array());  
-        // exit;
         return $items;
     }
 
