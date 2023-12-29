@@ -1,5 +1,5 @@
 <?php $edit = isset($data['adjudicacion']) ? true : false ?>
-<div id="AppFormAdjudicacionAdmin" data-id="<?php echo $edit ? $data['adjudicacion']->id : 0 ?>">
+<div id="AppFormAdjudicacionAdmin" data-id="<?php echo $edit ? $data['adjudicacion']->id : 0 ?>" data-now="<?php echo date('Y-m-d'); ?>">
     <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> <?php echo $edit ? "Editar" : "Crear" ?> Adjudicación</b></h4>
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
@@ -14,97 +14,107 @@
                         <div class="card-body text-dark">
                             <div class="text-right mb-2">
                                 <div class="row">
-
-                                    <div class="col-md-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <div class="d-flex">
-                                                    <h5 class="col">Docente</h5>
-                                                    <?php if (!$edit) { ?>
-                                                    <div class="col text-end">
-                                                        <button type="button" class="btn btn-sm btn-outline-secondary btn-docente">
-                                                         <i class="fa-solid fa-file-signature fa-lg me-1"></i> Buscar Docente
-                                                        </button>
-                                                    </div>
-                                                    <?php } ?>
-                                                </div>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="col-md-12 list-docente">
-                                                    No disponible
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <div class="d-flex">
-                                                    <h5 class="col">Plaza</h5>
-                                                    <?php if (!$edit) { ?>
-                                                    <div class="col text-end">
-                                                        <button type="button" class="btn btn-sm btn-outline-secondary btn-plaza">
-                                                            <i class="fa-solid fa-file-signature fa-lg me-1"></i> Buscar Plaza
-                                                        </button>
-                                                    </div>
-                                                    <?php } ?>
-                                                </div>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="col-md-12 list-plaza">
-                                                    No disponible
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12 mb-3">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5>Adjudicación</h5>
-                                            </div>
-                                            <div class="card-body">
-                                                <form id="formAdjudicacion">
-                                                    <div class="row">                                                    
-                                                        <div class="col-md-4 mb-3">
-                                                            <label for="" class="form-label">Fecha de Registro</label>
-                                                            <input type="date" name="fecha_registro" class="form-control" placeholder="" required/>
-                                                        </div>
-                                                        <div class="col-md-4 mb-3">
-                                                            <label for="" class="form-label">Inicio Contrato</label>
-                                                            <input type="date" name="fecha_inicio" class="form-control" placeholder="" required/>
-                                                        </div>
-                                                        <div class="col-md-4 mb-3">
-                                                            <label for="" class="form-label">Término Contrato</label>
-                                                            <input type="date" name="fecha_final" class="form-control" placeholder="" required/>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="d-flex">
+                                                            <h5 class="col"><span class="badge rounded-pill bg-secondary me-1 fs-7">1</span> Docente</h5>
+                                                            <?php if (!$edit) { ?>
+                                                            <div class="col text-end">
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary btn-docente">
+                                                                <i class="fa-solid fa-file-signature fa-lg me-1"></i> Buscar Docente
+                                                                </button>
+                                                            </div>
+                                                            <?php } ?>
                                                         </div>
                                                     </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12 mb-3">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <div class="d-flex">
-                                                    <h5 class="col">Firmas en el acta</h5>
-                                                    <div class="col text-end">
-                                                        <button type="button" class="btn btn-sm btn-outline-secondary btn-firma">
-                                                            <i class="fa-solid fa-file-signature fa-lg me-1"></i> Buscar Firma
-                                                        </button>
+                                                    <div class="card-body">
+                                                        <div class="col-md-12 list-docente">
+                                                            No hay registro para mostrar
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="card-body">
-                                                <div class="col-md-12 list-firmas">
-                                                    No disponible
+
+                                            <div class="col-md-12 mb-3">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="d-flex">
+                                                            <h5 class="col"><span class="badge rounded-pill bg-secondary me-1 fs-7">2</span> Plaza</h5>
+                                                            <?php if (!$edit) { ?>
+                                                            <div class="col text-end">
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary btn-plaza">
+                                                                    <i class="fa-solid fa-file-signature fa-lg me-1"></i> Buscar Plaza
+                                                                </button>
+                                                            </div>
+                                                            <?php } ?>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="col-md-12 list-plaza">
+                                                            No hay registro para mostrar
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5><span class="badge rounded-pill bg-secondary me-1 fs-7">3</span> Adjudicación</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <form id="formAdjudicacion">
+                                                            <div class="row">                                                    
+                                                                <div class="col-md-6 mb-3">
+                                                                    <label for="" class="form-label">Fecha de Registro</label>
+                                                                    <input type="date" name="fecha_registro" class="form-control" placeholder="" required/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6 mb-3">
+                                                                    <label for="" class="form-label">Inicio Contrato</label>
+                                                                    <input type="date" name="fecha_inicio" class="form-control" placeholder="" required/>
+                                                                </div>
+                                                                <div class="col-md-6 mb-3">
+                                                                    <label for="" class="form-label">Término Contrato</label>
+                                                                    <input type="date" name="fecha_final" class="form-control" placeholder="" required/>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 mb-3">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="d-flex">
+                                                            <h5 class="col"><span class="badge rounded-pill bg-secondary me-1 fs-7">4</span> Firmas en el acta</h5>
+                                                            <div class="col text-end">
+                                                                <button type="button" class="btn btn-sm btn-outline-secondary btn-firma">
+                                                                    <i class="fa-solid fa-file-signature fa-lg me-1"></i> Buscar Firma
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="col-md-12 list-firmas">
+                                                            No hay registro para mostrar
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
+                                </div>
+                                <div class="row">
                                     <div class="col-md-12 mt-3 text-end">
                                         <a href="<?php echo base_url(); ?>adjudicaciones" type="button" class="btn btn-outline-secondary">
                                             Cancelar
@@ -113,7 +123,6 @@
                                             Guardar
                                         </button>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -134,7 +143,17 @@
             <div class="modal-body">
                 
                 <div class="row mb-3">
-                    <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <select class="form-select select-tipo-docente" name="">
+                                <option value="" selected>[TODOS]</option>
+                                <option value="1">PUN</option>
+                                <option value="2">EVALUACIÓN DE EXPEDIENTE</option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-8">
                         <div class="form-group pull-right mb-2">
                             <input type="text" class="search search-postulaciones form-control" placeholder="Buscar">
                         </div>
@@ -143,7 +162,7 @@
                         <div class="table-responsive">
                             <table class="table table-bordered results table-postulaciones mb-0">
                                 <thead>
-                                    <tr>
+                                    <tr class="cabecera_tabla_2">
                                         <th>#</th>
                                         <th>Docente</th>
                                         <th>Número de Documento</th>
@@ -190,7 +209,7 @@
                     <div class="col-md-12 table-responsive">
                         <table class="table table-bordered table-plazas mb-0">
                             <thead>
-                                <tr>
+                                <tr class="cabecera_tabla_2">
                                     <th>#</th>
                                     <th>Código Plaza</th>
                                     <th>Insitución Educativa</th>

@@ -2,7 +2,9 @@ const AppAdjudicacionAdmin = () => {
     const index = (container) => {
         const dom = document.getElementById(container);
         const adjudicacion_id = dom.getAttribute('data-id');
+        const now = dom.getAttribute('data-now');
         dom.removeAttribute('data-id');
+        dom.removeAttribute('data-now');
         const object = {
             data() {
                 return {
@@ -11,7 +13,9 @@ const AppAdjudicacionAdmin = () => {
                     modalPlazas: {},
 
                     plazas: [],
+                    tplazas: [],
                     postulaciones: [],
+                    tpostulaciones: [],
                     usuarios: [],
 
                     plaza: {},
@@ -31,12 +35,13 @@ const AppAdjudicacionAdmin = () => {
                 initialize: () => {
                     self.getResource()
                     .then((response) => {
-                        console.log(response);
                         self.postulaciones = response.postulaciones;
+                        self.tpostulaciones = response.postulaciones;
                         self.plazas = response.plazas;
+                        self.tplazas = response.plazas;
                         self.usuarios = response.usuarios;
+                        dom.querySelector('input[name="fecha_registro"]').value = now;
                         if (self.edit) {
-                            console.log('editar');
                             if (Object.keys(response.adjudicacion).length > 0) {
                                 self.adjudicacion = response.adjudicacion;
                                 self.editForm();
@@ -51,50 +56,73 @@ const AppAdjudicacionAdmin = () => {
                 },
                 clicks: () => {
 
+                    const docenteRender = () => {
+                        document.querySelector(".search-postulaciones").value = '';
+                        let html = ``;
+                        const tbodies = document.querySelectorAll('.table-postulaciones tbody');
+                        if (tbodies) {
+                            tbodies.forEach(tbody => {
+                                if (self.postulaciones.length > 0) {
+                                    self.postulaciones.forEach(postulacion => {
+                                        html +=`<tr>
+                                                    <td>${postulacion.id}</td>
+                                                    <td>${postulacion.apellido_paterno} ${postulacion.apellido_materno} ${postulacion.nombre}</td>
+                                                    <td>${postulacion.numero_documento}</td>
+                                                    <td>${postulacion.modalidad_nombre}</td>
+                                                    <td>${postulacion.nivel_nombre}</td>
+                                                    <td>${postulacion.especialidad_nombre}</td>
+                                                    <td>${postulacion.puntaje ?? 0}</td>
+                                                    <td>${postulacion.fecha_registro}</td>
+                                                    <td>
+                                                        <input class="form-check-input" name="check_docente" type="radio" value="${postulacion.id}">
+                                                    </td>
+                                                </tr>`;
+                                    });
+                                } else {
+                                    html = `<tr>
+                                                <td colspan="9" class="text-center">No hay resultados</td>
+                                            </tr>`;
+                                }
+                                tbody.innerHTML = html;
+                            });
+                        }
+
+                        document.querySelector(".search-postulaciones").addEventListener('input', function () {
+                            var searchTerm = this.value.toLowerCase();
+                            var tableRows = document.querySelectorAll('.table-postulaciones tbody tr');
+                    
+                            tableRows.forEach(function (row) {
+                                var textContent = row.textContent || row.innerText;
+                                var isVisible = textContent.toLowerCase().includes(searchTerm);
+                                row.style.display = isVisible ? 'table-row' : 'none';
+                            });
+                        });
+                    }
+
+                    const selectTipoDocente = document.querySelectorAll('.select-tipo-docente');
+                    selectTipoDocente.forEach(btn => {
+                        btn.addEventListener('change', (e) => {
+                            const value = e.target.value;
+                            if (Number(value) > 0) {
+                                const auxs = [];
+                                self.tpostulaciones.forEach(o => {
+                                    if (o.con_tipo == value) {
+                                        auxs.push(o);
+                                    }
+                                });
+                                self.postulaciones = auxs;
+                            } else {
+                                self.postulaciones = self.tpostulaciones;
+                            }
+                            docenteRender();
+                        });
+                    });
+
+
                     const btnDocente = document.querySelectorAll('.btn-docente');
                     btnDocente.forEach(btn => {
                         btn.addEventListener('click', (e) => {
-
-                            let html = ``;
-                            const tbodies = document.querySelectorAll('.table-postulaciones tbody');
-                            if (tbodies) {
-                                tbodies.forEach(tbody => {
-                                    if (self.postulaciones.length > 0) {
-                                        self.postulaciones.forEach(postulacion => {
-                                            html +=`<tr>
-                                                        <td>${postulacion.id}</td>
-                                                        <td>${postulacion.apellido_paterno} ${postulacion.apellido_materno} ${postulacion.nombre}</td>
-                                                        <td>${postulacion.numero_documento}</td>
-                                                        <td>${postulacion.modalidad_nombre}</td>
-                                                        <td>${postulacion.nivel_nombre}</td>
-                                                        <td>${postulacion.especialidad_nombre}</td>
-                                                        <td>${postulacion.puntaje ?? 0}</td>
-                                                        <td>${postulacion.fecha_registro}</td>
-                                                        <td>
-                                                            <input class="form-check-input" name="check_docente" type="radio" value="${postulacion.id}">
-                                                        </td>
-                                                    </tr>`;
-                                        });
-                                    } else {
-                                        html = `<tr>
-                                                    <td colspan="5">No hay resultados</td>
-                                                </tr>`;
-                                    }
-                                    tbody.innerHTML = html;
-                                });
-                            }
-
-                            document.querySelector(".search-postulaciones").addEventListener('input', function () {
-                                var searchTerm = this.value.toLowerCase();
-                                var tableRows = document.querySelectorAll('.table-postulaciones tbody tr');
-                        
-                                tableRows.forEach(function (row) {
-                                    var textContent = row.textContent || row.innerText;
-                                    var isVisible = textContent.toLowerCase().includes(searchTerm);
-                                    row.style.display = isVisible ? 'table-row' : 'none';
-                                });
-                            });
-
+                            docenteRender();
                             self.modalDocentes.show();
                         });
                     });
@@ -115,7 +143,6 @@ const AppAdjudicacionAdmin = () => {
                             if (isvalid) {
                                 if (isvalid > 0) {
                                     self.postulacion = self.postulaciones.find((o) => { return o.id === isvalid });
-                                    console.log(self.postulacion);
                                     self.docenteRender();
                                     self.modalDocentes.hide();
                                 }
@@ -129,6 +156,19 @@ const AppAdjudicacionAdmin = () => {
                     const btnPlaza = document.querySelectorAll('.btn-plaza');
                     btnPlaza.forEach(btn => {
                         btn.addEventListener('click', (e) => {
+
+                            if (Object.keys(self.postulacion).length == 0) {
+                                sweet2.show({type:'info', text:'Debe de seleccionar un docente'});
+                                return;
+                            } else {
+                                const auxs = [];
+                                self.tplazas.forEach(o => {
+                                    if (o.tipo_id == self.postulacion.con_tipo) {
+                                        auxs.push(o);
+                                    }
+                                });
+                                self.plazas = auxs;
+                            }
 
                             let html = ``;
                             const tbodies = document.querySelectorAll('.table-plazas tbody');
@@ -153,7 +193,7 @@ const AppAdjudicacionAdmin = () => {
                                         });
                                     } else {
                                         html = `<tr>
-                                                    <td colspan="5">No hay resultados</td>
+                                                    <td colspan="10" class="text-center">No hay resultados</td>
                                                 </tr>`;
                                     }
                                     tbody.innerHTML = html;
@@ -367,7 +407,7 @@ const AppAdjudicacionAdmin = () => {
             },
             renders: {
                 firmasRender: () => {
-                    let html = `No disponible`;
+                    let html = `No hay registro para mostrar`;
                     if (self.firmas.length > 0) {
                         html = `<ul class="list-group list-group-numbered list-group-flush">`;
                         self.firmas.forEach(firma => {
@@ -402,7 +442,7 @@ const AppAdjudicacionAdmin = () => {
                     });
                 },
                 docenteRender: () => {
-                    let html = `No disponible`;
+                    let html = `No hay registro para mostrar`;
                     if (Object.keys(self.postulacion).length > 0) {
                         html = `                        
                         <p><strong>Apellidos y nombres </strong> ${self.postulacion.apellido_paterno} ${self.postulacion.apellido_materno} ${self.postulacion.nombre}</p>
@@ -419,7 +459,7 @@ const AppAdjudicacionAdmin = () => {
                     });
                 },
                 plazaRender: () => {
-                    let html = `No disponible`;
+                    let html = `No hay registro para mostrar`;
                     if (Object.keys(self.plaza).length > 0) {
                         html = `
                         <p><strong>Código plaza</strong> ${self.plaza.codigoPlaza}</p>
