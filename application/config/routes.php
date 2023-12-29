@@ -69,9 +69,11 @@ $route['admin/adjudicaciones/store'] = 'Adjudicaciones/store';
 $route['admin/adjudicaciones/(:num)/remove'] = 'Adjudicaciones/remove/$1';
 $route['admin/adjudicaciones/(:num)/update'] = 'Adjudicaciones/update/$1';
 
+$route['configuracion/periodos/store'] = 'Configuracion/registraPeriodo';
 $route['configuracion/periodos/(:num)'] = 'Configuracion/editarPeriodo/$1';
 $route['configuracion/periodos/(:num)/detail'] = 'Configuracion/detallePeriodo/$1';
 $route['configuracion/periodos/(:num)/update'] = 'Configuracion/guardarPeriodo/$1';
+$route['configuracion/periodos/(:num)/remove'] = 'Configuracion/eliminarPeriodo/$1';
 
 $route['postulaciones/(:num)/ficha'] = 'Postulaciones/ficha/$1';
 $route['postulaciones/(:num)/fichas'] = 'Postulaciones/fichas/$1';

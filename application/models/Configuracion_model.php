@@ -13,6 +13,7 @@ class Configuracion_model extends CI_Model
     $sql = $this->db
       ->select("*")
       ->from("periodos per")
+      ->where("per_estado", 1)
       ->get();
     // echo $this->db->last_query(); exit(); 
     return $sql->result_array();
@@ -102,6 +103,29 @@ class Configuracion_model extends CI_Model
               INNER JOIN modalidades AS MDA ON MDA.mod_id = NIV.modalidad_mod_id";
       $especialidades = $this->db->query($sql)->result_object();
 
+      $response['success'] = true;
+      $response['data']    = compact('fichas', 'periodo', 'especialidades', 'tipo_convocatorias');
+      $response['status']  = 200;
+      $response['message'] = 'detail';
+    } catch (\Exception $e) {
+      $response['message'] = $e->getMessage();
+    }
+    return $response;
+  }
+
+  
+  public function editarPeriodo($id)
+  {
+    $response = $this->tools->responseDefault();
+    try {
+
+      $sql = "SELECT * FROM periodos WHERE per_id = ? AND per_estado = 1";
+      $periodo = $this->db->query($sql, compact('id'))->row();
+      if (!$periodo) {
+        show_404();
+      }
+
+      $response['id'] = $id;
       $response['success'] = true;
       $response['data']    = compact('fichas', 'periodo', 'especialidades', 'tipo_convocatorias');
       $response['status']  = 200;
@@ -261,8 +285,50 @@ class Configuracion_model extends CI_Model
     return $response;
   }
 
+  public function registraPeriodo()
+  {
+    $response = $this->tools->responseDefault();
+    try {
 
+      $name = $this->input->post("name", true);
+      $anio  = $this->input->post("anio", true);
 
+      $this->db->insert('periodos', [
+        'per_anio' => $anio,
+        'per_nombre' => $name,
+        'per_estado' => 1
+      ]);
+      $id =  $this->db->insert_id(); // para saber el id ingresado
+      
+      $response['success'] = true;
+      $response['status']  = 200;
+      $response['data']    = compact('id');
+      $response['message'] = 'Se registro correctamente';
+    } catch (\Exception $e) {
+      $response['message'] = $e->getMessage();
+    }
+    return $response;
+  }
+
+  public function eliminarPeriodo($id)
+  {
+    $response = $this->tools->responseDefault();
+    try {
+
+      if (!($id > 0)) {
+        throw new Exception("El valor del id debe ser numerico");
+      }
+      $this->db->update('periodos', ['per_estado' => 0], array('per_id' => $id));
+
+      $response['success'] = true;
+      $response['status']  = 200;
+      $response['data']    = compact('id');
+      $response['message'] = 'Se elimino correctamente';
+    } catch (\Exception $e) {
+      $response['message'] = $e->getMessage();
+    }
+    return $response;
+  }
 
   public function listarColegios()
   {

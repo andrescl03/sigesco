@@ -55,7 +55,9 @@
                                                     </div>
                                                     <div class="row mt-3">
                                                         <div class="col-md-12 mb-3 text-end">
-                                                            <button type="submit" class="btn btn-primary">Guardar</button>
+                                                            <button type="button" class="btn btn-danger float-start btn-remove-periodo">Eliminar</button>
+                                                            <button type="submit" class="btn btn-primary float-end">Guardar</button>
+                                                            <a href="<?php echo base_url(); ?>configuracion/periodos" type="button" class="btn btn-secondary me-2 float-end">Cancelar</a>
                                                         </div>
                                                     </div>
                                                 </form>

@@ -314,3 +314,10 @@ CREATE TABLE `adjudicacion_firmas` (
 	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
 	`deleted_at` DATETIME NULL DEFAULT NULL
 );
+
+
+
+-- ALTER TABLE periodos ADD COLUMN `deleted_at` DATETIME DEFAULT NULL;
+
+-- quitar la foreana de la tabla grupo de inscripcion columna per_id
+-- agregar el increment en la periodos per_id

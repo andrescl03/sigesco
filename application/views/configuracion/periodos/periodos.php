@@ -40,21 +40,35 @@
     </div>
 
     <div class="modal fade" id="modal_agregarPeriodos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content" style="font-size: 14px;">
                 <div class="modal-header">
                     <h5 class="modal-title text-danger" id="staticBackdropLabel"><b><i class="fas fa-check-double fa-xs"></i> Agregar Periodo: </b><b class="text-dark lb_expediente"></b></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="view_agregarPeriodos">
-
-
+                    <div class="row">
+                        <div class="container">
+                            <form id="formCreatePeriodo" class="formCreatePeriodo">
+                                <div class="mb-3 row">
+                                    <label class="col-4 col-form-label">Nombre</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" name="name" placeholder="Nombre" required/>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label class="col-4 col-form-label">Año</label>
+                                    <div class="col-8">
+                                        <input type="number" class="form-control" name="anio" placeholder="Año" required/>
+                                    </div>
+                                </div>
+                            </form> 
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"><b><i class="fas fa-window-close"></i> Cerrar</b></button>
-                    <!--<button type="button" class="btn btn-primary btn-sm" id="btn_agregarAplicacion"><b><i class="fas fa-plus-square"></i> Agregar</b></button>-->
+                    <button type="submit" class="btn btn-primary btn-sm" form="formCreatePeriodo"><b><i class="fas fa-plus-square"></i> Agregar</b></button>
                 </div>
             </div>
         </div>
