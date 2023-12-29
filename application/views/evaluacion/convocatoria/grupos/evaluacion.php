@@ -1,7 +1,7 @@
 <div id="AppIndexEvaluationGroupInscripcion" data-any="<?= $any ?>" data-convocatoria="<?= $convocatoria_id ?>" data-inscripcion="<?= $inscripcion_id ?>">
 
 
-    <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Listado de Evaluaciones Preliminares</b></h4>
+    <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Listado de Evaluaciones <?= $any == 'preliminar' ? 'Preliminares' : 'Finales' ?></b></h4>
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
         <li class="breadcrumb-item"><a href="<?php echo base_url()."evaluacion/convocatoria/".encryption('0||0'); ?>"> Evaluación de postulantes</a></li>
