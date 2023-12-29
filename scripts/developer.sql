@@ -316,8 +316,7 @@ CREATE TABLE `adjudicacion_firmas` (
 );
 
 
-
--- ALTER TABLE periodos ADD COLUMN `deleted_at` DATETIME DEFAULT NULL;
+ALTER TABLE postulaciones ADD COLUMN `estado` VARCHAR(255) NULL DEFAULT 'enviado' AFTER `uid`;
 
 -- quitar la foreana de la tabla grupo de inscripcion columna per_id
 -- agregar el increment en la periodos per_id
