@@ -435,7 +435,7 @@
                     <div class="card-body text-dark">
                         <div class="text-right mb-2">
                             <div class="row">
-                                <div id="containerFicha" data-id="<?php echo $postulante->id ?>">
+                                <div id="containerFicha" data-id="<?php echo $postulante->id ?>" data-revaluar="<?= $revaluar ?>">
                                 </div>
                             </div>
                         </div>

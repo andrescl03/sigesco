@@ -244,24 +244,49 @@ class Evaluacion extends CI_Controller {
         $this->layout->css(array(base_url()."public/css/ficha.css?t=".date("mdYHis")));
         $this->layout->js(array(base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
         base_url()."public/js/myscript/evaluacion/guide.js?t=".date("mdYHis")));
-        $this->layout->view("ficha/ficha", compact('datos')); 
-
-       
+        $revaluar = 0;
+        $this->layout->view("ficha/ficha", compact('datos', 'revaluar')); 
 	}
     
+    public function indexPreliminar($convocatoria_id, $inscripcion_id) {
+        $this->layout->js(array(base_url()."public/js/myscript/evaluacion/evaluacion.js?t=".date("mdYHis")));
+        $this->layout->view("/evaluacion/convocatoria/grupos/evaluacion", ['any' => 'preliminar', 'convocatoria_id' => $convocatoria_id, 'inscripcion_id' => $inscripcion_id]);
+    }
 
-    
+    public function indexFinal($convocatoria_id, $inscripcion_id) {
+        $this->layout->js(array(base_url()."public/js/myscript/evaluacion/evaluacion.js?t=".date("mdYHis")));
+        $this->layout->view("/evaluacion/convocatoria/grupos/evaluacion", ['any' => 'final', 'convocatoria_id' => $convocatoria_id, 'inscripcion_id' => $inscripcion_id]);
+    }
 
+    public function pagination() {
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->evaluacion_model->pagination()));
+        } else {
+            show_404();
+        }    
+    }
 
+    public function attachedfiles($id) {
+        if ($id > 0) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->evaluacion_model->attachedfiles(compact('id'))));   
+        } else {
+            show_404();
+        }    
+    }
 
-
-
-
-
-
-
-
-
-
+    public function revaluarPreliFinal($id) {
+        $datos = $this->postulaciones_model->show(['id' => $id]);
+        $this->layout->css(array(base_url()."public/css/ficha.css?t=".date("mdYHis")));
+        $this->layout->js(array(
+            base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
+            base_url()."public/js/myscript/evaluacion/guide.js?t=".date("mdYHis")
+        ));
+        $revaluar = 1;
+        $this->layout->view("ficha/ficha", compact('datos', 'revaluar'));       
+	}
 
 }

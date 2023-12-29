@@ -272,10 +272,86 @@ class Evaluacion_model extends CI_Model {
         return $sql->result_array();  
     }
 
-    
+    public function pagination() {
+      $res = $this->tools->responseDefault();
+      try {
 
+          $draw   = $this->input->post("draw", true);
+          $length = $this->input->post("length", true);
+          $start  = $this->input->post("start", true);
+          $search = $this->input->post("search", true);
 
+          $any = $this->input->post("any", true);
+          $convocatoria_id = $this->input->post("convocatoria_id", true);
+          $inscripcion_id  = $this->input->post("inscripcion_id", true);
 
+          $filterText = '';
+          if ($search) {
+              $value = $search['value'];
+              if (strlen($value) > 0) {
+                  /*$filterText = " AND AC.name LIKE('%{$value}%') 
+                                  OR TC.name LIKE('%{$value}%')";*/
+              }
+          }
+
+          $sql = "SELECT 
+                    pos.*,
+                    cpp.cpe_orden,
+                    epe.epe_id, 
+                    usu.usu_nombre, 
+                    usu.usu_apellidos, 
+                    usu.usu_dni 
+                  FROM postulaciones pos
+                  INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id
+                  INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id
+                  INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
+                  INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
+                  WHERE pos.deleted_at IS NULL 
+                  AND pos.convocatoria_id = $convocatoria_id
+                  AND pos.inscripcion_id = $inscripcion_id
+                  $filterText
+                  GROUP BY pos.id
+                  ORDER BY pos.id DESC";
+          $items = $this->db->query($sql)->result_object();
+          $recordsTotal = count($items);
+
+          $sql .= " LIMIT {$start}, {$length}";
+
+          $items = $this->db->query($sql)->result_object();
+
+          $recordsFiltered = ($recordsTotal / $length) * $length;
+
+          $res['success'] = true;
+          $res['data'] = $items;
+          $res['recordsTotal'] = $recordsTotal;
+          $res['recordsFiltered'] = $recordsFiltered;
+          $res['message'] = 'successfully';
+      } catch (\Exception $e) {
+          $res['message'] = $e->getMessage();
+      }
+      return $res;
+  }
+
+  public function attachedfiles($id) {
+    $response = $this->tools->responseDefault();
+    try {
+      $sql = "SELECT 
+                par.*
+              FROM postulacion_archivos par
+              WHERE par.deleted_at IS NULL 
+              AND par.postulacion_id = ?";
+      $archivos = $this->db->query($sql, ['postulacion_id' => $id])->result_object();
+      $response['success'] = true;
+      $response['data']  = compact('archivos');
+      $response['status']  = 200;
+      $response['message'] = 'Files of postulant';
+
+    } catch (\Exception $e) {
+        $response['message'] = $e->getMessage();
+    }
+    return $response; 
+  }
+  
 
 
 }

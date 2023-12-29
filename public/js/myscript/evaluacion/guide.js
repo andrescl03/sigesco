@@ -4,6 +4,8 @@ const viewfichaDetail = () => {
 	const dom = document.querySelector('#containerFicha');
 	const postulant_id = dom.getAttribute('data-id');
 	dom.removeAttribute('data-id');
+	const revaluar = dom.getAttribute('data-revaluar');
+	dom.removeAttribute('data-revaluar');
 	const domHeader = document.createElement('div');
 	domHeader.classList.add('mb-3', 'text-center');
 	domHeader.style.display = 'flex';
@@ -13,6 +15,7 @@ const viewfichaDetail = () => {
 	dom.appendChild(domBody);
 
 	let currentActive = 1;
+	const textWraps = [];
 
 	// Function to create a cell with specified attributes and text
 	function createCell(tag, text, attributes = {}, style = {}) {
@@ -196,6 +199,7 @@ const viewfichaDetail = () => {
 	function init(data) {
 
 		let self = {
+			postulante: data.postulante,
 			ficha_id: 0,
 			fichas: data.fichas,
 			sections: [],
@@ -204,7 +208,7 @@ const viewfichaDetail = () => {
 			total_question: 0,
 			total: 0
 		};
-		
+
 		const setFormModule = (id) => {
 			self.ficha_id = id;
 			return new Promise((resolve, reject) => {
@@ -215,14 +219,21 @@ const viewfichaDetail = () => {
 					if (self.ficha.plantilla) {						
 						if (self.ficha.plantilla.sections) {
 							self.sections = self.ficha.plantilla.sections;
+							console.log(self.postulante.estado, self.ficha.evaluacion_estado);
 							if (self.ficha.evaluacion_estado == 1) {
-								viewFicha();
+								if (self.postulante.estado == 'revisado' && revaluar == 0) {
+									viewFicha();
+								} else if (self.postulante.estado == 'finalizado' && revaluar == 1) {
+									viewFicha();
+								} else if (self.postulante.estado == 'finalizado' && revaluar == 0) {
+									viewFicha();
+								} else {
+									formFichaDetail();
+								}
 							} else {
 								formFichaDetail();
 							}
 						}
-					} else {
-						throw 'No se encontro la plantilla';
 					}
 					resolve();
 				} catch (error) {
@@ -397,37 +408,52 @@ const viewfichaDetail = () => {
 			btnSave.classList.add('btn', 'btn-primary');
 			btnSave.innerText = 'Guardar';
 			btnSave.addEventListener('click', (e) => {
-				if (calculation()) {
-					sweet2.show({
-						type: 'question',
-						html: `¿Estás seguro de guardar cambios? <h5>Puntaje Total</h5> <h3>${self.total}</h3>`,
-						showCancelButton: true,
-						onOk: () => {
-							const plantilla = {
-								sections: self.sections
-							};
-							const formData = new FormData();
-							formData.append('ficha_id', self.ficha_id);
-							formData.append('plantilla', JSON.stringify(plantilla));
-							formData.append('puntaje', self.total);
-							sweet2.loading();
-							setFicha(formData)
-							.then(({success, data, message})=>{
-								if (!success) {
-									throw message;
-								}
-								sweet2.show({type: 'success', text: message});
-								build();
-							})
-							.catch(error => {
-								sweet2.show({type: 'error', text: error});								
-							})
-						}
-					});
-				}
+				saveAll(false);
 			});
 			footer.appendChild(btnSave);
+			if (currentActive == textWraps.length && self.postulante.estado == 'revisado') {
+				const btnSaveAll = document.createElement('button');
+				btnSaveAll.classList.add('btn', 'btn-success', 'ms-2');
+				btnSaveAll.innerText = 'Guardar y Finalizar';
+				btnSaveAll.addEventListener('click', (e) => {
+					saveAll(true);
+				});
+				footer.appendChild(btnSaveAll);
+			}
 			domBody.appendChild(footer);
+		}
+
+		const saveAll = (any) => {
+			if (calculation()) {
+				sweet2.show({
+					type: 'question',
+					html: `¿Estás seguro de guardar cambios? ${ self.ficha.promedio == 1 ? `<h5>Puntaje Total</h5> <h3>${self.total}</h3>` : `` }`,
+					showCancelButton: true,
+					onOk: () => {
+						const plantilla = {
+							sections: self.sections
+						};
+						const formData = new FormData();
+						formData.append('ficha_id', self.ficha_id);
+						formData.append('plantilla', JSON.stringify(plantilla));
+						formData.append('puntaje', self.total);
+						formData.append('promedio', self.ficha.promedio);
+						formData.append('estado', (any ? 'finalizado': 'revisado'));
+						sweet2.loading();
+						setFicha(formData)
+						.then(({success, data, message})=>{
+							if (!success) {
+								throw message;
+							}
+							sweet2.show({type: 'success', text: message});
+							build();
+						})
+						.catch(error => {
+							sweet2.show({type: 'error', text: error});								
+						})
+					}
+				});
+			}
 		}
 
 		const viewActionOption = (question) => {
@@ -454,7 +480,7 @@ const viewfichaDetail = () => {
 			} else if (question.type == 'marcado') {
 				const attributes = { 
 					class: 'form-check-input text-center', 
-					value: question.score 
+					value: self.ficha.promedio == 1 ? question.score : 1
 				};
 				if (Number(question.value) > 0) {
 					attributes.checked = true;
@@ -502,29 +528,31 @@ const viewfichaDetail = () => {
 			if (divAlert) {
 				divAlert.innerHTML = ``;
 				try {
-					self.sections.forEach(section => {
-						section.groups.forEach(group => {
-							group.questions.forEach(question => {
-								let value = 0;
-								if (question.hasOwnProperty('value')) {
-									value = Number(question.value);
-									if (value > question.score) {
-										throw `El puntaje asignado excede al puntaje máximo en el subcriterio: ${question.name}`;
+					if (self.ficha.promedio == 1) {
+						self.sections.forEach(section => {
+							section.groups.forEach(group => {
+								group.questions.forEach(question => {
+									let value = 0;
+									if (question.hasOwnProperty('value')) {
+										value = Number(question.value);
+										if (value > question.score) {
+											throw `El puntaje asignado excede al puntaje máximo en el subcriterio: ${question.name}`;
+										}
+									} else {
+										question.value = 0;
 									}
-								} else {
-									question.value = 0;
-								}
-								total = total + value;
+									total = total + value;
+								});
 							});
 						});
-					});
-					if (total > self.total_section) {
-						throw `El puntaje acumulado excede el puntaje total`;
-					}
-					self.total = total;
-					const divTotal = domBody.querySelector('#total');
-					if (divTotal) {
-						divTotal.innerText = self.total;						
+						if (total > self.total_section) {
+							throw `El puntaje acumulado excede el puntaje total`;
+						}
+						self.total = total;
+						const divTotal = domBody.querySelector('#total');
+						if (divTotal) {
+							divTotal.innerText = self.total;						
+						}	
 					}
 				} catch (error) {
 					divAlert.appendChild(showAlert(error, 'danger'));
@@ -542,7 +570,6 @@ const viewfichaDetail = () => {
 			const progressLine = document.createElement('div');
 			progressLine.classList.add('progress-line');
 			progressLine.id = 'progress';
-			const textWraps = [];
 
 			const progressBackButton = createButton('progressBack', 'Regresar', true);
 			const progressNextButton = createButton('progressNext', 'Siguiente');
@@ -742,7 +769,7 @@ const viewfichaDetail = () => {
 											`<br><strong>Observacion: </strong> ${question.observation ?? `-`}` : ``
 										}
 									</td>
-									<td class="text-center">${question.value}</td>
+									<td class="text-center">${self.ficha.promedio == 1 ? question.value : (question.value == 1 ? 'Si' : 'No')}</td>
 									${
 										(self.ficha && self.ficha.promedio == 1) ?
 										`<td class="text-center">${question.score}</td>

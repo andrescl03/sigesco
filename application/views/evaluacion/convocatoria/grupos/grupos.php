@@ -35,6 +35,7 @@
                                                         <th class="text-center">#</th>                                                   
                                                         <th class="text-center">GRUPOS DE INSCRIPCIÓN</th>
                                                         <th class="text-center">ASIGNACIÓN</th>
+                                                        <th class="text-center">SIN EVALUAR</th>
                                                         <th class="text-center">EVALUACIÓN PRELIMINAR</th>
                                                         <th class="text-center">EVALUACIÓN FINAL</th>
                                                     </tr>
@@ -50,7 +51,7 @@
                                                         <td class="text-center"><b><?= $i+1;?></b></td>
                                                         <td><?= $dato['mod_abreviatura']." ".$dato['niv_descripcion'].($dato['esp_descripcion']!="-" ? " ".$dato['esp_descripcion'] : "" ) ?></td>
                                                         <td class="text-center"><span class="badge rounded-pill bg-warning text-dark" style="font-size: 1em;"><?= $parte_1 ." / ".$parte_2 ?></span></b></td>
-                                                        <td class="text-center">
+                                                        <!-- <td class="text-center">
                                                             <div class="d-flex justify-content-center gap-3">
                                                                 <?php 
                                                                     if($dato['tp_preliminar'] > 0 ){ 
@@ -83,12 +84,27 @@
                                                                     <span class="<?= $color_1 ?>" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
                                                                 </a>
                                                                 <?php } ?>
-                                                                <a type="button"  title="Ingresar a detalle" href="<?= base_url()?>evaluacion/convocatoria/<?= encryption($cadena."||1||1") ?>" >                                                                
-                                                                    <span class="badge bg-success" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
-                                                                </a>
                                                             </div>
+                                                        </td> -->
+                                                        <td class="text-center">
+                                                            <span class="badge rounded-pill bg-light text-dark" style="font-size: 1em;"><?= $parte_1 ?></span></b>
+                                                            <a type="button"  title="Ingresar a detalle" href="<?= base_url()?>evaluacion/convocatoria/<?= encryption($cadena."||1||1") ?>" >                                                                
+                                                                <span class="badge bg-success" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
+                                                            </a>
                                                         </td>
                                                         <td class="text-center">
+                                                            <span class="badge rounded-pill bg-info text-dark" style="font-size: 1em;"><?= $parte_1 ?></span></b>
+                                                            <a type="button"  title="Ingresar a detalle" href="<?= base_url()?>evaluacion/convocatoria/<?= $dato['con_id'] ?>/inscripcion/<?= $dato['gin_id'] ?>/preliminar" >                                                                
+                                                                <span class="badge bg-success" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
+                                                            </a>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span class="badge rounded-pill bg-info text-dark" style="font-size: 1em;"><?= $parte_1 ?></span></b>
+                                                            <a type="button"  title="Ingresar a detalle" href="<?= base_url()?>evaluacion/convocatoria/<?= $dato['con_id'] ?>/inscripcion/<?= $dato['gin_id'] ?>/final" >                                                                  
+                                                                <span class="badge bg-success" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
+                                                            </a>
+                                                        </td>
+                                                        <!-- <td class="text-center">
                                                             <div class="d-flex justify-content-center gap-3">
                                                                 <?php 
                                                                     if($dato['tp_final'] > 0 ){ 
@@ -121,7 +137,7 @@
                                                                 <?php } ?>
                                                                
                                                             </div>           
-                                                        </td>                                                           
+                                                        </td>                                                            -->
                                                     </tr>
                                                     <?php $i++; } ?>
                                                 </tbody>

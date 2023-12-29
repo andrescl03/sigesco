@@ -792,6 +792,8 @@ class Postulaciones_model extends CI_Model
             $ficha_id  = $this->input->post("ficha_id", true);
             $plantilla = $this->input->post("plantilla", true);
             $puntaje   = $this->input->post("puntaje", true);
+            $promedio  = $this->input->post("promedio", true);
+            $estado    = $this->input->post("estado", true);
 
             $sql = "SELECT 
                         P.*
@@ -810,11 +812,11 @@ class Postulaciones_model extends CI_Model
                     WHERE P.deleted_at IS NULL 
                     AND P.postulacion_id = ?
                     AND P.ficha_id = ?";
-            $ficha = $this->db->query($sql, compact('id', 'ficha_id'))->row();
+            $ficha = $this->db->query($sql, array('postulacion_id'=>$id, 'ficha_id'=>$ficha_id))->row();
 
-            if ($ficha) {
-                throw new Exception("Ya existe una ficha registrada");
-            }
+            // if ($ficha) {
+            //     throw new Exception("Ya existe una ficha registrada");
+            // }
 
             $sql = "SELECT 
                         PE.*
@@ -826,17 +828,44 @@ class Postulaciones_model extends CI_Model
             $contador = count($fichas);
             $orden = $contador ? ($contador + 1) : 1;
 
-            $insert = [
-                'plantilla'      => $plantilla,
-                'puntaje'        => $puntaje,
-                'ficha_id'       => $ficha_id,
-                'postulacion_id' => $id,
-                'fecha_registro' => $this->tools->getDateHour(),
-                'estado'         => 1,
-                'orden'          => $orden,
-                'promedio'       => $ficha->promedio
-            ];
-            $this->db->insert('postulacion_evaluaciones', $insert);
+
+            if ($ficha) {
+                $update = [
+                    'plantilla'      => $plantilla,
+                    'puntaje'        => $puntaje,
+                    'estado'         => 1,
+                ];
+                $this->db->update('postulacion_evaluaciones', $update, array('postulacion_id'=>$id, 'ficha_id'=>$ficha_id));
+            } else {
+                $insert = [
+                    'plantilla'      => $plantilla,
+                    'puntaje'        => $puntaje,
+                    'ficha_id'       => $ficha_id,
+                    'postulacion_id' => $id,
+                    'fecha_registro' => $this->tools->getDateHour(),
+                    'estado'         => 1,
+                    'orden'          => $orden,
+                    'promedio'       => $promedio
+                ];
+                $this->db->insert('postulacion_evaluaciones', $insert);
+            }
+
+            // cambiando de estado al postulante
+            $result = $this->fichas($id);
+            if ($result['success']) {
+                $all = $result['data']['fichas'];
+                $postulant = $result['data']['postulante'];
+                $total = count($all);
+                $count = 0;
+                foreach ($all as $key => $item) {
+                    if ($item->evaluacion_estado == 1) {
+                        $count ++;
+                    }
+                }
+                if ($total == $count) {
+                    $this->db->update('postulaciones', ['estado' => $estado], array('id' => $id));
+                }
+            }
 
             $response['success'] = true;
             $response['status']  = 200;
@@ -917,7 +946,7 @@ class Postulaciones_model extends CI_Model
             $periodo = $this->db->query($sql, compact('id'))->row();
             
             $response['success'] = true;
-            $response['data']  = compact('fichas', 'periodo');
+            $response['data']  = compact('fichas', 'periodo', 'postulante');
             $response['status']  = 200;
             $response['message'] = 'fichas';
   
