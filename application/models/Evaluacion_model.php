@@ -18,8 +18,57 @@ class Evaluacion_model extends CI_Model {
         ->where(array("cde.cde_estado"=>1, "cde.convocatorias_con_id"=>$idCon))
         ->order_by("mod.mod_id asc, niv.niv_id asc, esp.esp_id asc") 
         ->get();
-        // echo $this->db->last_query(); exit(); 
-        return $sql->result_array();  
+        $items = $sql->result_array();
+
+        $sql = "SELECT
+                  POS.*,
+                  EPE.epe_id AS epe_id
+                FROM postulaciones AS POS
+                LEFT JOIN evaluacion_pun_exp AS EPE ON POS.id = EPE.postulacion_id
+                WHERE POS.deleted_at IS NULL 
+                AND POS.convocatoria_id = $idCon
+                GROUP BY POS.id";
+        $postulaciones = $this->db->query($sql)->result_array();
+        $keys_postulaciones = [];
+        $keys_postulaciones_total = [];
+        $keys_postulaciones_total_asignados = [];
+        foreach ($postulaciones as $k => $o) {
+          $keys_postulaciones[$o['inscripcion_id']][$o['estado']][] = $o;
+          $keys_postulaciones_total[$o['inscripcion_id']][] = $o;
+          if ($o['epe_id'] > 0) {
+            $keys_postulaciones_total_asignados[$o['inscripcion_id']][] = $o;
+          }
+        }
+        foreach ($items as $k => $o) {
+          $items[$k]['cantidad_preliminar'] = 0;
+          $items[$k]['cantidad_sin_evaluar'] = 0;
+          $items[$k]['cantidad_final'] = 0;
+          $items[$k]['total_postulaciones'] = 0;
+          $items[$k]['total_asignados'] = 0;
+          if (isset($keys_postulaciones[$o['gin_id']])) {
+            if (isset($keys_postulaciones[$o['gin_id']]['enviado'])) {
+              $items[$k]['cantidad_sin_evaluar'] = count($keys_postulaciones[$o['gin_id']]['enviado']);
+            }
+            if (isset($keys_postulaciones[$o['gin_id']]['revisado'])) {
+              $items[$k]['cantidad_preliminar'] = count($keys_postulaciones[$o['gin_id']]['revisado']);
+            }
+            if (isset($keys_postulaciones[$o['gin_id']]['finalizado'])) {
+              $items[$k]['cantidad_final'] = count($keys_postulaciones[$o['gin_id']]['finalizado']);
+            }
+          }
+          if (isset($keys_postulaciones_total[$o['gin_id']])) {
+            $items[$k]['total_postulaciones'] = count($keys_postulaciones_total[$o['gin_id']]);
+          }
+          if (isset($keys_postulaciones_total_asignados[$o['gin_id']])) {
+            $items[$k]['total_asignados'] = count($keys_postulaciones_total_asignados[$o['gin_id']]);
+          }
+        }
+        // echo json_encode($keys_postulaciones); exit;
+        // echo json_encode($postulaciones); exit;
+        
+        // echo json_encode($sql->result_array());  
+        // exit;
+        return $items;
     }
 
     
@@ -293,7 +342,7 @@ class Evaluacion_model extends CI_Model {
                                   OR TC.name LIKE('%{$value}%')";*/
               }
           }
-
+          $estado = $any == 'final' ? 'finalizado' : 'revisado';
           $sql = "SELECT 
                     pos.*,
                     cpp.cpe_orden,
@@ -309,6 +358,7 @@ class Evaluacion_model extends CI_Model {
                   WHERE pos.deleted_at IS NULL 
                   AND pos.convocatoria_id = $convocatoria_id
                   AND pos.inscripcion_id = $inscripcion_id
+                  AND pos.estado = '$estado'
                   $filterText
                   GROUP BY pos.id
                   ORDER BY pos.id DESC";

@@ -50,7 +50,7 @@
                                                     <tr>
                                                         <td class="text-center"><b><?= $i+1;?></b></td>
                                                         <td><?= $dato['mod_abreviatura']." ".$dato['niv_descripcion'].($dato['esp_descripcion']!="-" ? " ".$dato['esp_descripcion'] : "" ) ?></td>
-                                                        <td class="text-center"><span class="badge rounded-pill bg-warning text-dark" style="font-size: 1em;"><?= $parte_1 ." / ".$parte_2 ?></span></b></td>
+                                                        <td class="text-center"><span class="badge rounded-pill bg-warning text-dark" style="font-size: 1em;"><?= $dato['total_asignados'] ." / ".$dato['total_postulaciones'] ?></span></b></td>
                                                         <!-- <td class="text-center">
                                                             <div class="d-flex justify-content-center gap-3">
                                                                 <?php 
@@ -87,19 +87,19 @@
                                                             </div>
                                                         </td> -->
                                                         <td class="text-center">
-                                                            <span class="badge rounded-pill bg-light text-dark" style="font-size: 1em;"><?= $parte_1 ?></span></b>
+                                                            <span class="badge rounded-pill bg-light text-dark" style="font-size: 1em;"><?= $dato['cantidad_sin_evaluar'] ?></span></b>
                                                             <a type="button"  title="Ingresar a detalle" href="<?= base_url()?>evaluacion/convocatoria/<?= encryption($cadena."||1||1") ?>" >                                                                
                                                                 <span class="badge bg-success" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
                                                             </a>
                                                         </td>
                                                         <td class="text-center">
-                                                            <span class="badge rounded-pill bg-info text-dark" style="font-size: 1em;"><?= $parte_1 ?></span></b>
+                                                            <span class="badge rounded-pill bg-light text-dark" style="font-size: 1em;"><?= $dato['cantidad_preliminar'] ?></span></b>
                                                             <a type="button"  title="Ingresar a detalle" href="<?= base_url()?>evaluacion/convocatoria/<?= $dato['con_id'] ?>/inscripcion/<?= $dato['gin_id'] ?>/preliminar" >                                                                
                                                                 <span class="badge bg-success" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
                                                             </a>
                                                         </td>
                                                         <td class="text-center">
-                                                            <span class="badge rounded-pill bg-info text-dark" style="font-size: 1em;"><?= $parte_1 ?></span></b>
+                                                            <span class="badge rounded-pill bg-light text-dark" style="font-size: 1em;"><?= $dato['cantidad_final'] ?></span></b>
                                                             <a type="button"  title="Ingresar a detalle" href="<?= base_url()?>evaluacion/convocatoria/<?= $dato['con_id'] ?>/inscripcion/<?= $dato['gin_id'] ?>/final" >                                                                  
                                                                 <span class="badge bg-success" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
                                                             </a>
