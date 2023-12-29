@@ -305,3 +305,12 @@ CREATE TABLE plazas (
   KEY modalidades (mod_id) USING BTREE,
   KEY tipo_convocatoria (tipo_id) USING BTREE
 );
+
+/********************* 28/12/23 ************************/
+CREATE TABLE `adjudicacion_firmas` (
+	`adjudicacion_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`usuario_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL
+);

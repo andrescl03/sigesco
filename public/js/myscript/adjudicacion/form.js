@@ -1,6 +1,8 @@
 const AppAdjudicacionAdmin = () => {
     const index = (container) => {
         const dom = document.getElementById(container);
+        const adjudicacion_id = dom.getAttribute('data-id');
+        dom.removeAttribute('data-id');
         const object = {
             data() {
                 return {
@@ -14,7 +16,9 @@ const AppAdjudicacionAdmin = () => {
 
                     plaza: {},
                     postulacion: {},
-                    firmas: []
+                    firmas: [],
+                    edit: adjudicacion_id > 0,
+                    adjudicacion: {}
                 }
             },
             mounted: function () {
@@ -31,7 +35,13 @@ const AppAdjudicacionAdmin = () => {
                         self.postulaciones = response.postulaciones;
                         self.plazas = response.plazas;
                         self.usuarios = response.usuarios;
-                        self.firmas = [];
+                        if (self.edit) {
+                            console.log('editar');
+                            if (Object.keys(response.adjudicacion).length > 0) {
+                                self.adjudicacion = response.adjudicacion;
+                                self.editForm();
+                            }
+                        }
                         self.clicks();
                         sweet2.loading(false);
                     });
@@ -115,7 +125,6 @@ const AppAdjudicacionAdmin = () => {
                             console.log('click');
                         });
                     });
-
 
                     const btnPlaza = document.querySelectorAll('.btn-plaza');
                     btnPlaza.forEach(btn => {
@@ -250,11 +259,22 @@ const AppAdjudicacionAdmin = () => {
                             }
                             if (isvalid) {
                                 if (isvalid > 0) {
-                                    console.log(self.usuarios, isvalid);
-                                    const usu = self.usuarios.find((o) => { return o.usu_id === isvalid });
-                                    self.firmas.push(usu);
-                                    self.firmasRender();
-                                    self.modalFirmas.hide();
+
+                                    self.firmas.forEach(firma => {
+                                        if (firma.usu_id == isvalid) {
+                                            isvalid = false;
+                                            return;
+                                        }
+                                    });
+
+                                    if (isvalid) {
+                                        const usu = self.usuarios.find((o) => { return o.usu_id === isvalid });
+                                        self.firmas.push(usu);
+                                        self.firmasRender();
+                                        self.modalFirmas.hide();    
+                                    } else {
+                                        sweet2.show({type:'error', text:'El usuario ya se encuentra registrado'});
+                                    }
                                 }
                             } else {
                                 sweet2.show({type:'error', text:'Debe de seleccionar una firma'});
@@ -273,18 +293,40 @@ const AppAdjudicacionAdmin = () => {
                             const formData = new FormData(e.target);
                             formData.append('plaza_id', self.plaza.plz_id);
                             formData.append('postulacion_id', self.postulacion.id);
-
-                            self.newAdjudicacion(formData)
+                            formData.append('firmas', JSON.stringify(self.firmas));
+                            const url = self.edit ? `admin/adjudicaciones/${adjudicacion_id}/update` : `admin/adjudicaciones/store`;
+                            self.createUpdate(url, formData)
                             .then((response) =>{
                                 e.target.reset();
-                                self.modalNewAdjudicacion.hide();
-                                sweet2.show({type:'success', text: 'Se guardo correctamente'});
+                                sweet2.show({
+                                    type: 'success', 
+                                    text: 'Se guardo correctamente',
+                                    showConfirmButton: false,
+                                });
+
+                                setTimeout(() => {
+                                    sweet2.loading();
+                                    window.location.href = '/adjudicaciones';                                
+                                }, 2500);
                             
                             });
                         });
                     }
                 },
-                getResource: (formData) => {
+                editForm: () => {
+                    self.plaza = self.adjudicacion.plaza;
+                    self.postulacion = self.adjudicacion.postulacion;
+                    self.firmas = self.adjudicacion.firmas;
+                    dom.querySelector('input[name="fecha_registro"]').value = self.adjudicacion.fecha_registro;
+                    dom.querySelector('input[name="fecha_inicio"]').value = self.adjudicacion.fecha_inicio;
+                    dom.querySelector('input[name="fecha_final"]').value = self.adjudicacion.fecha_final;
+                    self.plazaRender();
+                    self.docenteRender();
+                    self.firmasRender();
+                },
+                getResource: () => {
+                    const formData = new FormData();
+                    formData.append('adjudicacion_id', adjudicacion_id);
                     return new Promise((resolve, reject)=>{
                         sweet2.loading();
                         $.ajax({
@@ -303,11 +345,11 @@ const AppAdjudicacionAdmin = () => {
                         });
                     });
                 },
-                newAdjudicacion: (formData) => {
+                createUpdate: (url, formData) => {
                     return new Promise((resolve, reject)=>{
                         sweet2.loading();
                         $.ajax({
-                            url: window.AppMain.url + `admin/adjudicaciones/store`,
+                            url: window.AppMain.url + url,
                             method: 'POST',
                             dataType: 'json',
                             data: formData,
@@ -329,13 +371,34 @@ const AppAdjudicacionAdmin = () => {
                     if (self.firmas.length > 0) {
                         html = `<ul class="list-group list-group-numbered list-group-flush">`;
                         self.firmas.forEach(firma => {
-                            html += `  <li class="list-group-item">${firma.usu_nombre || ''} ${firma.usu_apellidos || ''} <button class="btn btn-sm btn-danger float-end">X</button> </li>`;
+                            html += `  <li class="list-group-item">${firma.usu_nombre || ''} ${firma.usu_apellidos || ''} <button class="btn btn-sm btn-danger float-end btn-remove-firma" data-id="${firma.usu_id}">X</button> </li>`;
                         });
                         html += `</ul>`;
                     }
                     const divs = dom.querySelectorAll('.list-firmas');
                     divs.forEach(div => {
                         div.innerHTML = html;
+                    });
+                    const btnFirmaRemove = document.querySelectorAll('.btn-remove-firma');
+                    btnFirmaRemove.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const id = e.target.getAttribute('data-id');
+                            sweet2.show({
+                                type: 'question',
+                                text: '¿Estás seguro de eliminar este elemento?',
+                                showCancelButton: true,
+                                onOk: () => {
+                                    const filters = [];
+                                    self.firmas.forEach(element => {
+                                        if (element.usu_id != id) {
+                                            filters.push(element);
+                                        }
+                                    });
+                                    self.firmas = filters;
+                                    self.firmasRender();
+                                }
+                            });
+                        })
                     });
                 },
                 docenteRender: () => {
@@ -344,6 +407,8 @@ const AppAdjudicacionAdmin = () => {
                         html = `                        
                         <p><strong>Apellidos y nombres </strong> ${self.postulacion.apellido_paterno} ${self.postulacion.apellido_materno} ${self.postulacion.nombre}</p>
                         <p><strong>Número de documento </strong> ${self.postulacion.numero_documento}</p>
+                        <p><strong>Estado civil </strong> ${self.postulacion.estado_civil}</p>
+                        <p><strong>Correo </strong> ${self.postulacion.correo}</p>
                         <p><strong>Modalidad </strong> ${self.postulacion.modalidad_nombre}</p>
                         <p><strong>Nivel </strong> ${self.postulacion.nivel_nombre}</p>
                         <p><strong>Especialidad </strong> ${self.postulacion.especialidad_nombre}</p>`;
@@ -378,7 +443,7 @@ const AppAdjudicacionAdmin = () => {
             }
         };
         const self = {
-            ...object.data,
+            ...object.data(),
             ...object.methods,
             ...object.renders,
             ...object.events,
@@ -387,7 +452,7 @@ const AppAdjudicacionAdmin = () => {
         object.mounted();
     }
 
-    const indexContainer = 'AppCreateAdjudicacionAdmin';
+    const indexContainer = 'AppFormAdjudicacionAdmin';
     index(indexContainer);
 };
 
