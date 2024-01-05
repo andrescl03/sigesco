@@ -23,7 +23,7 @@
                                                     <div class="col-sm-12 ">
                                                         <div class="d-flex align-content-start flex-wrap gap-3">
                                                             <div class="d-grid gap-2 col-sm-2">
-                                                                <a type="button" target="_blank" href="<?php echo base_url().'evaluacion/convocatoria/'.$convocatoria_id.'/inscripcion/'.$inscripcion_id.'/preliminar/exportar' ?>" class="btn btn-outline-success btn-sm" >
+                                                                <a type="button" target="_blank" href="<?php echo base_url().'evaluacion/convocatoria/'.$convocatoria_id.'/inscripcion/'.$inscripcion_id.'/'.($any == 'preliminar' ? 'preliminar' : 'final').'/exportar' ?>" class="btn btn-outline-success btn-sm" >
                                                                     <b><i class="fa-solid fa-file-excel fa-lg"></i> Exportar</b>
                                                                 </a>
                                                             </div>

@@ -397,6 +397,58 @@ class Evaluacion_model extends CI_Model {
     return $response; 
   }
   
+  
+  public function report($convocatoria_id, $inscripcion_id, $estado) {
+    $res = $this->tools->responseDefault();
+    try {
+
+        // $estado = $any == 'final' ? 'finalizado' : 'revisado';
+        $sql = "SELECT 
+                  pos.*,
+                  cpp.cpe_orden,
+                  epe.epe_id, 
+                  usu.usu_nombre, 
+                  usu.usu_apellidos, 
+                  usu.usu_dni,
+                  esp.esp_id AS especialidad_id,
+                  esp.esp_descripcion AS especialidad_descripcion,
+                  niv.niv_id AS nivel_id,
+                  niv.niv_descripcion AS nivel_descripcion,
+                  mdd.mod_id AS modalidad_id,
+                  mdd.mod_nombre AS modalidad_descripcion,
+                  pfa.universidad AS formacion_academica_universidad,
+                  pel.institucion_educativa AS experiencia_laboral_institucion_educativa,
+                  pe.tema_especializacion AS especializacion_tema,
+                  pev.puntaje AS puntaje 
+                FROM postulaciones pos
+                INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id
+                INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id  AND cpp.cpe_documento = pos.numero_documento
+                INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
+                INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
+                INNER JOIN grupo_inscripcion AS gin ON cpp.grupo_inscripcion_gin_id = gin.gin_id
+                INNER JOIN especialidades AS esp ON esp.esp_id = gin.especialidades_esp_id
+                INNER JOIN niveles AS niv ON niv.niv_id = esp.niveles_niv_id
+                INNER JOIN modalidades AS mdd ON mdd.mod_id = niv.modalidad_mod_id 
+                LEFT JOIN postulacion_formaciones_academicas AS pfa ON pfa.postulacion_id = pos.id
+                LEFT JOIN postulacion_experiencias_laborales AS pel ON pel.postulacion_id = pos.id
+                LEFT JOIN postulacion_especializaciones AS pe ON pe.postulacion_id = pos.id
+                LEFT JOIN postulacion_evaluaciones AS pev ON pev.postulacion_id = pos.id AND pev.promedio = 1
+                WHERE pos.deleted_at IS NULL 
+                AND pos.convocatoria_id = $convocatoria_id
+                AND pos.inscripcion_id = $inscripcion_id
+                AND pos.estado = '$estado'
+                ORDER BY pos.id DESC";
+        $items = $this->db->query($sql)->result_object();
+        $recordsTotal = count($items);
+
+        $res['success'] = true;
+        $res['data'] = ['records' => $items, 'recordsTotal' => $recordsTotal];
+        $res['message'] = 'successfully';
+    } catch (\Exception $e) {
+        $res['message'] = $e->getMessage();
+    }
+    return $res;
+  }
 
 
 }
