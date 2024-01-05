@@ -1,5 +1,5 @@
 <?php
-class Convocatorias_Web_model extends CI_Model
+class Convocatorias_web_model extends CI_Model
 {
 
   public function __construct()
