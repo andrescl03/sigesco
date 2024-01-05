@@ -171,6 +171,7 @@
                                         <th>Especialidad</th>
                                         <th>Puntaje</th>
                                         <th>Fecha de Registro</th>
+                                        <th class="text-center"></th>
                                         <th></th>
                                     </tr>
                                 </thead>
