@@ -118,12 +118,12 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     const rowHeader = document.createElement('div');
                     rowHeader.classList.add('row', 'mb-3');
                     const colTitle = document.createElement('div');
-                    colTitle.classList.add('col-lg-10');
+                    colTitle.classList.add('col-lg-6');
                     colTitle.innerHTML = `<h4>Listado fichas de evaluación</h4>`;
                     rowHeader.appendChild(colTitle);
 
                     const colAction = document.createElement('div');
-                    colAction.classList.add('col-lg-2', 'text-end');
+                    colAction.classList.add('col-lg-6', 'text-end');
 
                     const button = document.createElement('a');
                     button.classList.add('link-dark', 'ms-3');
@@ -167,6 +167,35 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
             },
             events: () => {
+
+                self.eventTag('btn-remove-periodo', (e) => {
+                    
+                    sweet2.show({
+                        type: 'question',
+                        text: '¿Estás seguro de eliminar este elemento?',
+                        showCancelButton: true,
+                        onOk: () => {
+                            sweet2.loading();
+                            self.remove()
+                            .then(({success, data, message}) => {
+                                if (!success) {
+                                    throw message;
+                                }
+                                sweet2.show({
+                                    type: 'success', 
+                                    text: message,
+                                    onOk: () => {
+                                        sweet2.loading({text: 'Redireccionando...'});
+                                        window.location.href = window.AppMain.url + `/configuracion/periodos`;
+                                    }
+                                });
+                            })
+                            .catch(error => {
+                                sweet2.show({type:'error', text:error});
+                            });
+                        }
+                    });
+                }, 'click');
 
                 self.eventTag('form-ficha', (e) => {
                     e.preventDefault();
@@ -274,6 +303,25 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     .done(function ({success, data, message}) {
                         sweet2.show({type: success ? 'success' : 'error', html: message});
                         resolve(data);
+                    })
+                    .fail(function (xhr, status, error) {
+                        sweet2.show({type:'error', text:error});
+                    });
+                });
+            },
+            remove: (formData) => {
+                return new Promise((resolve, reject)=>{
+                    sweet2.loading();
+                    $.ajax({
+                        url: window.AppMain.url + `configuracion/periodos/${self.periodo_id}/remove`,
+                        method: 'POST',
+                        dataType: 'json',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                    })
+                    .done(function (response) {
+                        resolve(response);
                     })
                     .fail(function (xhr, status, error) {
                         sweet2.show({type:'error', text:error});

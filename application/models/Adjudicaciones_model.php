@@ -120,11 +120,17 @@ class Adjudicaciones_model extends CI_Model
               INNER JOIN grupo_inscripcion GI ON GI.gin_id = CD.grupo_inscripcion_gin_id AND GI.gin_id = P.inscripcion_id
               INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
               INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
-              INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id     
-              WHERE P.deleted_at IS NULL";
+              INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
+              LEFT JOIN adjudicaciones AD ON AD.postulacion_id = P.id AND AD.deleted_at IS NULL               
+              WHERE P.deleted_at IS NULL
+              AND P.estado = 'finalizado'
+              AND AD.id IS NULL";
       $postulaciones = $this->db->query($sql)->result_object();
 
-      $sql = "SELECT * FROM plazas";
+      $sql = "SELECT PL.* 
+              FROM plazas AS PL
+              LEFT JOIN adjudicaciones AD ON AD.postulacion_id = PL.plz_id
+              AND AD.id IS NULL";
       $plazas = $this->db->query($sql)->result_object();
 
       $sql = "SELECT * FROM usuarios";

@@ -48,7 +48,8 @@ class Configuracion extends CI_Controller
             redirect(base_url() . "inicio/index", 'refresh');
         }
         $this->layout->js(array(base_url() . "public/js/myscript/configuracion/periodo/editar.js?t=" . date("mdYHis")));
-        $this->layout->view("periodos/editar", ['id' => $this->uri->segment(3)]);
+        // $this->layout->view("periodos/editar", ['id' => $this->uri->segment(3)]);
+        $this->layout->view("periodos/editar", $this->configuracion_model->editarPeriodo($this->uri->segment(3)));        
     }
 
     public function detallePeriodo($id)
@@ -63,6 +64,24 @@ class Configuracion extends CI_Controller
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($this->configuracion_model->guardarPeriodo($id)));
+    }
+
+    public function eliminarPeriodo($id)
+    {
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($this->configuracion_model->eliminarPeriodo($id)));
+    }
+
+    public function registraPeriodo()
+    {
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->configuracion_model->registraPeriodo()));
+        } else {
+            show_404();
+        }
     }
 
     public function procesos()

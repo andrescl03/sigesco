@@ -314,3 +314,9 @@ CREATE TABLE `adjudicacion_firmas` (
 	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
 	`deleted_at` DATETIME NULL DEFAULT NULL
 );
+
+
+ALTER TABLE postulaciones ADD COLUMN `estado` VARCHAR(255) NULL DEFAULT 'enviado' AFTER `uid`;
+
+-- quitar la foreana de la tabla grupo de inscripcion columna per_id
+-- agregar el increment en la periodos per_id

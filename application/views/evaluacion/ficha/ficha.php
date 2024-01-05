@@ -1,9 +1,3 @@
-<h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Ficha de evaluación</b></h4>
-<ol class="breadcrumb mb-2">
-    <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
-    <!-- <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>/porderivar/listar"> Expedientes Por Derivar</a></li>
-        <li class="breadcrumb-item active">Registro de Expediente Externo</li> -->
-</ol>
 <?php
     $postulante = $datos['data']['postulante'];
     $formaciones_academicas = $datos['data']['postulacion_formaciones_academicas'];
@@ -11,6 +5,15 @@
     $experiencias_laborales = $datos['data']['postulacion_experiencias_laborales'];
     $archivos = $datos['data']['postulacion_archivos'];
 ?>
+<h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Ficha de evaluación</b></h4>
+<ol class="breadcrumb mb-2">
+    <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
+    <li class="breadcrumb-item"><a href="<?php echo base_url()."evaluacion/convocatoria/".encryption('0||0'); ?>"> Evaluación de postulantes</a></li>
+    <li class="breadcrumb-item"><a href="<?php echo base_url()."evaluacion/convocatoria/".encryption($postulante->convocatoria_id.'||0'); ?>"> Grupo de inscripción</a></li>
+
+    <!-- <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>/porderivar/listar"> Expedientes Por Derivar</a></li>
+        <li class="breadcrumb-item active">Registro de Expediente Externo</li> -->
+</ol>
 <style>
     .accordion-button:not(.collapsed){
         background-color: #f8f9fa;
@@ -435,7 +438,7 @@
                     <div class="card-body text-dark">
                         <div class="text-right mb-2">
                             <div class="row">
-                                <div id="containerFicha" data-id="<?php echo $postulante->id ?>">
+                                <div id="containerFicha" data-id="<?php echo $postulante->id ?>" data-revaluar="<?= $revaluar ?>">
                                 </div>
                             </div>
                         </div>

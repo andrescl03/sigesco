@@ -55,7 +55,9 @@
                                                     </div>
                                                     <div class="row mt-3">
                                                         <div class="col-md-12 mb-3 text-end">
-                                                            <button type="submit" class="btn btn-primary">Guardar</button>
+                                                            <button type="button" class="btn btn-danger float-start btn-remove-periodo">Eliminar</button>
+                                                            <button type="submit" class="btn btn-primary float-end">Guardar</button>
+                                                            <a href="<?php echo base_url(); ?>configuracion/periodos" type="button" class="btn btn-secondary me-2 float-end">Cancelar</a>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -100,7 +102,7 @@
                                 </div>
                             </div>
                             <div class="modal fade" id="modalFicha" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
+                                <div class="modal-dialog modal-xl">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">FICHA</h5>
@@ -140,7 +142,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
-                                                        <label class="col-4 col-form-label">Se promedia</label>
+                                                        <label class="col-4 col-form-label">Ficha evaluada?</label>
                                                         <div class="col-8">
                                                             <div class="form-check form-switch mt-2">
                                                                 <input class="form-check-input" type="checkbox" name="promedio" value="1">
