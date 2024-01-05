@@ -62,6 +62,7 @@ const AppAdjudicacionAdmin = () => {
                         const tbodies = document.querySelectorAll('.table-postulaciones tbody');
                         if (tbodies) {
                             tbodies.forEach(tbody => {
+                                console.log(self.postulaciones);
                                 if (self.postulaciones.length > 0) {
                                     self.postulaciones.forEach(postulacion => {
                                         html +=`<tr>
@@ -74,13 +75,16 @@ const AppAdjudicacionAdmin = () => {
                                                     <td>${postulacion.puntaje ?? 0}</td>
                                                     <td>${postulacion.fecha_registro}</td>
                                                     <td>
+                                                        <button class="btn btn-danger btn-sm btn-unlink-postulante" data-id="${postulacion.id}">No se Presento</button>
+                                                    </td>
+                                                    <td>
                                                         <input class="form-check-input" name="check_docente" type="radio" value="${postulacion.id}">
                                                     </td>
                                                 </tr>`;
                                     });
                                 } else {
                                     html = `<tr>
-                                                <td colspan="9" class="text-center">No hay resultados</td>
+                                                <td colspan="10" class="text-center">No hay resultados</td>
                                             </tr>`;
                                 }
                                 tbody.innerHTML = html;
@@ -97,6 +101,27 @@ const AppAdjudicacionAdmin = () => {
                                 row.style.display = isVisible ? 'table-row' : 'none';
                             });
                         });
+                        const bbs = document.querySelector(".btn-unlink-postulante");
+                        if (bbs) {
+                            document.querySelector(".btn-unlink-postulante").addEventListener('click', function (e) {
+                                const id = e.target.getAttribute('data-id');
+                                sweet2.show({
+                                    type: 'question',
+                                    text: '¿Estás seguro de separar al docente de la adjudicación?',
+                                    showCancelButton: true,
+                                    onOk: () => {
+                                        const filters = [];
+                                        self.postulaciones.forEach(element => {
+                                            if (element.id != id) {
+                                                filters.push(element);
+                                            }
+                                        });
+                                        self.postulaciones = filters;
+                                        docenteRender();
+                                    }
+                                });
+                            });
+                        }
                     }
 
                     const selectTipoDocente = document.querySelectorAll('.select-tipo-docente');
