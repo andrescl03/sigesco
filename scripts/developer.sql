@@ -320,3 +320,6 @@ ALTER TABLE postulaciones ADD COLUMN `estado` VARCHAR(255) NULL DEFAULT 'enviado
 
 -- quitar la foreana de la tabla grupo de inscripcion columna per_id
 -- agregar el increment en la periodos per_id
+
+/************************** 10/01/2023 **************************/
+ALTER TABLE postulaciones ADD COLUMN `estado_adjudicacion` INT(11) NULL DEFAULT '0' AFTER `uid`;

@@ -102,30 +102,7 @@ class Adjudicaciones_model extends CI_Model
         $adjudicacion->firmas = $this->db->query($sql, ['id' => $adjudicacion->id])->result_object();
       }
       
-      $sql = "SELECT
-                  P.*,
-                  M.mod_id AS modalidad_id,
-                  M.mod_nombre AS modalidad_nombre,
-                  N.niv_id AS nivel_id,
-                  N.niv_descripcion AS nivel_nombre,
-                  E.esp_id AS especialidad_id,
-                  E.esp_descripcion AS especialidad_nombre,
-                  GI.gin_id AS inscripcion_id,
-                  C.con_tipo as con_tipo,
-                  PE.puntaje
-              FROM postulaciones P
-              LEFT JOIN postulacion_evaluaciones PE ON PE.postulacion_id = P.id AND PE.promedio = 1
-              INNER JOIN convocatorias C ON C.con_id = P.convocatoria_id
-              INNER JOIN convocatorias_detalle CD ON CD.convocatorias_con_id = C.con_id
-              INNER JOIN grupo_inscripcion GI ON GI.gin_id = CD.grupo_inscripcion_gin_id AND GI.gin_id = P.inscripcion_id
-              INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
-              INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
-              INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
-              LEFT JOIN adjudicaciones AD ON AD.postulacion_id = P.id AND AD.deleted_at IS NULL               
-              WHERE P.deleted_at IS NULL
-              AND P.estado = 'finalizado'
-              AND AD.id IS NULL";
-      $postulaciones = $this->db->query($sql)->result_object();
+      $postulaciones = $this->getPostulaciones();      
 
       $sql = "SELECT PL.* 
               FROM plazas AS PL
@@ -259,5 +236,58 @@ class Adjudicaciones_model extends CI_Model
           $response['message'] = $e->getMessage();
       }
       return $response;
+  }
+
+  public function getPostulaciones() {
+    $sql = "SELECT
+                  P.*,
+                  M.mod_id AS modalidad_id,
+                  M.mod_nombre AS modalidad_nombre,
+                  N.niv_id AS nivel_id,
+                  N.niv_descripcion AS nivel_nombre,
+                  E.esp_id AS especialidad_id,
+                  E.esp_descripcion AS especialidad_nombre,
+                  GI.gin_id AS inscripcion_id,
+                  C.con_tipo as con_tipo,
+                  PE.puntaje
+              FROM postulaciones P
+              LEFT JOIN postulacion_evaluaciones PE ON PE.postulacion_id = P.id AND PE.promedio = 1
+              INNER JOIN convocatorias C ON C.con_id = P.convocatoria_id
+              INNER JOIN convocatorias_detalle CD ON CD.convocatorias_con_id = C.con_id
+              INNER JOIN grupo_inscripcion GI ON GI.gin_id = CD.grupo_inscripcion_gin_id AND GI.gin_id = P.inscripcion_id
+              INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
+              INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
+              INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
+              LEFT JOIN adjudicaciones AD ON AD.postulacion_id = P.id AND AD.deleted_at IS NULL               
+              WHERE P.deleted_at IS NULL
+              AND P.estado = 'finalizado'
+              AND P.estado_adjudicacion IN (0, 3)
+              AND AD.id IS NULL";
+    return $this->db->query($sql)->result_object();
+  }
+
+  public function updateStatus($id) {
+    $response = $this->tools->responseDefault();
+    try {
+
+        $status  = $this->input->post("status", true);
+
+        $sql = "SELECT * FROM postulaciones WHERE id = ? AND deleted_at IS NULL";
+        $postulacion = $this->db->query($sql, compact('id'))->row();
+        if (!$postulacion) {
+            throw new Exception("No sé encuentra registrado en está adjudicación");
+        }
+
+        $this->db->update('postulaciones', ['estado_adjudicacion' => $status], array('id' => $id));
+        $postulaciones = $this->getPostulaciones(); 
+    
+        $response['success'] = true;
+        $response['status']  = 200;
+        $response['data']    = compact('postulaciones');
+        $response['message'] = 'Se proceso correctamente';
+    } catch (\Exception $e) {
+        $response['message'] = $e->getMessage();
+    }
+    return $response;
   }
 }

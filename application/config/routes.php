@@ -71,6 +71,7 @@ $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/final/exportar'] = 'Ev
 
 $route['adjudicaciones/create'] = 'Adjudicaciones/create';
 $route['adjudicaciones/(:num)/edit'] = 'Adjudicaciones/edit/$1';
+$route['adjudicaciones/postulantes/(:num)/status'] = 'Adjudicaciones/updateStatus/$1';
 $route['admin/adjudicaciones/pagination'] = 'Adjudicaciones/pagination';
 $route['admin/adjudicaciones/resource'] = 'Adjudicaciones/resource';
 $route['admin/adjudicaciones/store'] = 'Adjudicaciones/store';
