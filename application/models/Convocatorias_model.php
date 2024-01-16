@@ -75,6 +75,16 @@ class Convocatorias_model extends CI_Model {
         // echo $this->db->last_query(); exit(); 
       return $sql->result_array();
     }
+
+    public function listarConvocatoriaxId($idConv){
+      $sql=$this->db
+        ->select("*")
+        ->from("convocatorias conv")
+        ->where(array("conv.con_id"=>$idConv))
+        ->get();
+        // echo $this->db->last_query(); exit(); 
+      return $sql->row_array();
+    }
  
     public function listarGruposInscripcionxConvocatoria($idCon){
       $sql=$this->db
