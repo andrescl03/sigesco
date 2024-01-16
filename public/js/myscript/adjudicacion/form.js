@@ -62,9 +62,20 @@ const AppAdjudicacionAdmin = () => {
                         const tbodies = document.querySelectorAll('.table-postulaciones tbody');
                         if (tbodies) {
                             tbodies.forEach(tbody => {
-                                console.log(self.postulaciones);
                                 if (self.postulaciones.length > 0) {
                                     self.postulaciones.forEach(postulacion => {
+                                        let status = '<span class="text-primary fw-bold">PENDIENTE</span>';
+                                        switch (Number(postulacion.estado_adjudicacion)) {
+                                            case 1:
+                                                status = 'REGISTRADO';
+                                            break;
+                                            case 2:
+                                                status = 'NO SE PRESENTO';
+                                            break;
+                                            case 3:
+                                                status = '<span class="text-warning fw-bold">EN ESPERA</span>';
+                                            break;
+                                        }
                                         html +=`<tr>
                                                     <td>${postulacion.id}</td>
                                                     <td>${postulacion.apellido_paterno} ${postulacion.apellido_materno} ${postulacion.nombre}</td>
@@ -74,11 +85,20 @@ const AppAdjudicacionAdmin = () => {
                                                     <td>${postulacion.especialidad_nombre}</td>
                                                     <td>${postulacion.puntaje ?? 0}</td>
                                                     <td>${postulacion.fecha_registro}</td>
-                                                    <td>
-                                                        <button class="btn btn-danger btn-sm btn-unlink-postulante" data-id="${postulacion.id}">No se Presento</button>
-                                                    </td>
+                                                    <td>${status}</td>
                                                     <td>
                                                         <input class="form-check-input" name="check_docente" type="radio" value="${postulacion.id}">
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group dropstart">
+                                                            <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="fa-solid fa-file-signature fa-lg"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item btn-wait-postulante" href="#" data-id="${postulacion.id}"><i class="fa fa-clock-o me-2" aria-hidden="true"></i> En espera</a></li>
+                                                                <li><a class="dropdown-item btn-unlink-postulante" href="#" data-id="${postulacion.id}"><i class="fa fa-user-times me-2" aria-hidden="true"></i> No se presento</a></li>
+                                                            </ul>
+                                                        </div>
                                                     </td>
                                                 </tr>`;
                                     });
@@ -101,26 +121,67 @@ const AppAdjudicacionAdmin = () => {
                                 row.style.display = isVisible ? 'table-row' : 'none';
                             });
                         });
-                        const bbs = document.querySelector(".btn-unlink-postulante");
-                        if (bbs) {
-                            document.querySelector(".btn-unlink-postulante").addEventListener('click', function (e) {
-                                const id = e.target.getAttribute('data-id');
-                                sweet2.show({
-                                    type: 'question',
-                                    text: '¿Estás seguro de separar al docente de la adjudicación?',
-                                    showCancelButton: true,
-                                    onOk: () => {
-                                        const filters = [];
-                                        self.postulaciones.forEach(element => {
-                                            if (element.id != id) {
-                                                filters.push(element);
-                                            }
-                                        });
-                                        self.postulaciones = filters;
-                                        docenteRender();
-                                    }
-                                });
+                        const unlinks = document.querySelectorAll(".btn-unlink-postulante");
+                        if (unlinks.length > 0) {
+                            unlinks.forEach(btn => {
+                                const id = btn.getAttribute('data-id');
+                                btn.addEventListener('click', function (e) {
+                                    sweet2.show({
+                                        type: 'question',
+                                        text: '¿Estás seguro de separar al docente de la adjudicación?',
+                                        showCancelButton: true,
+                                        onOk: () => {
+                                            sweet2.loading();
+                                            const formData = new FormData();
+                                            formData.append('status', 2);
+                                            self.updateStatus(`adjudicaciones/postulantes/${id}/status`, formData)
+                                            .then(({success, data, message}) => {
+                                                if (!success) {
+                                                    throw message;
+                                                }
+                                                sweet2.show({type:'success', text:message});
+                                                self.postulaciones = data.postulaciones;
+                                                docenteRender();
+                                            })
+                                            .catch(error => sweet2.show({type:'error', text:error}));
+                                        }
+                                    });
+                                }); 
                             });
+                        }
+                        const waits = document.querySelectorAll(".btn-wait-postulante");
+                        if (waits.length > 0) {
+                            waits.forEach(btn => {
+                                const id = btn.getAttribute('data-id');
+                                btn.addEventListener('click', function (e) {
+                                    sweet2.show({
+                                        type: 'question',
+                                        text: '¿Estás seguro de poner en espera al docente?',
+                                        showCancelButton: true,
+                                        onOk: () => {
+                                            sweet2.loading();
+                                            const formData = new FormData();
+                                            formData.append('status', 3);
+                                            self.updateStatus(`adjudicaciones/postulantes/${id}/status`, formData)
+                                            .then(({success, data, message}) => {
+                                                console.log({success, data, message});
+                                                if (!success) {
+                                                    throw message;
+                                                }
+                                                console.log(1);
+                                                sweet2.show({type:'success', text:message});
+                                                console.log(2);
+
+                                                self.postulaciones = data.postulaciones;
+                                                console.log(3);
+
+                                                docenteRender();
+                                            })
+                                            .catch(error => sweet2.show({type:'error', text:error}));
+                                        }
+                                    })
+                                })
+                            })
                         }
                     }
 
@@ -423,6 +484,25 @@ const AppAdjudicacionAdmin = () => {
                         })
                         .done(function ({success, data, message}) {
                             resolve(data);
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
+                        });
+                    });
+                },
+                updateStatus: (url, formData) => {
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + url,
+                            method: 'POST',
+                            dataType: 'json',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function (response) {
+                            resolve(response);
                         })
                         .fail(function (xhr, status, error) {
                             sweet2.show({type:'error', text:error});

@@ -565,7 +565,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             viewSection: (section, remove) => {
          
                 const accordionItem = document.createElement('div');
-                accordionItem.classList.add('accordion-item');
+                accordionItem.classList.add('accordion-item', 'card-parent');
 
                 const accordionHeader = document.createElement('div');
                 accordionHeader.classList.add('accordion-header', 'row');
@@ -674,7 +674,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             viewGroup: (group, remove) => {
                 
                 const panel = document.createElement('div');
-                panel.classList.add('mb-3','p-4','border');
+                panel.classList.add('mb-3','p-4','card-children');
 
                 const row1 = document.createElement('div');
                 row1.classList.add('row', 'mb-3');

@@ -17,13 +17,13 @@
                                     <div class="col-md-6">
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
-                                                <div class="card">
-                                                    <div class="card-header">
+                                                <div class="card border border-primary">
+                                                    <div class="card-header bg-primary text-white">
                                                         <div class="d-flex">
-                                                            <h5 class="col"><span class="badge rounded-pill bg-secondary me-1 fs-7">1</span> Docente</h5>
+                                                            <h5 class="col"><span class="badge rounded-pill bg-light text-primary me-1 fs-7">1</span> Docente</h5>
                                                             <?php if (!$edit) { ?>
                                                             <div class="col text-end">
-                                                                <button type="button" class="btn btn-sm btn-outline-secondary btn-docente">
+                                                                <button type="button" class="btn btn-sm btn-outline-light btn-docente">
                                                                 <i class="fa-solid fa-file-signature fa-lg me-1"></i> Buscar Docente
                                                                 </button>
                                                             </div>
@@ -39,13 +39,13 @@
                                             </div>
 
                                             <div class="col-md-12 mb-3">
-                                                <div class="card">
-                                                    <div class="card-header">
+                                                <div class="card border-success">
+                                                    <div class="card-header bg-success text-white">
                                                         <div class="d-flex">
-                                                            <h5 class="col"><span class="badge rounded-pill bg-secondary me-1 fs-7">2</span> Plaza</h5>
+                                                            <h5 class="col"><span class="badge rounded-pill bg-light text-success me-1 fs-7">2</span> Plaza</h5>
                                                             <?php if (!$edit) { ?>
                                                             <div class="col text-end">
-                                                                <button type="button" class="btn btn-sm btn-outline-secondary btn-plaza">
+                                                                <button type="button" class="btn btn-sm btn-outline-light btn-plaza">
                                                                     <i class="fa-solid fa-file-signature fa-lg me-1"></i> Buscar Plaza
                                                                 </button>
                                                             </div>
@@ -64,9 +64,9 @@
                                     <div class="col-md-6">
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h5><span class="badge rounded-pill bg-secondary me-1 fs-7">3</span> Adjudicación</h5>
+                                                <div class="card border-warning">
+                                                    <div class="card-header bg-warning text-white">
+                                                        <h5><span class="badge rounded-pill bg-light text-warning me-1 fs-7">3</span> Adjudicación</h5>
                                                     </div>
                                                     <div class="card-body">
                                                         <form id="formAdjudicacion">
@@ -92,12 +92,12 @@
                                             </div>
 
                                             <div class="col-md-12 mb-3">
-                                                <div class="card">
-                                                    <div class="card-header">
+                                                <div class="card border-info">
+                                                    <div class="card-header bg-info text-white">
                                                         <div class="d-flex">
-                                                            <h5 class="col"><span class="badge rounded-pill bg-secondary me-1 fs-7">4</span> Firmas en el acta</h5>
+                                                            <h5 class="col"><span class="badge rounded-pill bg-light text-info me-1 fs-7">4</span> Firmas en el acta</h5>
                                                             <div class="col text-end">
-                                                                <button type="button" class="btn btn-sm btn-outline-secondary btn-firma">
+                                                                <button type="button" class="btn btn-sm btn-outline-light btn-firma">
                                                                     <i class="fa-solid fa-file-signature fa-lg me-1"></i> Buscar Firma
                                                                 </button>
                                                             </div>
@@ -116,10 +116,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12 mt-3 text-end">
-                                        <a href="<?php echo base_url(); ?>adjudicaciones" type="button" class="btn btn-outline-secondary">
+                                        <a href="<?php echo base_url(); ?>adjudicaciones" type="button" class="btn btn-secondary">
                                             Cancelar
                                         </a>
-                                        <button type="submit" class="btn btn-outline-primary" form="formAdjudicacion">
+                                        <button type="submit" class="btn btn-primary" form="formAdjudicacion">
                                             Guardar
                                         </button>
                                     </div>
@@ -171,7 +171,8 @@
                                         <th>Especialidad</th>
                                         <th>Puntaje</th>
                                         <th>Fecha de Registro</th>
-                                        <th class="text-center"></th>
+                                        <th class="text-center">Estado</th>
+                                        <th></th>
                                         <th></th>
                                     </tr>
                                 </thead>

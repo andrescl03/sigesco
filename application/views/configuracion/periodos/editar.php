@@ -16,6 +16,45 @@
     #AppEditarPeriodoAdmin th {
         vertical-align: middle;
     }
+    .table-wrapper {
+        width: 100%;
+        height: 300px; /* Altura de ejemplo */
+        overflow: auto;
+    }
+
+    .table-wrapper table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .table-wrapper table thead {
+        position: -webkit-sticky; /* Safari... */
+        position: sticky;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+    }
+    .card-children {
+        -webkit-transition: box-shadow .28s cubic-bezier(.4,0,.2,1);
+        transition: box-shadow .28s cubic-bezier(.4,0,.2,1);
+        background-color: #fff;
+        border: 2px solid rgb(218,220,224);
+        border-radius: 8px !important;
+        border-left: 6px solid #0d6efd;
+        margin-bottom: 30px !important;
+        padding: 30px 25px !important;
+    }
+    .card-parent {
+        -webkit-transition: box-shadow .28s cubic-bezier(.4,0,.2,1);
+        transition: box-shadow .28s cubic-bezier(.4,0,.2,1);
+        background-color: #fff;
+        border: 2px solid rgb(218,220,224) !important;
+        border-radius: 8px !important;
+        border-left: 6px solid #b715f4 !important;
+        margin-bottom: 30px !important;
+        background-color: ghostwhite;
+    }
+</style>
 </style>
 <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Editar Periodo</b></h4>
     <ol class="breadcrumb mb-2">
@@ -138,7 +177,7 @@
                                                     <div class="mb-3 row">
                                                         <label class="col-4 col-form-label">Orden</label>
                                                         <div class="col-8">
-                                                            <input type="number" class="form-control" name="orden" placeholder="0" min="0" required>
+                                                            <input type="number" class="form-control" name="orden" placeholder="1" min="1" required>
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
@@ -152,7 +191,7 @@
                                                     <div class="mb-3 row">
                                                         <label class="col-4 col-form-label">Especialidades</label>
                                                         <div class="col-8">
-                                                            <div class="table-responsive">
+                                                            <div class="table-responsive table-wrapper">
                                                                 <table class="table mb-0">
                                                                     <thead>
                                                                         <tr>
