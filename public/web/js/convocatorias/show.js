@@ -1047,7 +1047,7 @@ const AppConvovatoriaWeb = () => {
                                     <div>
                                         ${
                                             self.isPUN() ? 
-                                            'El número de su documento debe de estar registrado en el examen de la Prueba Única Nacional (PUN) para continuar con la postulación' : 
+                                            'El número de su documento debe de estar registrado en el examen de la Prueba Única Nacional (PUN) y debe pertenecer a la misma modalidad/nivel/especialidad a la que postula' : 
                                             'Ingresar su número de documento para continuar el registro.'
                                         }
                                     </div>
