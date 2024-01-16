@@ -24,6 +24,8 @@ class Configuracion_model extends CI_Model
     $sql = $this->db
       ->select("*")
       ->from("procesos pro")
+      //TEMPORALMENTE VALIDO PARA CONTRATO DOCENTE, ID CONTRATO DOCENTE = 1
+      ->where(array("pro.pro_id" => 1))
       ->get();
     // echo $this->db->last_query(); exit(); 
     return $sql->result_array();
@@ -39,6 +41,21 @@ class Configuracion_model extends CI_Model
     // echo $this->db->last_query(); exit(); 
     return $sql->result_array();
   }
+
+
+  public function listarModalidades()
+  {
+
+    $sql = "SELECT * FROM modalidades WHERE mod_estado = 1";
+    return $this->db->query($sql)->result_object();
+  }
+
+  public function listarNiveles()
+  {
+    $sql = "SELECT * FROM niveles WHERE niv_estado = 1";
+    return $this->db->query($sql)->result_object();
+  }
+
 
 
 
@@ -363,4 +380,34 @@ class Configuracion_model extends CI_Model
     // echo $this->db->last_query(); exit(); 
     return $sql->result_array();
   }
+
+  public function insertarEspecialidad($data=array()){
+    $this->db->insert('especialidades',$data);
+    return $this->db->insert_id(); // para saber el id ingresado
+  }
+
+  public function insertGrupoInscripcion($data=array()){
+    $this->db->insert('grupo_inscripcion',$data);
+    return $this->db->insert_id(); // para saber el id ingresado
+  }
+
+  public function eliminarGrupoInscripcion($data=array()){
+
+
+    $this->db->update('grupo_inscripcion', ['gin_estado' => 0], $data);
+
+    return true; // para saber el id ingresado
+  }
+
+  public function validarGrupoInscripcion($data = array())
+  {
+    $sql = $this->db
+    ->select("*")
+    ->from("postulaciones")
+    ->where($data)
+    ->get();
+
+    return $sql->num_rows();
+  }
+
 }

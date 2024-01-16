@@ -13,9 +13,9 @@ $(document).ready(function(){
 			}); 
 		}
 	}
-
 	act.pag('configurar/usuarios', function(){		
 		btn_cambiarPassModal();
+		btn_cargarFirma();
 	});
 
 	act.lan(); 	
@@ -130,4 +130,40 @@ var UpdateUsuario_ajax=function(){
 		    alert(error);
 		}
 	});	
+}
+
+
+var btn_cargarFirma = function () {
+
+    $('body').off('click', '.btn_cargarFirma');
+    $('body').on('click', '.btn_cargarFirma', function (e) { 
+	 
+		var fileInput = document.getElementById('archivo');
+        var file = fileInput.files[0];
+		if (file) {
+            var formData = new FormData();
+            formData.append('archivo', file);
+            formData.append('a', "a");
+
+            $.ajax({
+                url: 'CargarFirmaUsuario', // Reemplaza con la URL de tu script de procesamiento
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    // Manejar la respuesta del servidor si es necesario
+                    console.log(response);
+                },
+                error: function (error) {
+                    // Manejar errores si es necesario
+                    console.error(error);
+                }
+            });
+        } else {
+            alert('Seleccione un archivo de imagen.');
+        }
+    });
+
+   
 }

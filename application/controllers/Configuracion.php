@@ -111,8 +111,9 @@ class Configuracion extends CI_Controller
 
         $periodos = $this->configuracion_model->listarPeriodosActivos();
         $procesos = $this->configuracion_model->listarProcesosActivos();
+
         $this->layout->js(array(base_url() . "public/js/myscript/configuracion/grupoinscripcion.js?t=" . date("mdYHis")));
-        $this->layout->view("grupoinscripcion/grupoinscripcion", compact('periodos', 'procesos'));
+        $this->layout->view("grupoinscripcion/grupoinscripcion", compact('periodos', 'procesos', 'modalidades'));
     }
 
     public function VListarGrupoInscripcion()
@@ -128,6 +129,7 @@ class Configuracion extends CI_Controller
         }
 
         $datos = $this->configuracion_model->listarGruposInscripcion($idPer, $idPro);
+
         $this->layout->setLayout("template_ajax");
         $this->layout->view('grupoinscripcion/VListarGrupoInscripcion', compact('datos'));
     }
@@ -375,7 +377,7 @@ class Configuracion extends CI_Controller
 
     public function VListarColegios()
     {
-      
+
         $datos = $this->configuracion_model->listarColegios();
         $this->layout->setLayout("template_ajax");
         $this->layout->view('colegios/VListarColegios', compact('datos'));
@@ -385,7 +387,7 @@ class Configuracion extends CI_Controller
     public function plazas()
     {
 
-     
+
         if (!in_array($this->uri->slash_segment(1) . $this->uri->segment(2), $this->session->userdata("sigesco_rutas"))) {
             redirect(base_url() . "inicio/index", 'refresh');
         }
@@ -397,24 +399,115 @@ class Configuracion extends CI_Controller
     }
 
 
-    public function VNuevaPlaza(){ 
+    public function VNuevaPlaza()
+    {
         $periodos   = $this->configuracion_model->listarPeriodosActivos();
         $procesos   = $this->configuracion_model->listarProcesosActivos();
         $colegios   = $this->configuracion_model->listarColegiosActivos();
 
         $idPer = $this->session->userdata("sigesco_default_periodo");
-        $idPro = $this->session->userdata("sigesco_default_proceso");    
+        $idPro = $this->session->userdata("sigesco_default_proceso");
         $grupos     = $this->configuracion_model->listarGruposInscripcion($idPer, $idPro);
         $this->layout->setLayout("template_ajax");
-        $this->layout->view('plazas/VNuevaPlaza', compact('periodos', 'procesos', 'grupos','colegios'));
+        $this->layout->view('plazas/VNuevaPlaza', compact('periodos', 'procesos', 'grupos', 'colegios'));
     }
 
 
     public function VListarPlazas()
-    { 
+    {
         $datos = $this->configuracion_model->listarPlazas();
         $this->layout->setLayout("template_ajax");
         $this->layout->view('plazas/VListarPlazas', compact('datos'));
     }
 
+
+    public function VNuevoGrupoInscripcion()
+    {
+        $periodos   = $this->configuracion_model->listarPeriodosActivos();
+        $procesos   = $this->configuracion_model->listarProcesosActivos();
+        $modalidades  = $this->configuracion_model->listarModalidades();
+        $niveles =   $this->configuracion_model->listarNiveles();
+
+        $idPer = $this->session->userdata("sigesco_default_periodo");
+        $idPro = $this->session->userdata("sigesco_default_proceso");
+
+        $this->layout->setLayout("template_ajax");
+        $this->layout->view('grupoinscripcion/listar/VNuevoGrupoInscripcion', compact('periodos', 'procesos', 'modalidades', 'niveles'));
+    }
+
+
+    public function CAgregarNuevoGrupoInscripcion()
+    {
+        /*$idModalidad          = $this->input->post("idModalidad",true); */
+        $idNivel           = $this->input->post("idNivel", true);
+        $especialidad          = $this->input->post("especialidad", true);
+        $idPeriodo          = $this->input->post("idPer", true);
+        $idProceso          = $this->input->post("idPro", true);
+
+        $arr_1 = array(
+            "niveles_niv_id"  => $idNivel,
+            "esp_descripcion" => $especialidad,
+            "esp_estado"      => 1
+        );
+
+        $idEspecialidad = $this->configuracion_model->insertarEspecialidad($arr_1);
+
+        if ($idEspecialidad < 0) {
+            $mensaje["error"]   = "Error al agregar la especialidad.";
+            $mensaje["estado"]  = false;
+            echo json_encode($mensaje);
+            exit();
+        }
+
+        $arr_2 = array(
+            "procesos_pro_id"  => $idProceso,
+            "periodos_per_id" => $idPeriodo,
+            "especialidades_esp_id"  => $idEspecialidad,
+            "gin_estado"      => 1
+
+        );
+
+        $insert = $this->configuracion_model->insertGrupoInscripcion($arr_2);
+
+        if ($insert >= 1) {
+            $mensaje["success"] = "Se registró información correctamente.";
+            $mensaje["estado"]  = true;
+        } else {
+            $mensaje["error"]   = "Error al registrar información.";
+            $mensaje["estado"]  = false;
+        }
+        echo json_encode($mensaje);
+    }
+
+
+    public function eliminarGrupoInscripcion()
+    {
+        $idGin = $this->input->post("idGin", true);
+        $arr_1 = array(
+            "gin_id"  => $idGin
+        );
+
+        $this->configuracion_model->eliminarGrupoInscripcion($arr_1);
+
+        $mensaje["success"] = "Se eliminó la información correctamente.";
+        $mensaje["estado"]  = true;
+
+        echo json_encode($mensaje);
+    }
+
+
+    public function validarGrupoInscripcion()
+    {
+        $idGin = $this->input->post("idGin", true);
+        $arr_1 = array(
+            "inscripcion_id"  => $idGin
+        );
+
+        $cantidad = $this->configuracion_model->validarGrupoInscripcion($arr_1);
+
+        $response["estado"]  = true;
+        $response["data"]  = $cantidad;
+
+        echo json_encode($response);
+    }
 }
