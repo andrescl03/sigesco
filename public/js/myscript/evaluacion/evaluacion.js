@@ -148,6 +148,9 @@ const AppAdjudicacionAdmin = () => {
                                                 <div class="menu-item px-3 py-2">
                                                     <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/revaluar" class="menu-link text-danger px-3">Revaluar</a>
                                                 </div>
+                                                <div class="menu-item px-3 py-2">
+                                                    <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/editar" class="menu-link text-danger px-3">Editar</a>
+                                                </div>
                                             </div>` : '-';
                                 }
                             }

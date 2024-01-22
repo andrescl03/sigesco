@@ -164,7 +164,7 @@ const AppAdjudicacionAdmin = () => {
                                             <a target="_blank" href="${window.AppMain.url}reportes/adjudicaciones/${row.id}/acta" class="menu-link text-danger px-3">Acta</a>
                                         </div>    
                                         <div class="menu-item px-3 py-2">
-                                            <a target="_blank" href="${window.AppMain.url}reportes/adjudicaciones/${row.id}/contrato" class="menu-link text-danger px-3 btn-remove" data-id="${row.id}">Contrato</a>
+                                            <a target="_blank" href="${window.AppMain.url}reportes/adjudicaciones/${row.id}/contrato" class="menu-link text-danger px-3" data-id="${row.id}">Contrato</a>
                                         </div>
                                     </div>`;
                                 }
