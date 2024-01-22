@@ -67,11 +67,23 @@ class Adjudicaciones extends CI_Controller {
             show_404();
         }    
     }
-
     
     public function updateStatus($id) {
         return $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($this->adjudicaciones_model->updateStatus($id)));
     }
+
+    public function acta($id) {
+        return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->adjudicaciones_model->acta($id)));
+    }
+        
+    public function contrato($id) {
+        return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->adjudicaciones_model->contrato($id)));
+    }
+
 }

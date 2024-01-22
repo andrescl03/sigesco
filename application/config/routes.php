@@ -61,6 +61,9 @@ $route['web/postulaciones/find'] = 'PostulacionesWeb/find';
 $route['web/postulaciones/(:any)/update'] = 'PostulacionesWeb/update/$1';
 $route['web/postulaciones/(:any)'] = 'PostulacionesWeb/edit/$1';
 
+$route['reportes/adjudicaciones/(:num)/acta'] = 'ReporteDocumento/adjudicacion/$1';
+$route['reportes/adjudicaciones/(:num)/contrato'] = 'ReporteDocumento/contrato/$1';
+
 $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/preliminar'] = 'Evaluacion/indexPreliminar/$1/$2';
 $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/final'] = 'Evaluacion/indexFinal/$1/$2';
 $route['evaluacion/convocatoria/inscripcion/pagination'] = 'Evaluacion/pagination/$1/$2';
@@ -72,6 +75,8 @@ $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/final/exportar'] = 'Ev
 $route['adjudicaciones/create'] = 'Adjudicaciones/create';
 $route['adjudicaciones/(:num)/edit'] = 'Adjudicaciones/edit/$1';
 $route['adjudicaciones/postulantes/(:num)/status'] = 'Adjudicaciones/updateStatus/$1';
+// $route['adjudicaciones/(:num)/acta'] = 'Adjudicaciones/acta/$1';
+// $route['adjudicaciones/(:num)/contrato'] = 'Adjudicaciones/contrato/$1';
 $route['admin/adjudicaciones/pagination'] = 'Adjudicaciones/pagination';
 $route['admin/adjudicaciones/resource'] = 'Adjudicaciones/resource';
 $route['admin/adjudicaciones/store'] = 'Adjudicaciones/store';
