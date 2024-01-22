@@ -1243,6 +1243,7 @@ class ReporteDocumento extends CI_Controller {
         $convocatoria = $adjudicacion->convocatoria;
         $plaza = $adjudicacion->plaza;
         $firmas = $adjudicacion->firmas;
+        $tipo_documento = $postulante->tipo_documento == 1 ? 'DNI' : 'C.E';
         // echo json_encode($firmas); exit;
         $this->db->reconnect();
 
@@ -1294,7 +1295,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
         $this->pdf->Cell(0, 7, utf8_decode($postulante->nombre), '', 0, 'L', 0);
         $this->pdf->Ln(4);
-        $tipo_documento = $postulante->tipo_documento == 1 ? 'DNI' : 'C.E';
+
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, utf8_decode('Número de ' . $tipo_documento), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
@@ -1667,6 +1668,12 @@ class ReporteDocumento extends CI_Controller {
         $detail = $this->adjudicaciones_model->f_detail($id);
         $adjudicacion = $detail['adjudicacion'];
 
+        $postulante = $adjudicacion->postulacion;
+        $convocatoria = $adjudicacion->convocatoria;
+        $plaza = $adjudicacion->plaza;
+        $firmas = $adjudicacion->firmas;
+        $tipo_documento = $postulante->tipo_documento == 1 ? 'DNI' : 'C.E';
+
         $this->db->reconnect();
 
         if (empty($adjudicacion)) {
@@ -1695,7 +1702,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Ln(10);
         // $this->Cell(20, 4,utf8_decode('De conformida con el resultado obtenido en el Proceso para Contratación de Docentes, regulado por la Norma Técnica aprobada con R.M. Nº 023-2015-MINEDU, se adjunta el cargo vacante a:'),'',0, 'L', 0);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('Por el presente documento celebran el contrato de servicio docente, de una parte la DIRECCIÓN REGIONAL DE EDUCACIÓN, UNIDAD DE GESTION EDUCATIVA LOCAL O4, con  domicilio  en ' . $datos [0] ['direccion'] . ', representada  para  estos efectos por su Director(a), el/la señor(a) ' . $datos [0] ['director'] . ' idenficado(a) con D.N.I. N° ' . $datos [0] ['dni'] . ', designado(a) mediante Resolución N°..........................................  A quien en adelante se denomina LA DRE/GRE/UGEL; y de otra parte, el Señor(a) ' . $datos [0] ['nombres'] . ', identificado(a) con ' . $datos [0] ['tipodoc'] . ' N° ' . $datos [0] ['numdoc'] . ' y domiciliado en ' . $datos [0] ['Direccion'] . ', quien en adelante se denomina PROFESOR(A); en los términos y condiciones siguientes: '), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('Por el presente documento celebran el contrato de servicio docente, de una parte la DIRECCIÓN REGIONAL DE EDUCACIÓN, UNIDAD DE GESTION EDUCATIVA LOCAL O4, con  domicilio  en ' . $postulante->direccion . ', representada  para  estos efectos por su Director(a), el/la señor(a) ' . $postulante->nombre . ' idenficado(a) con D.N.I. N° ' . $postulante->numero_documento . ', designado(a) mediante Resolución N°..........................................  A quien en adelante se denomina LA DRE/GRE/UGEL; y de otra parte, el Señor(a) ' . $postulante->nombre . ', identificado(a) con ' . $tipo_documento . ' N° ' . $postulante->numero_documento . ' y domiciliado en ' . $postulante->direccion . ', quien en adelante se denomina PROFESOR(A); en los términos y condiciones siguientes: '), 0);
         $this->pdf->Ln(6);
 
         $this->pdf->Cell(5, 5, '', '', 0, 'R', 0);
@@ -1703,7 +1710,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->MultiCell(0, 5, utf8_decode('CLÁUSULA PRIMERA'), 0);
         $this->pdf->SetFont('', '');
         $this->pdf->Cell(5, 5, '', '', 0, 'R', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('En atención a las necesidades de contar con los servicios de un Profesional Docente, el Comité de Contratación de la DRE / UGEL adjudicó la plaza orgánica/eventual/temporal/horas al señor(a) ' . $datos [0] ['nombres'] . ' para desempeñar funciones docentes.'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('En atención a las necesidades de contar con los servicios de un Profesional Docente, el Comité de Contratación de la DRE / UGEL adjudicó la plaza orgánica/eventual/temporal/horas al señor(a) ' . $postulante->nombre . ' para desempeñar funciones docentes.'), 0);
 
         $this->pdf->Ln(3);
         $this->pdf->Cell(5, 5, '', '', 0, 'R', 0);
@@ -1711,7 +1718,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->MultiCell(0, 5, utf8_decode('CLÁUSULA SEGUNDA'), 0);
         $this->pdf->SetFont('', '');
         $this->pdf->Cell(5, 5, '', '', 0, 'R', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('Por el presente, la  DRE / GRE/ UGEL contrata los servicios del PROFESOR para que cumpla funciones docentes en la plaza con código ' . utf8_decode($datos [0] ['codigoPlaza']) . ' (horas libres para completar el plan de estudios) perteneciente a la Institución Educativa ' . $datos [0] ['ie'] . ' de la modalidad educativa de ' . utf8_decode($datos [0] ['modalidad']) . ' - ' . utf8_decode($datos [0] ['nivel']) . ', ubicada en el Distrito de ' . utf8_decode($datos [0] ['distrito_colegio']) . ', Provincia de ' . utf8_decode($datos [0] ['provincia']) . ', Región de LIMA.'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('Por el presente, la  DRE / GRE/ UGEL contrata los servicios del PROFESOR para que cumpla funciones docentes en la plaza con código ' . utf8_decode($plaza->codigoPlaza) . ' (horas libres para completar el plan de estudios) perteneciente a la Institución Educativa ' . $plaza->ie . ' de la modalidad educativa de ' . utf8_decode($convocatoria->modalidad_nombre) . ' - ' . utf8_decode($postulante->nivel_nombre) . ', ubicada en el Distrito de ' . utf8_decode($postulante->distrito_nombre) . ', Provincia de ' . utf8_decode($postulante->provincia_nombre) . ', Región de LIMA.'), 0);
 
         $this->pdf->Ln(3);
         $this->pdf->Cell(5, 5, '', '', 0, 'R', 0);
@@ -1719,7 +1726,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->MultiCell(0, 5, utf8_decode('CLÁUSULA TERCERA'), 0);
         $this->pdf->SetFont('', '');
         $this->pdf->Cell(5, 5, '', '', 0, 'R', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('Las partes acuerdan que el plazo de duración del presente contrato de servicio docente se inicia el ' . date_format(date_create($datos [0] ['fechaInicio']), "d") . ' de ' . $this->meses[date_format(date_create($datos [0] ['fechaInicio']), "m") - 1] . ' del ' . date_format(date_create($datos [0] ['fechaInicio']), "Y") . ' y finaliza el ' . date_format(date_create($datos [0] ['fechaTermino']), "d") . ' de ' . $this->meses[date_format(date_create($datos [0] ['fechaTermino']), "m") - 1] . ' del ' . date_format(date_create($datos [0] ['fechaTermino']), "Y") . '.'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('Las partes acuerdan que el plazo de duración del presente contrato de servicio docente se inicia el ' . date_format(date_create($adjudicacion->fecha_inicio), "d") . ' de ' . $this->meses[date_format(date_create($adjudicacion->fecha_inicio), "m") - 1] . ' del ' . date_format(date_create($adjudicacion->fecha_inicio), "Y") . ' y finaliza el ' . date_format(date_create($adjudicacion->fecha_final), "d") . ' de ' . $this->meses[date_format(date_create($adjudicacion->fecha_final), "m") - 1] . ' del ' . date_format(date_create($adjudicacion->fecha_final), "Y") . '.'), 0);
 
         $this->pdf->Ln(3);
         $this->pdf->Cell(5, 5, '', '', 0, 'R', 0);
@@ -1735,7 +1742,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->MultiCell(0, 5, utf8_decode('CLÁUSULA QUINTA'), 0);
         $this->pdf->SetFont('', '');
         $this->pdf->Cell(5, 5, '', '', 0, 'R', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('La jornada de trabajo del PROFESOR es de ' . $datos [0] ['jornada'] . ' horas pedagógicas semanales - mensuales.                               '), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('La jornada de trabajo del PROFESOR es de ' . $plaza->jornada . ' horas pedagógicas semanales - mensuales.                               '), 0);
 
         $this->pdf->Ln(3);
         $this->pdf->Cell(5, 5, '', '', 0, 'R', 0);
@@ -1813,7 +1820,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Ln(15);
 
         $this->pdf->Cell(5, 5, '', '', 0, 'R', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('El presente contrato se suscribe en dos ejemplares del mismo tenor, en señal de conformidad y aceptación, en ' . $datos[0]['distrito'] . ', el ' . date_format(date_create($datos [0] ['fechaAsignacion']), "d") . ' de ' . $this->meses[date_format(date_create($datos [0] ['fechaAsignacion']), "m") - 1] . ' del ' . date_format(date_create($datos [0] ['fechaAsignacion']), "Y") . ' siendo las ' . date_format(date_create($datos [0] ['fechaAsignacion']), "g:i A")), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('El presente contrato se suscribe en dos ejemplares del mismo tenor, en señal de conformidad y aceptación, en ' . $postulante->distrito_nombre . ', el ' . date_format(date_create($adjudicacion->fecha_registro), "d") . ' de ' . $this->meses[date_format(date_create($adjudicacion->fecha_registro), "m") - 1] . ' del ' . date_format(date_create($adjudicacion->fecha_registro), "Y") . ' siendo las ' . date_format(date_create($adjudicacion->fecha_registro), "g:i A")), 0);
 
 
         $this->pdf->SetFont('Arial', 'B', 7);
@@ -1828,10 +1835,10 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(30, 7, 'EL PROFESOR', '', 0, 'LU', 0);
         $this->pdf->Ln(4);
 
-        $this->pdf->setExpediente($datos [0] ['expediente']);
-        $this->pdf->setCodVerificacion($datos [0] ['detalleID']);
+        $this->pdf->setExpediente($postulante->uid);
+        // $this->pdf->setCodVerificacion($datos [0] ['detalleID']);
         
-         $fileName = 'Contrato-' . $datos [0] ['expediente'] . '.pdf'; 
+         $fileName = 'Contrato-' . $postulante->uid . '.pdf'; 
         $this->pdf->Output($fileName, 'I');
 
         ob_end_flush();
