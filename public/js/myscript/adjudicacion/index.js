@@ -152,6 +152,25 @@ const AppAdjudicacionAdmin = () => {
                             },
                             {
                                 "targets": 6,
+                                "data": "fecha_registro",
+                                "className": "text-center",
+                                "render": function ( data, type, row, meta ) {
+                                    return  `
+                                    <button type="button" class="btn btn-sm btn-danger btn-active-danger me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-file" aria-hidden="true"></i>
+                                    </button>
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-2 dropdown-menu dropdown-menu-start">
+                                        <div class="menu-item px-3 py-2">
+                                            <a target="_blank" href="${window.AppMain.url}reportes/adjudicaciones/${row.id}/acta" class="menu-link text-danger px-3">Acta</a>
+                                        </div>    
+                                        <div class="menu-item px-3 py-2">
+                                            <a target="_blank" href="${window.AppMain.url}reportes/adjudicaciones/${row.id}/contrato" class="menu-link text-danger px-3 btn-remove" data-id="${row.id}">Contrato</a>
+                                        </div>
+                                    </div>`;
+                                }
+                            },
+                            {
+                                "targets": 7,
                                 "data": "created_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {

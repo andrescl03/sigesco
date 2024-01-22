@@ -46,6 +46,7 @@
                                                         <th class="text-center">FECHA DE INICIO</th>
                                                         <th class="text-center">FECHA DE FIN</th>
                                                         <th class="text-center">FECHA DE REGISTRO</th>
+                                                        <th class="text-center">DOCUMENTOS</th>
                                                         <th class="text-center">ACCIONES</th>
                                                     </tr>
                                                 </thead>

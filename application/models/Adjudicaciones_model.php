@@ -290,4 +290,78 @@ class Adjudicaciones_model extends CI_Model
     }
     return $response;
   }
+
+  public function f_detail($adjudicacion_id) {
+    $adjudicacion    = [];
+    if ($adjudicacion_id > 0) {
+      $sql = "SELECT * FROM adjudicaciones WHERE id = ? AND deleted_at IS NULL";
+      $adjudicacion = $this->db->query($sql, compact('adjudicacion_id'))->row();
+      if (!is_null($adjudicacion) && is_object($adjudicacion)) {
+
+          $sql = "SELECT * FROM plazas WHERE plz_id = ?";
+          $adjudicacion->plaza = $this->db->query($sql, ['plaza_id' => $adjudicacion->plaza_id])->row();
+          $sql = "SELECT
+                      P.*,
+                      M.mod_id AS modalidad_id,
+                      M.mod_nombre AS modalidad_nombre,
+                      N.niv_id AS nivel_id,
+                      N.niv_descripcion AS nivel_nombre,
+                      E.esp_id AS especialidad_id,
+                      E.esp_descripcion AS especialidad_nombre,
+                      GI.gin_id AS inscripcion_id,
+                      C.con_tipo AS con_tipo,
+                      PE.puntaje,
+                      DIST.name AS distrito_nombre,
+                      PROV.name AS provincia_nombre,
+                      DEPA.name AS departamento_nombre
+                  FROM postulaciones P
+                  LEFT JOIN postulacion_evaluaciones PE ON PE.postulacion_id = P.id AND PE.promedio = 1
+                  INNER JOIN convocatorias C ON C.con_id = P.convocatoria_id
+                  INNER JOIN convocatorias_detalle CD ON CD.convocatorias_con_id = C.con_id
+                  INNER JOIN grupo_inscripcion GI ON GI.gin_id = CD.grupo_inscripcion_gin_id AND GI.gin_id = P.inscripcion_id
+                  INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
+                  INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
+                  INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
+                  
+                  INNER JOIN ubigeo_peru_districts AS DIST ON P.distrito_id = DIST.id 
+                  INNER JOIN ubigeo_peru_provinces AS PROV ON DIST.province_id = PROV.id 
+                  INNER JOIN ubigeo_peru_departments AS DEPA ON PROV.department_id = DEPA.id
+                  WHERE P.deleted_at IS NULL AND P.id = ?";
+          $adjudicacion->postulacion = $this->db->query($sql, ['id' => $adjudicacion->postulacion_id])->row();
+
+          $sql = "SELECT
+                  C.*,
+                  M.mod_id AS modalidad_id,
+                  M.mod_nombre AS modalidad_nombre,
+                  N.niv_id AS nivel_id,
+                  N.niv_descripcion AS nivel_nombre,
+                  E.esp_id AS especialidad_id,
+                  E.esp_descripcion AS especialidad_nombre,
+                  GI.gin_id AS inscripcion_id,
+                  C.con_tipo as con_tipo
+              FROM convocatorias C
+              INNER JOIN convocatorias_detalle CD ON CD.convocatorias_con_id = C.con_id
+              INNER JOIN grupo_inscripcion GI ON GI.gin_id = CD.grupo_inscripcion_gin_id
+              INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
+              INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
+              INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
+              WHERE C.con_estado = 1
+              AND C.con_id = ?
+              AND GI.gin_id = ?";
+
+          $adjudicacion->convocatoria = $this->db->query($sql, [
+            'convocatoria_id' => $adjudicacion->postulacion->convocatoria_id,
+            'inscripcion_id' => $adjudicacion->postulacion->inscripcion_id
+          ])->row();
+
+          $sql = "SELECT
+                    US.*
+                  FROM usuarios US
+                  JOIN adjudicacion_firmas AF ON US.usu_id = AF.usuario_id
+                  WHERE AF.adjudicacion_id = ?;";
+          $adjudicacion->firmas = $this->db->query($sql, ['id' => $adjudicacion->id])->result_object();
+      }
+    }
+    return compact('adjudicacion');
+  }
 }
