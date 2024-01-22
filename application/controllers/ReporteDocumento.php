@@ -1248,7 +1248,7 @@ class ReporteDocumento extends CI_Controller {
         $this->db->reconnect();
 
         if (empty($adjudicacion)) {
-            redirect("adjudicaciones", "refresh");
+            redirect("adjudicaciones");
         }
         ob_start();
 
@@ -1677,7 +1677,7 @@ class ReporteDocumento extends CI_Controller {
         $this->db->reconnect();
 
         if (empty($adjudicacion)) {
-            redirect("adjudicaciones", "refresh");
+            redirect("adjudicaciones");
         }
         ob_start();
 
