@@ -48,7 +48,7 @@ class Pdf extends FPDF {
     // El encabezado del PDF
     public function Header() {
 
-        $this->Image('dist/img/logo.png', 9, 10, 189, 15);
+        $this->Image('public/images/logo-banner.png', 9, 10, 189, 15);
         $this->Ln(17);
         $this->SetFont('Arial', 'BU', 13);
     }
