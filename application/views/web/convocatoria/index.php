@@ -48,12 +48,12 @@
                                             </ul>
                                         </td>
                                         <td class="text-center">
-                                            <span class=""><?php echo $now_unix >=  $dato['con_fechainicio'] &&  $now_unix  <=  $dato['con_fechainicio']   ? 'ABIERTO' : 'CERRADO' ?> </span>
+                                            <span class=""><?php echo $now_unix >=  strtotime($dato['con_fechainicio'] . ' ' . substr($dato['con_horainicio'], 0, 5)) &&  $now_unix  <=  strtotime($dato['con_fechafin'] . ' ' .  substr($dato['con_horafin'], 0, 5))   ? 'ABIERTO' : 'CERRADO' ?> </span>
                                         </td>
                                         <td class="text-center">
                                             <div class="d-flex justify-content-center gap-2">
                                                 <?php if ($dato['con_tipo'] == 2  || $dato['con_tipo'] == 1) { ?>
-                                                    <a type="button" class="btn btn-sm btn-danger <?= $now_unix >=  $dato['con_fechainicio'] &&  $now_unix  <=  $dato['con_fechainicio']  ? '' : 'disabled' ?>" title="Ingresar a postular" data-bs-toggle="modal" data-bs-target="#postularModal" data-conid="<?= $dato['con_id'] ?>" data-contitle="<?= "CONV-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio']  ?>" <b><i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i>POSTULAR</b>
+                                                    <a type="button" class="btn btn-sm btn-danger <?= $now_unix >=  strtotime($dato['con_fechainicio'] . ' ' . substr($dato['con_horainicio'], 0, 5)) &&  $now_unix  <=  strtotime($dato['con_fechafin']  . ' ' .  substr($dato['con_horafin'], 0, 5)  )  ? '' : 'disabled' ?>" title="Ingresar a postular" data-bs-toggle="modal" data-bs-target="#postularModal" data-conid="<?= $dato['con_id'] ?>" data-contitle="<?= "CONV-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio']  ?>" <b><i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i>POSTULAR</b>
                                                     </a>
                                                 <?php } ?>
 
