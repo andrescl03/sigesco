@@ -1,5 +1,5 @@
 <?php
-class Convocatorias_Web_model extends CI_Model
+class Convocatorias_web_model extends CI_Model
 {
 
   public function __construct()
@@ -67,8 +67,12 @@ class Convocatorias_Web_model extends CI_Model
       }
 
       $now_unix = strtotime($this->tools->getDateHour());
-      $con_fechainicio_unix = strtotime($convocatoria->con_fechainicio);
-      $con_fechafin_unix = strtotime($convocatoria->con_fechafin);
+      //$con_fechainicio_unix = strtotime($convocatoria->con_fechainicio) ;
+      //$con_fechafin_unix = strtotime($convocatoria->con_fechafin);
+
+      $con_fechainicio_unix = strtotime($convocatoria->con_fechainicio . ' ' . substr($convocatoria->con_horainicio, 0, 5));
+      $con_fechafin_unix = strtotime($convocatoria->con_fechafin . ' ' . substr($convocatoria->con_horafin, 0, 5));
+
 
       if (!($now_unix >= $con_fechainicio_unix
         && $now_unix <= $con_fechafin_unix)) {

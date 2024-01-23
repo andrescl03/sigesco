@@ -92,16 +92,23 @@ class Convocatorias extends CI_Controller {
         $this->layout->view('listar/VListarConvocatorias', compact('datos'));
     }
 
-    public function VNuevaConvocatoria(){ 
+    public function VNuevaConvocatoria()
+    {
+        $update  = $this->input->post("update", true);
         $periodos   = $this->configuracion_model->listarPeriodosActivos();
         $procesos   = $this->configuracion_model->listarProcesosActivos();
-
         $idPer = $this->session->userdata("sigesco_default_periodo");
-        $idPro = $this->session->userdata("sigesco_default_proceso");    
-        $grupos     = $this->configuracion_model->listarGruposInscripcion($idPer, $idPro);
+        $idPro = $this->session->userdata("sigesco_default_proceso");
+        $grupos = $this->configuracion_model->listarGruposInscripcion($idPer, $idPro);
+
+        if ($update == "true") {
+            $idConv = $this->input->post("idConv", true);
+            $oldConvocatoria = $this->convocatorias_model-> listarConvocatoriaxId($idConv);
+ 
+         }  
 
         $this->layout->setLayout("template_ajax");
-        $this->layout->view('listar/VNuevaConvocatoria', compact('periodos', 'procesos', 'grupos'));
+        $this->layout->view('listar/VNuevaConvocatoria', compact('periodos', 'procesos', 'grupos','oldConvocatoria'));
     }
 
     public function VSelectGrupoInscripcion(){ 
