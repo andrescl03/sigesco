@@ -48,7 +48,7 @@ $convocatoria = $data['convocatoria'];
                                 <li><a href="" data-scroll="2">Datos de ubicación</a></li>
                                 <li><a href="" data-scroll="3">Formación académica</a></li>
                                 <li><a href="" data-scroll="4">Experiencia laboral</a></li>
-                                <li><a href="" data-scroll="5">Especialización</a></li>
+                                <li><a href="" data-scroll="5">Formación Continua</a></li>
                                 <li><a href="" data-scroll="6">Archivos adjuntos</a></li>
                             </ul>
                         </div>
@@ -217,13 +217,13 @@ $convocatoria = $data['convocatoria'];
                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
-             
+
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Afiliación</label>
                             <div class="col-xl-8 col-lg-8">
-                            <select class="form-control form-control-solid form-input-validate" name="" required>
-                                    <option value="" >AFP</option>
-                                    <option value="" >ONP</option>
+                                <select class="form-control form-control-solid form-input-validate" name="" required>
+                                    <option value="">AFP</option>
+                                    <option value="">ONP</option>
                                 </select>
                             </div>
                         </div>
@@ -341,7 +341,7 @@ $convocatoria = $data['convocatoria'];
                         </div>
                         <div class="form-group row mt-5 section" data-scrolled="5">
                             <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label d-flex justify-content-between">
-                                <h5 class="my-auto">Especialización:</h5>
+                                <h5 class="my-auto">Formación Continua:</h5>
                                 <button type="button" class="btn btn-primary btn-specialization float-end form-input-validate">Agregar</button>
                             </div>
                         </div>
@@ -455,7 +455,7 @@ $convocatoria = $data['convocatoria'];
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Cantidad de meses</label>
                                 <div class="col-xl-8 col-lg-8">
-                                    <input type="text" id="cantidadMeses" name="cantidad_mesesrd" class="form-control form-control-solid" readonly>
+                                    <input type="text" id="cantidad_mesesrd" name="cantidad_mesesrd" class="form-control form-control-solid" readonly>
                                 </div>
                             </div>
 
@@ -480,7 +480,7 @@ $convocatoria = $data['convocatoria'];
                 <form class="form-specialization needs-validation" novalidate>
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Especialización</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Formación Continua</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -509,16 +509,17 @@ $convocatoria = $data['convocatoria'];
                                 </div>
                             </div>  -->
                             <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la entidad</label>
+                                <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la entidad</label>
+                                <div class="col-xl-8 col-lg-8">
 
-                                <select id="tipoEspecializacion" class="form-control form-control-solid" name="tipo_especializacion" required>
-                                    <option value="" hidden>[SELECCIONE]</option>
-                                    <!--  <option value="Pública">Pública</option>
+                                    <select id="tipoEspecializacion" class="form-control form-control-solid" name="tipo_especializacion" required>
+                                        <option value="" hidden>[SELECCIONE]</option>
+                                        <!--  <option value="Pública">Pública</option>
                                         <option value="Privada">Privada</option> -->
-                                    <option value="edutalento">Edutalento</option>
-                                    <option value="perueduca">Perú Educa</option>
-                                    <!-- <iframe id="iframeAttachedFile" src="" title="description" height="600" width="100%" type="application/pdf"></iframe>             -->
-                                </select>
+                                        <option value="edutalento">Edutalento</option>
+                                        <option value="perueduca">Perú Educa</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Fecha de inicio</label>
@@ -560,30 +561,72 @@ $convocatoria = $data['convocatoria'];
                         </div>
                         <div class="modal-body">
                             <div class="form-group row">
-                                <label class="col-xl-4 col-lg-4 col-form-label">Nivel educativo</label>
+                                <label class="col-xl-4 col-lg-4 col-form-label">Estudios</label>
                                 <div class="col-xl-8 col-lg-8">
-                                    <select class="form-control form-control-solid" name="nivel_educativo" required>
+                                    <select class="form-control form-control-solid" id="nivel_educativo" name="nivel_educativo" required>
                                         <option value="" hidden>[SELECCIONE]</option>
-                                        <option value="Técnico superior">Técnico superior</option>
-                                        <option value="Técnico superior">Universitario</option>
-
+                                        <option value="Superior no universitario">Superior no universitario</option>
+                                        <option value="Superior universitario">Superior universitario</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group row">
+                                <label class="col-xl-4 col-lg-4 col-form-label">Tipo de estudio</label>
+                                <div class="col-xl-8 col-lg-8">
+                                    <select class="form-control form-control-solid" name="tipoestudio_educativo" required>
+                                        <option value="" hidden>[SELECCIONE]</option>
+                                        <option value="pedagogico">Pedagógico</option>
+                                        <option value="no pedagogico">No pedagógico</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-xl-4 col-lg-4 col-form-label">Grado académico</label>
+                                <label class="col-xl-4 col-lg-4 col-form-label">Estado de estudio</label>
                                 <div class="col-xl-8 col-lg-8">
-                                    <select class="form-control form-control-solid" name="grado_academico" required>
+                                    <select class="form-control form-control-solid estadoestudio_educativo" name="estadoestudio_educativo" required>
                                         <option value="" hidden>[SELECCIONE]</option>
-                                        <option value="Estudiante">Estudiante</option>
-                                        <option value="Egresado">Egresado</option>
-                                        <option value="Titulado">Titulado</option>
-                                        <option value="Maestria">Maestría</option>
-                                        <option value="Doctorado">Doctorado</option>
-
+                                        <option value="concluidos">Concluidos</option>
+                                        <option value="no concluidos">No concluidos</option>
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label class="col-xl-4 col-lg-4 col-form-label">Nivel de estudio</label>
+                                <div class="col-xl-8 col-lg-8">
+                                    <select class="form-control form-control-solid grado_academico" name="grado_academico" required>
+                                        <option value="" hidden>[SELECCIONE]</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-xl-4 col-lg-4 col-form-label">Nivel</label>
+                                <div class="col-xl-8 col-lg-8">
+                                    <select class="form-control form-control-solid subnivel" name="subnivel" required>
+                                        <option value="" hidden>[SELECCIONE]</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-xl-4 col-lg-4 col-form-label">Mención</label>
+                                <div class="col-xl-8 col-lg-8">
+                                    <select class="form-control form-control-solid mencion_academico" name="mencion_academico" required>
+                                        <option value="" hidden>[SELECCIONE]</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-xl-4 col-lg-4 col-form-label">Mención de grado</label>
+                                <div class="col-xl-8 col-lg-8">
+                                    <input type="text" id="mencion_grado_academico" readonly name="mencion_grado_academico" class="form-control form-control-solid" minlength="3" maxlength="200">
+                                </div>
+                            </div>
+
+
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Universidad</label>
                                 <div class="col-xl-8 col-lg-8">
@@ -677,23 +720,85 @@ $convocatoria = $data['convocatoria'];
     </div>
 </div>
 
-
 <script>
+    document.getElementById('nivel_educativo').addEventListener('change', function() {
+        var nivelEducativo = this.value;
+        var gradoAcademicoSelect = document.getElementsByName('grado_academico')[0];
+        var subnivelSelect = document.getElementsByName('subnivel')[0];
+        var mencionAcademicoSelect = document.getElementsByName('mencion_academico')[0];
+        var mencionGradoInput = document.getElementById('mencion_grado_academico');
+         mencionGradoInput.value ="";
+        // Función para agregar opciones a un elemento select
+        function agregarOpciones(selectElement, opciones) {
+            selectElement.innerHTML = '<option value="" hidden>[SELECCIONE]</option>';
+            opciones.forEach(function(opcion) {
+                selectElement.innerHTML += '<option value="' + opcion + '">' + opcion + '</option>';
+            });
+        }
+
+        // Definir opciones según el nivel educativo
+        var opcionesGradoAcademico = [];
+        var opcionesSubnivel = [];
+        var opcionesMencionAcademico = [];
+
+        if (nivelEducativo === 'Superior no universitario') {
+            opcionesGradoAcademico = ['Títulado', 'Egresado', 'VI Ciclo'];
+            opcionesSubnivel = ['Profesor de educación', 'Profesor de educación inicial', 'Profesor de educación primaria', 'Profesor de educación secundaria', 'Profesor de educación e informática', 'Profesor de educación física'];
+            opcionesMencionAcademico = ['no disponible para el grado'];
+        } else if (nivelEducativo === 'Superior universitario') {
+            opcionesGradoAcademico = ['Egresado', 'Bachiller', 'Titulado', 'Maestría', 'Doctorado'];
+            opcionesSubnivel = ['De educación', 'De educación inicial', 'De educación primaria', 'De educación secundaria', 'De educación física'];
+            opcionesMencionAcademico = ['Egresado', 'Licenciado', 'Bachiller', 'Maestro', 'Doctor'];
+        }
+
+        agregarOpciones(gradoAcademicoSelect, opcionesGradoAcademico);
+        agregarOpciones(subnivelSelect, opcionesSubnivel);
+        agregarOpciones(mencionAcademicoSelect, opcionesMencionAcademico);
+
+        function actualizarMencionGrado() {
+            if (document.getElementById('nivel_educativo').value == "Superior universitario") {
+                mencionGradoInput.value = mencionAcademicoSelect.value + ' ' + subnivelSelect.value;
+            }
+        }
+        subnivelSelect.addEventListener('change', actualizarMencionGrado);
+        mencionAcademicoSelect.addEventListener('change', actualizarMencionGrado);
+
+        actualizarMencionGrado();
+
+    });
+
+
     function calcularCantidadMeses() {
         // Obtener las fechas ingresadas por el usuario
-        var fechaInicio = moment(document.getElementById('fechaIniciord').value);
-        var fechaTermino = moment(document.getElementById('fechaTerminord').value);
+        var fechaInicioInput = document.getElementById('fechaIniciord');
+        var fechaTerminoInput = document.getElementById('fechaTerminord');
 
-        // Calcular la cantidad de meses entre las fechas
+        var fechaInicio = moment(fechaInicioInput.value);
+        var fechaTermino = moment(fechaTerminoInput.value);
+
+        // Almacenar las fechas originales
+        var fechaInicioOriginal = moment(fechaInicio);
+        var fechaTerminoOriginal = moment(fechaTermino);
+
+
+        if (fechaInicio.isAfter(fechaTermino)) {
+
+            fechaInicioInput.value = fechaInicioOriginal.format('DD/MM/YYYY');
+            fechaTerminoInput.value = fechaTerminoOriginal.format('DD/MM/YYYY');
+            sweet2.show({
+                type: 'error',
+                text: 'La fecha ingresada es incorrecta'
+            });
+
+            return;
+        }
+
         var cantidadMeses = fechaTermino.diff(fechaInicio, 'months');
 
-        // Actualizar el valor del input con la cantidad de meses
         if (cantidadMeses >= 0) {
-            document.getElementById('cantidadMeses').value = cantidadMeses;
+            document.getElementById('cantidad_mesesrd').value = cantidadMeses;
         }
     }
-
-    // Escuchar cambios en las fechas para actualizar la cantidad de meses
     document.getElementById('fechaIniciord').addEventListener('change', calcularCantidadMeses);
     document.getElementById('fechaTerminord').addEventListener('change', calcularCantidadMeses);
 </script>
