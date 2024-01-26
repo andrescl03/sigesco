@@ -100,15 +100,18 @@ class Convocatorias extends CI_Controller {
         $idPer = $this->session->userdata("sigesco_default_periodo");
         $idPro = $this->session->userdata("sigesco_default_proceso");
         $grupos = $this->configuracion_model->listarGruposInscripcion($idPer, $idPro);
-
+        $convocatoria_grupos = [];
         if ($update == "true") {
             $idConv = $this->input->post("idConv", true);
             $oldConvocatoria = $this->convocatorias_model-> listarConvocatoriaxId($idConv);
+            $oldConvocatoria['unix_inicio'] = $oldConvocatoria['con_fechainicio'] . ' ' . $oldConvocatoria['con_horainicio'];
+            $oldConvocatoria['unix_fin'] = $oldConvocatoria['con_fechafin'] . ' ' . $oldConvocatoria['con_horafin'];
+            $convocatoria_grupos = $this->convocatorias_model->listarGruposInscripcionxConvocatoria($idConv);
  
          }  
 
         $this->layout->setLayout("template_ajax");
-        $this->layout->view('listar/VNuevaConvocatoria', compact('periodos', 'procesos', 'grupos','oldConvocatoria'));
+        $this->layout->view('listar/VNuevaConvocatoria', compact('periodos', 'procesos', 'grupos','oldConvocatoria', 'convocatoria_grupos'));
     }
 
     public function VSelectGrupoInscripcion(){ 
@@ -131,6 +134,7 @@ class Convocatorias extends CI_Controller {
     }
 
     public function CAgregarNuevaConvocatoria(){
+        $id             = $this->input->post("id",true);
         $idPer          = $this->input->post("idPer",true);
         $anio           = $this->input->post("anio",true);
         $idPro          = $this->input->post("idPro",true);
@@ -156,7 +160,7 @@ class Convocatorias extends CI_Controller {
         }
 
         $arr_1 = array(                       
-            "con_numero"        => $numero,
+            // "con_numero"        => $numero,
             "con_anio"  	    => $anio,
             "con_fechainicio"   => $fechaInicio,
             "con_fechafin"      => $fechaFin,
@@ -165,14 +169,22 @@ class Convocatorias extends CI_Controller {
             "con_estado"        => $estado,
             "con_tipo"          => $idTipo
         );
+        $update = false;
+        if ($id > 0) {
+            $idCon = $id;
+            $update = true;
+            $this->convocatorias_model->actualizarConvocatoria($arr_1, ['con_id'=>$idCon]);
+            $this->convocatorias_model->eliminarDetalleConvocatoria(['convocatorias_con_id'=>$idCon]);
+        } else {
+            $arr_1["con_numero"] = $numero;
+            $idCon = $this->convocatorias_model->insertarConvocatoria($arr_1);
 
-        $idCon = $this->convocatorias_model->insertarConvocatoria($arr_1);
-
-        if($idCon < 0){
-            $mensaje["error"]   = "Error al agregar convocatoria.";
-            $mensaje["estado"]  = false;
-            echo json_encode($mensaje); 
-            exit();
+            if($idCon < 0){
+                $mensaje["error"]   = "Error al agregar convocatoria.";
+                $mensaje["estado"]  = false;
+                echo json_encode($mensaje); 
+                exit();
+            }
         }
 
         $ar_insert  = [];
@@ -188,10 +200,10 @@ class Convocatorias extends CI_Controller {
         $insert = $this->convocatorias_model->insertBatchDetalleConvocatoria($ar_insert);
 
         if($insert >= 1){
-            $mensaje["success"] = "Se registró información correctamente.";	
+            $mensaje["success"] = "Se ".($update ? 'actualizo':'registro')." información correctamente.";	
             $mensaje["estado"]  = true;      
         }else{
-            $mensaje["error"]   = "Error al registrar información.";
+            $mensaje["error"]   = "Error al ".($update ? 'actualizar':'registrar')." información.";
             $mensaje["estado"]  = false;
         }
 

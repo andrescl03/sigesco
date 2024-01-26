@@ -53,6 +53,14 @@ class Convocatorias_model extends CI_Model {
       return $this->db->insert_id(); // para saber el id ingresado
     }
 
+    public function actualizarConvocatoria($data=array(), $where){
+      $this->db->update('convocatorias', $data, $where);
+    }
+
+    public function eliminarDetalleConvocatoria($where){
+      $this->db->delete('convocatorias_detalle', $where); 
+    }
+
     public function insertBatchDetalleConvocatoria($data) {
       $this->db->insert_batch('convocatorias_detalle',$data);      
       return ($this->db->affected_rows() > 0) ? 1 : 0; 
