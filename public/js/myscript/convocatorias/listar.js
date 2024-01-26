@@ -30,7 +30,7 @@ $(document).ready(function () {
 	act.lan();
 });
 
-var rangoFecha = function () {
+var rangoFecha = function (inicio = "", fin= "") {
 	/* $('#vvv').flatpickr({
 		format: "dd-mm-yyyy mm:ss",
 		clearBtn: true,
@@ -48,6 +48,7 @@ var rangoFecha = function () {
 		enableTime: true,
 		dateFormat: "d-m-Y H:i:S", // Formato de fecha y hora
 		clear: true,
+		defaultDate: inicio.length > 0 ? new Date(inicio) : new Date(),
 		locale: {
 			firstDayOfWeek: 1, // Lunes como primer día de la semana
 		},
@@ -58,6 +59,7 @@ var rangoFecha = function () {
 		enableTime: true,
 		dateFormat: "d-m-Y H:i:S", // Formato de fecha y hora
 		clear: true,
+		defaultDate: fin.length > 0 ? new Date(fin) : new Date(),
 		locale: {
 			firstDayOfWeek: 1, // Lunes como primer día de la semana
 		},
@@ -211,11 +213,21 @@ var VNuevaConvocatoria = function (parametros) {
 					"lengthMenu": [[-1], ["All"]],
 					"dom": '<<t>>',
 				});
+				const container = $("#view_nuevaConvocatoria").find('#convocatoriaModalContainer');
+				const items = container.attr('data-grupoArr');
+				const unix_inicio = container.attr('data-fecha-inicio');
+				const unix_fin = container.attr('data-fecha-fin');
 				opt_periodoModal();
 				opt_tipoProcesoModal();
-				rangoFecha();
+				rangoFecha(unix_inicio, unix_fin);
 				btn_asignarGrupoInscripcion();
 				grupoArr = [];
+				if (items.length > 0) {
+					let result = items.split(",");
+					if (result.length > 0) {
+						grupoArr = result; 
+					}
+				}
 				frm = '#frmMantenimientoConvocatoria';
 				varlidarMantenimientoConvocatoria(frm);
 				btn_agregarNuevaConvocatoria();
@@ -413,6 +425,7 @@ var btn_agregarNuevaConvocatoria = function () {
 	$('body').off('click', '#btn_agregarNuevaConvocatoria');
 	$('body').on('click', '#btn_agregarNuevaConvocatoria', function (e) {
 		if ($("#frmMantenimientoConvocatoria").valid()) {
+			id = $("#frmMantenimientoConvocatoria").attr('data-id');
 			idPer = $("#opt_periodoModal").val();
 			anio = $("#opt_periodoModal option:selected").text();
 			estado = $("#opt_estado").val();
@@ -433,6 +446,7 @@ var btn_agregarNuevaConvocatoria = function () {
 			}
 			else {
 				parametros = {
+					id: id,
 					idPer: idPer,
 					anio: anio,
 					estado: estado,
@@ -443,7 +457,7 @@ var btn_agregarNuevaConvocatoria = function () {
 					idTipo: idTipo
 				}
 				SwalConfirmacionCenter.fire({
-					html: "¿Seguro(a) que desea <b class='text-primary h4'>registrar</b> esta información?"
+					html: `¿Seguro(a) que desea <b class='text-primary h4'>${id>0?'actualizar':'registrar'}</b> esta información?`
 				}).then((result) => {
 					if (result.isConfirmed) {
 						CAgregarNuevaConvocatoria(parametros);
