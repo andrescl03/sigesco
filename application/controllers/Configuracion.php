@@ -190,11 +190,13 @@ class Configuracion extends CI_Controller
             $config["max_size"]         = 0;
             $config["max_filename"]     = 0;
             //$config["remove_spaces"] 	= false;
+            //echo json_encode($extension); die();
 
             $this->load->library('upload', $config);
 
             if (!$this->upload->do_upload("file")) {
-                $mensaje["error"] = "Ocurrió un error al cargar archivo.";
+                $error = $this->upload->display_errors();
+                $mensaje["error"] = "Ocurrió un error al cargar archivo: $error";
                 $mensaje["estado"] = false;
             } else {
                 $mensaje["nombre"] = $config["file_name"];
@@ -270,6 +272,7 @@ class Configuracion extends CI_Controller
         $cumple = 1;
         for ($i = 0; $i < count($letras); $i++) {
             $texto = trim($objPHPExcel->getActiveSheet()->getCell($letras[$i] . '1')->getCalculatedValue());
+
             if ($texto != $detalle_cabecera[$i]) {
                 $cumple = 0;
                 break;

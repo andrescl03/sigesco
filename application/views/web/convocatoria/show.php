@@ -221,16 +221,17 @@ $convocatoria = $data['convocatoria'];
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Afiliación</label>
                             <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid form-input-validate" name="" required>
-                                    <option value="">AFP</option>
-                                    <option value="">ONP</option>
+                                <select class="form-control form-control-solid form-input-validate" name="afiliacion" required>
+                                    <option value="" hidden>[SELECCIONE]</option>
+                                    <option value="AFP">AFP</option>
+                                    <option value="ONP">ONP</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">CUSP</label>
+                            <label class="col-xl-4 col-lg-4 col-form-label">CUSS</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="numero_telefono" class="form-control form-control-solid form-control-validate  input-number form-input-validate" maxlength="7" required>
+                                <input type="text" name="cuss" class="form-control form-control-solid form-control-validate  input-number form-input-validate" maxlength="50" required>
                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
@@ -343,6 +344,8 @@ $convocatoria = $data['convocatoria'];
                                         <th>Puesto</th>
                                         <th>N° RD</th>
                                         <th>N° Contrato</th>
+                                        <th>Fecha inicio</th>
+                                        <th>Fecha fin</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -444,7 +447,7 @@ $convocatoria = $data['convocatoria'];
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">N° RD</label>
                                 <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="numero_rd" class="form-control form-control-solid" minlength="3" maxlength="100" required>
+                                    <input type="text" name="numero_rd" class="form-control form-control-solid" minlength="2" maxlength="100" required>
                                     <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
@@ -452,14 +455,14 @@ $convocatoria = $data['convocatoria'];
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Fecha de inicio</label>
                                 <div class="col-xl-8 col-lg-8">
-                                    <input type="date" id="fechaIniciord" name="fechaIniciord" class="form-control form-control-solid" required>
+                                    <input type="date" id="fechainicio_rd" name="fechainicio_rd" class="form-control form-control-solid" required>
                                     <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Fecha de termino</label>
                                 <div class="col-xl-8 col-lg-8">
-                                    <input type="date" id="fechaTerminord" name="fechaTerminord" class="form-control form-control-solid" required>
+                                    <input type="date" id="fechatermino_rd" name="fechatermino_rd" class="form-control form-control-solid" required>
                                     <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
@@ -524,7 +527,7 @@ $convocatoria = $data['convocatoria'];
                                 <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la entidad</label>
                                 <div class="col-xl-8 col-lg-8">
 
-                                    <select id="tipoEspecializacion" class="form-control form-control-solid" name="tipo_especializacion" required>
+                                    <select id="nombre_entidad" class="form-control form-control-solid" name="nombre_entidad" required>
                                         <option value="" hidden>[SELECCIONE]</option>
                                         <!--  <option value="Pública">Pública</option>
                                         <option value="Privada">Privada</option> -->
@@ -551,7 +554,7 @@ $convocatoria = $data['convocatoria'];
                                 <label class="col-xl-4 col-lg-4 col-form-label">Número de horas</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="number" id="numeroHoras" name="numero_horas" class="form-control form-control-solid" min="16" max="300" required>
-                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
+                                    <div class="invalid-feedback">Por favor este campo es requerido. (mínimo 16 horas)</div>
                                 </div>
                             </div>
                         </div>
@@ -642,24 +645,25 @@ $convocatoria = $data['convocatoria'];
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Universidad</label>
                                 <div class="col-xl-8 col-lg-8">
-                                    <select class="form-control form-control-solid" name="universidad" required>
+                                <!---<select class="form-control form-control-solid" name="universidad" required>
                                         <option value="" hidden>[SELECCIONE]</option>
                                         <option value="UPN">Universidad privada del Norte</option>
                                         <option value="Universidad privada del Norte">Universidad de Lima</option>
-
-                                    </select>
+                                     </select>-->
+                                     <input type="text" id="universidad"  name="universidad" class="form-control form-control-solid" minlength="3" maxlength="200" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Carrera profesional</label>
                                 <div class="col-xl-8 col-lg-8">
-                                    <select class="form-control form-control-solid" name="carrera_profesional" required>
+                                  <!---  <select class="form-control form-control-solid" name="carrera_profesional" required>
                                         <option value="" hidden>[SELECCIONE]</option>
                                         <option value="Ingenieria de sistemas">Ingenieria de sistemas</option>
                                         <option value="Ingenieria ambiental">Ingenieria ambiental</option>
+                                    </select>-->
+                                    <input type="text" id="carrera_profesional"  name="carrera_profesional" class="form-control form-control-solid" minlength="3" maxlength="150" required>
 
-                                    </select>
                                 </div>
                             </div>
 
@@ -698,8 +702,8 @@ $convocatoria = $data['convocatoria'];
         <div class="modal fade" id="modalPreviewPostulant" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Resumen</h5>
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="exampleModalLabel">RESUMEN</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-4" id="previewPostulant">
@@ -782,8 +786,8 @@ $convocatoria = $data['convocatoria'];
 
     function calcularCantidadMeses() {
         // Obtener las fechas ingresadas por el usuario
-        var fechaInicioInput = document.getElementById('fechaIniciord');
-        var fechaTerminoInput = document.getElementById('fechaTerminord');
+        var fechaInicioInput = document.getElementById('fechainicio_rd');
+        var fechaTerminoInput = document.getElementById('fechatermino_rd');
 
         var fechaInicio = moment(fechaInicioInput.value);
         var fechaTermino = moment(fechaTerminoInput.value);
@@ -811,6 +815,6 @@ $convocatoria = $data['convocatoria'];
             document.getElementById('cantidad_mesesrd').value = cantidadMeses;
         }
     }
-    document.getElementById('fechaIniciord').addEventListener('change', calcularCantidadMeses);
-    document.getElementById('fechaTerminord').addEventListener('change', calcularCantidadMeses);
+    document.getElementById('fechainicio_rd').addEventListener('change', calcularCantidadMeses);
+    document.getElementById('fechatermino_rd').addEventListener('change', calcularCantidadMeses);
 </script>
