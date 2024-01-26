@@ -33,10 +33,10 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">                             
                             </div>
-                            <div class="d-flex align-items-center justify-content-between mt-0 mb-0">
+                            <!-----<div class="d-flex align-items-center justify-content-between mt-0 mb-0">
                                 <a class="small" href="#">¿Has olvidado tu contraseña?</a>
                                 <button type="button" class="btn btn-danger" id="btn_login"><b><i class="fas fa-sign-in-alt"></i> INGRESAR</b></button>
-                            </div>
+                            </div>-->
                         
                     </div>
                     <div class="card-footer text-center py-4">

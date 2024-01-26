@@ -50,47 +50,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
-$route['web/convocatorias'] = 'ConvocatoriasWeb/index';
-$route['web/convocatorias/detail'] = 'ConvocatoriasWeb/detail';
+$route['web/convocatorias'] = 'convocatoriasWeb/index';
+$route['web/convocatorias/detail'] = 'convocatoriasWeb/detail';
 $route['web/convocatorias/detailConvocatoriaGrupoInscripcion'] = 'convocatoriasWeb/detailConvocatoriaGrupoInscripcion';
 // $route['web/convocatorias/(:any)'] = 'ConvocatoriasWeb/show/$1';
-$route['web/convocatorias/(:num)/inscripciones/(:num)'] = 'ConvocatoriasWeb/show/$1/$2';
-$route['web/postulantes/(:any)'] = 'ConvocatoriasWeb/postulant/$1';
-$route['web/postulaciones/store'] = 'PostulacionesWeb/store';
-$route['web/postulaciones/find'] = 'PostulacionesWeb/find';
-$route['web/postulaciones/(:any)/update'] = 'PostulacionesWeb/update/$1';
-$route['web/postulaciones/(:any)'] = 'PostulacionesWeb/edit/$1';
+$route['web/convocatorias/(:num)/inscripciones/(:num)'] = 'convocatoriasWeb/show/$1/$2';
+$route['web/postulantes/(:any)'] = 'convocatoriasWeb/postulant/$1';
+$route['web/postulaciones/store'] = 'postulacionesWeb/store';
+$route['web/postulaciones/find'] = 'postulacionesWeb/find';
+$route['web/postulaciones/(:any)/update'] = 'postulacionesWeb/update/$1';
+$route['web/postulaciones/(:any)'] = 'postulacionesWeb/edit/$1';
 
-$route['reportes/adjudicaciones/(:num)/acta'] = 'ReporteDocumento/adjudicacion/$1';
-$route['reportes/adjudicaciones/(:num)/contrato'] = 'ReporteDocumento/contrato/$1';
+$route['reportes/adjudicaciones/(:num)/acta'] = 'reporteDocumento/adjudicacion/$1';
+$route['reportes/adjudicaciones/(:num)/contrato'] = 'reporteDocumento/contrato/$1';
 
-$route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/preliminar'] = 'Evaluacion/indexPreliminar/$1/$2';
-$route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/final'] = 'Evaluacion/indexFinal/$1/$2';
-$route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/editar'] = 'Evaluacion/editarFicha/$1/$2';
+$route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/preliminar'] = 'evaluacion/indexPreliminar/$1/$2';
+$route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/final'] = 'evaluacion/indexFinal/$1/$2';
+$route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/editar'] = 'evaluacion/editarFicha/$1/$2';
 
-$route['evaluacion/convocatoria/inscripcion/pagination'] = 'Evaluacion/pagination/$1/$2';
-$route['evaluacion/convocatoria/inscripcion/postulantes/(:num)/attachedfiles'] = 'Evaluacion/attachedfiles/$1';
-$route['evaluacion/convocatoria/inscripcion/postulante/(:num)/revaluar'] = 'Evaluacion/revaluarPreliFinal/$1';
-$route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/preliminar/exportar'] = 'Evaluacion/reporte_excel_preliminar/$1/$2';
-$route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/final/exportar'] = 'Evaluacion/reporte_excel_final/$1/$2';
+$route['evaluacion/convocatoria/inscripcion/pagination'] = 'evaluacion/pagination/$1/$2';
+$route['evaluacion/convocatoria/inscripcion/postulantes/(:num)/attachedfiles'] = 'evaluacion/attachedfiles/$1';
+$route['evaluacion/convocatoria/inscripcion/postulante/(:num)/revaluar'] = 'evaluacion/revaluarPreliFinal/$1';
+$route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/preliminar/exportar'] = 'evaluacion/reporte_excel_preliminar/$1/$2';
+$route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/final/exportar'] = 'evaluacion/reporte_excel_final/$1/$2';
 
-$route['adjudicaciones/create'] = 'Adjudicaciones/create';
-$route['adjudicaciones/(:num)/edit'] = 'Adjudicaciones/edit/$1';
-$route['adjudicaciones/postulantes/(:num)/status'] = 'Adjudicaciones/updateStatus/$1';
-$route['admin/adjudicaciones/pagination'] = 'Adjudicaciones/pagination';
-$route['admin/adjudicaciones/resource'] = 'Adjudicaciones/resource';
-$route['admin/adjudicaciones/store'] = 'Adjudicaciones/store';
-$route['admin/adjudicaciones/(:num)/remove'] = 'Adjudicaciones/remove/$1';
-$route['admin/adjudicaciones/(:num)/update'] = 'Adjudicaciones/update/$1';
+$route['adjudicaciones/create'] = 'adjudicaciones/create';
+$route['adjudicaciones/(:num)/edit'] = 'adjudicaciones/edit/$1';
+$route['adjudicaciones/postulantes/(:num)/status'] = 'adjudicaciones/updateStatus/$1';
+$route['admin/adjudicaciones/pagination'] = 'adjudicaciones/pagination';
+$route['admin/adjudicaciones/resource'] = 'adjudicaciones/resource';
+$route['admin/adjudicaciones/store'] = 'adjudicaciones/store';
+$route['admin/adjudicaciones/(:num)/remove'] = 'adjudicaciones/remove/$1';
+$route['admin/adjudicaciones/(:num)/update'] = 'adjudicaciones/update/$1';
 
-$route['configuracion/periodos/store'] = 'Configuracion/registraPeriodo';
-$route['configuracion/periodos/(:num)'] = 'Configuracion/editarPeriodo/$1';
-$route['configuracion/periodos/(:num)/detail'] = 'Configuracion/detallePeriodo/$1';
-$route['configuracion/periodos/(:num)/update'] = 'Configuracion/guardarPeriodo/$1';
-$route['configuracion/periodos/(:num)/remove'] = 'Configuracion/eliminarPeriodo/$1';
+$route['configuracion/periodos/store'] = 'configuracion/registraPeriodo';
+$route['configuracion/periodos/(:num)'] = 'configuracion/editarPeriodo/$1';
+$route['configuracion/periodos/(:num)/detail'] = 'configuracion/detallePeriodo/$1';
+$route['configuracion/periodos/(:num)/update'] = 'configuracion/guardarPeriodo/$1';
+$route['configuracion/periodos/(:num)/remove'] = 'configuracion/eliminarPeriodo/$1';
 
-$route['postulaciones/(:num)/ficha'] = 'Postulaciones/ficha/$1';
-$route['postulaciones/(:num)/fichas'] = 'Postulaciones/fichas/$1';
+$route['postulaciones/(:num)/ficha'] = 'postulaciones/ficha/$1';
+$route['postulaciones/(:num)/fichas'] = 'postulaciones/fichas/$1';
 
 $route['default_controller'] = 'index';
 $route['404_override'] = '';
