@@ -18,6 +18,11 @@ const AppConvovatoriaWeb = () => {
         },
         data: () => { 
             return {
+                formVias: [],
+                formZonas: [],
+                formDepartamentos: [],
+                formProvincias: [],
+                formDistritos: [],
                 numberDocument: 0,
                 typeDocument: 1,
                 convocatoriaId: 0,
@@ -63,6 +68,7 @@ const AppConvovatoriaWeb = () => {
                 .then(data => {
                     self.renders();
                     self.events();
+                    self.externs();
                 })
                 .catch(error => {
                     sweet2.show({type:'error', html: error});
@@ -70,12 +76,100 @@ const AppConvovatoriaWeb = () => {
             },
             renders: () => {
                 self.renderModalities();
-                self.renderDepartments();
+                // self.renderDepartments();
                 self.renderUbigeo();
                 self.renderWorkExperiences();
                 self.renderSpecialization();
                 self.renderAcademicTraining();
                 self.renderAlertPostulant();
+            },
+            vias: () => {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        url: window.AppMain.url + 'api/mpv/vias',
+                        method: 'POST',
+                        dataType: 'json',
+                        cache: 'false'
+                    })
+                    .done(function (response) {
+                        resolve(response);
+                    })
+                    .fail(function (xhr, status, error) {
+                        reject(error);
+                    });
+
+                });
+            },
+            departamentos: () => {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        url: window.AppMain.url + 'api/mpv/departamentos',
+                        method: 'POST',
+                        dataType: 'json',
+                        cache: 'false'
+                    })
+                    .done(function (response) {
+                        resolve(response);
+                    })
+                    .fail(function (xhr, status, error) {
+                        reject(error);
+                    });
+
+                });
+            },
+            zonas: () => {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        url: window.AppMain.url + 'api/mpv/zonas',
+                        method: 'POST',
+                        dataType: 'json',
+                        cache: 'false'
+                    })
+                    .done(function (response) {
+                        resolve(response);
+                    })
+                    .fail(function (xhr, status, error) {
+                        reject(error);
+                    });
+
+                });
+            },
+            externs: () => {
+                self.vias()
+                .then(({status, response, message}) => {
+                    if (status == 200) {
+                        self.formVias = response;
+                    }
+                    self.renderVias();
+                    console.log('formVias', self.formVias);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+                self.zonas()
+                .then(({status, response, message}) => {
+                    if (status == 200) {
+                        self.formZonas = response;
+                    }
+                    self.renderZonas();
+                    console.log('formZonas', self.formZonas);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+
+                self.departamentos()
+                .then(({status, response, message}) => {
+                    if (status == 200) {
+                        self.formDepartamentos = response;
+                    }
+                    self.renderDepartments();
+                    console.log('formDepartamentos', self.formDepartamentos);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
             },
             events: () => {
 
@@ -97,12 +191,23 @@ const AppConvovatoriaWeb = () => {
                         if (form.checkValidity()) {
                             self.formData = new FormData(e.target);
                             self.postulant = helper.formSerialize(e.target);
-                            /*self.postulant.modalidad = self.formModalities.find(o => o.mod_id === self.postulant.modalidad_id).mod_nombre;
-                            self.postulant.nivel = self.formLevels.find(o => o.niv_id === self.postulant.nivel_id).niv_descripcion;
-                            self.postulant.especialidad = self.formSpecialties.find(o => o.esp_id === self.postulant.especialidad_id).esp_descripcion;*/
                             self.postulant.modalidad = self.formPostulant.modalidad_descripcion;
                             self.postulant.nivel = self.formPostulant.nivel_descripcion;
                             self.postulant.especialidad = self.formPostulant.especialidad_descripcion;
+
+                            const via_id = self.formData.get('via_id');
+                            console.log('via_id',via_id);
+                            console.log('formVias',self.formVias);
+                            const viaObj = self.formVias.find((o) => {return o.TipoViaID == via_id});
+                            console.log('viaObj',viaObj);
+                            self.postulant.via = viaObj.DesTipoVia;
+                            self.formData.append('via', self.postulant.via);
+
+                            const zona_id = self.formData.get('zona_id');
+                            const zonaObj = self.formZonas.find((o) => {return o.TipoZonaID == zona_id});
+                            self.postulant.zona = zonaObj.DesTipoZona;
+                            self.formData.append('via', self.postulant.zona);
+
                             self.listAttachedFile();
                             self.renderPreviewPostulant({el: 'previewPostulant', postulant: self.postulant, toString: false});
                             self.modalPreviewPostulant.show();
@@ -175,15 +280,6 @@ const AppConvovatoriaWeb = () => {
                     self.index = -1;
                     self.modalSpecialization.show();
                 });
-
-                /*self.eventTag('select-nivel', (e) => {
-                    self.renderSpecialties(e.target.value);
-                }, 'change');
-                
-                self.eventTag('select-modalidad', (e) => {
-                    self.renderLevels(e.target.value);
-                    self.renderSpecialties();
-                }, 'change');*/
 
                 self.eventTag('input-number', (e) => {
                     return self.onNumberOnly(e);
@@ -258,9 +354,6 @@ const AppConvovatoriaWeb = () => {
                                     dom.querySelector('input[name="nombre"]').value = self.formPostulant.cpe_nombres;
                                     dom.querySelector('input[name="apellido_paterno"]').value = self.formPostulant.cpe_apaterno;
                                     dom.querySelector('input[name="apellido_materno"]').value = self.formPostulant.cpe_amaterno;    
-                                    /*dom.querySelector('select[name="modalidad_id"]').innerHTML = `<option value="${self.formPostulant.modalidad_id}">${self.formPostulant.modalidad_descripcion}</option>`;
-                                    dom.querySelector('select[name="nivel_id"]').innerHTML = `<option value="${self.formPostulant.nivel_id}">${self.formPostulant.nivel_descripcion}</option>`;
-                                    dom.querySelector('select[name="especialidad_id"]').innerHTML = `<option value="${self.formPostulant.especialidad_id}">${self.formPostulant.especialidad_descripcion}</option>`;*/
                                 }
                                 formPostulants.forEach(form => {
                                     form.classList.add('was-validated');
@@ -594,6 +687,26 @@ const AppConvovatoriaWeb = () => {
                     select.innerHTML = html;
                 });
             },
+            renderVias: () => {
+                const selects = dom.querySelectorAll('.select-via');
+                selects.forEach(select => {
+                    let html = `<option value="" hidden>[SELECCIONE]</option>`;
+                    self.formVias.forEach(item => {
+                        html += `<option value="${ item.TipoViaID }"> ${ item.DesTipoVia }</option>`;
+                    });
+                    select.innerHTML = html;
+                });
+            },
+            renderZonas: () => {
+                const selects = dom.querySelectorAll('.select-zona');
+                selects.forEach(select => {
+                    let html = `<option value="" hidden>[SELECCIONE]</option>`;
+                    self.formZonas.forEach(item => {
+                        html += `<option value="${ item.TipoZonaID }"> ${ item.DesTipoZona }</option>`;
+                    });
+                    select.innerHTML = html;
+                });
+            },
             renderModalities: () => {
                 const selects = dom.querySelectorAll('.select-modalidad');
                 selects.forEach(select => {
@@ -608,8 +721,8 @@ const AppConvovatoriaWeb = () => {
                 const selects = dom.querySelectorAll('.select-department');
                 selects.forEach(select => {
                     let html = `<option value="" hidden>[SELECCIONE]</option>`;
-                    self.departments.forEach(department => {
-                        html += `<option value="${ department.id }"> ${ department.name }</option>`;
+                    self.formDepartamentos.forEach(department => {
+                        html += `<option value="${ department.Departamento }"> ${ department.Departamento }</option>`;
                     });
                     select.innerHTML = html;
                 });
@@ -622,27 +735,30 @@ const AppConvovatoriaWeb = () => {
                         const departmentId = e.target.value;           
                         // Llamada AJAX para obtener provincias basadas en el ID del departamento
                         $.ajax({
-                            url: window.AppMain.url + 'ubigeo/obtenerProvincias',
+                            url: window.AppMain.url + 'api/mpv/provincias',
                             method: 'POST',
                             dataType: 'json',
                             data: {
-                                department_id: departmentId
+                                Departamento: departmentId
                             },
                             cache: 'false'
                         })
-                        .done(function ({provincias}) {
-                            const selectProvinces = dom.querySelectorAll('.select-province');
-                            selectProvinces.forEach(select => {
-                                let html = `<option value="" hidden>[SELECCIONE]</option>`;
-                                provincias.forEach(provincia => {
-                                    html += `<option value="${ provincia.id }"> ${ provincia.name }</option>`;
+                        .done(function ({status, response, message}) {
+                            if (status == 200) {
+                                self.formProvincias = response;
+                                const selectProvinces = dom.querySelectorAll('.select-province'); 
+                                selectProvinces.forEach(select => {
+                                    let html = `<option value="" hidden>[SELECCIONE]</option>`;
+                                    self.formProvincias.forEach(provincia => {
+                                        html += `<option value="${ provincia.Provincia }"> ${ provincia.Provincia }</option>`;
+                                    });
+                                    select.innerHTML = html;
                                 });
-                                select.innerHTML = html;
-                            });
-                            const selectDistricts = dom.querySelectorAll('.select-district');
-                            selectDistricts.forEach(select => {
-                                select.innerHTML = `<option value="" hidden>[SELECCIONE]</option>`;
-                            });
+                                const selectDistricts = dom.querySelectorAll('.select-district');
+                                selectDistricts.forEach(select => {
+                                    select.innerHTML = `<option value="" hidden>[SELECCIONE]</option>`;
+                                });
+                            }
                         })
                         .fail(function (xhr, status, error) {
                             swal2.show({type:'error', html: error});
@@ -657,23 +773,26 @@ const AppConvovatoriaWeb = () => {
                         const provinceId = e.target.value;                       
                         // Llamada AJAX para obtener provincias basadas en el ID del departamento
                         $.ajax({
-                            url: window.AppMain.url + 'ubigeo/obtenerDistritos',
+                            url: window.AppMain.url + 'api/mpv/distritos',
                             method: 'POST',
                             dataType: 'json',
                             data: {
-                                province_id: provinceId
+                                Provincia: provinceId
                             },
                             cache: 'false'
                         })
-                        .done(function ({distritos}) {
-                            const selectDistricts = dom.querySelectorAll('.select-district');
-                            selectDistricts.forEach(select => {
-                                let html = `<option value="" hidden>[SELECCIONE]</option>`;
-                                distritos.forEach(distrito => {
-                                    html += `<option value="${ distrito.id }"> ${ distrito.name }</option>`;
+                        .done(function ({status, response, message}) {
+                            if (status == 200) {
+                                self.formDistritos = response;
+                                const selectDistricts = dom.querySelectorAll('.select-district');
+                                selectDistricts.forEach(select => {
+                                    let html = `<option value="" hidden>[SELECCIONE]</option>`;
+                                    self.formDistritos.forEach(distrito => {
+                                        html += `<option value="${ distrito.Distrito }"> ${ distrito.Distrito }</option>`;
+                                    });
+                                    select.innerHTML = html;
                                 });
-                                select.innerHTML = html;
-                            });
+                            }
                         })
                         .fail(function (xhr, status, error) {
                             swal2.show({type:'error', html: error});

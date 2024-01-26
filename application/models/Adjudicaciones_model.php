@@ -311,9 +311,12 @@ class Adjudicaciones_model extends CI_Model
                       GI.gin_id AS inscripcion_id,
                       C.con_tipo AS con_tipo,
                       PE.puntaje,
-                      DIST.name AS distrito_nombre,
-                      PROV.name AS provincia_nombre,
-                      DEPA.name AS departamento_nombre
+                      P.distrito AS distrito_nombre,
+                      P.provincia AS provincia_nombre,
+                      P.departamento AS departamento_nombre
+                      --DIST.name AS distrito_nombre,
+                      --PROV.name AS provincia_nombre,
+                      --DEPA.name AS departamento_nombre
                   FROM postulaciones P
                   LEFT JOIN postulacion_evaluaciones PE ON PE.postulacion_id = P.id AND PE.promedio = 1
                   INNER JOIN convocatorias C ON C.con_id = P.convocatoria_id
@@ -323,9 +326,10 @@ class Adjudicaciones_model extends CI_Model
                   INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
                   INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
                   
-                  INNER JOIN ubigeo_peru_districts AS DIST ON P.distrito_id = DIST.id 
-                  INNER JOIN ubigeo_peru_provinces AS PROV ON DIST.province_id = PROV.id 
-                  INNER JOIN ubigeo_peru_departments AS DEPA ON PROV.department_id = DEPA.id
+                  --INNER JOIN ubigeo_peru_districts AS DIST ON P.distrito_id = DIST.id 
+                  --INNER JOIN ubigeo_peru_provinces AS PROV ON DIST.province_id = PROV.id 
+                  --INNER JOIN ubigeo_peru_departments AS DEPA ON PROV.department_id = DEPA.id
+
                   WHERE P.deleted_at IS NULL AND P.id = ?";
           $adjudicacion->postulacion = $this->db->query($sql, ['id' => $adjudicacion->postulacion_id])->row();
 

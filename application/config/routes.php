@@ -50,6 +50,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
+$route['api/mpv/vias'] = 'MesaParteApi/vias';
+$route['api/mpv/zonas'] = 'MesaParteApi/zonas';
+$route['api/mpv/departamentos'] = 'MesaParteApi/departamentos';
+$route['api/mpv/provincias'] = 'MesaParteApi/provincias';
+$route['api/mpv/distritos'] = 'MesaParteApi/distritos';
+
 $route['web/convocatorias'] = 'convocatoriasWeb/index';
 $route['web/convocatorias/detail'] = 'convocatoriasWeb/detail';
 $route['web/convocatorias/detailConvocatoriaGrupoInscripcion'] = 'convocatoriasWeb/detailConvocatoriaGrupoInscripcion';

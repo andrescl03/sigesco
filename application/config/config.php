@@ -24,14 +24,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'http://10.6.226/sigesco/';
-$config['base_url'] = 'http://localhost/sigesco/';
-//$config['base_url'] = 'http://sigescou05.test:8085/';
-//$config['base_url'] = 'http://sigescou05.test/';  
 //$config['base_url'] = 'http://localhost/sigesco/';
-//$config['base_url'] = 'http://sigescou05.test/'; 
+//$config['base_url'] = 'http://sigescou05.test:8085/';
+$config['base_url'] = 'http://sigescou05.test/';  
+//$config['base_url'] = 'http://localhost/sigesco/';
 //$config['base_url'] = 'https://mesadepartesvirtual.ugel05.gob.pe';
 
-$config['url_api'] = 'http://sigescou05.test/'; 
+$config['url_api'] = 'http://localhost:5002/api/'; 
 
 /*
 |--------------------------------------------------------------------------

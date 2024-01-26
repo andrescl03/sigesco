@@ -132,7 +132,7 @@
                             <div class="col-lg-12">
                                 <strong>Departamento</strong>
                                 <span>
-                                    <?php echo $postulante->numero_telefono ?>
+                                    <?php echo $postulante->departamento ?>
                                 </span>
                             </div>
                         </div>
@@ -140,7 +140,7 @@
                             <div class="col-lg-12">
                                 <strong>Provincia</strong>
                                 <span>
-                                    <?php echo $postulante->numero_telefono ?>
+                                    <?php echo $postulante->provincia ?>
                                 </span>
                             </div>
                         </div>
@@ -148,7 +148,7 @@
                             <div class="col-lg-12">
                                 <strong>Distrito</strong>
                                 <span>
-                                    <?php echo $postulante->distrito_id ?>
+                                    <?php echo $postulante->distrito ?>
                                 </span>
                             </div>
                         </div>

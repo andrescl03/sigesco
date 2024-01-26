@@ -40,7 +40,7 @@
                 <td><?= $dato['nombre'] ?></td>
                 <td class="text-center"><?= $dato['cpe_orden'] ?></td>
                 <td class="text-center">
-                    <span class="badge bg-success" style="font-size: 0.9em;">KEJDNEI7Y4R-83R</span>
+                    <span class="badge bg-success" style="font-size: 0.9em;"><?= $dato['uid'] ?></span>
                     <?php
                         /*if($dato['cpe_sepresento'] == 0){ //0: NO SE PRESENTÓ , 2: REGISTRADO, 1: PRESENTO EXP.
                             echo '<span class="badge bg-warning text-dark" style="font-size: 0.85em;">NO REGISTRÓ EXPEDIENTE</span>';
