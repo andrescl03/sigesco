@@ -8,6 +8,7 @@ class Postulaciones_model extends CI_Model
         $this->load->library('tools');
         $this->load->model('email_model');
         $this->load->model("convocatorias_web_model");
+        $this->load->library('mesaparteservice');
     }
 
     public function store()
@@ -32,14 +33,14 @@ class Postulaciones_model extends CI_Model
             $this->form_validation->set_rules('numero_documento', 'numero_documento', 'trim|required');
             $this->form_validation->set_rules('tipo_documento', 'tipo_documento', 'trim|required');
             $this->form_validation->set_rules('numero_telefono', 'numero_telefono', 'trim|required');
-            $this->form_validation->set_rules('via', 'via', 'trim|required');
-            $this->form_validation->set_rules('zona', 'zona', 'trim|required');
+            $this->form_validation->set_rules('via_id', 'via_id', 'trim|required');
+            $this->form_validation->set_rules('zona_id', 'zona_id', 'trim|required');
             $this->form_validation->set_rules('convocatoria_id', 'convocatoria_id', 'trim|required');
             $this->form_validation->set_rules('inscripcion_id', 'inscripcion_id', 'trim|required');
 
             if ($this->form_validation->run() == FALSE) {
                 $response['errors'] = $this->form_validation->error_array();
-                throw new Exception("No cumple con los datos requeridos: " . json_encode($response['errors']));
+                throw new Exception("No cumple con los datos requeridos          => " . json_encode($response['errors']));
             }
 
             $apellido_materno = $this->input->post("apellido_materno", true);
@@ -49,6 +50,8 @@ class Postulaciones_model extends CI_Model
             $confirma_correo  = $this->input->post("confirma_correo", true);
             $direccion        = $this->input->post("direccion", true);
             $distrito_id      = $this->input->post("distrito_id", true);
+            $provincia_id     = $this->input->post("provincia_id", true);
+            $departamento_id  = $this->input->post("departamento_id", true);
             $estado_civil     = $this->input->post("estado_civil", true);
             $fecha_nacimiento = $this->input->post("fecha_nacimiento", true);
             $genero           = $this->input->post("genero", true);
@@ -61,6 +64,8 @@ class Postulaciones_model extends CI_Model
             $numero_telefono  = $this->input->post("numero_telefono", true);
             $via              = $this->input->post("via", true);
             $zona             = $this->input->post("zona", true);
+            $via_id           = $this->input->post("via_id", true);
+            $zona_id          = $this->input->post("zona_id", true);
             $convocatoria_id  = $this->input->post("convocatoria_id", true);
             $inscripcion_id   = $this->input->post("inscripcion_id", true);
 
@@ -173,20 +178,27 @@ class Postulaciones_model extends CI_Model
             $data['correo']           = $correo;
             $data['numero_celular']   = $numero_celular;
             $data['numero_telefono']  = $numero_telefono;
+            $data['via_id']           = $via_id;
             $data['via']              = $via;
             $data['nombre_via']       = $nombre_via;
+            $data['zona_id']          = $zona_id;
             $data['zona']             = $zona;
             $data['direccion']        = $direccion;
             $data['fecha_registro']   = $this->tools->getDateHour();
-            $data['distrito_id']      = $distrito_id;
+            // $data['distrito_id']      = $distrito_id;
+            $data['departamento']     = $departamento_id;
+            $data['provincia']        = $provincia_id;
+            $data['distrito']         = $distrito_id;
             $data['convocatoria_id']  = $convocatoria_id;
             $data['inscripcion_id']   = $inscripcion_id;
 
             $this->db->insert('postulaciones', $data);
             $postulacion_id = $this->db->insert_id();
 
+            
             $uid = strtolower(uniqid() . $postulacion_id);
             $this->db->update('postulaciones', ['uid' => $uid], array('id' => $postulacion_id));
+            
 
             if (count($insert_especializaciones) > 0) {
                 foreach ($insert_especializaciones as $key => $item) {
@@ -239,6 +251,47 @@ class Postulaciones_model extends CI_Model
                 $subject = "prueba";
                 $result = $this->email_model->mail(compact('receivers', 'message', 'subject'));
             }*/
+
+            /** CREACION DEL REGISTRO EN MESA DE PARTE */
+
+            /*$data = [   
+                "TipoEnvio"             => "api",
+                "TipoDocumentoID"       => "2101",
+                "TipoDocumento"         => $tipo_documento == 1 ? "DNI" : "C.E",
+                "NumeroDocumento"       => $numero_documento,
+                "Apellidos"             => strtoupper($apellido_paterno . " " . $apellido_materno),
+                "Nombres"               => strtoupper($nombre),
+                "TipoViaID"             => $via_id,
+                "TipoVia"               => strtoupper($via),
+                "NombreVia"             => strtoupper($nombre_via),
+                "TipoZonaID"            => $zona_id,
+                "TipoZona"              => strtoupper($zona),
+                "NombreZona"            => strtoupper($nombre_zona),
+                "Referencia"            => strtoupper($direccion),
+                "Departamento"          => strtoupper($departamento_id),
+                "Provincia"             => strtoupper($provincia_id),
+                "Distrito"              => strtoupper($distrito_id),
+                "Telefono"              => $numero_telefono,
+                "CorreoElectronico"     => $correo,
+            
+                "ResumenPedido"         => "CONVOCATORIA REGISTRO DE DOCENTE " . $this->tools->getDateHour("Y"),
+                "ResumenPedidoID"       => 716,
+                "trcID"                 => 1,
+                "ADetallePedido"        => "LICENCIA DOCENTE",
+                "TipoUsuarioID"         => 3,
+                "TipoUsuario"           => "DOCENTE",
+                "AFundamentacionPedido" => strtoupper("convocatorias para el proceso de contratación docente - " . $this->tools->getDateHour("Y")),
+                "fechaInicio"           => "26-01-2024",
+                "fechaFin"              => "30-01-2024",
+                "requisitos"            => $tipo_documento == 1 ? "DNI" : "C.E",
+                "Archivo"               => ""           
+            ];
+
+            $result = $this->mesaparteservice->request('POST', 'mpv/enviar/tramite', $data);
+            if (isset($result['NumeroExpediente'])) {
+                $this->db->update('postulaciones', ['uid' => $result['NumeroExpediente']], array('id' => $postulacion_id));
+            }
+            */
 
             $response['success'] = true;
             $response['data'] = compact('postulante', 'archivos');
@@ -786,7 +839,7 @@ class Postulaciones_model extends CI_Model
             
             if ($this->form_validation->run() == FALSE) {
                 $response['errors'] = $this->form_validation->error_array();
-                throw new Exception("No cumple con los datos requeridos: " . json_encode($response['errors']));
+                throw new Exception("No cumple con los datos requeridos          => " . json_encode($response['errors']));
             }
 
             $ficha_id  = $this->input->post("ficha_id", true);

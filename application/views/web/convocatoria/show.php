@@ -242,7 +242,7 @@ $convocatoria = $data['convocatoria'];
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Departamento</label>
                             <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid select-department form-input-validate" name="departmento_id" required>
+                                <select class="form-control form-control-solid select-department form-input-validate" name="departamento_id" required>
                                     <option value="" hidden>[SELECCIONE]</option>
                                 </select>
                             </div>
@@ -266,7 +266,10 @@ $convocatoria = $data['convocatoria'];
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Vía</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="via" class="form-control form-control-solid form-input-validate" minlength="3" maxlength="100" required>
+                                <!-- <input type="text" name="via" class="form-control form-control-solid form-input-validate" minlength="3" maxlength="100" required> -->
+                                <select class="form-control form-control-solid select-via form-input-validate" name="via_id" required>
+                                    <option value="" hidden>[SELECCIONE]</option>
+                                </select>
                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
@@ -274,6 +277,15 @@ $convocatoria = $data['convocatoria'];
                             <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Vía</label>
                             <div class="col-xl-8 col-lg-8">
                                 <input type="text" name="nombre_via" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100" required>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Zona</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <select class="form-control form-control-solid select-zona form-input-validate" name="zona_id" required>
+                                    <option value="" hidden>[SELECCIONE]</option>
+                                </select>
                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
