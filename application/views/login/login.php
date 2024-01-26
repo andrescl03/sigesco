@@ -27,20 +27,20 @@
                                 <input class="form-control" id="inputPassword" name="inputPassword"  type="password" placeholder="Contraseña" required />
                                 <label for="inputPassword">Contraseña</label>
                             </div>
-                            <div class="form-check mb-3">
+                             <!---<div class="form-check mb-3">
                                 <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
                                 <label class="form-check-label" for="inputRememberPassword">Recordar contraseña</label>
-                            </div>
+                            </div>-->
                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">                             
                             </div>
                             <!-----<div class="d-flex align-items-center justify-content-between mt-0 mb-0">
-                                <a class="small" href="#">¿Has olvidado tu contraseña?</a>
+                                <a class="small" href="#">¿Has olvidado tu contraseña?</a>-->
                                 <button type="button" class="btn btn-danger" id="btn_login"><b><i class="fas fa-sign-in-alt"></i> INGRESAR</b></button>
-                            </div>-->
+                            </div>
                         
                     </div>
                     <div class="card-footer text-center py-4">
-                    <div class="small text-primary"><?php echo $this->layout->getDescripcion()." - ".$this->layout->getnombreSistema()?></div>
+                    <div class="small text-white"><?php echo $this->layout->getDescripcion()." - ".$this->layout->getnombreSistema()?></div>
                     </div>
                 </div>
             </div>

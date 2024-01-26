@@ -525,7 +525,9 @@ const AppConvovatoriaWeb = () => {
                         'sector',
                         'puesto',
                         'numero_rd',
-                        'numero_contrato'
+                        'numero_contrato',
+                        'fechainicio_rd',
+                        'fechatermino_rd'
                     ],
                     actions: {
                         edit: () => { self.modalWorkExperience.show(); },
@@ -693,12 +695,12 @@ const AppConvovatoriaWeb = () => {
                                 </div>
                                 <div class="card mb-3">
                                     <div class="card-body">
-                                        <div class="row mb-1">
+                                      /*   <div class="row mb-1">
                                             <div class="col-lg-5"><label class="label">Código</label></div>
                                             <div class="col-lg-7"><span>${self.response.postulante.uid}</span></div>
-                                        </div>
+                                        </div> */
                                         <div class="row mb-1">
-                                            <div class="col-lg-5"><label class="label">Fecha </label></div>
+                                            <div class="col-lg-5"><label class="label">Fecha de registro</label></div>
                                             <div class="col-lg-7"><span>${self.response.postulante.fecha_registro}</span></div>
                                         </div>
                                         <!--div class="row mb-1">
@@ -782,6 +784,14 @@ const AppConvovatoriaWeb = () => {
                                     <div class="row mb-1">
                                         <div class="col-lg-5"><label class="label">Número de Teléfono </label></div>
                                         <div class="col-lg-7"><span>${postulant.numero_telefono}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">Afiliación</label></div>
+                                        <div class="col-lg-7"><span>${postulant.afiliacion}</span></div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-lg-5"><label class="label">CUSS</label></div>
+                                        <div class="col-lg-7"><span>${postulant.cuss}</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -897,6 +907,14 @@ const AppConvovatoriaWeb = () => {
                                                     <div class="col-lg-5">N° Contrato</div>
                                                     <div class="col-lg-7">${item.numero_contrato}</div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-lg-5">Fecha de inicio</div>
+                                                    <div class="col-lg-7">${item.fechainicio_rd}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-5">Fecha de termino</div>
+                                                    <div class="col-lg-7">${item.fechatermino_rd}</div>
+                                                </div>
                                             </div>`;
                                         }); 
                                     }
@@ -992,7 +1010,7 @@ const AppConvovatoriaWeb = () => {
                 dom.innerHTML = `<div class="card card-custom">
                                     <div class="card-header">
                                         <div class="card-title mx-auto">
-                                            <h3 class="card-label">SE REGISTRO CORRECTAMENTE PARA EL PROCESO DE CONTRATACIÓN DOCENTE</h3>
+                                            <h3 class="card-label">SE REGISTRÓ CORRECTAMENTE PARA EL PROCESO DE CONTRATACIÓN DOCENTE</h3>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -1000,7 +1018,7 @@ const AppConvovatoriaWeb = () => {
                                             <div class="alert alert-success d-flex align-items-center" role="alert">
                                                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                                                 <div>
-                                                    Estimado <b>${ self.postulant.nombre }</b>, se ha enviado un correo electrónico a <b>${ self.postulant.correo }</b> con la información registrada.
+                                                    Estimado <b>${ self.postulant.nombre }</b>, se ha enviado un correo electrónico a <b>${ self.postulant.correo }</b>.
                                                 </div>
                                             </div>
                                             ${ self.renderPreviewPostulant({postulant: self.postulant, toString: true}) }

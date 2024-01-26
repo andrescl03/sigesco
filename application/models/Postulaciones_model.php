@@ -36,6 +36,8 @@ class Postulaciones_model extends CI_Model
             $this->form_validation->set_rules('zona', 'zona', 'trim|required');
             $this->form_validation->set_rules('convocatoria_id', 'convocatoria_id', 'trim|required');
             $this->form_validation->set_rules('inscripcion_id', 'inscripcion_id', 'trim|required');
+            $this->form_validation->set_rules('cuss', 'cuss', 'trim');
+            $this->form_validation->set_rules('afiliacion', 'afiliacion', 'trim');
 
             if ($this->form_validation->run() == FALSE) {
                 $response['errors'] = $this->form_validation->error_array();
@@ -52,6 +54,8 @@ class Postulaciones_model extends CI_Model
             $estado_civil     = $this->input->post("estado_civil", true);
             $fecha_nacimiento = $this->input->post("fecha_nacimiento", true);
             $genero           = $this->input->post("genero", true);
+            $afiliacion       = $this->input->post("afiliacion", true);
+            $cuss             = $this->input->post("cuss", true);
             $modalidad        = $this->input->post("modalidad", true);
             $nacionalidad     = $this->input->post("nacionalidad", true);
             $nombre_via       = $this->input->post("nombre_via", true);
@@ -177,6 +181,9 @@ class Postulaciones_model extends CI_Model
             $data['nombre_via']       = $nombre_via;
             $data['zona']             = $zona;
             $data['direccion']        = $direccion;
+            $data['afiliacion']       = $afiliacion;
+            $data['cuss']             = $cuss;
+            
             $data['fecha_registro']   = $this->tools->getDateHour();
             $data['distrito_id']      = $distrito_id;
             $data['convocatoria_id']  = $convocatoria_id;
@@ -291,7 +298,7 @@ class Postulaciones_model extends CI_Model
                 $postulante = $this->db->query($sql, compact('documento', 'inscripcion_id'))->row();
 
                 if (!$postulante) {
-                    throw new Exception("No se encontro el postulante en los registro de la PUN");
+                    throw new Exception("No se encontró el postulante en los registro de la PUN o no pertence a la modalidad/nivel/especialidad a la que postula");
                 }
             }
 

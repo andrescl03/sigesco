@@ -323,3 +323,13 @@ ALTER TABLE postulaciones ADD COLUMN `estado` VARCHAR(255) NULL DEFAULT 'enviado
 
 /************************** 10/01/2023 **************************/
 ALTER TABLE postulaciones ADD COLUMN `estado_adjudicacion` INT(11) NULL DEFAULT '0' AFTER `uid`;
+
+/************************** 26/01/2023 **************************/
+
+-- Agregar la columna 'afiliacion' a la tabla 'postulaciones'
+ALTER TABLE postulaciones
+ADD COLUMN afiliacion VARCHAR(255) DEFAULT NULL;
+
+-- Agregar la columna 'cuss' a la tabla 'postulaciones'
+ALTER TABLE postulaciones
+ADD COLUMN cuss VARCHAR(255) DEFAULT NULL;
