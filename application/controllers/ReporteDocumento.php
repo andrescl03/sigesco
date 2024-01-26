@@ -1273,7 +1273,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(0, 10, utf8_decode('ACTA DE ADJUDICACIÓN'), 0, 0, 'C');
         $this->pdf->Ln(6);
         $this->pdf->SetFont('Arial', '', 10);
-        $this->pdf->Cell(0, 10, utf8_decode('PRIMERA ETAPA - CONTRATACIÓN POR RESULTADOS DE LA PUN'), 0, 0, 'C');
+        $this->pdf->Cell(0, 10, utf8_decode('CONTRATACIÓN POR RESULTADOS DE LA PUN'), 0, 0, 'C');
         $this->pdf->Ln(5);
         $this->pdf->SetFont('Arial', '', 9);
         $this->pdf->Ln(10);
@@ -1406,7 +1406,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
         $this->pdf->Cell(0, 7, utf8_decode('UGEL 05'), '', 0, 'L', 0);
         $this->pdf->Ln(5);
-        $this->pdf->Cell(0, 10, utf8_decode('Comas, ' . date_format(date_create($adjudicacion->fecha_registro), "d") . ' de ' . $this->meses[date_format(date_create($adjudicacion->fecha_registro), "m") - 1] . ' del ' . date('Y') . ' siendo las ' . date_format(date_create($adjudicacion->fecha_registro), "g:i A")), 0, 0, 'R');
+        $this->pdf->Cell(0, 10, utf8_decode('SJL, ' . date_format(date_create($adjudicacion->fecha_registro), "d") . ' de ' . $this->meses[date_format(date_create($adjudicacion->fecha_registro), "m") - 1] . ' del ' . date('Y') . ' siendo las ' . date_format(date_create($adjudicacion->fecha_registro), "g:i A")), 0, 0, 'R');
         
 
 
@@ -1702,7 +1702,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Ln(10);
         // $this->Cell(20, 4,utf8_decode('De conformida con el resultado obtenido en el Proceso para Contratación de Docentes, regulado por la Norma Técnica aprobada con R.M. Nº 023-2015-MINEDU, se adjunta el cargo vacante a:'),'',0, 'L', 0);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('Por el presente documento celebran el contrato de servicio docente, de una parte la DIRECCIÓN REGIONAL DE EDUCACIÓN, UNIDAD DE GESTION EDUCATIVA LOCAL O4, con  domicilio  en ' . $postulante->direccion . ', representada  para  estos efectos por su Director(a), el/la señor(a) ' . $postulante->nombre . ' idenficado(a) con D.N.I. N° ' . $postulante->numero_documento . ', designado(a) mediante Resolución N°..........................................  A quien en adelante se denomina LA DRE/GRE/UGEL; y de otra parte, el Señor(a) ' . $postulante->nombre . ', identificado(a) con ' . $tipo_documento . ' N° ' . $postulante->numero_documento . ' y domiciliado en ' . $postulante->direccion . ', quien en adelante se denomina PROFESOR(A); en los términos y condiciones siguientes: '), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('Por el presente documento celebran el contrato de servicio docente, de una parte la DIRECCIÓN REGIONAL DE EDUCACIÓN, UNIDAD DE GESTION EDUCATIVA LOCAL O5, con  domicilio  en ' . $postulante->direccion . ', representada  para  estos efectos por su Director(a), el/la señor(a) ' . $postulante->nombre . ' idenficado(a) con D.N.I. N° ' . $postulante->numero_documento . ', designado(a) mediante Resolución N°..........................................  A quien en adelante se denomina LA DRE/GRE/UGEL; y de otra parte, el Señor(a) ' . $postulante->nombre . ', identificado(a) con ' . $tipo_documento . ' N° ' . $postulante->numero_documento . ' y domiciliado en ' . $postulante->direccion . ', quien en adelante se denomina PROFESOR(A); en los términos y condiciones siguientes: '), 0);
         $this->pdf->Ln(6);
 
         $this->pdf->Cell(5, 5, '', '', 0, 'R', 0);
