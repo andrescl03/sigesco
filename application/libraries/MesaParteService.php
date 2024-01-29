@@ -16,7 +16,7 @@ class MesaParteService {
      * (String) Url
      * (Array)  Data
      */
-    public function request($method = 'GET', $url = '', $data = [], $token = null) {
+    public function request($method = 'GET', $url = '', $data = [], $token = null, $fileupload = false) {
         // url request
         $url = $this->uri() . trim($url);
 
@@ -33,18 +33,27 @@ class MesaParteService {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Return the response as a string
         curl_setopt($ch, CURLOPT_HEADER, 0); // Don't include the header in the output
 
-        if (strtolower($method) == 'post') {
-            curl_setopt($ch, CURLOPT_POST, 1); // Set the request method to POST
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data); // Set POST data
-        }
-
         if ($token) {
+            $contenttype = $fileupload ? 'multipart/form-data' : 'application/json';
             // Encabezados de la solicitud
             $headers = array(
-                'Content-Type: application/json',
+                'Content-Type: ' . $contenttype,
                 'Authorization: Bearer ' . $token // Reemplaza "TU_TOKEN_AQUI" con tu token de portador real
             );
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        }
+
+        if (strtolower($method) == 'post') {
+            curl_setopt($ch, CURLOPT_POST, 1); // Set the request method to POST
+            if ($fileupload) { 
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            } else {
+                $headers = array(
+                    'Content-Type: application/json',
+                );
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data)); // Set POST data
+            }
         }
 
         // Execute cURL session and fetch response
@@ -67,7 +76,7 @@ class MesaParteService {
             "username"=> "abluis15",
             "password"=> "123456"
         ];
-        $response = $this->request('POST', 'auth', $data);
+        $response = $this->request('POST', 'auth/', $data);
         return $response['success'] ? $response['token'] : null;
     }
 
