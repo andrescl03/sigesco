@@ -51,12 +51,15 @@ const AppConvovatoriaWeb = () => {
                 departments: [],
                 formAttachedFiles: [],
                 attachedFileTypes: [
-                    { id: 1, nombre: 'Anexo 8' },
-                    { id: 2, nombre: 'Anexo 9' },
-                    { id: 3, nombre: 'Anexo 10' },
-                    { id: 4, nombre: 'Anexo 11' },
-                    { id: 5, nombre: 'Anexo 12' },
-                    { id: 6, nombre: 'Anexo 19' } 
+                    { id: 1, nombre: 'Anexo 1' },
+                    { id: 2, nombre: 'Anexo 8' },
+                    { id: 3, nombre: 'Anexo 9' },
+                    { id: 4, nombre: 'Anexo 10' },
+                    { id: 5, nombre: 'Anexo 11' },
+                    { id: 6, nombre: 'Anexo 12' },
+                    { id: 7, nombre: 'Anexo 19' },
+                    { id: 8, nombre: 'CV documentado' } 
+
                 ],
                 response: {},
                 dateAdult: ''
@@ -622,7 +625,6 @@ const AppConvovatoriaWeb = () => {
                         'fechainicio_rd',
                         'fechatermino_rd',
                         'cantidad_mesesrd',
-                        'nro_contratord'
                     ],
                     actions: {
                         edit: () => { self.modalWorkExperience.show(); },
@@ -1039,10 +1041,6 @@ const AppConvovatoriaWeb = () => {
                                                 <div class="row">
                                                     <div class="col-lg-5">Fecha de termino</div>
                                                     <div class="col-lg-7">${item.cantidad_mesesrd}</div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-5">Fecha de termino</div>
-                                                    <div class="col-lg-7">${item.nro_contratord}</div>
                                                 </div>
                                             </div>`;
                                         }); 
