@@ -47,8 +47,8 @@ $convocatoria = $data['convocatoria'];
                                 <li><a href="" data-scroll="1">Datos personales del postulante</a></li>
                                 <li><a href="" data-scroll="2">Datos de ubicación</a></li>
                                 <li><a href="" data-scroll="3">Formación académica</a></li>
-                                <li><a href="" data-scroll="4">Experiencia laboral</a></li>
-                                <li><a href="" data-scroll="5">Formación Continua</a></li>
+                                <li><a href="" data-scroll="4">Formación Continua</a></li>
+                                <li><a href="" data-scroll="5">Experiencia laboral</a></li>
                                 <li><a href="" data-scroll="6">Archivos adjuntos</a></li>
                             </ul>
                         </div>
@@ -331,6 +331,30 @@ $convocatoria = $data['convocatoria'];
                         </div>
                         <div class="form-group row mt-5 section" data-scrolled="4">
                             <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label d-flex justify-content-between">
+                                <h5 class="my-auto">Formación Continua:</h5>
+                                <button type="button" class="btn btn-primary btn-specialization float-end form-input-validate">Agregar</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-specialization mb-0">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>Tipo de especialización</th>
+                                        <th>Tema</th>
+                                        <th>Nombre de la entidad</th>
+                                        <th>Fecha de inicio</th>
+                                        <th>Fecha de termino</th>
+                                        <th>Número de horas</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Las filas se agregarán dinámicamente aquí -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group row mt-5 section" data-scrolled="5">
+                            <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label d-flex justify-content-between">
                                 <h5 class="my-auto">Experiencia laboral:</h5>
                                 <button type="button" class="btn btn-primary btn-work-experience float-end form-input-validate">Agregar</button>
                             </div>
@@ -347,30 +371,6 @@ $convocatoria = $data['convocatoria'];
                                         <th>Fecha inicio</th>
                                         <th>Fecha fin</th>
                                         <th>Cantidad de meses</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Las filas se agregarán dinámicamente aquí -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="form-group row mt-5 section" data-scrolled="5">
-                            <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label d-flex justify-content-between">
-                                <h5 class="my-auto">Formación Continua:</h5>
-                                <button type="button" class="btn btn-primary btn-specialization float-end form-input-validate">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-specialization mb-0">
-                                <thead class="text-center">
-                                    <tr>
-                                        <th>Tipo de especialización</th>
-                                        <th>Tema</th>
-                                        <th>Nombre de la entidad</th>
-                                        <th>Fecha de inicio</th>
-                                        <th>Fecha de termino</th>
-                                        <th>Número de horas</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
