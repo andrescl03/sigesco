@@ -67,7 +67,7 @@ class MesaParteService {
             "username"=> "abluis15",
             "password"=> "123456"
         ];
-        $response = $this->request('POST', 'api/auth', $data);
+        $response = $this->request('POST', 'auth', $data);
         return $response['success'] ? $response['token'] : null;
     }
 
