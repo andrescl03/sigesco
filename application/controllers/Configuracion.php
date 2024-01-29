@@ -131,7 +131,7 @@ class Configuracion extends CI_Controller
         $datos = $this->configuracion_model->listarGruposInscripcion($idPer, $idPro);
 
         $this->layout->setLayout("template_ajax");
-        $this->layout->view('grupoinscripcion/VListarGrupoInscripcion', compact('datos'));
+        $this->layout->view("grupoinscripcion/vListarGrupoInscripcion", compact('datos'));
     }
 
     public function pun()

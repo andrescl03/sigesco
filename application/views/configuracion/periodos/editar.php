@@ -89,7 +89,7 @@
                                                         </div>
                                                         <div class="col-md-9 mb-3">
                                                             <label class="form-label">Nombre</label>
-                                                            <input type="text" class="form-control" placeholder="" name="name" minlength="3" maxlength="100" required>
+                                                            <input type="text" class="form-control" placeholder="" name="name" minlength="3" maxlength="200" required>
                                                         </div>
                                                     </div>
                                                     <div class="row mt-3">
