@@ -2,7 +2,7 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class MesaParteApi extends CI_Controller {
+class Mesaparteapi extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -12,7 +12,7 @@ class MesaParteApi extends CI_Controller {
 
     public function vias() {
 
-        return $this->output
+        /*return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(
             json_decode('{
@@ -45,16 +45,16 @@ class MesaParteApi extends CI_Controller {
                 ],
                 "status": 200
             }')
-        ));
+        ));*/
 
         return $this->output
         ->set_content_type('application/json')
-        ->set_output(json_encode($this->mesaparteservice->request('GET', 'mpv/listar/vias')));
+        ->set_output(json_encode($this->mesaparteservice->request('GET', 'mpv/listar/vias', [], $this->mesaparteservice->token())));
     }  
 
     public function zonas() {
 
-        return $this->output
+        /*return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(
             json_decode('{
@@ -120,16 +120,16 @@ class MesaParteApi extends CI_Controller {
                 ],
                 "status": 200
             }')
-        ));
+        ));*/
         
         return $this->output
         ->set_content_type('application/json')
-        ->set_output(json_encode($this->mesaparteservice->request('GET', 'mpv/listar/zonas')));
+        ->set_output(json_encode($this->mesaparteservice->request('GET', 'mpv/listar/zonas', [], $this->mesaparteservice->token())));
     }
 
     public function departamentos() {
 
-        return $this->output
+        /*return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(
             json_decode('{
@@ -213,16 +213,16 @@ class MesaParteApi extends CI_Controller {
                 ],
                 "status": 200
             }')
-        ));
+        ));*/
         
         return $this->output
         ->set_content_type('application/json')
-        ->set_output(json_encode($this->mesaparteservice->request('GET', 'mpv/listar/departamentos')));
+        ->set_output(json_encode($this->mesaparteservice->request('GET', 'mpv/listar/departamentos', [], $this->mesaparteservice->token())));
     }
 
     public function provincias() {
 
-        return $this->output
+        /* return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(
             json_decode('{
@@ -291,17 +291,17 @@ class MesaParteApi extends CI_Controller {
                 ],
                 "status": 200
             }')
-        ));
+        ));*/
         
         return $this->output
         ->set_content_type('application/json')
-        ->set_output(json_encode($this->mesaparteservice->request('GET', 'mpv/listar/provinciaspordepartamento', $_POST)));
+        ->set_output(json_encode($this->mesaparteservice->request('POST', 'mpv/listar/provinciaspordepartamento', $_POST, $this->mesaparteservice->token())));
     }
 
     
     public function distritos() {
 
-        return $this->output
+        /*return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(
             json_decode('{
@@ -337,11 +337,11 @@ class MesaParteApi extends CI_Controller {
                 ],
                 "status": 200
             }')
-        ));
+        ));*/
         
         return $this->output
         ->set_content_type('application/json')
-        ->set_output(json_encode($this->mesaparteservice->request('GET', 'mpv/listar/distritosporprovincia', $_POST)));
+        ->set_output(json_encode($this->mesaparteservice->request('POST', 'mpv/listar/distritosporprovincia', $_POST, $this->mesaparteservice->token())));
     }
 
 }
