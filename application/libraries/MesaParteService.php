@@ -16,7 +16,7 @@ class MesaParteService {
      * (String) Url
      * (Array)  Data
      */
-    public function request($method = 'GET', $url = '', $data = []) {
+    public function request($method = 'GET', $url = '', $data = [], $token = null) {
         // url request
         $url = $this->uri() . trim($url);
 
@@ -38,6 +38,15 @@ class MesaParteService {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data); // Set POST data
         }
 
+        if ($token) {
+            // Encabezados de la solicitud
+            $headers = array(
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $token // Reemplaza "TU_TOKEN_AQUI" con tu token de portador real
+            );
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        }
+
         // Execute cURL session and fetch response
         $response = curl_exec($ch);
 
@@ -51,6 +60,15 @@ class MesaParteService {
 
         // Process the response
         return json_decode($response, true);
+    }
+
+    public function token() {
+        $data = [
+            "username"=> "abluis15",
+            "password"=> "123456"
+        ];
+        $response = $this->request('POST', 'api/auth', $data);
+        return $response['success'] ? $response['token'] : null;
     }
 
 }
