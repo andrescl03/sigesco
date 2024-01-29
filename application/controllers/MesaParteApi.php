@@ -295,7 +295,7 @@ class MesaParteApi extends CI_Controller {
         
         return $this->output
         ->set_content_type('application/json')
-        ->set_output(json_encode($this->mesaparteservice->request('GET', 'mpv/listar/provinciaspordepartamento', $_POST, $this->mesaparteservice->token())));
+        ->set_output(json_encode($this->mesaparteservice->request('POST', 'mpv/listar/provinciaspordepartamento', $_POST, $this->mesaparteservice->token())));
     }
 
     
@@ -341,7 +341,7 @@ class MesaParteApi extends CI_Controller {
         
         return $this->output
         ->set_content_type('application/json')
-        ->set_output(json_encode($this->mesaparteservice->request('GET', 'mpv/listar/distritosporprovincia', $_POST, $this->mesaparteservice->token())));
+        ->set_output(json_encode($this->mesaparteservice->request('POST', 'mpv/listar/distritosporprovincia', $_POST, $this->mesaparteservice->token())));
     }
 
 }
