@@ -136,7 +136,7 @@ class Postulaciones_model extends CI_Model
                     ];
                 }
             }
-
+            $zipData = null;
             $insert_archivos = [];
             if (isset($_FILES['archivos'])) {
                 $total  = count($_FILES['archivos']['name']);
@@ -169,8 +169,33 @@ class Postulaciones_model extends CI_Model
                         }
                     }
                 }
-            }
 
+                if (count($insert_archivos) > 0) {
+                    // Create a temporary directory to store the uploaded files
+                    $tempDir = __DIR__ . "/../../public/uploads/";
+                    if (!is_dir($tempDir)) {
+                        mkdir($tempDir, 0777, true);
+                    }
+                    // Create a unique ZIP file name
+                    $zipFilename = uniqid(time()) . "-uploaded-files.zip";
+                    $zipPath = $tempDir . $zipFilename;
+                }
+                // Create a ZipArchive object
+                $zip = new ZipArchive();
+                if ($zip->open($zipPath, ZipArchive::CREATE) !== true) {
+                    throw new Exception('Failed to create ZIP file');
+                }
+    
+                // Add each uploaded file to the ZIP archive
+                foreach ($insert_archivos as $file) {
+                    $filePath = __DIR__ . "/../../public" . $file['url']; // Assuming the files are in the "uploads" directory
+                    $zip->addFile($filePath, $file['nombre']);
+                }
+    
+                $zip->close();
+                $zipData = file_get_contents($zipPath);
+            }
+ 
             $data['nombre']           = $nombre;
             $data['apellido_paterno'] = $apellido_paterno;
             $data['apellido_materno'] = $apellido_materno;
@@ -262,7 +287,7 @@ class Postulaciones_model extends CI_Model
 
             /** CREACION DEL REGISTRO EN MESA DE PARTE */
 
-            /*$data = [   
+            $data = [   
                 "TipoEnvio"             => "api",
                 "TipoDocumentoID"       => "2101",
                 "TipoDocumento"         => $tipo_documento == 1 ? "DNI" : "C.E",
@@ -274,7 +299,7 @@ class Postulaciones_model extends CI_Model
                 "NombreVia"             => strtoupper($nombre_via),
                 "TipoZonaID"            => $zona_id,
                 "TipoZona"              => strtoupper($zona),
-                "NombreZona"            => strtoupper($nombre_zona),
+                "NombreZona"            => strtoupper($zona),
                 "Referencia"            => strtoupper($direccion),
                 "Departamento"          => strtoupper($departamento_id),
                 "Provincia"             => strtoupper($provincia_id),
@@ -292,14 +317,13 @@ class Postulaciones_model extends CI_Model
                 "fechaInicio"           => "26-01-2024",
                 "fechaFin"              => "30-01-2024",
                 "requisitos"            => $tipo_documento == 1 ? "DNI" : "C.E",
-                "Archivo"               => ""           
+                "Archivo"               => new CURLFile($zipData)           
             ];
 
-            $result = $this->mesaparteservice->request('POST', 'mpv/enviar/tramite', $data);
+            $result = $this->mesaparteservice->request('POST', 'mpv/enviar/tramite', $data,  $this->mesaparteservice->token(), true);
             if (isset($result['NumeroExpediente'])) {
                 $this->db->update('postulaciones', ['uid' => $result['NumeroExpediente']], array('id' => $postulacion_id));
             }
-            */
 
             $response['success'] = true;
             $response['data'] = compact('postulante', 'archivos');

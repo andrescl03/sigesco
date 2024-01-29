@@ -29,6 +29,7 @@ class Convocatorias_web_model extends CI_Model
 
   public function show($request)
   {
+    phpinfo(); exit;
     $response = $this->tools->responseDefault();
     try {
       $convocatoria_id = isset($request['convocatoria_id']) ? $request['convocatoria_id'] : 0;

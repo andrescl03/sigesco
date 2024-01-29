@@ -12,7 +12,7 @@ class Mesaparteapi extends CI_Controller {
 
     public function vias() {
 
-        /*return $this->output
+        return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(
             json_decode('{
@@ -45,7 +45,7 @@ class Mesaparteapi extends CI_Controller {
                 ],
                 "status": 200
             }')
-        ));*/
+        ));
 
         return $this->output
         ->set_content_type('application/json')
@@ -54,7 +54,7 @@ class Mesaparteapi extends CI_Controller {
 
     public function zonas() {
 
-        /*return $this->output
+        return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(
             json_decode('{
@@ -120,7 +120,7 @@ class Mesaparteapi extends CI_Controller {
                 ],
                 "status": 200
             }')
-        ));*/
+        ));
         
         return $this->output
         ->set_content_type('application/json')
@@ -129,7 +129,7 @@ class Mesaparteapi extends CI_Controller {
 
     public function departamentos() {
 
-        /*return $this->output
+        return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(
             json_decode('{
@@ -213,7 +213,7 @@ class Mesaparteapi extends CI_Controller {
                 ],
                 "status": 200
             }')
-        ));*/
+        ));
         
         return $this->output
         ->set_content_type('application/json')
@@ -222,7 +222,7 @@ class Mesaparteapi extends CI_Controller {
 
     public function provincias() {
 
-        /* return $this->output
+        return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(
             json_decode('{
@@ -291,7 +291,7 @@ class Mesaparteapi extends CI_Controller {
                 ],
                 "status": 200
             }')
-        ));*/
+        ));
         
         return $this->output
         ->set_content_type('application/json')
@@ -301,7 +301,7 @@ class Mesaparteapi extends CI_Controller {
     
     public function distritos() {
 
-        /*return $this->output
+        return $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode(
             json_decode('{
@@ -337,7 +337,7 @@ class Mesaparteapi extends CI_Controller {
                 ],
                 "status": 200
             }')
-        ));*/
+        ));
         
         return $this->output
         ->set_content_type('application/json')
