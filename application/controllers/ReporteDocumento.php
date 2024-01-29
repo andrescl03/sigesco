@@ -376,7 +376,7 @@ class ReporteDocumento extends CI_Controller {
             // $this->pdf->Cell(90, 0, utf8_decode('Comision de contratacion docente 2018 - UGEL 04 '), '', 0, 'L', 0);
             $this->pdf->Ln(18);
             $this->pdf->SetFont('Arial', '', 9);
-            $this->pdf->Cell(90, 0, utf8_decode('Comision de contratacion docente ' .date('Y'). ' - ' .date("d/m/y". " " ).'UGEL N° 04 - COMAS'), '', 0, 'L', 0);
+            $this->pdf->Cell(90, 0, utf8_decode('Comision de contratacion docente ' .date('Y'). ' - ' .date("d/m/y". " " ).'UGEL N° 05 - SJL'), '', 0, 'L', 0);
             $this->pdf->Ln(5);
             $this->pdf->Cell(90, 0, utf8_decode('Registrado - ' .$datos [0] ['fecha_exacta']), '', 0, 'L', 0);
 
@@ -657,7 +657,7 @@ class ReporteDocumento extends CI_Controller {
             // $this->pdf->Cell(90, 0, utf8_decode('Comision de contratacion docente 2018 - UGEL 04 '), '', 0, 'L', 0);
             $this->pdf->Ln(18);
             $this->pdf->SetFont('Arial', '', 9);
-            $this->pdf->Cell(90, 0, utf8_decode('Comision de contratacion docente ' .date('Y'). ' - ' .date("d/m/y". " " ).'UGEL N° 04 - COMAS'), '', 0, 'L', 0);
+            $this->pdf->Cell(90, 0, utf8_decode('Comision de contratacion docente ' .date('Y'). ' - ' .date("d/m/y". " " ).'UGEL N° 05 - SJL'), '', 0, 'L', 0);
             $this->pdf->Ln(5);
             $this->pdf->Cell(90, 0, utf8_decode('Registrado - ' .$datos [0] ['fecha_exacta']), '', 0, 'L', 0);
 
@@ -959,7 +959,7 @@ class ReporteDocumento extends CI_Controller {
             // $this->pdf->Cell(90, 0, utf8_decode('Comision de contratacion docente 2018 - UGEL 04 '), '', 0, 'L', 0);
             $this->pdf->Ln(21);
             $this->pdf->SetFont('Arial', '', 9);
-            $this->pdf->Cell(90, 0, utf8_decode('Comision de contratacion docente ' .date('Y'). ' - ' .date("d/m/y". " " ).'UGEL N° 04 - COMAS'), '', 0, 'L', 0);
+            $this->pdf->Cell(90, 0, utf8_decode('Comision de contratacion docente ' .date('Y'). ' - ' .date("d/m/y". " " ).'UGEL N° 05 - SJL'), '', 0, 'L', 0);
             $this->pdf->Ln(5);
             $this->pdf->Cell(90, 0, utf8_decode('Registrado - ' .$datos [0] ['fecha_exacta']), '', 0, 'L', 0);
 
@@ -1566,7 +1566,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Ln(10);
         // $this->Cell(20, 4,utf8_decode('De conformida con el resultado obtenido en el Proceso para Contratación de Docentes, regulado por la Norma Técnica aprobada con R.M. Nº 023-2015-MINEDU, se adjunta el cargo vacante a:'),'',0, 'L', 0);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 7, utf8_decode('En Comas, a los ' . date_format(date_create($datos [0] ['fechaReg']), "d") . ' días del mes de ' . $this->meses[date_format(date_create($datos [0] ['fechaReg']), "m") - 1] . ' del año ' . date_format(date_create($datos [0] ['fechaReg']), "Y") . ', siendo las ' . date_format(date_create($datos [0] ['fechaReg']), "g:i A") . ' horas, los miembros del Comité de Contratación Docente de la ' . $datos [0] ['ugel'] . ', y el docente ' . $datos [0] ['nombres'] . ' de la especialidad de ' . utf8_decode($datos [0] ['especialidad']) . ' en uso de su derecho que le confiere del ' . $datos [0] ['descrip_doc'] . 'D.S. Nº 001-2017' . $datos [0] ['numero'] . '-MINEDU, que aprueba la Norma que regula el procedimiento, requisitos y condiciones para las contrataciones en el marco del contrato del servicio docente a que hace referencia la Ley Nº 30328. Ley que establece medidas en materia educativa y dicta otras disposiciones, cuyo texto en calidad de Anexo, forma parte integrante del presente ' . $datos [0] ['descrip_doc'] . ', y acordamos elaborar el acta en los siguientes términos:'), 0);
+        $this->pdf->MultiCell(180, 7, utf8_decode('En SJL, a los ' . date_format(date_create($datos [0] ['fechaReg']), "d") . ' días del mes de ' . $this->meses[date_format(date_create($datos [0] ['fechaReg']), "m") - 1] . ' del año ' . date_format(date_create($datos [0] ['fechaReg']), "Y") . ', siendo las ' . date_format(date_create($datos [0] ['fechaReg']), "g:i A") . ' horas, los miembros del Comité de Contratación Docente de la ' . $datos [0] ['ugel'] . ', y el docente ' . $datos [0] ['nombres'] . ' de la especialidad de ' . utf8_decode($datos [0] ['especialidad']) . ' en uso de su derecho que le confiere del ' . $datos [0] ['descrip_doc'] . 'D.S. Nº 001-2017' . $datos [0] ['numero'] . '-MINEDU, que aprueba la Norma que regula el procedimiento, requisitos y condiciones para las contrataciones en el marco del contrato del servicio docente a que hace referencia la Ley Nº 30328. Ley que establece medidas en materia educativa y dicta otras disposiciones, cuyo texto en calidad de Anexo, forma parte integrante del presente ' . $datos [0] ['descrip_doc'] . ', y acordamos elaborar el acta en los siguientes términos:'), 0);
         $this->pdf->Ln(3);
 
         $this->pdf->Ln(5);
@@ -2347,7 +2347,7 @@ class ReporteDocumento extends CI_Controller {
             $this->pdf->SetFont ( 'Times', 'BI', 13 );
             
             $this->pdf->Ln ( 2 );
-            $this->pdf->Cell ( 200, 7, utf8_decode ( 'Unidad de Gestión Educativa Local Nº 04 - Comas' ), 0, 0, 'C', 0 );
+            $this->pdf->Cell ( 200, 7, utf8_decode ( 'Unidad de Gestión Educativa Local Nº 05 - SJL' ), 0, 0, 'C', 0 );
             $this->pdf->Ln ( 6 );
             $this->pdf->SetFont ( 'Arial', 'I', 9 );
             $this->pdf->Cell ( 200, 5, utf8_decode ( '"Decenio de la Igualdad de Oportunidades para mujeres y hombres"' ), 0, 0, 'C', 0 );
@@ -2367,7 +2367,7 @@ class ReporteDocumento extends CI_Controller {
             $cellHeight = 4.4;
             $this->pdf->SetFont ( 'Arial', '', $fontSize );
 //          $this->pdf->Cell(10, $cellHeight, utf8_decode( '' ), 0, 0, 'J', 0);
-            $this->pdf->Cell(102, 5, utf8_decode( 'Comas,' ), 0, 0, 'C', 0);
+            $this->pdf->Cell(102, 5, utf8_decode( 'SJL,' ), 0, 0, 'C', 0);
             $this->pdf->Ln ( 5 );
                         $this->pdf->SetFont ( 'Arial', '', $fontSize );
 //          $this->pdf->Cell(10, $cellHeight, utf8_decode( '' ), 0, 0, 'J', 0);
@@ -2552,7 +2552,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'REFERENCIA', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode('ACTA DE ADJUDICACIÓN DEL COMITÉ DE CONTRATO DOCENTE - UGEL 04'), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode('ACTA DE ADJUDICACIÓN DEL COMITÉ DE CONTRATO DOCENTE - UGEL 05'), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
@@ -2603,7 +2603,7 @@ class ReporteDocumento extends CI_Controller {
             $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'NELLY RUFINA CUNZA PRINCIPE' ), 0, 0, 'C', 0 );
             $this->pdf->Ln ( $cellHeight - 0.7 );
             $this->pdf->SetFont ( 'Arial', '', $fontSize - 1 );
-            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'Directora de la Unidad de Gestión Educativa Local Nº 04 - Comas' ), 0, 0, 'C', 0 );
+            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'Directora de la Unidad de Gestión Educativa Local Nº 05 - SJL' ), 0, 0, 'C', 0 );
             $this->pdf->Ln ( 7 );
                         
             $this->pdf->SetFont ( 'Arial', '', 5.2 );

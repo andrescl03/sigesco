@@ -620,7 +620,9 @@ const AppConvovatoriaWeb = () => {
                         'numero_rd',
                         'numero_contrato',
                         'fechainicio_rd',
-                        'fechatermino_rd'
+                        'fechatermino_rd',
+                        'cantidad_mesesrd',
+                        'nro_contratord'
                     ],
                     actions: {
                         edit: () => { self.modalWorkExperience.show(); },
@@ -1033,6 +1035,14 @@ const AppConvovatoriaWeb = () => {
                                                 <div class="row">
                                                     <div class="col-lg-5">Fecha de termino</div>
                                                     <div class="col-lg-7">${item.fechatermino_rd}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-5">Fecha de termino</div>
+                                                    <div class="col-lg-7">${item.cantidad_mesesrd}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-5">Fecha de termino</div>
+                                                    <div class="col-lg-7">${item.nro_contratord}</div>
                                                 </div>
                                             </div>`;
                                         }); 

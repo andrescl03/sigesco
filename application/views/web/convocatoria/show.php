@@ -346,6 +346,8 @@ $convocatoria = $data['convocatoria'];
                                         <th>N° Contrato</th>
                                         <th>Fecha inicio</th>
                                         <th>Fecha fin</th>
+                                        <th>Cantidad de meses</th>
+                                        <th>Nro de contrato</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -477,7 +479,7 @@ $convocatoria = $data['convocatoria'];
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">N° Contrato</label>
                                 <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="numero_contrato" class="form-control form-control-solid" minlength="3" maxlength="100" required>
+                                    <input type="text" id="nro_contratord" name="nro_contratord" class="form-control form-control-solid" minlength="1" maxlength="100" required>
                                     <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>

@@ -19,6 +19,6 @@
 </footer>
 <footer  style="background-color:#de1f29" class="text-white">
     <div class="container text-center py-3">
-        <p class="m-0">Copyright © 2023 Portal Institucional de la UGEL N° 05. All Rights Reserved. Designed by&nbsp;<a href="https://www.ugel05.gob.pe/" target="_blank">UGEL 05</a></p></div>
+        <p class="m-0">Copyright © <?php echo date("Y")?> Portal Institucional de la UGEL N° 05. All Rights Reserved. Designed by&nbsp;<a href="https://www.gob.pe/ugel05" target="_blank">UGEL 05</a></p></div>
     </div>
 </footer>

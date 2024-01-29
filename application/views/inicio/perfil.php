@@ -26,8 +26,12 @@
                     </div>
                 </div>
 
-                <?php  echo $usu_tipo ?>
-                <!-- Resto de tu código HTML -->
+                <div class="form-group row">
+                    <label for="txt_apellidos" class="col-sm-3 col-form-label"><b>Perfil:</b></label>
+                    <div class="col-sm-8">   
+                        <input type="text" class="form-control form-control-sm" id="txt_perfil" name="txt_perfil" onkeypress="return soloLetras(event)" onblur="limpiaLetras(this)" onkeyup="mayus(this)"   value="<?php echo $usu_tipo;?>" readonly>
+                    </div>
+                </div>
             </div>            
         </div>
     </div>

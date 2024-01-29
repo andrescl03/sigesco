@@ -3,11 +3,10 @@ $(document).ready(function () {
     {
       "language": {
         "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" // Ruta al archivo de traducción
-      }
+      },
+      "order": [[0, 'desc']]
     }
   );
-
-
 
   $('#postularModal').on('show.bs.modal', function (event) {
 

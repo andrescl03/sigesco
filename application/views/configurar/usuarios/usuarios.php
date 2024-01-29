@@ -27,7 +27,7 @@
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="txt_tipo" class="col-sm-3 col-form-label"><b>Grupo Asignado:</b></label>
+					<label for="txt_tipo" class="col-sm-3 col-form-label"><b>Perfil:</b></label>
 					<div class="col-sm-8">
 						<input type="text" class="form-control form-control-sm" id="txt_tipo" name="txt_tipo" value="<?php echo $dato->tus_usuariodescrip; ?>" readonly>
 					</div>

@@ -1,8 +1,12 @@
 <div class="container">
+<?php
+ //Obtener el año actual del servidor
+   $anioActual = date("Y");
+?>
     <div class="card card-custom ">
         <div class="card-header">
             <div class="card-title ">
-                <h1 class="card-label ">Lista de convocatorias para el proceso de contratación docente - 2023</h1>
+                <h1 class="card-label ">LISTA DE CONVOCATORIAS PARA EL PROCESO DE CONTRATACIÓN DOCENTE - <?php echo $anioActual; ?></h1>
             </div>
         </div>
         <div class="card-body">

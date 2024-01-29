@@ -18,24 +18,14 @@ class ConvocatoriasWeb extends CI_Controller
     public function index()
     {
         $dato = 1;
-
         $idPer  = true;
         $idPro  = true;
-
         $datos  = $this->convocatorias_web_model->index($idPer, $idPro);
-        
+
         $now_unix = strtotime($this->tools->getDateHour());
-       /*  $con_fechainicio_unix = strtotime($convocatoria->con_fechainicio);
-        $con_fechafin_unix = strtotime($convocatoria->con_fechafin); */
-  
-/*         if (!($now_unix >= $con_fechainicio_unix
-          && $now_unix <= $con_fechafin_unix)) {
-          throw new Exception("La convocatoria ya expiró");
-        }
- */
-        
+
         $this->layout->js(array(base_url() . "public/web/js/convocatorias/index.js"));
-        $this->layout->view("/web/convocatoria/index", compact('dato', 'datos','now_unix'));
+        $this->layout->view("/web/convocatoria/index", compact('dato', 'datos', 'now_unix'));
     }
 
     public function show($convocatoria_id, $inscripcion_id)
