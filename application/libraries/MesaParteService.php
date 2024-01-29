@@ -33,7 +33,7 @@ class MesaParteService {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Return the response as a string
         curl_setopt($ch, CURLOPT_HEADER, 0); // Don't include the header in the output
 
-        if (strtolower($method) == 'POST') {
+        if (strtolower($method) == 'post') {
             curl_setopt($ch, CURLOPT_POST, 1); // Set the request method to POST
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data); // Set POST data
         }
