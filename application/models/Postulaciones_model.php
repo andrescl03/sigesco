@@ -20,6 +20,8 @@ class Postulaciones_model extends CI_Model
         $keys_tipos_archivos[6] = 'Anexo 12';
         $keys_tipos_archivos[7] = 'Anexo 19';
         $keys_tipos_archivos[8] = 'CV documentado';
+        $keys_tipos_archivos[9] = 'Titulo profesional';
+        
         $this->keys_tipos_archivos = $keys_tipos_archivos;
     }
 
@@ -366,7 +368,7 @@ class Postulaciones_model extends CI_Model
             $response['data'] = compact('postulante', 'archivos');
             $response['message'] = 'Se registro correctamente';
         } catch (\Exception $e) {
-            log_message_ci("Error al registrar expediente " . json_encode($$e->getMessage()));
+            log_message_ci("Error al registrar expediente " . json_encode($e->getMessage()));
 
             $response['message'] = $e->getMessage();
         }

@@ -320,7 +320,7 @@ $convocatoria = $data['convocatoria'];
                                         <th>Carrera Profesional</th>
                                         <th>N° de Registro de Título</th>
                                         <th>RD de Título N°</th>
-                                        <th>Obtención del Grado</th>
+                                        <th>Fecha de obtención del grado</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -538,6 +538,8 @@ $convocatoria = $data['convocatoria'];
                                         <option value="Privada">Privada</option> -->
                                         <option value="edutalento">Edutalento</option>
                                         <option value="perueduca">Perú Educa</option>
+                                        <option value="otros">otros</option>
+
                                     </select>
                                 </div>
                             </div>
@@ -689,9 +691,9 @@ $convocatoria = $data['convocatoria'];
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-xl-4 col-lg-4 col-form-label">Obtención del grado</label>
+                                <label class="col-xl-4 col-lg-4 col-form-label">Fecha de obtención del grado</label>
                                 <div class="col-xl-8 col-lg-8">
-                                    <input type="text" name="obtencion_grado" class="form-control form-control-solid" minlength="3" maxlength="100" required>
+                                    <input type="date" name="obtencion_grado" class="form-control form-control-solid"  required>
                                     <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                 </div>
                             </div>
@@ -767,7 +769,7 @@ $convocatoria = $data['convocatoria'];
             opcionesSubnivel = ['Profesor de educación', 'Profesor de educación inicial', 'Profesor de educación primaria', 'Profesor de educación secundaria', 'Profesor de educación e informática', 'Profesor de educación física'];
             opcionesMencionAcademico = ['no disponible para el grado'];
         } else if (nivelEducativo === 'Superior universitario') {
-            opcionesGradoAcademico = ['Egresado', 'Bachiller', 'Titulado', 'Maestría', 'Doctorado'];
+            opcionesGradoAcademico = ['Egresado', 'Bachiller', 'Titulado', 'Maestría', 'Doctorado','2da especialidad'];
             opcionesSubnivel = ['De educación', 'De educación inicial', 'De educación primaria', 'De educación secundaria', 'De educación física'];
             opcionesMencionAcademico = ['Egresado', 'Licenciado', 'Bachiller', 'Maestro', 'Doctor'];
         }

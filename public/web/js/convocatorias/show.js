@@ -58,7 +58,8 @@ const AppConvovatoriaWeb = () => {
                     { id: 5, nombre: 'Anexo 11' },
                     { id: 6, nombre: 'Anexo 12' },
                     { id: 7, nombre: 'Anexo 19' },
-                    { id: 8, nombre: 'CV documentado' } 
+                    { id: 8, nombre: 'CV documentado' },
+                    { id: 9, nombre: 'Titulo profesional' } 
 
                 ],
                 response: {},
@@ -190,6 +191,24 @@ const AppConvovatoriaWeb = () => {
 
                             e.stopPropagation()
                         }
+
+                     console.log(self.formAttachedFiles);
+
+
+                     const inputFiles = dom.querySelectorAll('.form-input-file');
+                     
+                     inputFiles.forEach((inputFile, index) => {
+                         const files = inputFile.files;
+                         if (!files) {
+                            sweet2.show({
+                                type: 'error',
+                                title: 'IMPORTANTE',
+                                html: 'Por favor ingrese al menos un documento adjunto'
+                            });
+                            e.stopPropagation()
+                            return false;
+                         }
+                     }); 
                         form.classList.add('was-validated');
                         if (form.checkValidity()) {
                             self.formData = new FormData(e.target);

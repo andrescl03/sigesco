@@ -14,6 +14,8 @@
     $anexos[6] = 'Anexo 12';  
     $anexos[7] = 'Anexo 19';
     $anexos[8] = 'CV documentado';
+    $anexos[9] = 'Titulo profesional';
+
     
 ?>
 <div class="container" id="AppConvovatoriaEditWeb"  data-uid="<?php echo $data['uid'] ?>" data-id="<?php echo $convocatoria->con_id ?>" data-type="<?php echo $convocatoria->con_tipo ?>">
