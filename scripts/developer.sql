@@ -339,3 +339,15 @@ ALTER TABLE postulaciones ADD COLUMN `zona_id` INT(11) NULL DEFAULT '0' AFTER `u
 ALTER TABLE postulaciones ADD COLUMN `departamento` VARCHAR(255) NULL DEFAULT NULL AFTER `uid`;
 ALTER TABLE postulaciones ADD COLUMN `provincia` VARCHAR(255) NULL DEFAULT NULL AFTER `uid`;
 ALTER TABLE postulaciones ADD COLUMN `distrito` VARCHAR(255) NULL DEFAULT NULL AFTER `uid`;
+
+
+/************************** 30/01/2024 **************************/
+ALTER TABLE postulacion_formaciones_academicas ADD COLUMN `tipoestudio_educativo` VARCHAR(255) NULL DEFAULT NULL AFTER `rd_titulo`;
+ALTER TABLE postulacion_formaciones_academicas ADD COLUMN `estadoestudio_educativo` VARCHAR(255) NULL DEFAULT NULL AFTER `rd_titulo`;
+ALTER TABLE postulacion_formaciones_academicas ADD COLUMN `subnivel` VARCHAR(255) NULL DEFAULT NULL AFTER `rd_titulo`;
+ALTER TABLE postulacion_formaciones_academicas ADD COLUMN `mencion_academico` VARCHAR(255) NULL DEFAULT NULL AFTER `rd_titulo`;
+ALTER TABLE postulacion_formaciones_academicas ADD COLUMN `mencion_grado_academico` VARCHAR(255) NULL DEFAULT NULL AFTER `rd_titulo`;
+                
+ALTER TABLE postulacion_experiencias_laborales ADD COLUMN `fechainicio_rd` DATE NULL DEFAULT NULL AFTER `numero_rd`;
+ALTER TABLE postulacion_experiencias_laborales ADD COLUMN `fechatermino_rd` DATE NULL DEFAULT NULL AFTER `numero_rd`;
+ALTER TABLE postulacion_experiencias_laborales ADD COLUMN `cantidad_mesesrd` INT(11) NULL DEFAULT '0' AFTER `numero_rd`;

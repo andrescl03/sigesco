@@ -472,6 +472,7 @@ $convocatoria = $data['convocatoria'];
                                 <label class="col-xl-4 col-lg-4 col-form-label">Cantidad de meses</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="text" id="cantidad_mesesrd" name="cantidad_mesesrd" class="form-control form-control-solid" readonly>
+                                    <small class="text-muted">Este campo es informátivo que muestra el cálculo de meses que hay entre la fecha de inicio y termino<small>
                                 </div>
                             </div>
 
@@ -647,7 +648,7 @@ $convocatoria = $data['convocatoria'];
 
 
                             <div class="form-group row">
-                                <label class="col-xl-4 col-lg-4 col-form-label">Universidad</label>
+                                <label class="col-xl-4 col-lg-4 col-form-label">Universidad/Instituto</label>
                                 <div class="col-xl-8 col-lg-8">
                                 <!---<select class="form-control form-control-solid" name="universidad" required>
                                         <option value="" hidden>[SELECCIONE]</option>

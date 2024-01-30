@@ -130,7 +130,12 @@ class Postulaciones_model extends CI_Model
                 foreach ($formaciones_academicas as $key => $item) {
                     $insert_formaciones_academicas[] = [
                         'nivel_educativo'     => $item['nivel_educativo'],
+                        'tipoestudio_educativo'     => $item['tipoestudio_educativo'], // String
+                        'estadoestudio_educativo'   => $item['estadoestudio_educativo'], // String
                         'grado_academico'     => $item['grado_academico'],
+                        'subnivel'                  => $item['subnivel'], // String
+                        'mencion_academico'         => $item['mencion_academico'], // String
+                        'mencion_grado_academico'   => $item['mencion_grado_academico'], // String
                         'universidad'         => $item['universidad'],
                         'carrera_profesional' => $item['carrera_profesional'],
                         'registro_titulo'     => $item['registro_titulo'],
@@ -147,6 +152,9 @@ class Postulaciones_model extends CI_Model
                         'sector'                => $item['sector'],
                         'puesto'                => $item['puesto'],
                         'numero_rd'             => $item['numero_rd'],
+                        'fechainicio_rd'        => $item['fechainicio_rd'], // Date
+                        'fechatermino_rd'       => $item['fechatermino_rd'], // Date
+                        'cantidad_mesesrd'      => $item['cantidad_mesesrd'], // Int
                         'numero_contrato'       => $item['numero_contrato']
                     ];
                 }
