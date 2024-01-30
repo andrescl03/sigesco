@@ -320,7 +320,7 @@ class Postulaciones_model extends CI_Model
                 "Archivo"               => new CURLFile($zipData)           
             ];
 
-            $result = $this->mesaparteservice->request('POST', 'mpv/enviar/tramite', $data,  $this->mesaparteservice->token(), true);
+            $result = $this->mesaparteservice->request('POST', 'mpv/tramites/registrar', $data,  $this->mesaparteservice->token(), true);
             if (isset($result['NumeroExpediente'])) {
                 $this->db->update('postulaciones', ['uid' => $result['NumeroExpediente']], array('id' => $postulacion_id));
             }
