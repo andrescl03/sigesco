@@ -15,12 +15,14 @@
             'tipo' => $oldConvocatoria['con_tipo']
         ];
         $datos = $convocatoria_grupos;
-    }
+    }       
+     $items = [];
     if ($isEdit) {
-        $items = [];
         foreach ($convocatoria_grupos as $k => $o) {
             $items[] = $o['gin_id'];
         }
+        count($items);
+        
     }
 ?>
 <div class="container" id="convocatoriaModalContainer" data-grupoArr="<?= count($items) > 0 ? implode(',',$items) : '' ?>" data-fecha-inicio="<?= $isEdit ? $oldConvocatoria['unix_inicio'] : '' ?>" data-fecha-fin="<?= $isEdit ? $oldConvocatoria['unix_fin'] : '' ?>">

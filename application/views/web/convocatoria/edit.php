@@ -466,8 +466,11 @@
                                 <div class="col-xl-8 col-lg-8">
                                     <select id="tipoEspecializacion" class="form-control form-control-solid" name="tipo_especializacion" required>
                                         <option value="" hidden>[SELECCIONE]</option>
-                                        <option value="Pública">Pública</option>
-                                        <option value="Privada">Privada</option>
+                                        <option value="Diplomado">Diplomado</option>
+                                        <option value="Actualizacion">Actualizacion</option>
+                                        <option value="Curso">Curso</option>
+                                        <option value="Taller">Taller</option>
+                                        <option value="Otros">Otros</option>
                                     </select>
                                 </div>
                             </div>

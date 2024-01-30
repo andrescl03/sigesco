@@ -357,6 +357,9 @@ const AppConvovatoriaWeb = () => {
                                     dom.querySelector('input[name="nombre"]').value = self.formPostulant.cpe_nombres;
                                     dom.querySelector('input[name="apellido_paterno"]').value = self.formPostulant.cpe_apaterno;
                                     dom.querySelector('input[name="apellido_materno"]').value = self.formPostulant.cpe_amaterno;    
+                                    dom.querySelector('input[name="cuss"]').value = self.formPostulant.cuss;    
+                                    dom.querySelector('select[name="afiliacion"]').value = self.formPostulant.afiliacion;    
+
                                 }
                                 formPostulants.forEach(form => {
                                     form.classList.add('was-validated');

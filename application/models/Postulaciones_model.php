@@ -149,7 +149,8 @@ class Postulaciones_model extends CI_Model
                     ];
                 }
             }
-            $zipData = null;
+            //$zipData = null;
+            $zipPath = null;
             $insert_archivos = [];
             if (isset($_FILES['archivos'])) {
                 $total  = count($_FILES['archivos']['name']);
@@ -301,13 +302,13 @@ class Postulaciones_model extends CI_Model
 
             /** CREACION DEL REGISTRO EN MESA DE PARTE */
             if ($convocatoria->con_tipo == 1) { // PUN
-                $ResumenPedido         = "CONTRATO DOCENTE PUN - " . $this->tools->getDateHour("Y");
-                $ResumenPedidoID       = 716;
-                $trcID                 = 1;
+                $ResumenPedido         = "PROCESO DE CONTRATACION DOCENTE 2024-EVALUACION POR RESULTADOS (PN) " . $this->tools->getDateHour("Y");
+                $ResumenPedidoID       = 731;
+                $trcID                 = 347;
             } else {
-                $ResumenPedido         = "CONTRATO DOCENTE EVALUACION EXPEDIENTE - " . $this->tools->getDateHour("Y");
-                $ResumenPedidoID       = 716;
-                $trcID                 = 1;
+                $ResumenPedido         = "COMITE DE CONTRATO DOCENTE (EVALUACION EXPEDIENTE) " . $this->tools->getDateHour("Y");
+                $ResumenPedidoID       = 731;
+                $trcID                 = 347;
             }
             
             $data = [   
@@ -340,13 +341,14 @@ class Postulaciones_model extends CI_Model
                 "fechaInicio"           => "",
                 "fechaFin"              => "",
                 "requisitos"            => strtoupper(implode(",", $requisitos)),
-                "Archivo"               => new CURLFile($zipData)           
+                "Archivo"               => new CURLFile($zipPath)           
             ];
 
             $result = $this->mesaparteservice->request('POST', 'mpv/tramites/registrar', $data,  $this->mesaparteservice->token(), true);
-            if (isset($result['NumeroExpediente'])) {
-                $this->db->update('postulaciones', ['uid' => $result['NumeroExpediente']], array('id' => $postulacion_id));
+            if ($result['status'] == 200) {
+                $this->db->update('postulaciones', ['uid' => $result['response']['CodigoTramite']], array('id' => $postulacion_id));
             }
+
 
             $response['success'] = true;
             $response['data'] = compact('postulante', 'archivos');

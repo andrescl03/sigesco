@@ -92,7 +92,7 @@ class Convocatorias extends CI_Controller {
         $this->layout->view('listar/VListarConvocatorias', compact('datos'));
     }
 
-    public function VNuevaConvocatoria()
+    public function vnuevaconvocatoria()
     {
         $update  = $this->input->post("update", true);
         $periodos   = $this->configuracion_model->listarPeriodosActivos();
@@ -111,7 +111,7 @@ class Convocatorias extends CI_Controller {
          }  
 
         $this->layout->setLayout("template_ajax");
-        $this->layout->view('listar/VNuevaConvocatoria', compact('periodos', 'procesos', 'grupos','oldConvocatoria', 'convocatoria_grupos'));
+        $this->layout->view('listar/vnuevaconvocatoria', compact('periodos', 'procesos', 'grupos','oldConvocatoria', 'convocatoria_grupos'));
     }
 
     public function VSelectGrupoInscripcion(){ 

@@ -116,7 +116,7 @@ class Configuracion extends CI_Controller
         $this->layout->view("grupoinscripcion/grupoinscripcion", compact('periodos', 'procesos', 'modalidades'));
     }
 
-    public function VListarGrupoInscripcion()
+    public function vlistargrupoinscripcion()
     {
         $tipoCarga  = $this->input->post("tipoCarga", true);
 
@@ -131,7 +131,7 @@ class Configuracion extends CI_Controller
         $datos = $this->configuracion_model->listarGruposInscripcion($idPer, $idPro);
 
         $this->layout->setLayout("template_ajax");
-        $this->layout->view("grupoinscripcion/vListarGrupoInscripcion", compact('datos'));
+        $this->layout->view("grupoinscripcion/vlistargrupoinscripcion", compact('datos'));
     }
 
     public function pun()
@@ -267,8 +267,8 @@ class Configuracion extends CI_Controller
         $objPHPExcel->setActiveSheetIndex(0);
         //Obtengo el numero de filas del archivo							
         $numRows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
-        $detalle_cabecera = ["N°", "DOCUMENTO_DE_IDENTIDAD", "APELLIDO_PATERNO", "APELLIDO_MATERNO", "NOMBRES", "ID_ESPECIALIDAD", "S1", "S2", "S3", "S4", "S5", "ORDEN DE MERITO"];
-        $letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
+        $detalle_cabecera = ["N°", "DOCUMENTO_DE_IDENTIDAD", "APELLIDO_PATERNO", "APELLIDO_MATERNO", "NOMBRES", "ID_ESPECIALIDAD", "S1", "S2", "S3", "S4", "S5", "ORDEN DE MERITO","AFILIACION","CUSS"];
+        $letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L","M","N"];
         $cumple = 1;
         for ($i = 0; $i < count($letras); $i++) {
             $texto = trim($objPHPExcel->getActiveSheet()->getCell($letras[$i] . '1')->getCalculatedValue());
@@ -295,6 +295,8 @@ class Configuracion extends CI_Controller
                 $s4         = trim($objPHPExcel->getActiveSheet()->getCell('J' . $i)->getCalculatedValue());
                 $s5         = trim($objPHPExcel->getActiveSheet()->getCell('K' . $i)->getCalculatedValue());
                 $orden      = trim($objPHPExcel->getActiveSheet()->getCell('L' . $i)->getCalculatedValue());
+                $afiliacion      = trim($objPHPExcel->getActiveSheet()->getCell('M' . $i)->getCalculatedValue());
+                $cuss      = trim($objPHPExcel->getActiveSheet()->getCell('N' . $i)->getCalculatedValue());
 
                 if (!is_numeric($idGin)) {
                     $mensaje["error"] = "Revisar la celda F-" . $i . ", según los grupos de inscripción.";
@@ -328,7 +330,9 @@ class Configuracion extends CI_Controller
                     "cpe_enviadoeval"   => 0,
                     "cpe_fechaCarga"    => date("Y-m-d H:i:s"),
                     "cpe_estado"        => 1,
-                    "grupo_inscripcion_gin_id"  => $idGin
+                    "grupo_inscripcion_gin_id"  => $idGin,
+                    "afiliacion"         => $afiliacion,
+                    "cuss" => $cuss,
                 );
 
                 array_push($ar_documentos, $documento);
