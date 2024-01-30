@@ -293,7 +293,7 @@ $convocatoria = $data['convocatoria'];
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Zona</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="zona" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100" required>
+                                <input type="text" name="nombre_zona" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100" required>
                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                             </div>
                         </div>
