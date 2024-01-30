@@ -35,6 +35,7 @@ class Postulaciones_model extends CI_Model
             $this->form_validation->set_rules('direccion', 'direccion', 'trim|required|min_length[3]|max_length[100]');
             $this->form_validation->set_rules('correo', 'correo', 'trim|required|valid_email');
             $this->form_validation->set_rules('confirma_correo', 'confirma_correo', 'trim|required|valid_email');
+            //$this->form_validation->set_rules('distrito_id', 'distrito_id', 'trim|required|alpha_numeric');
             $this->form_validation->set_rules('distrito_id', 'distrito_id', 'trim|required');
             $this->form_validation->set_rules('estado_civil', 'estado_civil', 'trim|required');
             $this->form_validation->set_rules('fecha_nacimiento', 'fecha_nacimiento', 'trim|required');
@@ -321,7 +322,7 @@ class Postulaciones_model extends CI_Model
                 "NombreVia"             => strtoupper($nombre_via),
                 "TipoZonaID"            => $zona_id,
                 "TipoZona"              => strtoupper($zona),
-                "NombreZona"            => strtoupper($nombre_zona),
+                "NombreZona"            => strtoupper($zona),
                 "Referencia"            => strtoupper($direccion),
                 "Departamento"          => strtoupper($departamento_id),
                 "Provincia"             => strtoupper($provincia_id),

@@ -6,7 +6,7 @@
                     <li>Unidad de Gestión Educativa Local N° 05</li>
                     <li>Dirección: Av Perú s/n Urb. Caja de Agua, San Juan de Lurigancho</li>
                     <li>Teléfonos: <br>459-1135</li>
-                    <li>E-mail: direccion@ugel05.gob.pe</li>
+               <!---<li>E-mail: direccion@ugel05.gob.pe</li>-->
                 </ul>
             </div>
             <div class="col-lg-6">

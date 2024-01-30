@@ -32,6 +32,11 @@ class MesaParteService {
         curl_setopt($ch, CURLOPT_URL, $url); // URL to fetch
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Return the response as a string
         curl_setopt($ch, CURLOPT_HEADER, 0); // Don't include the header in the output
+        curl_setopt($ch,  CURLOPT_HTTPHEADER , array(
+            'Content-Type: application/json',
+            'charset=utf-8',
+            'Authorization: Bearer '. 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDY1NDMwNDEsImV4cCI6MTcwNjU0MzY0MSwidXNlcm5hbWUiOiJhYmx1aXMxNSIsImZ1bGxuYW1lIjoiTHVpcyBBbGJlcnRvIiwicm9sZXMiOlsiQWRtaW5pc3RyYXRvciIsIkVkaXRvciJdfQ.sXbHBtTfgdj3BCwoyX53yIkbSmbND2aqDsw94Ulpc_E'
+        ));
 
         if ($token) {
             $contenttype = $fileupload ? 'multipart/form-data' : 'application/json';
@@ -58,7 +63,7 @@ class MesaParteService {
 
         // Execute cURL session and fetch response
         $response = curl_exec($ch);
-
+        var_dump($response);
         // Check for cURL errors
         if (curl_errno($ch)) {
             throw new Exception('cURL error: ' . curl_error($ch));
