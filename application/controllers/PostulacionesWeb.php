@@ -10,6 +10,7 @@ class PostulacionesWeb extends CI_Controller {
         $this->load->model("postulaciones_model");
         $this->load->model("email_model");
         date_default_timezone_set('America/Lima');
+
     }
 
     public function store() {
@@ -23,6 +24,8 @@ class PostulacionesWeb extends CI_Controller {
     }  
 
     public function find() {
+        log_message_ci("Ingresa a busqueda" . json_encode($this->input->post()));
+
         if ($this->input->post()) {
             $this->output
                 ->set_content_type('application/json')

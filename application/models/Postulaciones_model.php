@@ -42,6 +42,8 @@ class Postulaciones_model extends CI_Model
 
             if ($this->form_validation->run() == FALSE) {
                 $response['errors'] = $this->form_validation->error_array();
+                log_message_ci("Ingresa a registrar expediente " . json_encode($this->form_validation->error_array()));
+
                 throw new Exception("No cumple con los datos requeridos          => " . json_encode($response['errors']));
             }
 
@@ -361,17 +363,21 @@ class Postulaciones_model extends CI_Model
                 "requisitos"            => strtoupper(implode(",", $requisitos)),
                 "Archivo"               => new CURLFile($zipPath)           
             ];
+            log_message_ci("Ingresa a registrar expediente 2 " . json_encode($data));
 
             $result = $this->mesaparteservice->request('POST', 'mpv/tramites/registrar', $data,  $this->mesaparteservice->token(), true);
             if ($result['status'] == 200) {
                 $this->db->update('postulaciones', ['uid' => $result['response']['CodigoTramite']], array('id' => $postulacion_id));
             }
 
+            log_message_ci("Ingresa a registrar expediente 3 " . json_encode($result));
 
             $response['success'] = true;
             $response['data'] = compact('postulante', 'archivos');
             $response['message'] = 'Se registro correctamente';
         } catch (\Exception $e) {
+            log_message_ci("Error al registrar expediente " . json_encode($e->getMessage()));
+
             $response['message'] = $e->getMessage();
         }
         return $response;
