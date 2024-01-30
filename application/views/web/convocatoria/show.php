@@ -648,7 +648,7 @@ $convocatoria = $data['convocatoria'];
 
 
                             <div class="form-group row">
-                                <label class="col-xl-4 col-lg-4 col-form-label">Universidad</label>
+                                <label class="col-xl-4 col-lg-4 col-form-label">Universidad/Instituto</label>
                                 <div class="col-xl-8 col-lg-8">
                                 <!---<select class="form-control form-control-solid" name="universidad" required>
                                         <option value="" hidden>[SELECCIONE]</option>
