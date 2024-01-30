@@ -191,24 +191,7 @@ const AppConvovatoriaWeb = () => {
 
                             e.stopPropagation()
                         }
-
-                     console.log(self.formAttachedFiles);
-
-
-                     const inputFiles = dom.querySelectorAll('.form-input-file');
-                     
-                     inputFiles.forEach((inputFile, index) => {
-                         const files = inputFile.files;
-                         if (!files) {
-                            sweet2.show({
-                                type: 'error',
-                                title: 'IMPORTANTE',
-                                html: 'Por favor ingrese al menos un documento adjunto'
-                            });
-                            e.stopPropagation()
-                            return false;
-                         }
-                     }); 
+                        
                         form.classList.add('was-validated');
                         if (form.checkValidity()) {
                             self.formData = new FormData(e.target);
