@@ -351,3 +351,24 @@ ALTER TABLE postulacion_formaciones_academicas ADD COLUMN `mencion_grado_academi
 ALTER TABLE postulacion_experiencias_laborales ADD COLUMN `fechainicio_rd` DATE NULL DEFAULT NULL AFTER `numero_rd`;
 ALTER TABLE postulacion_experiencias_laborales ADD COLUMN `fechatermino_rd` DATE NULL DEFAULT NULL AFTER `numero_rd`;
 ALTER TABLE postulacion_experiencias_laborales ADD COLUMN `cantidad_mesesrd` INT(11) NULL DEFAULT '0' AFTER `numero_rd`;
+
+/************************** 30/01/2024 **************************/
+CREATE TABLE `tipo_archivos` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`nombre` VARCHAR(255) NULL DEFAULT NULL,
+	`requerido` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`orden` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+);
+
+INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`, `updated_at`, `deleted_at`) VALUES (1, 'Anexo 1', 1, 1, '2024-01-30 16:41:06', '2024-01-30 16:42:12', NULL);
+INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`, `updated_at`, `deleted_at`) VALUES (2, 'Anexo 8', 1, 2, '2024-01-30 16:41:14', '2024-01-30 16:42:12', NULL);
+INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`, `updated_at`, `deleted_at`) VALUES (3, 'Anexo 9', 1, 3, '2024-01-30 16:41:22', '2024-01-30 16:42:13', NULL);
+INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`, `updated_at`, `deleted_at`) VALUES (4, 'Anexo 10', 1, 4, '2024-01-30 16:41:27', '2024-01-30 16:42:14', NULL);
+INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`, `updated_at`, `deleted_at`) VALUES (5, 'Anexo 11', 1, 5, '2024-01-30 16:41:30', '2024-01-30 16:42:14', NULL);
+INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`, `updated_at`, `deleted_at`) VALUES (6, 'Anexo 12', 1, 6, '2024-01-30 16:41:45', '2024-01-30 16:42:15', NULL);
+INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`, `updated_at`, `deleted_at`) VALUES (7, 'Anexo 19', 0, 7, '2024-01-30 16:41:52', '2024-01-30 16:42:15', NULL);
+INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`, `updated_at`, `deleted_at`) VALUES (8, 'CV Documentado', 1, 8, '2024-01-30 16:42:03', '2024-01-30 16:42:16', NULL);

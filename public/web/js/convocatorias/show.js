@@ -50,7 +50,8 @@ const AppConvovatoriaWeb = () => {
                 formModalities: [],
                 departments: [],
                 formAttachedFiles: [],
-                attachedFileTypes: [
+                attachedFileTypes: [],
+                /*[
                     { id: 1, nombre: 'Anexo 1' },
                     { id: 2, nombre: 'Anexo 8' },
                     { id: 3, nombre: 'Anexo 9' },
@@ -61,7 +62,7 @@ const AppConvovatoriaWeb = () => {
                     { id: 8, nombre: 'CV documentado' },
                     { id: 9, nombre: 'Titulo profesional' } 
 
-                ],
+                ],*/
                 response: {},
                 dateAdult: ''
             }
@@ -70,6 +71,7 @@ const AppConvovatoriaWeb = () => {
             initialize: () => {
                 self.detail()
                 .then(data => {
+                    self.attachedFileTypes = data.tipo_archivos
                     self.renders();
                     self.events();
                     self.externs();
@@ -359,8 +361,8 @@ const AppConvovatoriaWeb = () => {
                                     dom.querySelector('input[name="nombre"]').value = self.formPostulant.cpe_nombres;
                                     dom.querySelector('input[name="apellido_paterno"]').value = self.formPostulant.cpe_apaterno;
                                     dom.querySelector('input[name="apellido_materno"]').value = self.formPostulant.cpe_amaterno;    
-                                    dom.querySelector('input[name="cuss"]').value = self.formPostulant.cuss;    
-                                    dom.querySelector('select[name="afiliacion"]').value = self.formPostulant.afiliacion;    
+                                    dom.querySelector('input[name="cuss"]').value = self.formPostulant.cuss ?? '';    
+                                    dom.querySelector('select[name="afiliacion"]').value = self.formPostulant.afiliacion ?? '';    
 
                                 }
                                 formPostulants.forEach(form => {
@@ -474,7 +476,7 @@ const AppConvovatoriaWeb = () => {
                         const ft = inputFileTypes[index];
                         const f = files[0];
                         self.formAttachedFiles.push({
-                            tipo: self.attachedFileTypes.find(o => o.id === Number(ft.value)).nombre,
+                            tipo: self.attachedFileTypes.find(o => Number(o.id) === Number(ft.value)).nombre,
                             archivo: f.name
                         });
                     }
@@ -511,7 +513,7 @@ const AppConvovatoriaWeb = () => {
                                     <select class="form-control form-control-solid form-input-file-type" name="tipo_archivos[]" required="">
                                         <option value="" hidden="">[SELECCIONE]</option>`;
                                     self.attachedFileTypes.forEach(item => {
-                                        html += `<option value="${item.id}">${item.nombre}</option>`;
+                                        html += `<option value="${item.id}">${item.nombre}${item.requerido == 1 ? '*' : ''}</option>`;
                                     });             
                           html += ` </select>
                                 </td>
@@ -1123,7 +1125,7 @@ const AppConvovatoriaWeb = () => {
                                                                 <div class="col-lg-7">${item.tipo}</div>
                                                             </div>
                                                             <div class="row">
-                                                                <div class="col-lg-5">Ver Archivo</div>
+                                                                <div class="col-lg-5">Archivo</div>
                                                                 <div class="col-lg-7">${item.archivo}</div>
                                                             </div>
                                                         </div>`;

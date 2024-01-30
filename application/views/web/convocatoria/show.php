@@ -387,7 +387,7 @@ $convocatoria = $data['convocatoria'];
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-attached-file mb-0">
+                            <table class="table table-attached-file">
                                 <thead class="text-center">
                                     <tr>
                                         <th>Tipo</th>
@@ -399,6 +399,7 @@ $convocatoria = $data['convocatoria'];
                                     <!-- Las filas se agregarán dinámicamente aquí -->
                                 </tbody>
                             </table>
+                            <small><b>Recuerda: </b> Los tipos que tienen (*) son documentos obligatorios.</small>
                         </div>
                     </form>
                 </div>

@@ -1,7 +1,6 @@
 <?php
 class Postulaciones_model extends CI_Model
 {
-    private $keys_tipos_archivos;
 
     public function __construct()
     {
@@ -10,19 +9,6 @@ class Postulaciones_model extends CI_Model
         $this->load->model('email_model');
         $this->load->model("convocatorias_web_model");
         $this->load->library('mesaparteservice');
-
-        $keys_tipos_archivos = [];
-        $keys_tipos_archivos[1] = 'Anexo 1';
-        $keys_tipos_archivos[2] = 'Anexo 8';
-        $keys_tipos_archivos[3] = 'Anexo 9';
-        $keys_tipos_archivos[4] = 'Anexo 10';
-        $keys_tipos_archivos[5] = 'Anexo 11';
-        $keys_tipos_archivos[6] = 'Anexo 12';
-        $keys_tipos_archivos[7] = 'Anexo 19';
-        $keys_tipos_archivos[8] = 'CV documentado';
-        $keys_tipos_archivos[9] = 'Titulo profesional';
-        
-        $this->keys_tipos_archivos = $keys_tipos_archivos;
     }
 
     public function store()
@@ -37,7 +23,6 @@ class Postulaciones_model extends CI_Model
             $this->form_validation->set_rules('direccion', 'direccion', 'trim|required|min_length[3]|max_length[100]');
             $this->form_validation->set_rules('correo', 'correo', 'trim|required|valid_email');
             $this->form_validation->set_rules('confirma_correo', 'confirma_correo', 'trim|required|valid_email');
-            //$this->form_validation->set_rules('distrito_id', 'distrito_id', 'trim|required|alpha_numeric');
             $this->form_validation->set_rules('distrito_id', 'distrito_id', 'trim|required');
             $this->form_validation->set_rules('estado_civil', 'estado_civil', 'trim|required');
             $this->form_validation->set_rules('fecha_nacimiento', 'fecha_nacimiento', 'trim|required');
@@ -161,6 +146,32 @@ class Postulaciones_model extends CI_Model
                     ];
                 }
             }
+
+            if (count($tipo_archivos) == 0) {
+                throw new Exception('Debe de adjuntar al menos un documento');
+            }
+            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL ORDER BY orden ASC";
+            $my_tipo_archivos = $this->db->query($sql)->result_object();
+
+            $keys_uploads_tipo_archivos = [];
+            foreach ($tipo_archivos as $k2 => $o2) {
+                $keys_uploads_tipo_archivos[$o2] = $o2;
+            }
+
+            $keys_tipos_archivos = [];
+            foreach ($my_tipo_archivos as $k => $o) {
+                if ($o->requerido == 1) {
+                    $meet = false;
+                    if (isset($keys_uploads_tipo_archivos[$o->id])) {
+                        $meet = true;
+                    }
+                    if (!$meet) {
+                        throw new Exception('El documento ' . $o->nombre . ' es obligatorio');
+                    }
+                }
+                $keys_tipos_archivos[$o->id] = $o;
+            }
+
             //$zipData = null;
             $zipPath = null;
             $insert_archivos = [];
@@ -241,10 +252,8 @@ class Postulaciones_model extends CI_Model
             $data['zona']             = $zona;
             $data['direccion']        = $direccion;
             $data['afiliacion']       = $afiliacion;
-            $data['cuss']             = $cuss;
-            
+            $data['cuss']             = $cuss;            
             $data['fecha_registro']   = $this->tools->getDateHour();
-            // $data['distrito_id']      = $distrito_id;
             $data['departamento']     = $departamento_id;
             $data['provincia']        = $provincia_id;
             $data['distrito']         = $distrito_id;
@@ -258,7 +267,6 @@ class Postulaciones_model extends CI_Model
             $uid = strtolower(uniqid() . $postulacion_id);
             $this->db->update('postulaciones', ['uid' => $uid], array('id' => $postulacion_id));
             
-
             if (count($insert_especializaciones) > 0) {
                 foreach ($insert_especializaciones as $key => $item) {
                     $insert_especializaciones[$key]['postulacion_id'] = $postulacion_id;
@@ -284,7 +292,7 @@ class Postulaciones_model extends CI_Model
                 foreach ($insert_archivos as $key => $item) {
                     $insert_archivos[$key]['tipo_id']        = $tipo_archivos[$key];
                     $insert_archivos[$key]['postulacion_id'] = $postulacion_id;
-                    $requisitos[] = $this->keys_tipos_archivos[$insert_archivos[$key]['tipo_id']];
+                    $requisitos[] = $keys_tipos_archivos[$insert_archivos[$key]['tipo_id']]->nombre;
                 }
                 $this->db->insert_batch('postulacion_archivos', $insert_archivos);
             }
