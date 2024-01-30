@@ -1,6 +1,7 @@
 <?php
 class Postulaciones_model extends CI_Model
 {
+    private $keys_tipos_archivos;
 
     public function __construct()
     {
@@ -9,6 +10,17 @@ class Postulaciones_model extends CI_Model
         $this->load->model('email_model');
         $this->load->model("convocatorias_web_model");
         $this->load->library('mesaparteservice');
+
+        $keys_tipos_archivos = [];
+        $keys_tipos_archivos[1] = 'Anexo 1';
+        $keys_tipos_archivos[2] = 'Anexo 8';
+        $keys_tipos_archivos[3] = 'Anexo 9';
+        $keys_tipos_archivos[4] = 'Anexo 10';
+        $keys_tipos_archivos[5] = 'Anexo 11';
+        $keys_tipos_archivos[6] = 'Anexo 12';
+        $keys_tipos_archivos[7] = 'Anexo 19';
+        $keys_tipos_archivos[8] = 'CV documentado';
+        $this->keys_tipos_archivos = $keys_tipos_archivos;
     }
 
     public function store()
@@ -68,6 +80,7 @@ class Postulaciones_model extends CI_Model
             $numero_telefono  = $this->input->post("numero_telefono", true);
             $via              = $this->input->post("via", true);
             $zona             = $this->input->post("zona", true);
+            $nombre_zona      = $this->input->post("nombre_zona", true);
             $via_id           = $this->input->post("via_id", true);
             $zona_id          = $this->input->post("zona_id", true);
             $convocatoria_id  = $this->input->post("convocatoria_id", true);
@@ -252,11 +265,12 @@ class Postulaciones_model extends CI_Model
                 }
                 $this->db->insert_batch('postulacion_experiencias_laborales', $insert_experiencias_laborales);
             }
-
+            $requisitos = [];
             if (count($insert_archivos) > 0) {
                 foreach ($insert_archivos as $key => $item) {
                     $insert_archivos[$key]['tipo_id']        = $tipo_archivos[$key];
                     $insert_archivos[$key]['postulacion_id'] = $postulacion_id;
+                    $requisitos[] = $this->keys_tipos_archivos[$insert_archivos[$key]['tipo_id']];
                 }
                 $this->db->insert_batch('postulacion_archivos', $insert_archivos);
             }
@@ -285,10 +299,19 @@ class Postulaciones_model extends CI_Model
             }*/
 
             /** CREACION DEL REGISTRO EN MESA DE PARTE */
-
+            if ($convocatoria->con_tipo == 1) { // PUN
+                $ResumenPedido         = "CONTRATO DOCENTE PUN - " . $this->tools->getDateHour("Y");
+                $ResumenPedidoID       = 716;
+                $trcID                 = 1;
+            } else {
+                $ResumenPedido         = "CONTRATO DOCENTE EVALUACION EXPEDIENTE - " . $this->tools->getDateHour("Y");
+                $ResumenPedidoID       = 716;
+                $trcID                 = 1;
+            }
+            
             $data = [   
                 "TipoEnvio"             => "api",
-                "TipoDocumentoID"       => "2101",
+                "TipoDocumentoID"       => $tipo_documento == 1 ? "2101" : "2202",
                 "TipoDocumento"         => $tipo_documento == 1 ? "DNI" : "C.E",
                 "NumeroDocumento"       => $numero_documento,
                 "Apellidos"             => strtoupper($apellido_paterno . " " . $apellido_materno),
@@ -306,16 +329,16 @@ class Postulaciones_model extends CI_Model
                 "Telefono"              => $numero_telefono,
                 "CorreoElectronico"     => $correo,
             
-                "ResumenPedido"         => "CONVOCATORIA REGISTRO DE DOCENTE " . $this->tools->getDateHour("Y"),
-                "ResumenPedidoID"       => 716,
-                "trcID"                 => 1,
-                "ADetallePedido"        => "LICENCIA DOCENTE",
+                "ResumenPedido"         => $ResumenPedido,
+                "ResumenPedidoID"       => $ResumenPedidoID,
+                "trcID"                 => $trcID,
+                "ADetallePedido"        => "CONTRATO DOCENTE " . $this->tools->getDateHour("Y") . " - " . strtoupper($apellido_paterno . " " . $apellido_materno),
                 "TipoUsuarioID"         => 3,
                 "TipoUsuario"           => "DOCENTE",
                 "AFundamentacionPedido" => strtoupper("convocatorias para el proceso de contratación docente - " . $this->tools->getDateHour("Y")),
-                "fechaInicio"           => "26-01-2024",
-                "fechaFin"              => "30-01-2024",
-                "requisitos"            => $tipo_documento == 1 ? "DNI" : "C.E",
+                "fechaInicio"           => "",
+                "fechaFin"              => "",
+                "requisitos"            => strtoupper(implode(",", $requisitos)),
                 "Archivo"               => new CURLFile($zipData)           
             ];
 

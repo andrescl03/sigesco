@@ -209,7 +209,7 @@ const AppConvovatoriaWeb = () => {
                             const zona_id = self.formData.get('zona_id');
                             const zonaObj = self.formZonas.find((o) => {return o.TipoZonaID == zona_id});
                             self.postulant.zona = zonaObj.DesTipoZona;
-                            self.formData.append('via', self.postulant.zona);
+                            self.formData.append('zona', self.postulant.zona);
 
                             self.listAttachedFile();
                             self.renderPreviewPostulant({el: 'previewPostulant', postulant: self.postulant, toString: false});
