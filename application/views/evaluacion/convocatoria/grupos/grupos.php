@@ -17,9 +17,20 @@
                                         <div class="card border bg-light">
                                             <div class="card-body" style="padding: 0.8rem 1rem;">
                                                 <div class="row">
-                                                    <div class="col-sm-12 ">
+                                                    <div class="col-sm-7 ">
                                                         <div class="d-flex align-content-start flex-wrap gap-3">                                                       
                                                             <div class="col-sm-4"><input type="text" class="form-control form-control-sm" id="txt_buscador" placeholder="Buscar..." ></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-5 ">
+                                                    <?php
+                                                           $totalPostulaciones = 0;
+                                                                foreach ($datos as $indice => $dato) {
+                                                                      $totalPostulaciones += $dato['total_postulaciones'];
+                                                                    }  ?>
+    
+                                                        <div class="d-flex align-content-start flex-wrap gap-3">                                                       
+                                                              CANTIDAD DE POSTULANTES PARA LA CONVOCATORIA <?= sprintf('%04d', $datos[0]['con_numero'])."-".$datos[0]['con_anio'] ?>:<b><?php echo $totalPostulaciones?> REGISTROS</b> 
                                                         </div>
                                                     </div>
                                                 </div>
