@@ -2989,3 +2989,117 @@ DEBUG - 2024-01-31 22:16:52 --> UTF-8 Support Enabled
 DEBUG - 2024-01-31 22:16:52 --> Global POST, GET and COOKIE data sanitized
 DEBUG - 2024-01-31 22:16:52 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
 DEBUG - 2024-01-31 16:16:52 --> Total execution time: 0.0276
+DEBUG - 2024-01-31 22:30:13 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:30:13 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:30:13 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:30:13 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 16:30:13 --> Tools class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 16:30:13 --> Total execution time: 0.0412
+DEBUG - 2024-01-31 22:30:13 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:30:13 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:30:13 --> Global POST, GET and COOKIE data sanitized
+ERROR - 2024-01-31 22:30:13 --> 404 Page Not Found: Public/css
+DEBUG - 2024-01-31 22:30:13 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:30:13 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:30:13 --> Global POST, GET and COOKIE data sanitized
+ERROR - 2024-01-31 22:30:13 --> 404 Page Not Found: Public/css
+DEBUG - 2024-01-31 22:30:13 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:30:13 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:30:13 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:30:13 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:30:13 --> Global POST, GET and COOKIE data sanitized
+ERROR - 2024-01-31 22:30:13 --> 404 Page Not Found: Public/css
+DEBUG - 2024-01-31 22:30:13 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:30:13 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 16:30:13 --> Tools class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 16:30:13 --> Total execution time: 0.0505
+DEBUG - 2024-01-31 22:30:13 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:30:13 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:30:13 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:30:13 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:30:13 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:30:13 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:30:13 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:30:13 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:30:13 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:30:13 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 22:30:13 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 16:30:13 --> Total execution time: 0.0459
+DEBUG - 2024-01-31 16:30:13 --> Total execution time: 0.0479
+DEBUG - 2024-01-31 22:30:13 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 16:30:13 --> Total execution time: 0.0691
+DEBUG - 2024-01-31 22:30:17 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:30:17 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:30:17 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:30:17 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 22:30:17 --> Tools class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 22:30:17 --> Tools class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 16:30:17 --> Log detalle => Ingresa a busqueda{"documento":"09326612","convocatoria_id":"7","inscripcion_id":"1"}
+DEBUG - 2024-01-31 16:30:17 --> Total execution time: 0.0359
+DEBUG - 2024-01-31 22:30:51 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:30:51 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:30:51 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:30:51 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 16:30:51 --> Total execution time: 0.0319
+DEBUG - 2024-01-31 22:30:53 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:30:53 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:30:53 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:30:53 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 16:30:53 --> Total execution time: 0.0284
+DEBUG - 2024-01-31 22:32:40 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:32:40 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:32:40 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:32:40 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 16:32:40 --> Tools class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 16:32:40 --> Total execution time: 0.0424
+DEBUG - 2024-01-31 22:32:41 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:32:41 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:32:41 --> Global POST, GET and COOKIE data sanitized
+ERROR - 2024-01-31 22:32:41 --> 404 Page Not Found: Public/css
+DEBUG - 2024-01-31 22:32:41 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:32:41 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:32:41 --> Global POST, GET and COOKIE data sanitized
+ERROR - 2024-01-31 22:32:41 --> 404 Page Not Found: Public/css
+DEBUG - 2024-01-31 22:32:41 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:32:41 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:32:41 --> Global POST, GET and COOKIE data sanitized
+ERROR - 2024-01-31 22:32:41 --> 404 Page Not Found: Public/css
+DEBUG - 2024-01-31 22:32:41 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:32:41 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:32:41 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:32:41 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 16:32:41 --> Tools class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 16:32:41 --> Total execution time: 0.0506
+DEBUG - 2024-01-31 22:32:41 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:32:41 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:32:41 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:32:41 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:32:41 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:32:41 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:32:41 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:32:41 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:32:41 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:32:41 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 22:32:41 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 22:32:41 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 16:32:41 --> Total execution time: 0.0329
+DEBUG - 2024-01-31 16:32:41 --> Total execution time: 0.0387
+DEBUG - 2024-01-31 16:32:41 --> Total execution time: 0.0420
+DEBUG - 2024-01-31 22:32:42 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:32:42 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:32:42 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:32:42 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 22:32:42 --> Tools class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 22:32:42 --> Tools class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 16:32:42 --> Log detalle => Ingresa a busqueda{"documento":"09326612","convocatoria_id":"7","inscripcion_id":"1"}
+DEBUG - 2024-01-31 16:32:42 --> Total execution time: 0.0358
+DEBUG - 2024-01-31 22:32:58 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:32:58 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:32:58 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:32:58 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 16:32:58 --> Total execution time: 0.0302
+DEBUG - 2024-01-31 22:32:59 --> Accessing maintenance hook!
+DEBUG - 2024-01-31 22:32:59 --> UTF-8 Support Enabled
+DEBUG - 2024-01-31 22:32:59 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2024-01-31 22:33:00 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2024-01-31 16:33:00 --> Total execution time: 0.0271
