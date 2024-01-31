@@ -239,7 +239,7 @@
                                                                 <button type="button" class="btn btn-primary btn-academic-training float-end form-input-validate">Agregar</button>
                                                             </div>
                                                         </div>
-                                                        <div class="table-responsive">
+                                                        <div class="table-responsive mb-5">
                                                             <table class="table table-academic-training mb-0">
                                                                 <thead class="text-center">
                                                                     <tr>
