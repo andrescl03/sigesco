@@ -2,3 +2,4 @@
 /archivos
 /.vscode
 /public/uploads/*
+/application/logs/*

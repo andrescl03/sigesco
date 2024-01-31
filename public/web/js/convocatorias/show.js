@@ -194,14 +194,7 @@ const AppConvovatoriaWeb = () => {
                             e.stopPropagation()
                         }
 
-                     console.log(self.formAttachedFiles);
-
-
-                     const inputFiles = dom.querySelectorAll('.form-input-file');
-                     
-                     inputFiles.forEach((inputFile, index) => {
-                         const files = inputFile.files;
-                         if (!files) {
+                        const alertFileFailed = (e) => {
                             sweet2.show({
                                 type: 'error',
                                 title: 'IMPORTANTE',
@@ -209,8 +202,19 @@ const AppConvovatoriaWeb = () => {
                             });
                             e.stopPropagation()
                             return false;
-                         }
-                     }); 
+                        }
+
+                        const inputFiles = dom.querySelectorAll('.form-input-file');
+                        if(inputFiles.length == 0) {
+                            alertFileFailed(e);
+                        }
+                        inputFiles.forEach((inputFile, index) => {
+                            const files = inputFile.files;
+                            if (!files) {
+                                alertFileFailed(e);
+                            }
+                        });
+                        
                         form.classList.add('was-validated');
                         if (form.checkValidity()) {
                             self.formData = new FormData(e.target);
