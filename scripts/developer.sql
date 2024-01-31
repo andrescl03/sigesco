@@ -373,3 +373,6 @@ INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`,
 INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`, `updated_at`, `deleted_at`) VALUES (7, 'Anexo 19', 0, 7, '2024-01-30 16:41:52', '2024-01-30 16:42:15', NULL);
 INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`, `updated_at`, `deleted_at`) VALUES (8, 'CV Documentado', 1, 8, '2024-01-30 16:42:03', '2024-01-30 16:42:16', NULL);
 INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`, `updated_at`, `deleted_at`) VALUES (9, 'Titulo Profesional', 1, 9, '2024-01-30 16:42:03', '2024-01-30 16:42:16', NULL);
+
+/************************** 31/01/2024 **************************/
+ALTER TABLE postulaciones ADD COLUMN `nombre_zona` VARCHAR(255) NULL DEFAULT NULL AFTER `uid`;

@@ -89,6 +89,17 @@ class Postulaciones_model extends CI_Model
                 throw new Exception("El campo confirmar correo debe ser igual al correo de origen");
             }
 
+            if (!isset($_FILES['archivos'])) {
+                throw new Exception('Debe de adjuntar al menos un documento');
+            }
+            $total  = count($_FILES['archivos']['name']);
+            if ($total == 0) {
+                throw new Exception('Debe de adjuntar al menos un documento');
+            }
+            if (count($tipo_archivos) == 0) {
+                throw new Exception('Debe de adjuntar al menos un documento');
+            }
+
             $result = $this->convocatorias_web_model->show(compact('convocatoria_id', 'inscripcion_id'));
             if (!$result['success']) {
                 throw new Exception($result['message']);
@@ -147,9 +158,6 @@ class Postulaciones_model extends CI_Model
                 }
             }
 
-            if (count($tipo_archivos) == 0) {
-                throw new Exception('Debe de adjuntar al menos un documento');
-            }
             $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL ORDER BY orden ASC";
             $my_tipo_archivos = $this->db->query($sql)->result_object();
 
@@ -250,6 +258,7 @@ class Postulaciones_model extends CI_Model
             $data['nombre_via']       = $nombre_via;
             $data['zona_id']          = $zona_id;
             $data['zona']             = $zona;
+            $data['nombre_zona']      = $nombre_zona;
             $data['direccion']        = $direccion;
             $data['afiliacion']       = $afiliacion;
             $data['cuss']             = $cuss;            
@@ -457,10 +466,10 @@ class Postulaciones_model extends CI_Model
         $response = $this->tools->responseDefault();
         try {
 
-            $uid = isset($args['uid']) ? $args['uid'] : 0;
+            $id = isset($args['id']) ? $args['id'] : 0;
 
-            $sql = "SELECT * FROM postulaciones WHERE deleted_at IS NULL AND uid = ?";
-            $postulante = $this->db->query($sql, compact('uid'))->row();
+            $sql = "SELECT * FROM postulaciones WHERE deleted_at IS NULL AND id = ?";
+            $postulante = $this->db->query($sql, compact('id'))->row();
 
             if (!$postulante) {
                 show_404();
@@ -468,9 +477,82 @@ class Postulaciones_model extends CI_Model
 
             $convocatoria_id = $postulante->convocatoria_id;
             $postulacion_id = $postulante->id;
+            $inscripcion_id =  $postulante->inscripcion_id;
 
-            $sql = "SELECT * FROM convocatorias WHERE con_estado = 1 AND con_id = ?";
-            $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
+            $sql = "SELECT
+                        C.*,
+                        M.mod_id AS modalidad_id,
+                        M.mod_nombre AS modalidad_nombre,
+                        N.niv_id AS nivel_id,
+                        N.niv_descripcion AS nivel_nombre,
+                        E.esp_id AS especialidad_id,
+                        E.esp_descripcion AS especialidad_nombre,
+                        GI.gin_id AS inscripcion_id,
+                        C.con_tipo as con_tipo
+                    FROM convocatorias C
+                    INNER JOIN convocatorias_detalle CD ON CD.convocatorias_con_id = C.con_id
+                    INNER JOIN grupo_inscripcion GI ON GI.gin_id = CD.grupo_inscripcion_gin_id
+                    INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
+                    INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
+                    INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
+                    WHERE C.con_estado = 1
+                    AND C.con_id = ?
+                    AND GI.gin_id = ?";
+
+            $convocatoria = $this->db->query($sql, compact('convocatoria_id', 'inscripcion_id'))->row();
+            if (!$convocatoria) {
+                show_404();
+            }
+
+            $response['success'] = true;
+            $response['data']  = compact('convocatoria','postulante');
+            $response['status']  = 200;
+            $response['message'] = 'edit';
+        } catch (\Exception $e) {
+            $response['message'] = $e->getMessage();
+        }
+        return $response;
+    }
+
+    public function detail($args)
+    {
+        $response = $this->tools->responseDefault();
+        try {
+
+            $id = isset($args['id']) ? $args['id'] : 0;
+
+            $sql = "SELECT * FROM postulaciones WHERE deleted_at IS NULL AND id = ?";
+            $postulante = $this->db->query($sql, compact('id'))->row();
+
+            if (!$postulante) {
+                show_404();
+            }
+
+            $convocatoria_id = $postulante->convocatoria_id;
+            $postulacion_id = $postulante->id;
+            $inscripcion_id =  $postulante->inscripcion_id;
+
+            $sql = "SELECT
+                        C.*,
+                        M.mod_id AS modalidad_id,
+                        M.mod_nombre AS modalidad_nombre,
+                        N.niv_id AS nivel_id,
+                        N.niv_descripcion AS nivel_nombre,
+                        E.esp_id AS especialidad_id,
+                        E.esp_descripcion AS especialidad_nombre,
+                        GI.gin_id AS inscripcion_id,
+                        C.con_tipo as con_tipo
+                    FROM convocatorias C
+                    INNER JOIN convocatorias_detalle CD ON CD.convocatorias_con_id = C.con_id
+                    INNER JOIN grupo_inscripcion GI ON GI.gin_id = CD.grupo_inscripcion_gin_id
+                    INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
+                    INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
+                    INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
+                    WHERE C.con_estado = 1
+                    AND C.con_id = ?
+                    AND GI.gin_id = ?";
+
+            $convocatoria = $this->db->query($sql, compact('convocatoria_id', 'inscripcion_id'))->row();
             if (!$convocatoria) {
                 show_404();
             }
@@ -484,22 +566,14 @@ class Postulaciones_model extends CI_Model
             $sql = "SELECT * FROM postulacion_experiencias_laborales WHERE deleted_at IS NULL AND postulacion_id = ?";
             $postulacion_experiencias_laborales = $this->db->query($sql, compact('postulacion_id'))->result_object();
 
-            $sql = "SELECT * FROM postulacion_archivos WHERE deleted_at IS NULL AND postulacion_id = ?";
+            $sql = "SELECT PA.*, TA.nombre AS tipo_nombre FROM postulacion_archivos PA INNER JOIN tipo_archivos TA ON PA.tipo_id = TA.id WHERE PA.deleted_at IS NULL AND PA.postulacion_id = ?";
             $postulacion_archivos = $this->db->query($sql, compact('postulacion_id'))->result_object();
 
-            /*$now_unix = strtotime($this->tools->getDateHour());
-            $con_fechainicio_unix = strtotime($convocatoria->con_fechainicio);
-            $con_fechafin_unix = strtotime($convocatoria->con_fechafin);
-            
-            if (!($now_unix >= $con_fechainicio_unix  
-                && $now_unix <= $con_fechafin_unix)) {
-                show_404();
-            }*/
-
-            // $convocatoria->con_type_postulacion = $convocatoria->con_tipo;
+            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL ORDER BY orden ASC";
+            $tipo_archivos = $this->db->query($sql)->result_object();
 
             $response['success'] = true;
-            $response['data']  = compact('convocatoria', 'uid', 'postulante', 'postulacion_archivos', 'postulacion_experiencias_laborales', 'postulacion_formaciones_academicas', 'postulacion_especializaciones');
+            $response['data']  = compact('convocatoria', 'uid', 'postulante', 'postulacion_archivos', 'postulacion_experiencias_laborales', 'postulacion_formaciones_academicas', 'postulacion_especializaciones', 'tipo_archivos');
             $response['status']  = 200;
             $response['message'] = 'edit';
         } catch (\Exception $e) {
