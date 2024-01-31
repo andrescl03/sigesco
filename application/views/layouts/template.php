@@ -191,7 +191,7 @@
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-
+        <script src="<?php echo base_url() ?>/public/js/utilities/helper.js"></script>
 
         <script src="<?php echo base_url()?>public/js/script.js"></script>
         <script src='<?php echo base_url()?>public/js/sha1/sha1.js'></script>    
