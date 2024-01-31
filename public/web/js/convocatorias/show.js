@@ -193,6 +193,27 @@ const AppConvovatoriaWeb = () => {
 
                             e.stopPropagation()
                         }
+
+                        const alertFileFailed = (e) => {
+                            sweet2.show({
+                                type: 'error',
+                                title: 'IMPORTANTE',
+                                html: 'Por favor ingrese al menos un documento adjunto'
+                            });
+                            e.stopPropagation()
+                            return false;
+                        }
+
+                        const inputFiles = dom.querySelectorAll('.form-input-file');
+                        if(inputFiles.length == 0) {
+                            alertFileFailed(e);
+                        }
+                        inputFiles.forEach((inputFile, index) => {
+                            const files = inputFile.files;
+                            if (!files) {
+                                alertFileFailed(e);
+                            }
+                        });
                         
                         form.classList.add('was-validated');
                         if (form.checkValidity()) {
