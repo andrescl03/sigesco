@@ -1403,4 +1403,21 @@ class Postulaciones_model extends CI_Model
         }
         return $response;  
     }
+
+    public function buscarDocentesXConvocatoria($convocatoria_id){
+        $sql=$this->db
+          ->select("p.uid, p.id, p.numero_expediente")
+          ->from("postulaciones p")
+          ->join("convocatorias c", "p.convocatoria_id =  c.con_id", "inner")
+          ->where(array("c.con_numero"=>$convocatoria_id))       
+          ->get();
+        //echo $this->db->last_query(); exit(); 
+         return $sql->result_object();  
+      }
+
+
+    public function updateExpedienteXPostulante($postulacion_id, $numero_expediente)
+    {
+        $this->db->update('postulaciones', ['numero_expediente' => $numero_expediente], array('id' => $postulacion_id));
+    }
 }

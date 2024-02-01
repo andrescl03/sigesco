@@ -376,3 +376,8 @@ INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`,
 
 /************************** 31/01/2024 **************************/
 ALTER TABLE postulaciones ADD COLUMN `nombre_zona` VARCHAR(255) NULL DEFAULT NULL AFTER `uid`;
+
+
+/************************** 01/02/2024 **************************/
+ALTER TABLE postulaciones ADD COLUMN `numero_expediente` VARCHAR(255) NULL DEFAULT NULL AFTER `uid`;
+

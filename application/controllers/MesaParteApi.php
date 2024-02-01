@@ -344,4 +344,55 @@ class Mesaparteapi extends CI_Controller {
         ->set_output(json_encode($this->mesaparteservice->request('POST', 'mpv/listar/distritosporprovincia', $_POST, $this->mesaparteservice->token())));
     }
 
+    public function procesarexpedientes()
+    {
+        $this->load->model("postulaciones_model");
+
+        log_message_ci("Ingresa a procesarexpedientes");
+
+        $con_numero  = $this->input->post("con_numero", true);
+        $actualizacionesCounter = 0;
+        $postulantes = $this->postulaciones_model->buscarDocentesXConvocatoria($con_numero);
+
+
+        foreach ($postulantes as $postulante) {
+
+            if (!$postulante->numero_expediente) {
+
+                $uid = $postulante->uid;
+                $postulacion_id = $postulante->id;
+
+                $requestBody = array(
+                    "codigoTramite" => $uid
+                );
+
+                $response = $this->mesaparteservice->request('POST', 'expedientesmpv/buscar/porcodigotramite', $requestBody, $this->mesaparteservice->token());
+
+                if ($response['response']['numeroExpediente']) {
+                    log_message_ci("Ingresa a procesarexpedientes - procesa " . json_encode($postulante));
+
+                    $numero_expediente = $response['response']['numeroExpediente'];
+
+                    $this->postulaciones_model->updateExpedienteXPostulante($postulacion_id, $numero_expediente);
+
+                    $actualizacionesCounter++;
+                   
+                } else {
+                    log_message_ci("Ingresa a procesarexpedientes - no procesa " . json_encode($postulante));
+                }
+            }
+        }
+
+        $responsejson = [
+            "message" => "OK",
+            "response" => [
+                "cantidad_procesados"  => $actualizacionesCounter
+            ],
+            "status" => 200
+        ];
+
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output($responsejson);
+    }
 }

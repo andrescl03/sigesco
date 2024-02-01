@@ -55,7 +55,8 @@ $route['api/mpv/zonas'] = 'Mesaparteapi/zonas';
 $route['api/mpv/departamentos'] = 'Mesaparteapi/departamentos';
 $route['api/mpv/provincias'] = 'Mesaparteapi/provincias';
 $route['api/mpv/distritos'] = 'Mesaparteapi/distritos';
-
+/*Procesar expedientes*/
+$route['api/mpv/procesar'] = 'Mesaparteapi/procesarexpedientes';
 $route['web/convocatorias'] = 'convocatoriasWeb/index';
 $route['web/convocatorias/detail'] = 'convocatoriasWeb/detail';
 $route['web/convocatorias/detailConvocatoriaGrupoInscripcion'] = 'convocatoriasWeb/detailConvocatoriaGrupoInscripcion';
