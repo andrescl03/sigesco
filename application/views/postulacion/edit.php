@@ -31,6 +31,11 @@
                                                             <?php echo $convocatoria->modalidad_nombre ?> <?php echo $convocatoria->nivel_nombre ?> <?php echo $convocatoria->especialidad_nombre == '-' ? '' : $convocatoria->especialidad_nombre ?>
                                                         </h6>
                                                     </div>
+                                                    <div class="col-md-12 text-center">
+                                                        <h6 class="my-2 text-dark text-uppercase">
+                                                            <?php echo $postulante->tipo_documento == 1 ? 'DNI' : 'C.E' ?> <?php echo $postulante->numero_documento ?> <?php echo $convocatoria->especialidad_nombre == '-' ? '' : $convocatoria->especialidad_nombre ?>
+                                                        </h6>
+                                                    </div>
                                                 </div>
                                           
                                    
@@ -343,7 +348,7 @@
                                      
                                             <div class="card-toolbar d-flex justify-content-between">
                                                 <!--a href="<?php echo base_url(); ?>web/convocatorias" type="button" class="btn btn-secondary me-3">Regresar</a-->
-                                                <!--button type="submit" class="btn btn-primary px-4 py-2 form-input-validate" form="formPostulant">PROCESAR INFORMACIÓN</button-->
+                                                <button type="submit" class="btn btn-primary px-4 py-2 form-input-validate" form="formPostulant">ACTUALIZAR INFORMACIÓN</button>
                                             </div>
                                      
                                         <div class="modal fade" id="modalWorkExperience" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

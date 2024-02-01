@@ -44,4 +44,10 @@ class Postulaciones extends CI_Controller {
                 ->set_content_type('application/json')
                 ->set_output(json_encode($this->postulaciones_model->detail(compact('id'))));
     }
+
+    public function update($id) {
+        return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->postulaciones_model->update(compact('id'))));
+    }
 }

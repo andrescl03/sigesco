@@ -3781,3 +3781,177 @@ DEBUG - 2024-01-31 23:17:30 --> Session: "sess_save_path" is empty; using "sessi
 DEBUG - 2024-01-31 17:17:30 --> Total execution time: 0.0647
 DEBUG - 2024-01-31 23:17:30 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
 DEBUG - 2024-01-31 17:17:30 --> Total execution time: 0.0513
+DEBUG - 2024-01-31 18:25:16 --> Total execution time: 0.0561
+DEBUG - 2024-01-31 18:25:17 --> Total execution time: 0.0402
+DEBUG - 2024-01-31 18:25:17 --> Total execution time: 0.0393
+DEBUG - 2024-01-31 18:25:17 --> Total execution time: 0.0425
+DEBUG - 2024-01-31 18:25:17 --> Total execution time: 0.0484
+DEBUG - 2024-01-31 18:25:17 --> Total execution time: 0.0520
+DEBUG - 2024-01-31 18:25:17 --> Total execution time: 0.0557
+DEBUG - 2024-01-31 18:45:13 --> Total execution time: 0.0481
+DEBUG - 2024-01-31 18:45:14 --> Total execution time: 0.0446
+DEBUG - 2024-01-31 18:45:14 --> Total execution time: 0.0453
+DEBUG - 2024-01-31 18:45:14 --> Total execution time: 0.0500
+DEBUG - 2024-01-31 18:45:14 --> Total execution time: 0.0528
+DEBUG - 2024-01-31 18:45:14 --> Total execution time: 0.0545
+DEBUG - 2024-01-31 18:45:14 --> Total execution time: 0.0628
+DEBUG - 2024-01-31 18:45:26 --> Total execution time: 0.0607
+DEBUG - 2024-01-31 18:45:26 --> Total execution time: 0.0454
+DEBUG - 2024-01-31 18:45:26 --> Total execution time: 0.0495
+DEBUG - 2024-01-31 18:45:26 --> Total execution time: 0.0558
+DEBUG - 2024-01-31 18:45:26 --> Total execution time: 0.0475
+DEBUG - 2024-01-31 18:45:26 --> Total execution time: 0.0478
+DEBUG - 2024-01-31 18:45:26 --> Total execution time: 0.0543
+DEBUG - 2024-01-31 18:48:16 --> Total execution time: 0.0758
+DEBUG - 2024-01-31 18:48:16 --> Total execution time: 0.0429
+DEBUG - 2024-01-31 18:48:16 --> Total execution time: 0.0545
+DEBUG - 2024-01-31 18:48:16 --> Total execution time: 0.0594
+DEBUG - 2024-01-31 18:48:16 --> Total execution time: 0.0417
+DEBUG - 2024-01-31 18:48:16 --> Total execution time: 0.0691
+DEBUG - 2024-01-31 18:48:16 --> Total execution time: 0.0674
+DEBUG - 2024-01-31 18:48:38 --> Form_validation class already loaded. Second attempt ignored.
+ERROR - 2024-01-31 18:48:38 --> Could not find the language line "form_validation_required"
+ERROR - 2024-01-31 18:48:38 --> Could not find the language line "form_validation_required"
+DEBUG - 2024-01-31 18:48:38 --> Log detalle => Ingresa a registrar expediente {"numero_documento":"El campo <strong>numero_documento<\/strong> es obligatorio.","tipo_documento":"El campo <strong>tipo_documento<\/strong> es obligatorio."}
+DEBUG - 2024-01-31 18:48:38 --> Log detalle => Error al registrar expediente "No cumple con los datos requeridos          => {\"numero_documento\":\"El campo <strong>numero_documento<\\\/strong> es obligatorio.\",\"tipo_documento\":\"El campo <strong>tipo_documento<\\\/strong> es obligatorio.\"}"
+DEBUG - 2024-01-31 18:48:38 --> Total execution time: 0.0368
+DEBUG - 2024-01-31 18:48:55 --> Total execution time: 0.0584
+DEBUG - 2024-01-31 18:48:56 --> Total execution time: 0.0455
+DEBUG - 2024-01-31 18:48:56 --> Total execution time: 0.0402
+DEBUG - 2024-01-31 18:48:56 --> Total execution time: 0.0438
+DEBUG - 2024-01-31 18:48:56 --> Total execution time: 0.0466
+DEBUG - 2024-01-31 18:48:56 --> Total execution time: 0.0490
+DEBUG - 2024-01-31 18:48:56 --> Total execution time: 0.0532
+DEBUG - 2024-01-31 18:49:16 --> Form_validation class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 18:49:16 --> Log detalle => Error al registrar expediente "El documento Anexo 1 es obligatorio"
+DEBUG - 2024-01-31 18:49:16 --> Total execution time: 0.0447
+DEBUG - 2024-01-31 18:49:43 --> Form_validation class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 18:49:43 --> Total execution time: 0.0530
+DEBUG - 2024-01-31 18:49:47 --> Total execution time: 0.0512
+DEBUG - 2024-01-31 18:49:48 --> Total execution time: 0.0784
+DEBUG - 2024-01-31 18:49:48 --> Total execution time: 0.0411
+DEBUG - 2024-01-31 18:49:48 --> Total execution time: 0.0442
+DEBUG - 2024-01-31 18:49:48 --> Total execution time: 0.0464
+DEBUG - 2024-01-31 18:49:48 --> Total execution time: 0.0551
+DEBUG - 2024-01-31 18:49:48 --> Total execution time: 0.0561
+DEBUG - 2024-01-31 18:49:59 --> Form_validation class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 18:49:59 --> Total execution time: 0.0534
+DEBUG - 2024-01-31 18:50:10 --> Form_validation class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 18:50:10 --> Total execution time: 0.0521
+DEBUG - 2024-01-31 18:50:19 --> Total execution time: 0.0557
+DEBUG - 2024-01-31 18:50:19 --> Total execution time: 0.0455
+DEBUG - 2024-01-31 18:50:19 --> Total execution time: 0.0384
+DEBUG - 2024-01-31 18:50:19 --> Total execution time: 0.0437
+DEBUG - 2024-01-31 18:50:20 --> Total execution time: 0.0396
+DEBUG - 2024-01-31 18:50:20 --> Total execution time: 0.0438
+DEBUG - 2024-01-31 18:50:20 --> Total execution time: 0.0433
+DEBUG - 2024-01-31 18:50:26 --> Form_validation class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 18:50:26 --> Total execution time: 0.0486
+DEBUG - 2024-01-31 18:50:30 --> Total execution time: 0.0634
+DEBUG - 2024-01-31 18:50:31 --> Total execution time: 0.0710
+DEBUG - 2024-01-31 18:50:31 --> Total execution time: 0.0413
+DEBUG - 2024-01-31 18:50:31 --> Total execution time: 0.0498
+DEBUG - 2024-01-31 18:50:31 --> Total execution time: 0.0543
+DEBUG - 2024-01-31 18:50:31 --> Total execution time: 0.0608
+DEBUG - 2024-01-31 18:50:31 --> Total execution time: 0.0643
+DEBUG - 2024-01-31 18:50:34 --> Form_validation class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 18:50:34 --> Total execution time: 0.0471
+DEBUG - 2024-01-31 18:52:18 --> Total execution time: 0.0630
+DEBUG - 2024-01-31 18:52:18 --> Total execution time: 0.0431
+DEBUG - 2024-01-31 18:52:18 --> Total execution time: 0.0412
+DEBUG - 2024-01-31 18:52:18 --> Total execution time: 0.0489
+DEBUG - 2024-01-31 18:52:18 --> Total execution time: 0.0757
+DEBUG - 2024-01-31 18:52:18 --> Total execution time: 0.0483
+DEBUG - 2024-01-31 18:52:18 --> Total execution time: 0.0859
+DEBUG - 2024-01-31 18:52:21 --> Form_validation class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 18:52:21 --> Total execution time: 0.0492
+DEBUG - 2024-01-31 18:52:22 --> Total execution time: 0.0380
+DEBUG - 2024-01-31 18:52:22 --> Total execution time: 0.0459
+DEBUG - 2024-01-31 18:52:22 --> Total execution time: 0.0413
+DEBUG - 2024-01-31 18:52:22 --> Total execution time: 0.0459
+DEBUG - 2024-01-31 18:52:22 --> Total execution time: 0.0509
+DEBUG - 2024-01-31 18:52:22 --> Total execution time: 0.0573
+DEBUG - 2024-01-31 18:52:22 --> Total execution time: 0.0612
+DEBUG - 2024-01-31 18:57:18 --> Total execution time: 0.0843
+DEBUG - 2024-01-31 18:57:19 --> Total execution time: 0.0426
+DEBUG - 2024-01-31 18:57:19 --> Total execution time: 0.0382
+DEBUG - 2024-01-31 18:57:19 --> Total execution time: 0.0538
+DEBUG - 2024-01-31 18:57:19 --> Total execution time: 0.0753
+DEBUG - 2024-01-31 18:57:19 --> Total execution time: 0.0486
+DEBUG - 2024-01-31 18:57:19 --> Total execution time: 0.0450
+DEBUG - 2024-01-31 18:57:21 --> Form_validation class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 18:57:21 --> Total execution time: 0.0509
+DEBUG - 2024-01-31 18:57:22 --> Total execution time: 0.0346
+DEBUG - 2024-01-31 18:57:22 --> Total execution time: 0.0448
+DEBUG - 2024-01-31 18:57:22 --> Total execution time: 0.0385
+DEBUG - 2024-01-31 18:57:22 --> Total execution time: 0.0423
+DEBUG - 2024-01-31 18:57:22 --> Total execution time: 0.0473
+DEBUG - 2024-01-31 18:57:22 --> Total execution time: 0.0505
+DEBUG - 2024-01-31 18:57:22 --> Total execution time: 0.0557
+DEBUG - 2024-01-31 18:57:36 --> Form_validation class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 18:57:36 --> Total execution time: 0.0475
+DEBUG - 2024-01-31 18:57:37 --> Total execution time: 0.0357
+DEBUG - 2024-01-31 18:57:37 --> Total execution time: 0.0479
+DEBUG - 2024-01-31 18:57:37 --> Total execution time: 0.0415
+DEBUG - 2024-01-31 18:57:37 --> Total execution time: 0.0461
+DEBUG - 2024-01-31 18:57:37 --> Total execution time: 0.0425
+DEBUG - 2024-01-31 18:57:37 --> Total execution time: 0.0583
+DEBUG - 2024-01-31 18:57:37 --> Total execution time: 0.0480
+DEBUG - 2024-01-31 18:58:02 --> Total execution time: 0.0515
+DEBUG - 2024-01-31 18:58:03 --> Total execution time: 0.0448
+DEBUG - 2024-01-31 18:58:03 --> Total execution time: 0.0400
+DEBUG - 2024-01-31 18:58:03 --> Total execution time: 0.0605
+DEBUG - 2024-01-31 18:58:03 --> Total execution time: 0.0492
+DEBUG - 2024-01-31 18:58:03 --> Total execution time: 0.0537
+DEBUG - 2024-01-31 18:58:03 --> Total execution time: 0.0614
+DEBUG - 2024-01-31 18:58:05 --> Total execution time: 0.0425
+DEBUG - 2024-01-31 18:58:05 --> Total execution time: 0.0478
+DEBUG - 2024-01-31 18:58:05 --> Total execution time: 0.0412
+DEBUG - 2024-01-31 18:58:05 --> Total execution time: 0.0456
+DEBUG - 2024-01-31 18:58:05 --> Total execution time: 0.0563
+DEBUG - 2024-01-31 18:58:05 --> Total execution time: 0.0593
+DEBUG - 2024-01-31 18:58:05 --> Total execution time: 0.0574
+DEBUG - 2024-01-31 18:59:39 --> Total execution time: 0.0442
+DEBUG - 2024-01-31 18:59:39 --> Total execution time: 0.0644
+DEBUG - 2024-01-31 18:59:39 --> Total execution time: 0.0395
+DEBUG - 2024-01-31 18:59:39 --> Total execution time: 0.0433
+DEBUG - 2024-01-31 18:59:39 --> Total execution time: 0.0504
+DEBUG - 2024-01-31 18:59:39 --> Total execution time: 0.0525
+DEBUG - 2024-01-31 18:59:39 --> Total execution time: 0.0566
+DEBUG - 2024-01-31 18:59:49 --> Total execution time: 0.0363
+DEBUG - 2024-01-31 18:59:50 --> Total execution time: 0.0448
+DEBUG - 2024-01-31 18:59:50 --> Total execution time: 0.0396
+DEBUG - 2024-01-31 18:59:50 --> Total execution time: 0.0480
+DEBUG - 2024-01-31 18:59:50 --> Total execution time: 0.0720
+DEBUG - 2024-01-31 18:59:50 --> Total execution time: 0.0772
+DEBUG - 2024-01-31 18:59:50 --> Total execution time: 0.0827
+DEBUG - 2024-01-31 19:00:03 --> Total execution time: 0.0349
+DEBUG - 2024-01-31 19:00:03 --> Total execution time: 0.0477
+DEBUG - 2024-01-31 19:00:03 --> Total execution time: 0.0405
+DEBUG - 2024-01-31 19:00:03 --> Total execution time: 0.0452
+DEBUG - 2024-01-31 19:00:03 --> Total execution time: 0.0491
+DEBUG - 2024-01-31 19:00:03 --> Total execution time: 0.0545
+DEBUG - 2024-01-31 19:00:03 --> Total execution time: 0.0621
+DEBUG - 2024-01-31 19:00:20 --> Total execution time: 0.0719
+DEBUG - 2024-01-31 19:00:20 --> Total execution time: 0.0459
+DEBUG - 2024-01-31 19:00:20 --> Total execution time: 0.0490
+DEBUG - 2024-01-31 19:00:20 --> Total execution time: 0.0598
+DEBUG - 2024-01-31 19:00:20 --> Total execution time: 0.0692
+DEBUG - 2024-01-31 19:00:20 --> Total execution time: 0.0796
+DEBUG - 2024-01-31 19:00:20 --> Total execution time: 0.0811
+DEBUG - 2024-01-31 19:00:32 --> Total execution time: 0.0607
+DEBUG - 2024-01-31 19:00:32 --> Total execution time: 0.0411
+DEBUG - 2024-01-31 19:00:32 --> Total execution time: 0.0366
+DEBUG - 2024-01-31 19:00:32 --> Total execution time: 0.0417
+DEBUG - 2024-01-31 19:00:32 --> Total execution time: 0.0455
+DEBUG - 2024-01-31 19:00:32 --> Total execution time: 0.0488
+DEBUG - 2024-01-31 19:00:32 --> Total execution time: 0.0524
+DEBUG - 2024-01-31 19:00:55 --> Form_validation class already loaded. Second attempt ignored.
+DEBUG - 2024-01-31 19:00:55 --> Total execution time: 0.0454
+DEBUG - 2024-01-31 19:00:55 --> Total execution time: 0.0384
+DEBUG - 2024-01-31 19:00:56 --> Total execution time: 0.0371
+DEBUG - 2024-01-31 19:00:56 --> Total execution time: 0.0356
+DEBUG - 2024-01-31 19:00:56 --> Total execution time: 0.0389
+DEBUG - 2024-01-31 19:00:56 --> Total execution time: 0.0435
+DEBUG - 2024-01-31 19:00:56 --> Total execution time: 0.0457
+DEBUG - 2024-01-31 19:00:56 --> Total execution time: 0.0527

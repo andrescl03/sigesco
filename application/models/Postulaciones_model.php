@@ -642,6 +642,246 @@ class Postulaciones_model extends CI_Model
     {
         $response = $this->tools->responseDefault();
         try {
+            $postulacion_id = $args['id'];
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('nombre', 'nombre', 'trim|required|min_length[3]|max_length[100]');
+            $this->form_validation->set_rules('apellido_paterno', 'apellido_paterno', 'trim|required|min_length[3]|max_length[100]');
+            $this->form_validation->set_rules('apellido_materno', 'apellido_materno', 'trim|required|min_length[3]|max_length[100]');
+            $this->form_validation->set_rules('direccion', 'direccion', 'trim|required|min_length[3]|max_length[100]');
+            $this->form_validation->set_rules('correo', 'correo', 'trim|required|valid_email');
+            $this->form_validation->set_rules('confirma_correo', 'confirma_correo', 'trim|required|valid_email');
+            $this->form_validation->set_rules('distrito_id', 'distrito_id', 'trim|required');
+            $this->form_validation->set_rules('estado_civil', 'estado_civil', 'trim|required');
+            $this->form_validation->set_rules('fecha_nacimiento', 'fecha_nacimiento', 'trim|required');
+            $this->form_validation->set_rules('genero', 'genero', 'trim|required');
+            $this->form_validation->set_rules('nacionalidad', 'nacionalidad', 'trim|required');
+            $this->form_validation->set_rules('nombre_via', 'nombre_via', 'trim|required');
+            $this->form_validation->set_rules('numero_celular', 'numero_celular', 'trim|required');
+            // $this->form_validation->set_rules('numero_documento', 'numero_documento', 'trim|required');
+            // $this->form_validation->set_rules('tipo_documento', 'tipo_documento', 'trim|required');
+            $this->form_validation->set_rules('numero_telefono', 'numero_telefono', 'trim|required');
+            $this->form_validation->set_rules('via_id', 'via_id', 'trim|required');
+            $this->form_validation->set_rules('zona_id', 'zona_id', 'trim|required');
+            // $this->form_validation->set_rules('convocatoria_id', 'convocatoria_id', 'trim|required');
+            // $this->form_validation->set_rules('inscripcion_id', 'inscripcion_id', 'trim|required');
+            $this->form_validation->set_rules('cuss', 'cuss', 'trim');
+            $this->form_validation->set_rules('afiliacion', 'afiliacion', 'trim');
+
+            if ($this->form_validation->run() == FALSE) {
+                $response['errors'] = $this->form_validation->error_array();
+                log_message_ci("Ingresa a registrar expediente " . json_encode($this->form_validation->error_array()));
+
+                throw new Exception("No cumple con los datos requeridos          => " . json_encode($response['errors']));
+            }
+
+            $apellido_materno = $this->input->post("apellido_materno", true);
+            $apellido_paterno = $this->input->post("apellido_paterno", true);
+            $nombre           = $this->input->post("nombre", true);
+            $correo           = $this->input->post("correo", true);
+            $confirma_correo  = $this->input->post("confirma_correo", true);
+            $direccion        = $this->input->post("direccion", true);
+            $distrito_id      = $this->input->post("distrito_id", true);
+            $provincia_id     = $this->input->post("provincia_id", true);
+            $departamento_id  = $this->input->post("departamento_id", true);
+            $estado_civil     = $this->input->post("estado_civil", true);
+            $fecha_nacimiento = $this->input->post("fecha_nacimiento", true);
+            $genero           = $this->input->post("genero", true);
+            $afiliacion       = $this->input->post("afiliacion", true);
+            $cuss             = $this->input->post("cuss", true);
+            $modalidad        = $this->input->post("modalidad", true);
+            $nacionalidad     = $this->input->post("nacionalidad", true);
+            $nombre_via       = $this->input->post("nombre_via", true);
+            $numero_celular   = $this->input->post("numero_celular", true);
+            $numero_documento = $this->input->post("numero_documento", true);
+            $tipo_documento   = $this->input->post("tipo_documento", true);
+            $numero_telefono  = $this->input->post("numero_telefono", true);
+            $via              = $this->input->post("via", true);
+            $zona             = $this->input->post("zona", true);
+            $nombre_zona      = $this->input->post("nombre_zona", true);
+            $via_id           = $this->input->post("via_id", true);
+            $zona_id          = $this->input->post("zona_id", true);
+            // $convocatoria_id  = $this->input->post("convocatoria_id", true);
+            // $inscripcion_id   = $this->input->post("inscripcion_id", true);
+
+            $tipo_archivos          = isset($_POST['tipo_archivos'])          ? $_POST['tipo_archivos']                             : [];
+            $especializaciones      = isset($_POST['especializaciones'])      ? json_decode($_POST['especializaciones'], true)      : [];
+            $formaciones_academicas = isset($_POST['formaciones_academicas']) ? json_decode($_POST['formaciones_academicas'], true) : [];
+            $experiencias_laborales = isset($_POST['experiencias_laborales']) ? json_decode($_POST['experiencias_laborales'], true) : [];
+
+            $insert_especializaciones      = [];
+            $insert_formaciones_academicas = [];
+            $insert_experiencias_laborales = [];
+
+            if ($correo != $confirma_correo) {
+                throw new Exception("El campo confirmar correo debe ser igual al correo de origen");
+            }
+
+            if (count($especializaciones) > 0) {
+                foreach ($especializaciones as $key => $item) {
+                    $insert_especializaciones[] = [
+                        'tipo_especializacion' => $item['tipo_especializacion'],
+                        'tema_especializacion' => $item['tema_especializacion'],
+                        'nombre_entidad'       => $item['nombre_entidad'],
+                        'fecha_inicio'         => $item['fecha_inicio'],
+                        'fecha_termino'        => $item['fecha_termino'],
+                        'numero_horas'         => $item['numero_horas']
+                    ];
+                }
+            }
+
+            if (count($formaciones_academicas) > 0) {
+                foreach ($formaciones_academicas as $key => $item) {
+                    $insert_formaciones_academicas[] = [
+                        'nivel_educativo'     => $item['nivel_educativo'],
+                        'tipoestudio_educativo'     => $item['tipoestudio_educativo'], // String
+                        'estadoestudio_educativo'   => $item['estadoestudio_educativo'], // String
+                        'grado_academico'     => $item['grado_academico'],
+                        'subnivel'                  => $item['subnivel'], // String
+                        'mencion_academico'         => $item['mencion_academico'], // String
+                        'mencion_grado_academico'   => $item['mencion_grado_academico'], // String
+                        'universidad'         => $item['universidad'],
+                        'carrera_profesional' => $item['carrera_profesional'],
+                        'registro_titulo'     => $item['registro_titulo'],
+                        'rd_titulo'           => $item['rd_titulo'],
+                        'obtencion_grado'     => $item['obtencion_grado']
+                    ];
+                }
+            }
+
+            if (count($experiencias_laborales) > 0) {
+                foreach ($experiencias_laborales as $key => $item) {
+                    $insert_experiencias_laborales[] = [
+                        'institucion_educativa' => $item['institucion_educativa'],
+                        'sector'                => $item['sector'],
+                        'puesto'                => $item['puesto'],
+                        'numero_rd'             => $item['numero_rd'],
+                        'fechainicio_rd'        => $item['fechainicio_rd'], // Date
+                        'fechatermino_rd'       => $item['fechatermino_rd'], // Date
+                        'cantidad_mesesrd'      => $item['cantidad_mesesrd'], // Int
+                        'numero_contrato'       => $item['numero_contrato']
+                    ];
+                }
+            }
+
+            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL ORDER BY orden ASC";
+            $my_tipo_archivos = $this->db->query($sql)->result_object();
+
+            $keys_uploads_tipo_archivos = [];
+            foreach ($tipo_archivos as $k2 => $o2) {
+                $keys_uploads_tipo_archivos[$o2] = $o2;
+            }
+
+            $keys_tipos_archivos = [];
+            foreach ($my_tipo_archivos as $k => $o) {
+                $keys_tipos_archivos[$o->id] = $o;
+            }
+
+            $insert_archivos = [];
+            if (isset($_FILES['archivos'])) {
+                $total  = count($_FILES['archivos']['name']);
+                $files  = array();
+                if ($total) {
+                    $path = __DIR__ . "/../../public/uploads/";
+                    if (!is_dir($path)) {
+                        mkdir($path, 0777, true);
+                    }
+                    $fields = ["name", "type", "tmp_name", "error", "size"];
+                    $uploads = $_FILES['archivos'];
+                    $result = array();
+                    for ($index = 0; $index < $total; $index++) {
+                        array_push($files, $this->tools->getFieldArray($uploads, $fields, $index));
+                    }
+                    foreach ($files as $key => $item) {
+
+                        if ($item['error'] == UPLOAD_ERR_OK) {
+                            $filename = uniqid(time()) . "-" . $item['name'];
+                            $fullpath = $path . $filename;
+                            $filepath = "/uploads/" . $filename;
+                            $extension = strtolower(pathinfo($item['name'], PATHINFO_EXTENSION));
+                            move_uploaded_file($item['tmp_name'], $fullpath);
+                            $insert_archivos[] = [
+                                'nombre'  => $item['name'],
+                                'url'     => $filepath,
+                                'formato' => $extension,
+                                'peso'    => $item['size'],
+                            ];
+                        }
+                    }
+                }
+            }
+ 
+            $data['nombre']           = $nombre;
+            $data['apellido_paterno'] = $apellido_paterno;
+            $data['apellido_materno'] = $apellido_materno;
+            $data['genero']           = $genero;
+            $data['estado_civil']     = $estado_civil;
+            $data['nacionalidad']     = $nacionalidad;
+            $data['fecha_nacimiento'] = $fecha_nacimiento;
+            $data['correo']           = $correo;
+            $data['numero_celular']   = $numero_celular;
+            $data['numero_telefono']  = $numero_telefono;
+            $data['via_id']           = $via_id;
+            $data['via']              = $via;
+            $data['nombre_via']       = $nombre_via;
+            $data['zona_id']          = $zona_id;
+            $data['zona']             = $zona;
+            $data['nombre_zona']      = $nombre_zona;
+            $data['direccion']        = $direccion;
+            $data['afiliacion']       = $afiliacion;
+            $data['cuss']             = $cuss;
+            $data['departamento']     = $departamento_id;
+            $data['provincia']        = $provincia_id;
+            $data['distrito']         = $distrito_id;
+
+            $this->db->update('postulaciones', $data, ['id' => $postulacion_id]);
+
+            $this->db->delete('postulacion_especializaciones', array('postulacion_id' => $postulacion_id)); 
+            if (count($insert_especializaciones) > 0) {
+                foreach ($insert_especializaciones as $key => $item) {
+                    $insert_especializaciones[$key]['postulacion_id'] = $postulacion_id;
+                }
+                $this->db->insert_batch('postulacion_especializaciones', $insert_especializaciones);
+            }
+
+            $this->db->delete('postulacion_formaciones_academicas', array('postulacion_id' => $postulacion_id)); 
+            if (count($insert_formaciones_academicas) > 0) {
+                foreach ($insert_formaciones_academicas as $key => $item) {
+                    $insert_formaciones_academicas[$key]['postulacion_id'] = $postulacion_id;
+                }
+                $this->db->insert_batch('postulacion_formaciones_academicas', $insert_formaciones_academicas);
+            }
+
+            $this->db->delete('postulacion_experiencias_laborales', array('postulacion_id' => $postulacion_id)); 
+            if (count($insert_experiencias_laborales) > 0) {
+                foreach ($insert_experiencias_laborales as $key => $item) {
+                    $insert_experiencias_laborales[$key]['postulacion_id'] = $postulacion_id;
+                }
+                $this->db->insert_batch('postulacion_experiencias_laborales', $insert_experiencias_laborales);
+            }
+            $requisitos = [];
+            if (count($insert_archivos) > 0) {
+                foreach ($insert_archivos as $key => $item) {
+                    $insert_archivos[$key]['tipo_id']        = $tipo_archivos[$key];
+                    $insert_archivos[$key]['postulacion_id'] = $postulacion_id;
+                    $requisitos[] = $keys_tipos_archivos[$insert_archivos[$key]['tipo_id']]->nombre;
+                }
+                $this->db->insert_batch('postulacion_archivos', $insert_archivos);
+            }
+
+            $response['success'] = true;
+            $response['message'] = 'Se actualizo correctamente';
+        } catch (\Exception $e) {
+            log_message_ci("Error al registrar expediente " . json_encode($e->getMessage()));
+
+            $response['message'] = $e->getMessage();
+        }
+        return $response;
+    }
+
+    public function update_old($args)
+    {
+        $response = $this->tools->responseDefault();
+        try {
 
             $uid = isset($args['uid']) ? $args['uid'] : 0;
 

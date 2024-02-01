@@ -88,6 +88,7 @@ const AppConvovatoriaWeb = () => {
                 dom.querySelector('select[name="estado_civil"]').value = postulante.estado_civil;
                 dom.querySelector('select[name="nacionalidad"]').value = postulante.nacionalidad;
                 dom.querySelector('input[name="confirma_correo"]').value = postulante.correo;
+                dom.querySelector('input[name="confirma_correo"]').setAttribute('pattern', postulante.correo);
                 dom.querySelector('input[name="numero_celular"]').value = postulante.numero_celular;
                 dom.querySelector('input[name="numero_telefono"]').value = postulante.numero_telefono;
                 dom.querySelector('select[name="afiliacion"]').value = postulante.afiliacion;
@@ -273,23 +274,20 @@ const AppConvovatoriaWeb = () => {
                             e.stopPropagation()
                         }
 
-                     console.log(self.formAttachedFiles);
-
-
-                     const inputFiles = dom.querySelectorAll('.form-input-file');
-                     
-                     inputFiles.forEach((inputFile, index) => {
-                         const files = inputFile.files;
-                         if (!files) {
-                            sweet2.show({
-                                type: 'error',
-                                title: 'IMPORTANTE',
-                                html: 'Por favor ingrese al menos un documento adjunto'
-                            });
-                            e.stopPropagation()
-                            return false;
-                         }
-                     }); 
+                        const inputFiles = dom.querySelectorAll('.form-input-file');
+                        
+                        inputFiles.forEach((inputFile, index) => {
+                            const files = inputFile.files;
+                            if (!files) {
+                                sweet2.show({
+                                    type: 'error',
+                                    title: 'IMPORTANTE',
+                                    html: 'Por favor ingrese al menos un documento adjunto'
+                                });
+                                e.stopPropagation()
+                                return false;
+                            }
+                        }); 
                         form.classList.add('was-validated');
                         if (form.checkValidity()) {
                             self.formData = new FormData(e.target);
@@ -299,10 +297,7 @@ const AppConvovatoriaWeb = () => {
                             self.postulant.especialidad = self.formPostulant.especialidad_descripcion;
 
                             const via_id = self.formData.get('via_id');
-                            console.log('via_id',via_id);
-                            console.log('formVias',self.formVias);
                             const viaObj = self.formVias.find((o) => {return o.TipoViaID == via_id});
-                            console.log('viaObj',viaObj);
                             self.postulant.via = viaObj.DesTipoVia;
                             self.formData.append('via', self.postulant.via);
 
@@ -312,17 +307,57 @@ const AppConvovatoriaWeb = () => {
                             self.formData.append('zona', self.postulant.zona);
 
                             self.listAttachedFile();
-                            self.renderPreviewPostulant({el: 'previewPostulant', postulant: self.postulant, toString: false});
-                            self.modalPreviewPostulant.show();
+                            // self.renderPreviewPostulant({el: 'previewPostulant', postulant: self.postulant, toString: false});
+                            // self.modalPreviewPostulant.show();
+
+                            self.formData.append('archivos_adjuntos', self.attachedFiles);
+                            self.formData.append('experiencias_laborales', JSON.stringify(self.workExperiences));
+                            self.formData.append('formaciones_academicas', JSON.stringify(self.academicTrainings));
+                            self.formData.append('especializaciones', JSON.stringify(self.specializations));
+                            sweet2.show({
+                                type: 'question',
+                                text: '¿Estás seguro de enviar sus datos?',
+                                showCancelButton: true,
+                                onOk: () => {
+                                    sweet2.loading();
+                                    self.modalPreviewPostulant.hide();
+                                    $.ajax({
+                                        url: window.AppMain.url + `evaluacion/convocatoria/inscripcion/postulante/${self.postulantId}/update`,
+                                        method: 'POST',
+                                        dataType: 'json',
+                                        data: self.formData,
+                                        processData: false,
+                                        contentType: false,
+                                    })
+                                    .done(function ({success, data, message}) {
+                                        if (!success) {
+                                            sweet2.show({type:'error', html: message});
+                                            return;
+                                        }
+                                        sweet2.show({type:
+                                            'success', 
+                                            text:message,
+                                            onOk: () => {
+                                                sweet2.loading();
+                                                window.location.reload();   
+                                            }
+                                        });
+                                    })
+                                    .fail(function (xhr, status, error) {
+                                        sweet2.show({type:'error', text:error});
+                                    });
+                                }
+                            });
                         }
                         
                     });
                 });
 
                 self.eventTag('btn-save', () => {
-                    self.formData.append('convocatoria_id', self.convocatoriaId);
-                    self.formData.append('inscripcion_id', self.inscripcionId);
-                    self.formData.append('tipo_documento', self.typeDocument);
+                    // self.formData.append('convocatoria_id', self.convocatoriaId);
+                    // self.formData.append('inscripcion_id', self.inscripcionId);
+                    // self.formData.append('tipo_documento', self.typeDocument);
+                    /*
                     self.formData.append('archivos_adjuntos', self.attachedFiles);
                     self.formData.append('experiencias_laborales', JSON.stringify(self.workExperiences));
                     self.formData.append('formaciones_academicas', JSON.stringify(self.academicTrainings));
@@ -335,7 +370,7 @@ const AppConvovatoriaWeb = () => {
                             sweet2.loading();
                             self.modalPreviewPostulant.hide();
                             $.ajax({
-                                url: window.AppMain.url + 'web/postulaciones/store',
+                                url: window.AppMain.url + `evaluacion/convocatoria/inscripcion/postulante/${self.postulantId}/update`,
                                 method: 'POST',
                                 dataType: 'json',
                                 data: self.formData,
@@ -347,16 +382,14 @@ const AppConvovatoriaWeb = () => {
                                     sweet2.show({type:'error', html: message});
                                     return;
                                 }
-                                self.response = data;
-                                dom.querySelector('#formPostulant').reset();
-                                self.renderCompletedPostulant();
-                                sweet2.loading(false);
+                                sweet2.show({type:'success', text:message});
                             })
                             .fail(function (xhr, status, error) {
                                 sweet2.show({type:'error', text:error});
                             });
                         }
                     });
+                    */
                 });
 
                 self.eventTag('btn-documento-cancel', () => {
