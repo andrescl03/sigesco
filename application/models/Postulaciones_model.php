@@ -1242,6 +1242,7 @@ class Postulaciones_model extends CI_Model
             $puntaje   = $this->input->post("puntaje", true);
             $promedio  = $this->input->post("promedio", true);
             $estado    = $this->input->post("estado", true);
+            $evaluacion_estado    = $this->input->post("evaluacion_estado", true);
 
             $sql = "SELECT 
                         P.*
@@ -1281,7 +1282,7 @@ class Postulaciones_model extends CI_Model
                 $update = [
                     'plantilla'      => $plantilla,
                     'puntaje'        => $puntaje,
-                    'estado'         => 1,
+                    'estado'         => $evaluacion_estado,
                 ];
                 $this->db->update('postulacion_evaluaciones', $update, array('postulacion_id'=>$id, 'ficha_id'=>$ficha_id));
             } else {
@@ -1291,7 +1292,7 @@ class Postulaciones_model extends CI_Model
                     'ficha_id'       => $ficha_id,
                     'postulacion_id' => $id,
                     'fecha_registro' => $this->tools->getDateHour(),
-                    'estado'         => 1,
+                    'estado'         => $evaluacion_estado,
                     'orden'          => $orden,
                     'promedio'       => $promedio
                 ];
@@ -1374,7 +1375,7 @@ class Postulaciones_model extends CI_Model
                         PE.puntaje AS evaluacion_puntaje
                     FROM periodo_fichas AS P 
                     INNER JOIN periodo_ficha_especialidades AS PFE ON PFE.periodo_ficha_id = P.id
-                    LEFT JOIN postulacion_evaluaciones AS PE ON P.id = PE.ficha_id AND PE.deleted_at IS NULL
+                    LEFT JOIN postulacion_evaluaciones AS PE ON P.id = PE.ficha_id AND PE.postulacion_id = {$id} AND PE.deleted_at IS NULL
                     WHERE P.deleted_at IS NULL
                     AND P.tipo_id = ? AND P.periodo_id  = ? AND PFE.especialidad_id = ?
                     ORDER BY P.orden ASC";
@@ -1391,10 +1392,13 @@ class Postulaciones_model extends CI_Model
             }
   
             $sql = "SELECT * FROM periodos WHERE per_id = ?";
-            $periodo = $this->db->query($sql, compact('id'))->row();
+            $periodo = $this->db->query($sql, compact('periodo_id'))->row();
+
+            $sql = "SELECT * FROM especialidad_prelaciones WHERE especialidad_id = ? AND deleted_at IS NULL";
+            $especialidad_prelaciones = $this->db->query($sql, compact('especialidad_id'))->result_object();
             
             $response['success'] = true;
-            $response['data']  = compact('fichas', 'periodo', 'postulante');
+            $response['data']  = compact('fichas', 'periodo', 'postulante', 'especialidad_prelaciones', 'especialidad_id');
             $response['status']  = 200;
             $response['message'] = 'fichas';
   

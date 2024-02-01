@@ -377,7 +377,16 @@ INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `created_at`,
 /************************** 31/01/2024 **************************/
 ALTER TABLE postulaciones ADD COLUMN `nombre_zona` VARCHAR(255) NULL DEFAULT NULL AFTER `uid`;
 
-
 /************************** 01/02/2024 **************************/
 ALTER TABLE postulaciones ADD COLUMN `numero_expediente` VARCHAR(255) NULL DEFAULT NULL AFTER `uid`;
+
+CREATE TABLE `especialidad_prelaciones` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`prelacion` VARCHAR(255) NULL DEFAULT NULL,
+	`especialidad_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+);
 

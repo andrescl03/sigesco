@@ -206,7 +206,8 @@ const viewfichaDetail = () => {
 			ficha: {},
 			total_section: 0,
 			total_question: 0,
-			total: 0
+			total: 0,
+			especialidad_prelaciones: data.especialidad_prelaciones
 		};
 
 		const setFormModule = (id) => {
@@ -219,7 +220,6 @@ const viewfichaDetail = () => {
 					if (self.ficha.plantilla) {						
 						if (self.ficha.plantilla.sections) {
 							self.sections = self.ficha.plantilla.sections;
-							console.log(self.postulante.estado, self.ficha.evaluacion_estado);
 							if (self.ficha.evaluacion_estado == 1) {
 								if (self.postulante.estado == 'revisado' && revaluar == 0) {
 									viewFicha();
@@ -364,7 +364,7 @@ const viewfichaDetail = () => {
 								}
 								cells.push(createCell('td', div));
 								cells.push(createCell('td', viewActionOption(question), {class: 'text-center'}));
-								if (self.ficha && self.ficha.promedio == 1) {
+								if (self.ficha && Number(self.ficha.promedio) == 1) {
 									cells.push(createCell('td', question.score, {class: 'text-center'}));
 									if (index3 == 0 && index2 == 0) {
 										cells.push(createCell('td', section.score, { class: 'text-center', rowspan: ls }));
@@ -376,7 +376,7 @@ const viewfichaDetail = () => {
 					});
 				}
 			});
-			if (self.ficha && self.ficha.promedio == 1) {
+			if (self.ficha && Number(self.ficha.promedio) == 1) {
 				rows.push(createRow([
 					createCell('td', 'TOTAL', { class: 'text-center colvert bg-light fw-bold', colspan: 3 }),
 					createCell('td', self.total, { class: 'text-center fw-bold', id: 'total' }),
@@ -397,6 +397,50 @@ const viewfichaDetail = () => {
 
 			// Append the 'table-responsive' div to the body of the HTML document
 			domBody.appendChild(tableResponsiveDiv);
+
+			if (Number(self.ficha.promedio) == 0) {
+				const options = [
+					{ value: 1, text: 'CUMPLE' },
+					{ value: 2, text: 'NO CUMPLE' }
+				];
+				element = createSelect(
+					options,
+					{ class: 'form-control text-center' },
+					{
+						change: (e) => {
+							self.ficha.evaluacion_estado = e.target.value;
+						}
+					},
+					self.ficha.evaluacion_estado
+				);
+
+				const colr1 = document.createElement('div');
+				colr1.classList.add('row');
+
+					const cols0 = document.createElement('div');
+					cols0.classList.add('col-md-7');
+
+					const cols1 = document.createElement('div');
+					cols1.classList.add('col-md-5', 'float-end');
+
+						const divgroup = document.createElement('div');
+						divgroup.classList.add('input-group');
+
+							const span1 = document.createElement('span');
+							span1.classList.add('input-group-text');
+							span1.innerText = 'Estado';
+							span1.style.minWidth = '100px';
+
+						divgroup.appendChild(span1);
+						divgroup.appendChild(element);
+
+					cols1.appendChild(divgroup);
+
+				colr1.appendChild(cols0);
+				colr1.appendChild(cols1);
+				domBody.appendChild(colr1);
+
+			}
 
 			const alertDiv = document.createElement('div');
 			alertDiv.id = 'divAlert';
@@ -439,6 +483,11 @@ const viewfichaDetail = () => {
 						formData.append('puntaje', self.total);
 						formData.append('promedio', self.ficha.promedio);
 						formData.append('estado', (any ? 'finalizado': 'revisado'));
+						if (Number(self.ficha.promedio) == 1) {
+							formData.append('evaluacion_estado', 1);			
+						} else {
+							formData.append('evaluacion_estado', self.ficha.evaluacion_estado);
+						}
 						sweet2.loading();
 						setFicha(formData)
 						.then(({success, data, message})=>{
@@ -480,7 +529,7 @@ const viewfichaDetail = () => {
 			} else if (question.type == 'marcado') {
 				const attributes = { 
 					class: 'form-check-input text-center', 
-					value: self.ficha.promedio == 1 ? question.score : 1
+					value: Number(self.ficha.promedio) == 1 ? question.score : 1
 				};
 				if (Number(question.value) > 0) {
 					attributes.checked = true;
@@ -528,7 +577,7 @@ const viewfichaDetail = () => {
 			if (divAlert) {
 				divAlert.innerHTML = ``;
 				try {
-					if (self.ficha.promedio == 1) {
+					if (Number(self.ficha.promedio) == 1) {
 						self.sections.forEach(section => {
 							section.groups.forEach(group => {
 								group.questions.forEach(question => {
@@ -653,7 +702,6 @@ const viewfichaDetail = () => {
 								wrap.classList.remove('active')
 							}
 						})
-			
 						const actives = progressContainer.querySelectorAll('.active')
 						progressLine.style.width = (actives.length - 1) / (textWraps.length - 1)* 80 + '%'
 		
@@ -669,6 +717,10 @@ const viewfichaDetail = () => {
 						} else {
 							progressBackButton.disabled = false
 							progressNextButton.disabled = false
+						}
+						if (Number(self.ficha.promedio) == 0 && ([0,2]).includes(Number(self.ficha.evaluacion_estado))) {
+							console.log('no cumple');
+							progressNextButton.disabled = true
 						}
 					})
 					.catch(error => {
