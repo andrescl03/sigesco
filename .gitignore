@@ -2,4 +2,8 @@
 /archivos
 /.vscode
 /public/uploads/*
+<<<<<<< HEAD
+
+=======
+>>>>>>> main.jmamani.test
 /application/logs/*

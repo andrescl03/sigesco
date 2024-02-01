@@ -140,6 +140,23 @@
     </table>
 </div>
 
+<script>
+
+var chkAsignarTodosEval1 = document.getElementById("chk_asignarTodosEval_1");
+console.log(chkAsignarTodosEval1);
+chkAsignarTodosEval1.addEventListener("click", function () {
+
+    // Obtiene todos los checkboxes secundarios
+    var checkboxesSecundarios = document.querySelectorAll(".chk_asignarEval input");
+
+    // Actualiza el estado de cada checkbox secundario según el estado del checkbox principal
+    checkboxesSecundarios.forEach(function (checkbox) {
+        checkbox.checked = chkAsignarTodosEval1.checked;
+    });
+});
+
+
+</script>
 
 
 
