@@ -37,6 +37,14 @@
                 </h2>
                 <div id="collapseDatosPostulante" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
+                    <div class="form-group row mb-1">
+                            <div class="col-lg-12">
+                                <strong>Documento </strong>
+                                <span>
+                                    <?php echo $postulante->numero_documento ?>
+                                </span>
+                            </div>
+                        </div>
                         <div class="form-group row mb-1">
                             <div class="col-lg-12">
                                 <strong>Nombres </strong>
@@ -65,7 +73,7 @@
                             <div class="col-lg-12">
                                 <strong>Género</strong>
                                 <span>
-                                    <?php echo $postulante->genero ?>
+                                    <?php echo $postulante->genero == 'M' ? 'Masculino': 'Femenino' ?>
                                 </span>
                             </div>
                         </div>
