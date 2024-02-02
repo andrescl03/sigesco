@@ -77,6 +77,7 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col">N°</th>
+                                                    <th scope="col">Tipo</th>
                                                     <th scope="col">Nombre</th>
                                                     <th scope="col">Archivo</th>
                                                 </tr>
@@ -85,6 +86,7 @@
                                                 <?php foreach ($dato['archivos'] as $k2 => $archivo) { ?>
                                                 <tr class="">
                                                     <td scope="row"><?php echo $k2 + 1 ?></td>
+                                                    <td><?php echo $archivo['tipo_nombre'] ?></td>
                                                     <td><?php echo $archivo['nombre'] ?></td>
                                                     <td>
                                                         <a href="/public<?php echo $archivo['url']  ?>" target="_blank" donwload><i class="fa-solid fa-file-pdf fa-2xl"></i></a>
@@ -132,7 +134,7 @@
                     </div> 
                 </td>
                 <td class="text-center">
-                    <div class="d-flex justify-content-center gap-2">
+                    <div class="d-flex justify-content-center gap-2" data-id="<?= $dato['id'] ?>" data-epe_id="<?= $dato['epe_id'] ?>">
                         <?php if($dato['epe_id']!= NULL){ ?>
                             <a type="button" class="text-dark" title="Ver Ficha" href="<?= base_url()."evaluacion/ficha/".encryption($dato['id']."||".($dato['epe_id']== NULL ? 0 : $dato['epe_id'])) ?>" target="_blank"><b><i class="fa-solid fa-file-signature fa-2xl"></i> </b></a>
                         <?php } ?>
