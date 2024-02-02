@@ -5,10 +5,10 @@
         <li class="breadcrumb-item"><a href="<?php echo base_url()."evaluacion/convocatoria/".encryption($dato['con_id'].'||0'); ?>"> <?= $dato['pro_descripcion'] ?> | Convocatoria <?= sprintf('%04d', $dato['con_numero'])."-".$dato['con_anio'] ?></a></li>
         <li class="breadcrumb-item active"><?= $dato['mod_abreviatura']." ".$dato['niv_descripcion'].($dato['esp_descripcion']!="-" ? " ".$dato['esp_descripcion'] : "" )." | ".($eval== '1' ? "PUN" : "POR EXPEDIENTE")."-".($tipo== '1' ? "Preliminar" : "Final") ?></li>
     </ol>  
-    <input type="text" class="form-control form-control-sm" id="txt_idGin" name="txt_idGin" value="<?= $dato['gin_id'] ?>" >
-    <input type="text" class="form-control form-control-sm" id="txt_eval" name="txt_eval" value="<?= $eval ?>" >
-    <input type="text" class="form-control form-control-sm" id="txt_tipo" name="txt_tipo" value="<?= $tipo ?>" >
-    <input type="text" class="form-control form-control-sm" id="txt_idConv" name="txt_idConv" value="<?= $dato['convocatorias_con_id'] ?>" >
+    <input type="hidden" class="form-control form-control-sm" id="txt_idGin" name="txt_idGin" value="<?= $dato['gin_id'] ?>" >
+    <input type="hidden" class="form-control form-control-sm" id="txt_eval" name="txt_eval" value="<?= $eval ?>" >
+    <input type="hidden" class="form-control form-control-sm" id="txt_tipo" name="txt_tipo" value="<?= $tipo ?>" >
+    <input type="hidden" class="form-control form-control-sm" id="txt_idConv" name="txt_idConv" value="<?= $dato['convocatorias_con_id'] ?>" >
     <div class="app-row">
         <div class="col-md-12">
             <div class="tile">

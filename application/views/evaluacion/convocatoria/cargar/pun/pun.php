@@ -17,7 +17,8 @@
                 <th>APELLIDOS</th>
                 <th>NOMBRES</th>
                 <th class="text-center">ORDEN DE MERITO</th>
-                <th class="text-center">EXPEDIENTES</th>
+                <th class="text-center">NÚMERO DE TRAMITE</th>
+                <th class="text-center">NÚMERO DE EXPEDIENTE</th>
                 <th class="text-center">ADJUNTOS</th>
                 <th class="text-center">ACCIONES</th>
             </tr>
@@ -29,19 +30,20 @@
                 <?php if(in_array("convocatorias/cargarexpedientes", $this->session->userdata("sigesco_rutas"))){ ?>    
                     <td class="text-center">
                         <div class="custom-control custom-checkbox chk_asignarEval" style="padding-right: 20px;">
-                            <input type="checkbox" class="custom-control-input" id="chk_asignarEval_<?= $i+1;?>" value="<?= $dato['cpe_id']."||".($dato['epe_id']== NULL ? 0 : $dato['epe_id']) ?>" correlativo ="<?= $i+1;?>" >
+                            <input type="checkbox" class="custom-control-input" id="chk_asignarEval_<?= $i+1;?>" value="<?= $dato['id']."||".($dato['epe_id']== NULL ? 0 : $dato['epe_id']) ?>" correlativo ="<?= $i+1;?>" >
                             <label class="custom-control-label" for="chk_asignarEval_<?= $i+1;?>"></label>
                         </div>                   
                     </td>
                 <?php } ?>   
                 <td><?= toMayus($dato['usu_nombre']." ".$dato['usu_apellidos']) ?></td>
-                <td class="text-center"><?= $dato['cpe_documento'] ?></td>	
-                <td><?= $dato['cpe_apellidos'] ?></td>
-                <td><?= $dato['cpe_nombres'] ?></td>
+                <td class="text-center"><?= $dato['numero_documento'] ?></td>	
+                <td><?= $dato['apellido_paterno']." ".$dato['apellido_materno'] ?></td>
+                <td><?= $dato['nombre'] ?></td>
                 <td class="text-center"><?= $dato['cpe_orden'] ?></td>
                 <td class="text-center">
+                    <span class="badge bg-success" style="font-size: 0.9em;"><?= $dato['uid'] ?></span>
                     <?php
-                        if($dato['cpe_sepresento'] == 0){ //0: NO SE PRESENTÓ , 2: REGISTRADO, 1: PRESENTO EXP.
+                        /*if($dato['cpe_sepresento'] == 0){ //0: NO SE PRESENTÓ , 2: REGISTRADO, 1: PRESENTO EXP.
                             echo '<span class="badge bg-warning text-dark" style="font-size: 0.85em;">NO REGISTRÓ EXPEDIENTE</span>';
                         }else{                            
                             foreach ($dato['expediente'] as $value_1) {
@@ -51,14 +53,58 @@
                                     echo "<b>".$value_1['codigo']."</b>"."</br>";
                                 }
                             }
-                        }
-                        
+                        }*/
                     ?>
+                </td>
+                <td class="text-center">
+                    <span class="badge bg-success" style="font-size: 0.9em;"><?= $dato['numero_expediente'] ?></span>
                 </td>
                <td class="text-center">
                 <div class="d-flex justify-content-center gap-2">                  
+                    <!-- Button trigger modal -->
+                    <i class="fa fa-th-list fa-2xl text-danger" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $dato['id'] ?>"></i>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal<?php echo $dato['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Archivos Adjuntados</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="table-responsive mb-3">
+                                        <table class="table mb-0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">N°</th>
+                                                    <th scope="col">Tipo</th>
+                                                    <th scope="col">Nombre</th>
+                                                    <th scope="col">Archivo</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($dato['archivos'] as $k2 => $archivo) { ?>
+                                                <tr class="">
+                                                    <td scope="row"><?php echo $k2 + 1 ?></td>
+                                                    <td><?php echo $archivo['tipo_nombre'] ?></td>
+                                                    <td><?php echo $archivo['nombre'] ?></td>
+                                                    <td>
+                                                        <a href="/public<?php echo $archivo['url']  ?>" target="_blank" donwload><i class="fa-solid fa-file-pdf fa-2xl"></i></a>
+                                                    </td>
+                                                </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
                     <?php 
-                        foreach ($dato['expediente'] as $key => $value_1) {
+                        /*foreach ($dato['expediente'] as $key => $value_1) {
                             foreach ($value_1['archivo'] as $value_2) {
                                 switch ($value_2['procedencia']) {
                                     case '1':  // MPV
@@ -83,15 +129,16 @@
                             if($key != count($dato['expediente'])-1){
                                 echo '<div class="vr"></div>';
                             }
-                        }
+                        }*/
                     ?>
                     </div> 
                 </td>
                 <td class="text-center">
-                    <div class="d-flex justify-content-center gap-2">
+                    <div class="d-flex justify-content-center gap-2" data-id="<?= $dato['id'] ?>" data-epe_id="<?= $dato['epe_id'] ?>">
                         <?php if($dato['epe_id']!= NULL){ ?>
-                            <a type="button" class="text-dark" title="Ver Ficha" href="<?= base_url()."evaluacion/ficha/".encryption($dato['cpe_id']."||".($dato['epe_id']== NULL ? 0 : $dato['epe_id'])) ?>" target="_blank"><b><i class="fa-solid fa-file-signature fa-2xl"></i> </b></a>
+                            <a type="button" class="text-dark" title="Ver Ficha" href="<?= base_url()."evaluacion/ficha/".encryption($dato['id']."||".($dato['epe_id']== NULL ? 0 : $dato['epe_id'])) ?>" target="_blank"><b><i class="fa-solid fa-file-signature fa-2xl"></i> </b></a>
                         <?php } ?>
+                        <a href="<?= base_url() . 'evaluacion/convocatoria/inscripcion/postulante/' . $dato['id'] . '/editar' ?>" class="menu-link text-danger px-3">EDITAR REGISTRO</a>
                     </div> 
                 </td>
             </tr>
@@ -100,6 +147,23 @@
     </table>
 </div>
 
+<script>
+
+var chkAsignarTodosEval1 = document.getElementById("chk_asignarTodosEval_1");
+console.log(chkAsignarTodosEval1);
+chkAsignarTodosEval1.addEventListener("click", function () {
+
+    // Obtiene todos los checkboxes secundarios
+    var checkboxesSecundarios = document.querySelectorAll(".chk_asignarEval input");
+
+    // Actualiza el estado de cada checkbox secundario según el estado del checkbox principal
+    checkboxesSecundarios.forEach(function (checkbox) {
+        checkbox.checked = chkAsignarTodosEval1.checked;
+    });
+});
+
+
+</script>
 
 
 

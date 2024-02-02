@@ -12,6 +12,8 @@
                 <th class="text-center">S2</th>
                 <th class="text-center">S3</th>
                 <th class="text-center">ORDEN DE MERITO</th>
+                <th class="text-center">TIPO DE AFILIACION</th>
+                <th class="text-center">CUSS</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -26,6 +28,8 @@
                 <td class="text-center"><?= $dato['cpe_s2'] ?></td>
                 <td class="text-center"><?= $dato['cpe_s3'] ?></td>
                 <td class="text-center"><?= $dato['cpe_orden'] ?></td>
+                <td class="text-center"><?= $dato['afiliacion'] ?></td>
+                <td class="text-center"><?= $dato['cuss'] ?></td>
         	</tr>
 			<?php $i++; } ?>  								
 		</tbody>							

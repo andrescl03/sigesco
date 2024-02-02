@@ -61,7 +61,7 @@ $(document).ready(function(){
 var base_url = window.location.origin + '/' +window.location.pathname.split('/')[1]; 
 
 var dt_Idioma={		
-    "sProcessing":     '<div class="row" style="display: block; z-index: 10000; background-color: rgb(222; 31; 41; 0); opacity: 1; border: none; color: #ECECEC;"><div class="col-md-12 py-3"><img src="'+base_url+'/public/images/carga_7.svg" > </br><h4>Procesando, espere por favor...</b></h4></div></div>',
+    "sProcessing":     '<div class="row" style="display: block; z-index: 10000; background-color: rgb(222; 31; 41; 0); opacity: 1; border: none; color: #ECECEC;"><div class="col-md-12 py-3"><img src="'+ window.AppMain.url +'/public/images/carga_7.svg" > </br><h4>Procesando, espere por favor...</b></h4></div></div>',
     "sLengthMenu":     "Mostrar _MENU_ registros",
     "sZeroRecords":    "No se encontraron resultados",
     "sEmptyTable":     "Ningún dato disponible en esta tabla",
@@ -96,7 +96,7 @@ var dt_Idioma={
 
 //https://loading.io/  =>>>>> icono de carga
 var blockUIMensaje={ 
-    message : '<div class="row"><div class="col-md-12 py-3"><img src="'+base_url+'/public/images/carga_7.svg" > </br><h4>Procesando, espere por favor...</b></h4></div></div>',
+    message : '<div class="row"><div class="col-md-12 py-3"><img src="'+ window.AppMain.url + '/public/images/carga_7.svg" > </br><h4>Procesando, espere por favor...</b></h4></div></div>',
     //message: '<h4><b><i class="fas fa-spinner fa-spin fa-2x"></i></br> Procesando, espere por favor...</b></h4>',
     css: {
         border: 'none', 

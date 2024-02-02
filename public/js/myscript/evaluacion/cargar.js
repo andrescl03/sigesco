@@ -27,12 +27,14 @@ var Init = function (){
 	idGin   = $("#txt_idGin").val();
 	evaluc  = $("#txt_eval").val();   
 	tipo   	= $("#txt_tipo").val();
+	convId  = $("#txt_idConv").val();
 	todos	= Number($("#chk_especialistasTodos").is(':checked'));
 	parametros  = {           
 		idGin		: idGin,
 		evaluc		: evaluc,
 		tipo        : tipo,
-		todos		: todos
+		todos		: todos,
+		convId  	: convId
 	}  
 	VListarCargarExpedientePunEvaluar(parametros);
 }
@@ -169,6 +171,7 @@ var btn_asignarReasignar= function(cadena){
 	$('body').off('click', '#btn_asignarReasignar');
     $('body').on('click', '#btn_asignarReasignar', function (e) {
     	usuario=0;
+		var convId = $('#txt_idConv').val();
      	$(".opt_usuario input:radio:checked").each(function () {
             usuario = $(this).val();
         });     	
@@ -179,7 +182,8 @@ var btn_asignarReasignar= function(cadena){
 				if (result.isConfirmed) {
 					parametros = {
 						cadena 	: cadena,
-						usuario	: usuario
+						usuario	: usuario,
+						convId  : convId
 					};
 					CAsignarReasignar(parametros);
 				}

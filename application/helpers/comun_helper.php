@@ -1252,13 +1252,10 @@ function url_exists( $url = NULL ) {
 	}
 
 	
-
-
-	
-
-
-
-
+	function log_message_ci($mensaje){
+		
+		log_message("debug","Log detalle => " . $mensaje);
+	}
 
 
 ?>

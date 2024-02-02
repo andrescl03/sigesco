@@ -23,8 +23,9 @@
         <link rel="stylesheet" href="<?php echo base_url()?>public/js/select2-bootstrap5/select2.min.css" />
         <link rel="stylesheet" href="<?php echo base_url()?>public/js/select2-bootstrap5/select2-bootstrap-5-theme.css" />
         
-        <link href="<?php echo base_url()?>public/js/datepicker/css/bootstrap-datepicker.css"  rel="stylesheet">
-        
+        <link href="<?php echo base_url()?>public/js/datepicker/css/bootstrap-datepicker.css"  rel="stylesheet"> 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
         <link rel="stylesheet" href="<?php echo base_url()?>public/css/animate.css.4.1.1/animate.min.css" />
 
         <link href="<?php echo base_url()?>public/css/styles.css" rel="stylesheet" />
@@ -34,7 +35,12 @@
         <link rel="stylesheet" href="<?php echo base_url()?>public/js/alertifyjs/css/themes/bootstrap.min.css">
 
         <link href="<?php echo base_url()?>public/css/estilos_2.css?t=1.5" rel="stylesheet" />
-      
+        <link href="<?php echo base_url()?>public/css/main.css?t=<?php echo time()?>" rel="stylesheet" />
+        <script>
+            window.AppMain = {
+                url: "<?php echo base_url() ?>"
+            };
+        </script>
     </head>    
     <body class="sb-nav-fixed ">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-rojo">
@@ -174,16 +180,23 @@
 
         <script src="<?php echo base_url()?>public/js/sweetalert/sweetalert2.all.min.js"></script>
 
-        <script src="<?php echo base_url()?>public/js/datepicker/js/bootstrap-datepicker.js"> </script>
+  
+    <script src="<?php echo base_url()?>public/js/datepicker/js/bootstrap-datepicker.js"> </script>
         <script src="<?php echo base_url()?>public/js/datepicker/locales/bootstrap-datepicker.es.min.js"> </script>                        
 
+ 
 
 
+    
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
+        <script src="<?php echo base_url() ?>/public/js/utilities/helper.js"></script>
 
         <script src="<?php echo base_url()?>public/js/script.js"></script>
         <script src='<?php echo base_url()?>public/js/sha1/sha1.js'></script>    
         <script defer src="<?php echo base_url()?>public/js/jquery.validate/jquery.validate-1.19.3.min.js"></script>
+        <script src="<?php echo base_url() ?>/public/js/utilities/sweetalert2.js"></script>
         <?php echo $this->layout->js?>    
     </body>
 </html>

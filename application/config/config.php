@@ -24,8 +24,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'http://10.6.226/sigesco/';
+//$config['base_url'] = 'http://localhost/sigesco/';
+//$config['base_url'] = 'http://sigescou05.test:8085/';
+//$config['base_url'] = 'http://sigescou05.test/';  
 $config['base_url'] = 'http://localhost/sigesco/';
 //$config['base_url'] = 'https://mesadepartesvirtual.ugel05.gob.pe';
+
+$config['url_api'] = 'http://localhost:5002/api/'; 
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +42,7 @@ $config['base_url'] = 'http://localhost/sigesco/';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = ''; // 'index.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -225,7 +230,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 2;
 
 /*
 |--------------------------------------------------------------------------
@@ -236,7 +241,7 @@ $config['log_threshold'] = 0;
 | application/logs/ directory. Use a full server path with trailing slash.
 |
 */
-$config['log_path'] = '';
+$config['log_path'] = APPPATH . 'logs/';
 
 /*
 |--------------------------------------------------------------------------

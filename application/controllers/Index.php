@@ -10,7 +10,7 @@ class Index extends CI_Controller {
 
 	public function index(){
 		//Lo redirecciona
-		redirect(base_url()."principal/index",301);
+		redirect(base_url()."inicio/index",301);
 
 	}
 

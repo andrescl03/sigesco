@@ -7,17 +7,18 @@
 				<th class="text-center">ID</th>            
                 <th class="text-center">MODALIDAD</th>							
 				<th class="text-center">NIVEL</th>	
-                <th class="text-center">ESPECIALIDADES</th>                
+                <th class="text-center">ESPECIALIDADES</th>
+				<th class="text-center">OPCIONES</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php $i=0; foreach ($datos as $dato) { ?>
 			<tr>										
-				<!--<td class="text-center"><b><?= $i+1 ?></b></td>-->
 				<td class="text-center"><b><?= $dato['esp_id'] ?></b></td>			              
-                <td class="text-center"><b><?= ($i>0 && $dato['mod_id']==$datos[$i-1]['mod_id']) ? "" : toMayus($dato['mod_nombre']." - ".$dato['mod_abreviatura'])  ?></b></td>	
-                <td class="text-center"><b><?= ($i>0 && $dato['niv_id']==$datos[$i-1]['niv_id']) ? ""  :toMayus($dato['niv_descripcion']) ?></b></td>
+                <td class="text-center"><b><?= ($i>0 && $dato['mod_id']==$datos[$i-1]['mod_id']) ? "" : $dato['mod_nombre']." - ".$dato['mod_abreviatura']  ?></b></td>	
+                <td class="text-center"><b><?= ($i>0 && $dato['niv_id']==$datos[$i-1]['niv_id']) ? ""  :$dato['niv_descripcion'] ?></b></td>
                 <td ><?= $dato['esp_descripcion'] ?></td>
+				<td class="text-center"><a type="button" class="text-danger btn_eliminarAccion" title="Eliminar"  idGin=<?= $dato['gin_id'] ?> ><b><i class="fa-solid fa-trash-can fa-lg"></i></b></a></td>  
         	</tr>
 			<?php $i++; } ?>  								
 		</tbody>							

@@ -21,6 +21,7 @@ class Evaluacion extends CI_Controller {
         $this->load->model("convocatorias_model");
         $this->load->model("evaluacion_model");
         $this->load->model("configuracion_model");
+        $this->load->model("postulaciones_model");
         //$this->load->model("mesadepartes_model");
 		date_default_timezone_set('America/Lima');
 	}
@@ -49,7 +50,10 @@ class Evaluacion extends CI_Controller {
 
         if($idCon != '0' && $idGin == '0'){
             $datos   = $this->evaluacion_model->listarGruposInscripcionxConvocatoria($idCon);
-            foreach ($datos as $key_1 => $dato) {
+            // $gruposInscripcion = $this->evaluacion_model->listarGruposAsignadosXConvocatoria($idConv);
+
+
+            /*foreach ($datos as $key_1 => $dato) {
                 $_idGin = $dato['gin_id'];
                 $usuario = $this->session->userdata("sigesco_dni");
                 $docente   = $this->evaluacion_model->listarCuadroPunxIdGrupoConEvaluacion($_idGin, $usuario);
@@ -67,10 +71,7 @@ class Evaluacion extends CI_Controller {
                 $datos[$key_1]['te_final']       = $docente['t_final'];
                 $datos[$key_1]['te_mis_preliminar']  = $docente['t_mis_preliminar'];
                 $datos[$key_1]['te_mis_final']       = $docente['t_mis_final'];
-
-
-
-            }
+            }*/
             $this->layout->js(array(base_url()."public/js/myscript/evaluacion/grupos.js?t=".date("mdYHis")));
 		    $this->layout->view("convocatoria/grupos/grupos", compact('datos')); 
         }
@@ -103,18 +104,19 @@ class Evaluacion extends CI_Controller {
         $evaluc     = $this->input->post("evaluc",true); // 1: PUN, 2: POR EXP    
         $tipo       = $this->input->post("tipo",true);  // 1: PRELIMINAR, 2: FINAL   
         $todos      = $this->input->post("todos",true); // 0: POR ESPECIALISTA, 1: TODOS
-        
-        $usuario = $this->session->userdata("sigesco_dni");
+        $convId     = $this->input->post("convId",true);
+        $usuario    = $this->session->userdata("sigesco_dni");
 
        
         switch ($tipo) {
             case '1':
                 if($todos==1){// 1: todos
-                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminar($idGin, $evaluc);
+                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarV2($convId, $idGin);
                 }else{// 0: por especialista
-                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuario($idGin, $usuario, $evaluc);
+                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuarioV2($convId, $idGin, $usuario);
                 }
-                foreach ($datos as $key_1 => $dato) {
+                // writer($datos);
+                /*foreach ($datos as $key_1 => $dato) {
                     $idCpu = $dato['cpe_id'];
                     $asignaciones = $this->convocatorias_model->listarAsignacionxCuadroPun($idCpu);
                     if(!empty($asignaciones)){
@@ -133,7 +135,7 @@ class Evaluacion extends CI_Controller {
                     }else{
                         $datos[$key_1]['expediente'] = [];
                     }
-                }
+                }*/
                 //writer($datos);
                 $this->layout->setLayout("template_ajax");
                 $this->layout->view('convocatoria/cargar/pun/pun', compact('datos'));
@@ -156,7 +158,7 @@ class Evaluacion extends CI_Controller {
         foreach ($grupos as $grupo) {        
             array_push($ar_idGin, $grupo['grupo_inscripcion_gin_id']);
         }
-        $contador =  $this->evaluacion_model->contarEspecialistasAsignadosaPunxConvocatoriaPreliminar($ar_idGin);
+        $contador =  $this->evaluacion_model->contarEspecialistasAsignadosaPunxConvocatoriaPreliminarV2($ar_idGin, $idConv);
 
         foreach ($datos as $key_1 => $dato) {
             $found_key = (string)array_search($dato['usu_dni'], array_column($contador, 'dni_espec'));    
@@ -176,6 +178,7 @@ class Evaluacion extends CI_Controller {
     public function CAsignarReasignar(){
         $cadena     = $this->input->post("cadena",true);
         $usuario    = $this->input->post("usuario",true);
+        $convId     = $this->input->post("convId",true);
         $ar_insert = [];
         $ar_update = [];
         for ($i=0; $i <count($cadena) ; $i++) { 
@@ -190,7 +193,8 @@ class Evaluacion extends CI_Controller {
                     "epe_fechaApertura"         => date("Y-m-d H:i:s"),                
                     "epe_estadoEvaluacion"      => 1, // 1: abierto, 2: cerrado
                     "epe_estado"                => 1, // 1: activo
-                    "cuadro_pun_exp_cpe_id"         => $idCpu
+                    // "cuadro_pun_exp_cpe_id"         => $idCpu
+                    "postulacion_id"      => $idCpu
                 );
                 array_push($ar_insert, $arr_1);
 
@@ -231,30 +235,207 @@ class Evaluacion extends CI_Controller {
         $arreglo    = explode("||",$_cadena);     
         $idCpu      = $arreglo[0];
         $idEpu      = $arreglo[1];       
-      
+        
+
         if (count($arreglo) != 2) redirect(base_url()."errores/error404");
 
-        $datos = $this->evaluacion_model->verFichaEvaluacion(); 
-
-        $this->layout->js(array(base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis")));
-        $this->layout->view("ficha/ficha", compact('datos')); 
-
-       
+        $datos = $this->postulaciones_model->show(['id' => $idCpu]);
+        // $datos = $this->evaluacion_model->verFichaEvaluacion(); 
+        $this->layout->css(array(base_url()."public/css/ficha.css?t=".date("mdYHis")));
+        $this->layout->js(array(base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
+        base_url()."public/js/myscript/evaluacion/guide.js?t=".date("mdYHis")));
+        $revaluar = 0;
+        $this->layout->view("ficha/ficha", compact('datos', 'revaluar')); 
 	}
     
+    public function indexPreliminar($convocatoria_id, $inscripcion_id) {
+        $this->layout->js(array(base_url()."public/js/myscript/evaluacion/evaluacion.js?t=".date("mdYHis")));
+        $this->layout->view("/evaluacion/convocatoria/grupos/evaluacion", ['any' => 'preliminar', 'convocatoria_id' => $convocatoria_id, 'inscripcion_id' => $inscripcion_id]);
+    }
 
+    public function indexFinal($convocatoria_id, $inscripcion_id) {
+        $this->layout->js(array(base_url()."public/js/myscript/evaluacion/evaluacion.js?t=".date("mdYHis")));
+        $this->layout->view("/evaluacion/convocatoria/grupos/evaluacion", ['any' => 'final', 'convocatoria_id' => $convocatoria_id, 'inscripcion_id' => $inscripcion_id]);
+    }
+
+    public function pagination() {
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->evaluacion_model->pagination()));
+        } else {
+            show_404();
+        }    
+    }
+
+    public function attachedfiles($id) {
+        if ($id > 0) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->evaluacion_model->attachedfiles(compact('id'))));   
+        } else {
+            show_404();
+        }    
+    }
+
+    public function revaluarPreliFinal($id) {
+        $datos = $this->postulaciones_model->show(['id' => $id]);
+        $this->layout->css(array(base_url()."public/css/ficha.css?t=".date("mdYHis")));
+        $this->layout->js(array(
+            base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
+            base_url()."public/js/myscript/evaluacion/guide.js?t=".date("mdYHis")
+        ));
+        $revaluar = 1;
+        $this->layout->view("ficha/ficha", compact('datos', 'revaluar'));       
+	}
+
+    public function reporte_excel_preliminar($convocatoria_id, $inscripcion_id) {
+        $this->reporte_excel($convocatoria_id, $inscripcion_id, 'revisado', 'FICHA_PRELIMINAR');
+    }
+    public function reporte_excel_final($convocatoria_id, $inscripcion_id) {
+        $this->reporte_excel($convocatoria_id, $inscripcion_id, 'finalizado', 'FICHA_FINAL');
+    }
+
+    public function reporte_excel($convocatoria_id, $inscripcion_id, $estado, $ficha) {
+        $response = $this->evaluacion_model->report($convocatoria_id, $inscripcion_id, $estado);
+        if (!$response['success']) {
+            echo $response['message'];
+        }
+        $records = $response['data']['records'];
+
+        //reporte total aqui
+        //$datos = $this->evaluacion_expediente->reporte_pdf_general();
+        $datos = [];
+        /* A partir de ahora cualquier salida al navegador se guardarÃ¡ en un buffer */
+        /* Obtenemos el listado de locales disponibles en el sistema */
+        file_put_contents('log.txt', shell_exec('locale -a'), FILE_APPEND);
+        set_time_limit(0);
+        setlocale(LC_ALL, 'es_ES');
+        $fecha = date('d/m/Y H:i:s');
+        ini_set('memory_limit', '-1');
+        // $datos = null;
+        // $datos = $this->gestion->listar_reporte_horas();
     
+        $this->load->library('excel');
 
+        $hoja = $this->excel->getActiveSheet();
 
+            //activate worksheet number 1
+        $this->excel->setActiveSheetIndex(0);
+            //name the worksheet
+        $hoja->setTitle('Reporte Anex.10 - EVAL. DE EXP.');
+        //set cell A1 content with some text
+        $hoja->setCellValue('A1', 'REPORTE GENERAL EVAL. DE EXPEDIENTES - ANEXO 10 ' . $fecha);
+        //change the font size
+        $hoja->getStyle('A1')->getFont()->setSize(24);
+        //make the font become bold
+        $hoja->getStyle('A1')->getFont()->setBold(true);
+        //merge cell A1 until D1
+        $hoja->mergeCells('A1:L1');
+        //set aligment to center for that merged cell (A1 to D1)
 
+        $hoja->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('B2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('C2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('D2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('E2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('F2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('G2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('H2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('I2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('J2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('K2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('L2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
+        $hoja->setCellValue('A2', 'ESPECIALIDAD')->getStyle('A2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('B2', 'DNI')->getStyle('B2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('C2', 'NOMBRE COMPLETO')->getStyle('C2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('D2', 'FORMACION ACAD. Y PROF.')->getStyle('D2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('E2', 'FORMACION CONTINUA')->getStyle('E2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('F2', 'EXPERIENCIA LABORAL')->getStyle('F2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('G2', 'MERITO')->getStyle('G2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('H2', 'BONIFICACION')->getStyle('H2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('I2', 'PUNTAJE FINAL')->getStyle('I2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('J2', 'OBSERVACIONES')->getStyle('J2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('K2', 'NUM. EXP')->getStyle('K2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('L2', 'ESPECIALISTA')->getStyle('L2')->getFont()->setSize(15)->setBold(true);
 
+        // $hoja->setCellValue('H2', 'HORAS EFECTIVOS')->getStyle('H2')->getFont()->setSize(15)->setBold(true);
 
+        $hoja->setAutoFilter('A2:L2');
+        $hoja->getStyle('A2:L2')->getFill()->getStartColor()->setRGB('FF0000');
 
+        $hoja->getColumnDimension('A')->setAutoSize(true);
+        $hoja->getColumnDimension('B')->setAutoSize(true);
+        $hoja->getColumnDimension('C')->setAutoSize(true);
+        $hoja->getColumnDimension('D')->setAutoSize(true);
+        $hoja->getColumnDimension('E')->setAutoSize(true);
+        $hoja->getColumnDimension('F')->setAutoSize(true);
+        $hoja->getColumnDimension('G')->setAutoSize(true);
+        $hoja->getColumnDimension('H')->setAutoSize(true);
+        $hoja->getColumnDimension('I')->setAutoSize(true);
+        $hoja->getColumnDimension('J')->setAutoSize(true);
+        $hoja->getColumnDimension('K')->setAutoSize(true);
+        $hoja->getColumnDimension('L')->setAutoSize(true);
 
+        $cont = 3;
 
+        foreach ($records as $fila) {
+            $nombres_completos = $fila->nombre . ' ' . $fila->apellido_paterno . ' ' . $fila->apellido_materno;
+            $especialista = $fila->usu_nombre . ' ' . $fila->usu_apellidos;
+            $hoja->getStyle('A' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('A' . $cont, $fila->especialidad_descripcion, PHPExcel_Cell_DataType::TYPE_STRING);
+            $hoja->getStyle('B' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
+            $hoja->setCellValue('B' . $cont, utf8_encode(" ".$fila->numero_documento) );
 
+            // $hoja->setCellValue('B' . $cont, $fila['dni'], PHPExcel_Cell_DataType::TYPE_STRING);
 
+            $hoja->getStyle('C' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('C' . $cont, $nombres_completos);
+            $hoja->getStyle('D' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('D' . $cont, $fila->formacion_academica_universidad);
+            $hoja->getStyle('E' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('E' . $cont, $fila->especializacion_tema, PHPExcel_Cell_DataType::TYPE_STRING);
+            $hoja->getStyle('F' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('F' . $cont, $fila->experiencia_laboral_institucion_educativa, PHPExcel_Cell_DataType::TYPE_STRING);
+            
+            $hoja->getStyle('G' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('G' . $cont, $fila->sumd, PHPExcel_Cell_DataType::TYPE_STRING);
+            
+            $hoja->getStyle('H' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('H' . $cont, $fila->bonif);
+            
+            $hoja->getStyle('I' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('I' . $cont, $fila->puntaje);
+            $hoja->getStyle('J' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('J' . $cont, $fila->obs, PHPExcel_Cell_DataType::TYPE_STRING);
+            $hoja->getStyle('K' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('K' . $cont, $fila->uid, PHPExcel_Cell_DataType::TYPE_STRING);
+            $hoja->getStyle('L' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('L' . $cont, $especialista, PHPExcel_Cell_DataType::TYPE_STRING);
 
+            $cont++;
+        }
+
+        $filename = $ficha . '.xls'; //save our workbook as this file name
+
+        header('Content-Type: application/vnd.ms-excel'); //mime type
+        header('Content-Disposition: attachment;filename="' . $filename . '"'); //tell browser what's the file name
+        header('Cache-Control: max-age=0'); //no cache
+        //save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+        //if you want to save it as .XLSX Excel 2007 format
+        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+        //force user to download the Excel file without writing it to server's HD
+        //force user to download the Excel file without writing it to server's HD
+        /* Obtenemos los caracteres adicionales o mensajes de advertencia y los
+            guardamos en el archivo "depuracion.txt" si tenemos permisos */
+        file_put_contents('depuracion.txt', ob_get_contents());
+        /* Limpiamos el búfer */
+        ob_end_clean();
+
+        $objWriter->save('php://output');
+       
+  }
 }

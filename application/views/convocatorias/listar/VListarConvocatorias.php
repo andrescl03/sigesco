@@ -47,7 +47,7 @@
 				</td>
                 <td class="text-center">
 					<div class="d-flex justify-content-center gap-2">
-                        <a type="button" class="text-danger btn_editarConvocatoria" title="Editar convocatoria" ><b><i class="fa-solid fa-pen-to-square fa-2xl"></i> </b></a>
+                        <a type="button" class="text-danger btn_modaleditarConvocatoria" title="Editar convocatoria" idConv=<?= $dato['con_id'] ?>  ><b><i class="fa-solid fa-pen-to-square fa-2xl"></i> </b></a>
                     </div>
 				</td>
         	</tr>

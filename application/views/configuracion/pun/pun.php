@@ -73,9 +73,6 @@
             </div>
         </div>
     </div>
-
-
-
     <div class="modal fade" id="modal_cargarPun" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content" style="font-size: 14px;">

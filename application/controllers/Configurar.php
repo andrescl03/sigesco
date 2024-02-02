@@ -6,6 +6,8 @@ class Configurar extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		$this->load->library('tools');
+
 		$this->layout->setLayout("template");
 		$this->load->model("configurar_model");	
 		date_default_timezone_set('America/Lima');	
@@ -100,6 +102,38 @@ class Configurar extends CI_Controller {
 	    }
 	}
 
+
+	public function CargarFirmaUsuario()
+	{
+
+		if (isset($_FILES['archivo'])) {
+			$total  = count($_FILES['archivo']['name']);
+			$files  = array();
+			if ($total) {
+				$path = __DIR__ . "/../../public/uploads/";
+
+				if (!is_dir($path)) {
+					mkdir($path, 0777, true);
+				}
+				$item = $_FILES['archivo'];
+
+				if ($item['error'] == UPLOAD_ERR_OK) {
+					$filename = uniqid(time()) . "-" . $item['name'];
+					$fullpath = $path . $filename;
+
+					$filepath = "/uploads/" . $filename;
+					$extension = strtolower(pathinfo($item['name'], PATHINFO_EXTENSION));
+					move_uploaded_file($item['tmp_name'], $fullpath);
+					$insert_archivos[] = [
+						'nombre'  => $item['name'],
+						'url'     => $filepath,
+						'formato' => $extension,
+						'peso'    => $item['size'],
+					];
+				}
+			}
+		}
+	}
 
 
 }
