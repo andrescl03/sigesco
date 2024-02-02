@@ -48,7 +48,7 @@ const viewfichaDetail = () => {
 	}
 
 	// Function to create a textarea with specified attributes
-	function createTextarea(attributes = {},  events = {}) {
+	function createTextarea(attributes = {},  events = {}, value = '') {
 		const textarea = document.createElement('textarea');
 		for (const key in attributes) {
 			textarea.setAttribute(key, attributes[key]);
@@ -56,6 +56,7 @@ const viewfichaDetail = () => {
 		for (const key in events) {
 			textarea.addEventListener(key, events[key]);
 		}
+		textarea.value = value;
 		return textarea;
 	}
 	
@@ -359,7 +360,9 @@ const viewfichaDetail = () => {
 										keyup: (e) => {
 											question.observation = e.target.value;
 										},
-									});
+									},
+									question.observation
+									);
 									div.appendChild(textarea);											
 								}
 								cells.push(createCell('td', div));
@@ -513,7 +516,7 @@ const viewfichaDetail = () => {
 				question?.options.forEach(o => {
 					options.push({
 						text: o.name,
-						value: o.score
+						value: o.name
 					});
 				});
 				element = createSelect(
@@ -720,7 +723,6 @@ const viewfichaDetail = () => {
 							progressNextButton.disabled = false
 						}
 						if (Number(self.ficha.promedio) == 0 && ([0,2]).includes(Number(self.ficha.evaluacion_estado))) {
-							console.log('no cumple');
 							progressNextButton.disabled = true
 						}
 					})
