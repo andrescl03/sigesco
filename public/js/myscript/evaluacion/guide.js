@@ -401,7 +401,8 @@ const viewfichaDetail = () => {
 			if (Number(self.ficha.promedio) == 0) {
 				const options = [
 					{ value: 1, text: 'CUMPLE' },
-					{ value: 2, text: 'NO CUMPLE' }
+					{ value: 2, text: 'NO CUMPLE' },
+					{ value: 3, text: 'OBSERVADO' }
 				];
 				element = createSelect(
 					options,
