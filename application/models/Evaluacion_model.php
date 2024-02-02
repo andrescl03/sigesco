@@ -168,8 +168,7 @@ class Evaluacion_model extends CI_Model {
               LEFT JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
               WHERE pos.deleted_at IS NULL 
               AND pos.convocatoria_id = $convId
-              AND pos.inscripcion_id = $insId
-              ORDER BY pos.id DESC";
+              AND pos.inscripcion_id = $insId";
       $postulaciones = $this->db->query($sql)->result_array();
       $postulaciones = $this->getPostulacionArchivos($postulaciones);
 
@@ -205,15 +204,14 @@ class Evaluacion_model extends CI_Model {
             usu.usu_apellidos, 
             usu.usu_dni 
           FROM postulaciones pos
-          INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id
-          INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id
+          INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id AND cdt.grupo_inscripcion_gin_id = pos.inscripcion_id
+          INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id  AND cpp.cpe_documento = pos.numero_documento
           INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
           INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
           WHERE pos.deleted_at IS NULL 
           AND pos.convocatoria_id = $convId
           AND pos.inscripcion_id = $insId
-          AND epe.epe_especialistaAsignado = $usuario
-          GROUP BY pos.id";
+          AND epe.epe_especialistaAsignado = $usuario";
       $postulaciones = $this->db->query($sql)->result_array();
       $postulaciones = $this->getPostulacionArchivos($postulaciones);
       return $postulaciones; 
@@ -229,8 +227,10 @@ class Evaluacion_model extends CI_Model {
 
       if (count($postulaciones_ids)) {
         $sql = "SELECT 
-                par.*
+                par.*,
+                tar.nombre AS tipo_nombre
               FROM postulacion_archivos par
+              INNER JOIN tipo_archivos tar ON par.tipo_id = tar.id
               WHERE par.deleted_at IS NULL 
               AND par.postulacion_id IN (".implode(",", $postulaciones_ids).")";
         $postulacion_archivos = $this->db->query($sql)->result_array();
