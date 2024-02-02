@@ -15,7 +15,7 @@
                     <th class="text-center">N° DOCUMENTO</th>
                     <th >APELLIDOS</th>
                     <th >NOMBRES</th>
-                    <th class="text-center">ORDEN DEs MERITO</th>
+                    <th class="text-center">ORDEN DE MERITO</th>
                     <th class="text-center">EXPEDIENTES</th>
                     <th class="text-center">ADJUNTOS</th>
                 </tr>
