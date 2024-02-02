@@ -66,7 +66,7 @@ const submitProcesarExpediente = function (formData) {
 		processData: false,
 		contentType: false,
 	}).done(function ({ success, data, message }) {
-		if (!data.cantidad_procesados == 0) {
+		if (data.cantidad_procesados == 0) {
 			sweet2.show({ type: 'error', html: "no se procesaron expedientes" });
 			return;
 		}

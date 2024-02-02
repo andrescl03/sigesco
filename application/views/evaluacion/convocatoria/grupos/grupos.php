@@ -22,9 +22,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-2 ">
-                                                    <button disabled data-id="<?= $datos[0]['con_numero'] ?>" type="button" id="btn-procesar-expedientes" class="btn btn-sm btn-danger btn-procesar-expedientes">
-                                                        Procesar expedientes
-                                                    </button>
+                                                    <?php
+                                                    if (in_array($this->session->userdata("sigesco_tus_iduser"), array('1', '2'))) { ?>
+                                                        <button data-id="<?= $datos[0]['con_numero'] ?>" type="button" id="btn-procesar-expedientes" class="btn btn-sm btn-danger btn-procesar-expedientes">
+                                                            Procesar expedientes de la MPV para esta convocatoria
+                                                        </button>
+                                                    <?php } ?>
                                                 </div>
                                                 <div class="col-sm-4 ">
                                                     <?php
