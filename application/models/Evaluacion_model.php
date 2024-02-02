@@ -206,7 +206,7 @@ class Evaluacion_model extends CI_Model {
             usu.usu_dni 
           FROM postulaciones pos
           INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id
-          INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id
+          LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id  AND cpp.cpe_documento = pos.numero_documento
           INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
           INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
           WHERE pos.deleted_at IS NULL 
