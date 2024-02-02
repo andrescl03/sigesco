@@ -341,8 +341,7 @@ class Adjudicaciones_model extends CI_Model
               INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
               INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
               INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
-              WHERE C.con_estado = 1
-              AND C.con_id = ?
+              WHERE C.con_id = ?
               AND GI.gin_id = ?";
 
           $adjudicacion->convocatoria = $this->db->query($sql, [
