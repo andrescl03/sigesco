@@ -352,8 +352,9 @@ class Mesaparteapi extends CI_Controller {
 
         $con_numero  = $this->input->post("con_numero", true);
         $actualizacionesCounter = 0;
-        $postulantes = $this->postulaciones_model->buscarDocentesXConvocatoria($con_numero);
+        $actualizacionesNoCounter = 0;
 
+        $postulantes = $this->postulaciones_model->buscarDocentesXConvocatoria($con_numero);
 
         foreach ($postulantes as $postulante) {
 
@@ -368,7 +369,7 @@ class Mesaparteapi extends CI_Controller {
 
                 $response = $this->mesaparteservice->request('POST', 'expedientesmpv/buscar/porcodigotramite', $requestBody, $this->mesaparteservice->token());
 
-                if ($response['response']['numeroExpediente']) {
+                if (isset($response['response']['numeroExpediente'])) {
                     log_message_ci("Ingresa a procesarexpedientes - procesa " . json_encode($postulante));
 
                     $numero_expediente = $response['response']['numeroExpediente'];
@@ -376,8 +377,9 @@ class Mesaparteapi extends CI_Controller {
                     $this->postulaciones_model->updateExpedienteXPostulante($postulacion_id, $numero_expediente);
 
                     $actualizacionesCounter++;
-                   
                 } else {
+
+                    $actualizacionesNoCounter++;
                     log_message_ci("Ingresa a procesarexpedientes - no procesa " . json_encode($postulante));
                 }
             }
@@ -386,13 +388,17 @@ class Mesaparteapi extends CI_Controller {
         $responsejson = [
             "message" => "OK",
             "response" => [
-                "cantidad_procesados"  => $actualizacionesCounter
+                "cantidad_procesados"  => $actualizacionesCounter,
+                "cantidad_no_procesados" => $actualizacionesNoCounter
+
             ],
             "status" => 200
         ];
 
         return $this->output
             ->set_content_type('application/json')
-            ->set_output($responsejson);
+            ->set_output(json_encode($responsejson));
     }
+
+
 }

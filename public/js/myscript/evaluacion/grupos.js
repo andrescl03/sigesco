@@ -65,23 +65,15 @@ const submitProcesarExpediente = function (formData) {
 		data: formData,
 		processData: false,
 		contentType: false,
-	}).done(function ({ success, data, message }) {
-		if (data.cantidad_procesados == 0) {
-			sweet2.show({ type: 'error', html: "no se procesaron expedientes" });
-			return;
+	}).done(function (data) {
+		sweet2.loading(false);
+		if (data && data.status == 200) {
+			sweet2.show({
+				type: 'success',
+				html: "SE PROCESARON: <b>" + data.response.cantidad_procesados + " EXPEDIENTES</b> </br> NO SE PROCESARON: <b>" + data.response.cantidad_no_procesados + " EXPEDIENTES</b>",
+			});
 		}
-		sweet2.show({
-			type: 'success',
-			html: message,
-			onOk: () => {
-				sweet2.loading({ text: 'se procesaron' });
-				window.location.reload();
-			}
-		});
-	})
-		.fail(function (xhr, status, error) {
-			sweet2.show({ type: 'error', text: error });
-		});
-
-
+	}).fail(function (xhr, status, error) {
+		sweet2.show({ type: 'error', text: error });
+	});
 }
