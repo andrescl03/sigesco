@@ -597,7 +597,7 @@ class Postulaciones_model extends CI_Model
             $convocatoria_id = $postulante->convocatoria_id;
             $postulacion_id = $postulante->id;
 
-            $sql = "SELECT * FROM convocatorias WHERE con_estado = 1 AND con_id = ?";
+            $sql = "SELECT * FROM convocatorias WHERE con_id = ?";
             $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
             if (!$convocatoria) {
                 show_404();
@@ -893,7 +893,7 @@ class Postulaciones_model extends CI_Model
             $convocatoria_id = $postulacion->convocatoria_id;
             $postulacion_id = $postulacion->id;
 
-            $sql = "SELECT * FROM convocatorias WHERE con_estado = 1 AND con_id = ?";
+            $sql = "SELECT * FROM convocatorias WHERE con_id = ?";
             $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
             if (!$convocatoria) {
                 throw new Exception("No se encontro la convocatoria");
