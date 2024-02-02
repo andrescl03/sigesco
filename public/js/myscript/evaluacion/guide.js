@@ -824,7 +824,7 @@ const viewfichaDetail = () => {
 											`<br><strong>Observacion: </strong> ${question.observation ?? `-`}` : ``
 										}
 									</td>
-									<td class="text-center">${self.ficha.promedio == 1 ? question.value : (question.value == 1 ? 'Si' : 'No')}</td>
+									<td class="text-center">${question.value ?? ''}</td>
 									${
 										(self.ficha && self.ficha.promedio == 1) ?
 										`<td class="text-center">${question.score}</td>
@@ -854,7 +854,7 @@ const viewfichaDetail = () => {
 					(self.ficha && self.ficha.promedio == 1) ?
 						`<tr class="">
 							<td colspan="3" class="text-center colvert bg-light fw-bold">PUNTAJE OBTENIDO</td>
-							<td class="text-center fw-bold">${total}</td>
+							<td class="text-center fw-bold">${total.toFixed(2)}</td>
 							<td colspan="2"></td>
 						</tr>` : ``
 				}
