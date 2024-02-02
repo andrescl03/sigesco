@@ -162,14 +162,14 @@ class Evaluacion_model extends CI_Model {
                 usu.usu_apellidos, 
                 usu.usu_dni 
               FROM postulaciones pos
-              INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id
+              INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id AND cdt.grupo_inscripcion_gin_id = pos.inscripcion_id
               LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id  AND cpp.cpe_documento = pos.numero_documento
               LEFT JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
               LEFT JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
               WHERE pos.deleted_at IS NULL 
               AND pos.convocatoria_id = $convId
               AND pos.inscripcion_id = $insId
-              GROUP BY pos.id";
+              ORDER BY pos.id DESC";
       $postulaciones = $this->db->query($sql)->result_array();
       $postulaciones = $this->getPostulacionArchivos($postulaciones);
 
