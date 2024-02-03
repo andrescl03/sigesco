@@ -1305,7 +1305,7 @@ class Postulaciones_model extends CI_Model
                 $total = count($all);
                 $count = 0;
                 foreach ($all as $key => $item) {
-                    if ($item->evaluacion_estado == 1) {
+                    if (in_array($item->evaluacion_estado, [1,3])) {
                         $count ++;
                     }
                 }
