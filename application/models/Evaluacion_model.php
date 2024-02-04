@@ -224,7 +224,7 @@ class Evaluacion_model extends CI_Model {
           INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
           WHERE pos.deleted_at IS NULL 
           AND pos.convocatoria_id = $convId
-          AND pos.inscripcion_id = $insId AND pos.estado = 'enviado'";
+          AND pos.inscripcion_id = $insId AND ( pos.estado = 'enviado' OR pos.estado = 'rechazado')";
       $postulaciones = $this->db->query($sql)->result_array();
       $postulaciones = $this->getPostulacionArchivos($postulaciones);
       return $postulaciones; 
