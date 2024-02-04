@@ -1177,7 +1177,7 @@ class Postulaciones_model extends CI_Model
             }
 
             // cambiando de estado al postulante
-            $result = $this->fichas($id);
+            /*$result = $this->fichas($id);
             if ($result['success']) {
                 $all = $result['data']['fichas'];
                 $postulant = $result['data']['postulante'];
@@ -1191,7 +1191,7 @@ class Postulaciones_model extends CI_Model
                 if ($total == $count) {
                     $this->db->update('postulaciones', ['estado' => $estado], array('id' => $id));
                 }
-            }
+            }*/
 
             if ($revisado == 1) {
                 $this->db->update('postulaciones', ['estado' => $estado], array('id' => $id));

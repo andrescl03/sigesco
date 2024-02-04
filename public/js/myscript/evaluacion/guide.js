@@ -570,6 +570,9 @@ const viewfichaDetail = () => {
 						formData.append('puntaje', self.total);
 						formData.append('promedio', self.ficha.promedio);
 						formData.append('estado', (any ? 'finalizado': 'revisado'));
+						if (Number(self.ficha.promedio) == 1) {
+							self.revisado = 1;
+						}
 						formData.append('revisado', self.revisado);
 						if (Number(self.ficha.promedio) == 1) {
 							formData.append('evaluacion_estado', 1);			
