@@ -531,7 +531,7 @@ const viewfichaDetail = () => {
 						} else if (revaluar == 1) {
 							footer.appendChild(btnSave2);
 						} else if (revaluar == 0 && isPUN() && self.postulante.estado == 'revisado') {
-							footer.appendChild(btnSave2);
+							// footer.appendChild(btnSave2);
 						}
 					}
 					if (revaluar == 1) {
