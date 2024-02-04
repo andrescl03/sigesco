@@ -495,7 +495,7 @@ const viewfichaDetail = () => {
 				} else if (revaluar == 1 && Number(self.ficha.promedio) == 1) { // --
 					footer.appendChild(btnSave);
 				} else if (revaluar == 0 && isPUN() && self.postulante.estado == 'revisado') {
-					footer.appendChild(btnSave);
+					// footer.appendChild(btnSave);
 				}			
 			}
 			if (self.postulante.estado != 'finalizado') {
