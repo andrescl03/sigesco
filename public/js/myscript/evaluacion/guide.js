@@ -482,9 +482,9 @@ const viewfichaDetail = () => {
 					if (isValidFichaRequisito()) {
 						return;
 					}
-					self.revisado = 1;
-				} else {
 					self.revisado = 0;
+				} else {
+					self.revisado = 1;
 				}
 				saveAll(false);
 			});
