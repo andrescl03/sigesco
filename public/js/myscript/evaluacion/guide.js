@@ -538,7 +538,7 @@ const viewfichaDetail = () => {
 						if (revaluar == 0 && self.postulante.estado == 'enviado' && Number(self.ficha.promedio) == 0) {
 							footer.appendChild(btnSave2);
 						} else if (revaluar == 1) {
-							footer.appendChild(btnSave2);
+							// footer.appendChild(btnSave2);
 						} else if (revaluar == 0 && isPUN() && self.postulante.estado == 'revisado') {
 							// footer.appendChild(btnSave2);
 						}
