@@ -21,7 +21,7 @@ class Evaluacion_model extends CI_Model {
         ->order_by("mod.mod_id asc, niv.niv_id asc, esp.esp_id asc") 
         ->get();
         $items = $sql->result_array();
-      if ($sigesco_tus_iduser == 1) {
+      if (in_array($sigesco_tus_iduser, [1,2])) {
         $sql = "SELECT
                   POS.*,
                   EPE.epe_id AS epe_id
@@ -353,7 +353,7 @@ class Evaluacion_model extends CI_Model {
           $sigesco_tus_iduser = $this->session->userdata('sigesco_tus_iduser');
           $sigesco_dni = $this->session->userdata('sigesco_dni');
           $estado = $any == 'final' ? 'finalizado' : 'revisado';
-          $filterByUser = $sigesco_tus_iduser == 1 ? '' : ' AND epe.epe_especialistaAsignado = ' . $sigesco_dni;
+          $filterByUser = in_array($sigesco_tus_iduser, [1, 2]) ? '' : ' AND epe.epe_especialistaAsignado = ' . $sigesco_dni;
           $sql = "SELECT 
                     pos.*,
                     cpp.cpe_orden,
