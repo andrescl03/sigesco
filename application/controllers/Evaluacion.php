@@ -52,7 +52,7 @@ class Evaluacion extends CI_Controller {
             $datos   = $this->evaluacion_model->listarGruposInscripcionxConvocatoria($idCon);
             // $gruposInscripcion = $this->evaluacion_model->listarGruposAsignadosXConvocatoria($idConv);
 
-            
+
             /*foreach ($datos as $key_1 => $dato) {
                 $_idGin = $dato['gin_id'];
                 $usuario = $this->session->userdata("sigesco_dni");
@@ -106,7 +106,6 @@ class Evaluacion extends CI_Controller {
         $todos      = $this->input->post("todos",true); // 0: POR ESPECIALISTA, 1: TODOS
         $convId     = $this->input->post("convId",true);
         $usuario    = $this->session->userdata("sigesco_dni");
-
        
         switch ($tipo) {
             case '1':

@@ -224,7 +224,7 @@ class Evaluacion_model extends CI_Model {
           INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
           WHERE pos.deleted_at IS NULL 
           AND pos.convocatoria_id = $convId
-          AND pos.inscripcion_id = $insId";
+          AND pos.inscripcion_id = $insId AND pos.estado = 'enviado'";
       $postulaciones = $this->db->query($sql)->result_array();
       $postulaciones = $this->getPostulacionArchivos($postulaciones);
       return $postulaciones; 
@@ -373,7 +373,10 @@ class Evaluacion_model extends CI_Model {
                   $filterText
                   GROUP BY pos.id
                   ORDER BY pos.id DESC";
+
+
           $items = $this->db->query($sql)->result_object();
+
           $recordsTotal = count($items);
 
           $sql .= " LIMIT {$start}, {$length}";
