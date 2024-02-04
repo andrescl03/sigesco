@@ -17,6 +17,15 @@ const viewfichaDetail = () => {
 	let currentActive = 1;
 	const textWraps = [];
 
+	function getStatusName (id) {
+		const options = [
+			'NO CUMPLE',
+			'CUMPLE',
+			'OBSERVADO',
+		];
+		return options[id];
+	}
+
 	// Function to create a cell with specified attributes and text
 	function createCell(tag, text, attributes = {}, style = {}) {
 		const cell = document.createElement(tag);
@@ -958,6 +967,9 @@ const viewfichaDetail = () => {
 				}
 				</tbody>
                 </table>
+				${
+					Number(self.ficha.promedio) == 0 ? `<div class="col-md-12"><h5>Estado: ${getStatusName(self.ficha.estado)}</h5></div>` : ``
+				}
 			</div>`;
 			domBody.innerHTML = html;
 		};
