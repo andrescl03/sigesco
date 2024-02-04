@@ -106,7 +106,6 @@ class Evaluacion extends CI_Controller {
         $todos      = $this->input->post("todos",true); // 0: POR ESPECIALISTA, 1: TODOS
         $convId     = $this->input->post("convId",true);
         $usuario    = $this->session->userdata("sigesco_dni");
-
        
         switch ($tipo) {
             case '1':

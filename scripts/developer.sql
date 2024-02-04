@@ -397,3 +397,6 @@ UPDATE postulacion_evaluaciones SET estado = 0 WHERE estado = 2;
 UPDATE postulacion_evaluaciones SET estado = 2 WHERE estado = 3;
  
  -- FALTA UN SCRIPT MAS bien delicado
+
+
+CREATE INDEX idx_epe_especialistaAsignado ON evaluacion_pun_exp(epe_especialistaAsignado);
