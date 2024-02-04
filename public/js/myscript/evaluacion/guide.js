@@ -223,7 +223,7 @@ const viewfichaDetail = () => {
 				try {
 					domBody.innerHTML = ``;
 					self.ficha = self.fichas.find((o)=>{return o.id == id});
-					self.ficha.evaluacion_estado = Number(self.ficha.evaluacion_estado);
+					// self.ficha.evaluacion_estado = Number(self.ficha.evaluacion_estado);
 					self.sections = [];
 					if (self.ficha.plantilla) {						
 						if (self.ficha.plantilla.sections) {
@@ -249,6 +249,21 @@ const viewfichaDetail = () => {
 				}
 			});
 		};
+
+		const isValidFichaRequisito = () => {
+			let brand = false;
+			const select = dom.querySelector('#estadoFichaRequisito');
+			if (select) {
+				const value = select.value;
+				if (value.length == 0) {
+					brand = true;
+				}
+			}
+			if (brand) {
+				sweet2.show({type: 'error', text: 'Debe de seleccionar el estado de la ficha'});
+			}
+			return brand;
+		}
 
 		const formFichaDetail = () => {
 			// Create the outer div with the 'table-responsive' class
@@ -416,7 +431,7 @@ const viewfichaDetail = () => {
 				];
 				element = createSelect(
 					options,
-					{ class: 'form-control text-center' },
+					{ class: 'form-control text-center', id: 'estadoFichaRequisito' },
 					{
 						change: (e) => {
 							self.ficha.evaluacion_estado = e.target.value;
@@ -463,45 +478,59 @@ const viewfichaDetail = () => {
 			btnSave.classList.add('btn', 'btn-primary');
 			btnSave.innerText = 'Guardar';
 			btnSave.addEventListener('click', (e) => {
-				if (Number(self.ficha.promedio) == 0) {
+				if (Number(self.ficha.promedio) == 0) { // Prerequisito
+					if (isValidFichaRequisito()) {
+						return;
+					}
 					self.revisado = 1;
 				} else {
 					self.revisado = 0;
 				}
 				saveAll(false);
 			});
+
 			if (self.postulante.estado != 'finalizado') {
 				if (revaluar == 0 && self.postulante.estado == 'enviado') {
 					footer.appendChild(btnSave);
-				} else if (revaluar == 1) {
+				} else if (revaluar == 1 && Number(self.ficha.promedio) == 1) { // --
 					footer.appendChild(btnSave);
-				}				
+				} else if (revaluar == 0 && isPUN() && self.postulante.estado == 'revisado') {
+					footer.appendChild(btnSave);
+				}			
 			}
 			if (self.postulante.estado != 'finalizado') {
-				if (currentActive == textWraps.length && self.postulante.estado == 'revisado') {
+				if (currentActive == textWraps.length && self.postulante.estado == 'revisado') { // Annexo
 					const btnSaveAll = document.createElement('button');
 					btnSaveAll.classList.add('btn', 'btn-danger', 'ms-2');
 					btnSaveAll.innerText = 'Guardar y finalizar';
 					btnSaveAll.addEventListener('click', (e) => {
 						saveAll(true);
 					});
+					
 					if (revaluar == 0 && self.postulante.estado == 'enviado') {
 						footer.appendChild(btnSaveAll);
 					} else if (revaluar == 1) {
 						footer.appendChild(btnSaveAll);
+					} else if (revaluar == 0 && isPUN() && self.postulante.estado == 'revisado') {
+						footer.appendChild(btnSaveAll);
 					}
 				} else {
-					if (isPUN()) {
+					if (isPUN()) { // prerequisito
 						self.revisado = 1;
 						const btnSave2 = document.createElement('button');
 						btnSave2.classList.add('btn', 'btn-success', 'ms-2');
 						btnSave2.innerText = 'Guardar y dar por revisado';
 						btnSave2.addEventListener('click', (e) => {
+							if (isValidFichaRequisito()) {
+								return;
+							}
 							saveAll(false);
 						});
 						if (revaluar == 0 && self.postulante.estado == 'enviado') {
 							footer.appendChild(btnSave2);
 						} else if (revaluar == 1) {
+							footer.appendChild(btnSave2);
+						} else if (revaluar == 0 && isPUN() && self.postulante.estado == 'revisado') {
 							footer.appendChild(btnSave2);
 						}
 					}
@@ -515,6 +544,8 @@ const viewfichaDetail = () => {
 						if (revaluar == 0 && self.postulante.estado == 'enviado') {
 							footer.appendChild(btnSaveAll);
 						} else if (revaluar == 1) {
+							footer.appendChild(btnSaveAll);
+						} else if (revaluar == 0 && isPUN() && self.postulante.estado == 'revisado') {
 							footer.appendChild(btnSaveAll);
 						}
 					}
@@ -550,6 +581,11 @@ const viewfichaDetail = () => {
 						.then(({success, data, message})=>{
 							if (!success) {
 								throw message;
+							}
+							if (Number(self.ficha.promedio) == 1) {
+								currentActive = textWraps.length.length;
+							} else {
+								currentActive = 1;
 							}
 							sweet2.show({type: 'success', text: message});
 							build();
@@ -773,7 +809,7 @@ const viewfichaDetail = () => {
 							progressNextButton.disabled = true
 						} else {
 							progressBackButton.disabled = false
-							progressNextButton.disabled = false
+							progressNextButton.disabled = true
 						}
 						if (Number(self.ficha.promedio) == 0 && ([0,2]).includes(Number(self.ficha.evaluacion_estado))) {
 							progressNextButton.disabled = true
