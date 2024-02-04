@@ -239,7 +239,7 @@ const viewfichaDetail = () => {
 							self.sections = self.ficha.plantilla.sections;
 							if (self.ficha.evaluacion_estado == 1) {
 								if (self.postulante.estado == 'revisado' && revaluar == 0) {
-									viewFicha();
+									formFichaDetail();
 								} else if (self.postulante.estado == 'finalizado' && revaluar == 1) {
 									viewFicha();
 								} else if (self.postulante.estado == 'finalizado' && revaluar == 0) {
