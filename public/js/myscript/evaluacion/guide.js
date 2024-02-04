@@ -512,7 +512,7 @@ const viewfichaDetail = () => {
 					} else if (revaluar == 1) {
 						footer.appendChild(btnSaveAll);
 					} else if (revaluar == 0 && isPUN() && self.postulante.estado == 'revisado') {
-						footer.appendChild(btnSaveAll);
+						// footer.appendChild(btnSaveAll);
 					}
 				} else {
 					if (isPUN()) { // prerequisito
