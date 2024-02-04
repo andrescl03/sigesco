@@ -101,7 +101,7 @@ const AppAdjudicacionAdmin = () => {
                                 "targets": 3,
                                 "data": "apellido_paterno",
                                 "render": function ( data, type, row, meta ) {
-                                    return row.apellido_paterno;
+                                    return row.apellido_paterno + ' ' + row.apellido_materno;
                                 }
                             },
                             {
@@ -116,7 +116,7 @@ const AppAdjudicacionAdmin = () => {
                                 "data": "uid",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return '1';
+                                    return '';
                                 }
                             },
                             {
@@ -130,6 +130,14 @@ const AppAdjudicacionAdmin = () => {
                             {
                                 "targets": 7,
                                 "data": "id",
+                                "className": "text-center",
+                                "render": function ( data, type, row, meta ) {
+                                    return `<span class="badge bg-success" style="font-size: 0.9em;">${row.numero_expediente}</span>`;
+                                }
+                            },
+                            {
+                                "targets": 8,
+                                "data": "id",
                                 "render": function ( data, type, row, meta ) {
                                     return `<div class="d-flex justify-content-center gap-2">                  
                                                 <svg class="svg-inline--fa fa-table-list fa-2xl text-danger btn-files" data-id="${row.id}" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="table-list" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M0 96C0 60.65 28.65 32 64 32H448C483.3 32 512 60.65 512 96V416C512 451.3 483.3 480 448 480H64C28.65 480 0 451.3 0 416V96zM64 160H128V96H64V160zM448 96H192V160H448V96zM64 288H128V224H64V288zM448 224H192V288H448V224zM64 416H128V352H64V416zM448 352H192V416H448V352z"></path></svg><!-- <i class="fa fa-th-list fa-2xl text-danger" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#exampleModal1"></i> Font Awesome fontawesome.com -->
@@ -137,7 +145,7 @@ const AppAdjudicacionAdmin = () => {
                                 }
                             },
                             {
-                                "targets": 8,
+                                "targets": 9,
                                 "data": "created_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
