@@ -968,7 +968,7 @@ const viewfichaDetail = () => {
 				</tbody>
                 </table>
 				${
-					Number(self.ficha.promedio) == 0 ? `<div class="col-md-12"><h5>Estado: ${getStatusName(self.ficha.estado)}</h5></div>` : ``
+					Number(self.ficha.promedio) == 0 ? `<div class="col-md-12"><h5>Estado: ${getStatusName(Number(self.ficha.evaluacion_estado))}</h5></div>` : ``
 				}
 			</div>`;
 			domBody.innerHTML = html;
