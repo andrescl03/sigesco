@@ -593,7 +593,6 @@ const viewfichaDetail = () => {
 							sweet2.show({
 								type: 'success', 
 								text: message,
-								showCancelButton: true,
 								onOk: () => {
 									window.location.reload();
 									sweet2.loading({text: 'Actualizando información'});
