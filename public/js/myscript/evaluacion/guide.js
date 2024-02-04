@@ -598,7 +598,6 @@ const viewfichaDetail = () => {
 									sweet2.loading({text: 'Actualizando información'});
 								}
 							});
-							build();
 						})
 						.catch(error => {
 							sweet2.show({type: 'error', text: error});								
