@@ -583,7 +583,7 @@ const viewfichaDetail = () => {
 								throw message;
 							}
 							if (Number(self.ficha.promedio) == 1) {
-								currentActive = textWraps.length.length;
+								currentActive = textWraps.length;
 							} else {
 								currentActive = 1;
 							}
