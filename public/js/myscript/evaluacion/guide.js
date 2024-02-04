@@ -526,7 +526,7 @@ const viewfichaDetail = () => {
 							}
 							saveAll(false);
 						});
-						if (revaluar == 0 && self.postulante.estado == 'enviado') {
+						if (revaluar == 0 && self.postulante.estado == 'enviado' && Number(self.ficha.promedio) == 0) {
 							footer.appendChild(btnSave2);
 						} else if (revaluar == 1) {
 							footer.appendChild(btnSave2);
