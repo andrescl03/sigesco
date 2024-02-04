@@ -590,7 +590,15 @@ const viewfichaDetail = () => {
 							} else {
 								currentActive = 1;
 							}
-							sweet2.show({type: 'success', text: message});
+							sweet2.show({
+								type: 'success', 
+								text: message,
+								showCancelButton: true,
+								onOk: () => {
+									window.location.reload();
+									sweet2.loading({text: 'Actualizando información'});
+								}
+							});
 							build();
 						})
 						.catch(error => {
