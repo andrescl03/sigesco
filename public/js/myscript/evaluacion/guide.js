@@ -814,7 +814,7 @@ const viewfichaDetail = () => {
 							progressBackButton.disabled = false
 							progressNextButton.disabled = true
 						}
-						if (Number(self.ficha.promedio) == 0 && ([0,2]).includes(Number(self.ficha.evaluacion_estado))) {
+						if (Number(self.ficha.promedio) == 0 && ([0]).includes(Number(self.ficha.evaluacion_estado))) {
 							progressNextButton.disabled = true
 						}
 					})
