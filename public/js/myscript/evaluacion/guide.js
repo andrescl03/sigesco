@@ -208,8 +208,14 @@ const viewfichaDetail = () => {
 			total_section: 0,
 			total_question: 0,
 			total: 0,
-			especialidad_prelaciones: data.especialidad_prelaciones
+			especialidad_prelaciones: data.especialidad_prelaciones,
+			tipo_id: data.convocatoria.con_tipo,
+			revisado: 0
 		};
+
+		const isPUN = () => {
+			return self.tipo_id == 1;
+		}
 
 		const setFormModule = (id) => {
 			self.ficha_id = id;
@@ -217,6 +223,7 @@ const viewfichaDetail = () => {
 				try {
 					domBody.innerHTML = ``;
 					self.ficha = self.fichas.find((o)=>{return o.id == id});
+					self.ficha.evaluacion_estado = Number(self.ficha.evaluacion_estado);
 					self.sections = [];
 					if (self.ficha.plantilla) {						
 						if (self.ficha.plantilla.sections) {
@@ -403,9 +410,9 @@ const viewfichaDetail = () => {
 
 			if (Number(self.ficha.promedio) == 0) {
 				const options = [
+					{ value: 0, text: 'NO CUMPLE' },
 					{ value: 1, text: 'CUMPLE' },
-					{ value: 2, text: 'NO CUMPLE' },
-					{ value: 3, text: 'OBSERVADO' }
+					{ value: 2, text: 'OBSERVADO' }
 				];
 				element = createSelect(
 					options,
@@ -456,17 +463,62 @@ const viewfichaDetail = () => {
 			btnSave.classList.add('btn', 'btn-primary');
 			btnSave.innerText = 'Guardar';
 			btnSave.addEventListener('click', (e) => {
+				if (Number(self.ficha.promedio) == 0) {
+					self.revisado = 1;
+				} else {
+					self.revisado = 0;
+				}
 				saveAll(false);
 			});
-			footer.appendChild(btnSave);
-			if (currentActive == textWraps.length && self.postulante.estado == 'revisado') {
-				const btnSaveAll = document.createElement('button');
-				btnSaveAll.classList.add('btn', 'btn-success', 'ms-2');
-				btnSaveAll.innerText = 'Guardar y Finalizar';
-				btnSaveAll.addEventListener('click', (e) => {
-					saveAll(true);
-				});
-				footer.appendChild(btnSaveAll);
+			if (self.postulante.estado != 'finalizado') {
+				if (revaluar == 0 && self.postulante.estado == 'enviado') {
+					footer.appendChild(btnSave);
+				} else if (revaluar == 1) {
+					footer.appendChild(btnSave);
+				}				
+			}
+			if (self.postulante.estado != 'finalizado') {
+				if (currentActive == textWraps.length && self.postulante.estado == 'revisado') {
+					const btnSaveAll = document.createElement('button');
+					btnSaveAll.classList.add('btn', 'btn-danger', 'ms-2');
+					btnSaveAll.innerText = 'Guardar y finalizar';
+					btnSaveAll.addEventListener('click', (e) => {
+						saveAll(true);
+					});
+					if (revaluar == 0 && self.postulante.estado == 'enviado') {
+						footer.appendChild(btnSaveAll);
+					} else if (revaluar == 1) {
+						footer.appendChild(btnSaveAll);
+					}
+				} else {
+					if (isPUN()) {
+						self.revisado = 1;
+						const btnSave2 = document.createElement('button');
+						btnSave2.classList.add('btn', 'btn-success', 'ms-2');
+						btnSave2.innerText = 'Guardar y dar por revisado';
+						btnSave2.addEventListener('click', (e) => {
+							saveAll(false);
+						});
+						if (revaluar == 0 && self.postulante.estado == 'enviado') {
+							footer.appendChild(btnSave2);
+						} else if (revaluar == 1) {
+							footer.appendChild(btnSave2);
+						}
+					}
+					if (revaluar == 1) {
+						const btnSaveAll = document.createElement('button');
+						btnSaveAll.classList.add('btn', 'btn-danger', 'ms-2');
+						btnSaveAll.innerText = 'Guardar y finalizar';
+						btnSaveAll.addEventListener('click', (e) => {
+							saveAll(true);
+						});
+						if (revaluar == 0 && self.postulante.estado == 'enviado') {
+							footer.appendChild(btnSaveAll);
+						} else if (revaluar == 1) {
+							footer.appendChild(btnSaveAll);
+						}
+					}
+				}
 			}
 			domBody.appendChild(footer);
 		}
@@ -487,6 +539,7 @@ const viewfichaDetail = () => {
 						formData.append('puntaje', self.total);
 						formData.append('promedio', self.ficha.promedio);
 						formData.append('estado', (any ? 'finalizado': 'revisado'));
+						formData.append('revisado', self.revisado);
 						if (Number(self.ficha.promedio) == 1) {
 							formData.append('evaluacion_estado', 1);			
 						} else {

@@ -218,6 +218,7 @@ const AppAdjudicacionAdmin = () => {
             },
             renders: {
                 attachedfilesRender: (files) => {
+                    console.log(files);
                     let html = `<tr><td colspan="3" class="text-center">No hay registros para mostrar<td></tr>`;
                     if (files.length > 0) {
                         html = ``,
@@ -226,6 +227,7 @@ const AppAdjudicacionAdmin = () => {
                             html += `
                             <tr class="">
                                 <td scope="row">${file.id}</td>
+                                <td>${file.tipo_nombre}</td>
                                 <td>${file.nombre}</td>
                                 <td class="text-center">
                                     <a href="${url}" class="text-danger" target="_blank" donwload>

@@ -68,7 +68,7 @@
                                                     <tr>
                                                         <td class="text-center"><b><?= $i + 1; ?></b></td>
                                                         <td><?= $dato['mod_abreviatura'] . " " . $dato['niv_descripcion'] . ($dato['esp_descripcion'] != "-" ? " " . $dato['esp_descripcion'] : "") ?></td>
-                                                        <td class="text-center"><span class="badge rounded-pill bg-warning text-dark" style="font-size: 1em;"><?= $dato['total_asignados'] . " / " . $dato['total_postulaciones'] ?></span></b></td>
+                                                        <td class="text-center"><span class="badge rounded-pill bg-warning text-dark" style="font-size: 1em;"><?= $dato['total_asignados'] . " / " . $dato['cantidad_final'] ?></span></b></td>
                                                         <!-- <td class="text-center">
                                                             <div class="d-flex justify-content-center gap-3">
                                                                 <?php

@@ -390,3 +390,10 @@ CREATE TABLE `especialidad_prelaciones` (
 	PRIMARY KEY (`id`) USING BTREE
 );
 
+/******************************* 03/02/2024 ****************/
+
+
+UPDATE postulacion_evaluaciones SET estado = 0 WHERE estado = 2;
+UPDATE postulacion_evaluaciones SET estado = 2 WHERE estado = 3;
+ 
+ -- FALTA UN SCRIPT MAS bien delicado

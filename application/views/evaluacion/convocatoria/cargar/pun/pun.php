@@ -136,7 +136,7 @@
                 <td class="text-center">
                     <div class="d-flex justify-content-center gap-2" data-id="<?= $dato['id'] ?>" data-epe_id="<?= $dato['epe_id'] ?>">
                         <?php if($dato['epe_id']!= NULL){ ?>
-                            <a type="button" class="text-dark" title="Ver Ficha" href="<?= base_url()."evaluacion/ficha/".encryption($dato['id']."||".($dato['epe_id']== NULL ? 0 : $dato['epe_id'])) ?>" target="_blank"><b><i class="fa-solid fa-file-signature fa-2xl"></i> </b></a>
+                            <a type="button" class="text-dark" title="Ver Ficha" href="<?= base_url()."evaluacion/ficha/".encryption($dato['id']."||".($dato['epe_id']== NULL ? 0 : $dato['epe_id'])) ?>" target="_blank">EVALUAR FICHA</a>
                         <?php } ?>
                         <a href="<?= base_url() . 'evaluacion/convocatoria/inscripcion/postulante/' . $dato['id'] . '/editar' ?>" class="menu-link text-danger px-3">EDITAR REGISTRO</a>
                     </div> 
@@ -150,17 +150,18 @@
 <script>
 
 var chkAsignarTodosEval1 = document.getElementById("chk_asignarTodosEval_1");
-console.log(chkAsignarTodosEval1);
-chkAsignarTodosEval1.addEventListener("click", function () {
+if (chkAsignarTodosEval1) {
+    chkAsignarTodosEval1.addEventListener("click", function () {
 
-    // Obtiene todos los checkboxes secundarios
-    var checkboxesSecundarios = document.querySelectorAll(".chk_asignarEval input");
+// Obtiene todos los checkboxes secundarios
+var checkboxesSecundarios = document.querySelectorAll(".chk_asignarEval input");
 
-    // Actualiza el estado de cada checkbox secundario según el estado del checkbox principal
-    checkboxesSecundarios.forEach(function (checkbox) {
-        checkbox.checked = chkAsignarTodosEval1.checked;
-    });
+// Actualiza el estado de cada checkbox secundario según el estado del checkbox principal
+checkboxesSecundarios.forEach(function (checkbox) {
+    checkbox.checked = chkAsignarTodosEval1.checked;
 });
+});
+}
 
 
 </script>

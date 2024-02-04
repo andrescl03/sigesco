@@ -876,124 +876,6 @@ class Postulaciones_model extends CI_Model
         return $response;
     }
 
-    public function update_old($args)
-    {
-        $response = $this->tools->responseDefault();
-        try {
-
-            $uid = isset($args['uid']) ? $args['uid'] : 0;
-
-            $sql = "SELECT * FROM postulaciones WHERE deleted_at IS NULL AND uid = ?";
-            $postulacion = $this->db->query($sql, compact('uid'))->row();
-
-            if (!$postulacion) {
-                throw new Exception("No se encontro el registro");
-            }
-
-            $convocatoria_id = $postulacion->convocatoria_id;
-            $postulacion_id = $postulacion->id;
-
-            $sql = "SELECT * FROM convocatorias WHERE con_id = ?";
-            $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
-            if (!$convocatoria) {
-                throw new Exception("No se encontro la convocatoria");
-            }
-
-            $any = isset($_POST['any']) ? $_POST['any'] : '';
-            switch ($any) {
-                case 'archivos_adjuntos_guardar':
-                    if (isset($_FILES['archivo'])) {
-                        $path = __DIR__ . "/../../public/uploads/";
-                        if (!is_dir($path)) {
-                            mkdir($path, 0777, true);
-                        }
-                        $file = $_FILES['archivo'];
-                        if ($file['error'] == UPLOAD_ERR_OK) {
-                            $filename = uniqid(time()) . "-" . $file['name'];
-                            $fullpath = $path . $filename;
-                            $filepath = "/uploads/" . $filename;
-                            $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-                            move_uploaded_file($file['tmp_name'], $fullpath);
-                            $data = [
-                                'nombre'  => $file['name'],
-                                'url'     => $filepath,
-                                'formato' => $extension,
-                                'peso'    => $file['size'],
-                                'tipo_id' => $_POST['tipo'],
-                                'postulacion_id' => $postulacion_id
-                            ];
-                            $this->db->insert('postulacion_archivos', $data);
-                        }
-                    }
-                    break;
-                case 'experiencia_laboral_guardar':
-                    $data = [
-                        'institucion_educativa' => $_POST['institucion_educativa'],
-                        'sector'                => $_POST['sector'],
-                        'puesto'                => $_POST['puesto'],
-                        'numero_rd'             => $_POST['numero_rd'],
-                        'numero_contrato'       => $_POST['numero_contrato'],
-                        'postulacion_id'        => $postulacion_id
-                    ];
-                    $this->db->insert('postulacion_experiencias_laborales', $data);
-                    break;
-                case 'formacion_academica_guardar':
-                    $data = [
-                        'nivel_educativo'     => $_POST['nivel_educativo'],
-                        'grado_academico'     => $_POST['grado_academico'],
-                        'universidad'         => $_POST['universidad'],
-                        'carrera_profesional' => $_POST['carrera_profesional'],
-                        'registro_titulo'     => $_POST['registro_titulo'],
-                        'rd_titulo'           => $_POST['rd_titulo'],
-                        'obtencion_grado'     => $_POST['obtencion_grado'],
-                        'postulacion_id'      => $postulacion_id
-                    ];
-                    $this->db->insert('postulacion_formaciones_academicas', $data);
-                    break;
-                case 'especializacion_guardar':
-                    $data = [
-                        'tipo_especializacion' => $_POST['tipo_especializacion'],
-                        'tema_especializacion' => $_POST['tema_especializacion'],
-                        'nombre_entidad'       => $_POST['nombre_entidad'],
-                        'fecha_inicio'         => $_POST['fecha_inicio'],
-                        'fecha_termino'        => $_POST['fecha_termino'],
-                        'numero_horas'         => $_POST['numero_horas'],
-                        'postulacion_id'       => $postulacion_id
-                    ];
-                    $this->db->insert('postulacion_especializaciones', $data);
-                    break;
-                case 'datos_postulante':
-
-                    break;
-                case 'datos_ubicacion':
-
-                    break;
-                case 'archivos_adjuntos_eliminar':
-                    $this->db->update('postulacion_archivos', ['deleted_at' => $this->tools->getDateHour()], array('id' => $_POST['id']));
-                    break;
-                case 'experiencia_laboral_eliminar':
-                    $this->db->update('postulacion_experiencias_laborales', ['deleted_at' => $this->tools->getDateHour()], array('id' => $_POST['id']));
-                    break;
-                case 'formacion_academica_eliminar':
-                    $this->db->update('postulacion_formaciones_academicas', ['deleted_at' => $this->tools->getDateHour()], array('id' => $_POST['id']));
-                    break;
-                case 'especializacion_eliminar':
-                    $this->db->update('postulacion_especializaciones', ['deleted_at' => $this->tools->getDateHour()], array('id' => $_POST['id']));
-                    break;
-                default:
-                    # code...
-                    break;
-            }
-
-            $response['success'] = true;
-            $response['status']  = 200;
-            $response['message'] = 'Se guardo correctamente';
-        } catch (\Exception $e) {
-            $response['message'] = $e->getMessage();
-        }
-        return $response;
-    }
-
     public function messageMail($uid, $postulante)
     {
         return '
@@ -1241,6 +1123,7 @@ class Postulaciones_model extends CI_Model
             $promedio  = $this->input->post("promedio", true);
             $estado    = $this->input->post("estado", true);
             $evaluacion_estado    = $this->input->post("evaluacion_estado", true);
+            $revisado    = $this->input->post("revisado", true);
 
             $sql = "SELECT 
                         P.*
@@ -1260,10 +1143,6 @@ class Postulaciones_model extends CI_Model
                     AND P.postulacion_id = ?
                     AND P.ficha_id = ?";
             $ficha = $this->db->query($sql, array('postulacion_id'=>$id, 'ficha_id'=>$ficha_id))->row();
-
-            // if ($ficha) {
-            //     throw new Exception("Ya existe una ficha registrada");
-            // }
 
             $sql = "SELECT 
                         PE.*
@@ -1305,13 +1184,17 @@ class Postulaciones_model extends CI_Model
                 $total = count($all);
                 $count = 0;
                 foreach ($all as $key => $item) {
-                    if (in_array($item->evaluacion_estado, [1,3])) {
+                    if (in_array($item->evaluacion_estado, [1,2])) {
                         $count ++;
                     }
                 }
                 if ($total == $count) {
                     $this->db->update('postulaciones', ['estado' => $estado], array('id' => $id));
                 }
+            }
+
+            if ($revisado == 1) {
+                $this->db->update('postulaciones', ['estado' => $estado], array('id' => $id));
             }
 
             $response['success'] = true;
@@ -1396,7 +1279,7 @@ class Postulaciones_model extends CI_Model
             $especialidad_prelaciones = $this->db->query($sql, compact('especialidad_id'))->result_object();
             
             $response['success'] = true;
-            $response['data']  = compact('fichas', 'periodo', 'postulante', 'especialidad_prelaciones', 'especialidad_id');
+            $response['data']  = compact('fichas', 'periodo', 'postulante', 'especialidad_prelaciones', 'especialidad_id', 'convocatoria');
             $response['status']  = 200;
             $response['message'] = 'fichas';
   
