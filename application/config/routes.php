@@ -75,6 +75,7 @@ $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/preliminar'] = 'evalua
 $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/final'] = 'evaluacion/indexFinal/$1/$2';
 $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/editar'] = 'evaluacion/editarFicha/$1/$2';
 
+$route['evaluacion/convocatoria/(:num)/inscripcion/reporte/excel'] = 'evaluacion/reporte_excel_general/$1';
 $route['evaluacion/convocatoria/inscripcion/pagination'] = 'evaluacion/pagination/$1/$2';
 $route['evaluacion/convocatoria/inscripcion/postulantes/(:num)/attachedfiles'] = 'evaluacion/attachedfiles/$1';
 $route['evaluacion/convocatoria/inscripcion/postulante/(:num)/revaluar'] = 'evaluacion/revaluarPreliFinal/$1';
