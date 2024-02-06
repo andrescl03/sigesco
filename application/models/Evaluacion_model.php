@@ -61,7 +61,10 @@ class Evaluacion_model extends CI_Model {
           $items[$k]['total_asignados'] = 0;
           if (isset($keys_postulaciones[$o['gin_id']])) {
             if (isset($keys_postulaciones[$o['gin_id']]['enviado'])) {
-              $items[$k]['cantidad_sin_evaluar'] = count($keys_postulaciones[$o['gin_id']]['enviado']);
+              $items[$k]['cantidad_sin_evaluar'] += count($keys_postulaciones[$o['gin_id']]['enviado']);
+            }
+            if (isset($keys_postulaciones[$o['gin_id']]['rechazado'])) {
+              $items[$k]['cantidad_sin_evaluar'] += count($keys_postulaciones[$o['gin_id']]['rechazado']);
             }
             if (isset($keys_postulaciones[$o['gin_id']]['revisado'])) {
               $items[$k]['cantidad_preliminar'] = count($keys_postulaciones[$o['gin_id']]['revisado']);

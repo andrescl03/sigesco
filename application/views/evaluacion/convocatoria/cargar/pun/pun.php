@@ -76,7 +76,6 @@
                                         <table class="table mb-0" width="100%">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">N°</th>
                                                     <th scope="col">Tipo</th>
                                                     <th scope="col">Nombre</th>
                                                     <th scope="col">Archivo</th>
@@ -85,7 +84,6 @@
                                             <tbody>
                                                 <?php foreach ($dato['archivos'] as $k2 => $archivo) { ?>
                                                 <tr class="">
-                                                    <td scope="row"><?php echo $k2 + 1 ?></td>
                                                     <td><?php echo $archivo['tipo_nombre'] ?></td>
                                                     <td><?php echo $archivo['nombre'] ?></td>
                                                     <td>
