@@ -394,7 +394,54 @@ class Evaluacion_model extends CI_Model {
           $res['message'] = $e->getMessage();
       }
       return $res;
-  }
+    }
+
+    public function f_report_postulant($convocatoria_id, $inscripcion_id, $estado) {
+      $res = $this->tools->responseDefault();
+      try {
+          $where = $inscripcion_id == -1 ? "" : " AND pos.inscripcion_id = $inscripcion_id";
+          $where .= $estado == -1 ? "" : " AND pos.estado = '$estado'";
+          $sql = "SELECT 
+                    pos.*,
+                    cpp.cpe_orden,
+                    epe.epe_id, 
+                    usu.usu_nombre, 
+                    usu.usu_apellidos, 
+                    usu.usu_dni,
+
+                    esp.esp_id AS especialidad_id,
+                    esp.esp_descripcion AS especialidad_descripcion,
+                    niv.niv_id AS nivel_id,
+                    niv.niv_descripcion AS nivel_descripcion,
+                    mdd.mod_id AS modalidad_id,
+                    mdd.mod_nombre AS modalidad_descripcion,
+                    mdd.mod_abreviatura AS modalidad_abreviatura
+
+                  FROM postulaciones pos
+                  INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento
+                  INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
+                  INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
+                  
+                  INNER JOIN grupo_inscripcion AS gin ON cpp.grupo_inscripcion_gin_id = gin.gin_id
+                  INNER JOIN especialidades AS esp ON esp.esp_id = gin.especialidades_esp_id
+                  INNER JOIN niveles AS niv ON niv.niv_id = esp.niveles_niv_id
+                  INNER JOIN modalidades AS mdd ON mdd.mod_id = niv.modalidad_mod_id 
+
+                  WHERE pos.deleted_at IS NULL 
+                  AND pos.convocatoria_id = $convocatoria_id
+                  $where
+                  ORDER BY mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC";
+
+          $items = $this->db->query($sql)->result_object();
+
+          $res['success'] = true;
+          $res['data'] = ['records' => $items];
+          $res['message'] = 'successfully';
+      } catch (\Exception $e) {
+          $res['message'] = $e->getMessage();
+      }
+      return $res;
+    }
 
   public function attachedfiles($id) {
     $response = $this->tools->responseDefault();

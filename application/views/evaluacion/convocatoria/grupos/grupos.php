@@ -16,20 +16,23 @@
                                     <div class="card border bg-light">
                                         <div class="card-body" style="padding: 0.8rem 1rem;">
                                             <div class="row">
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-2">
                                                     <div class="d-flex align-content-start flex-wrap gap-3">
-                                                        <div class="col-sm-4"><input type="text" class="form-control form-control-sm" id="txt_buscador" placeholder="Buscar..."></div>
+                                                        <div class="col-sm-12"><input type="text" class="form-control form-control-sm" id="txt_buscador" placeholder="Buscar..."></div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-2 ">
+                                                <div class="col-sm-4">
                                                     <?php
                                                     if (in_array($this->session->userdata("sigesco_tus_iduser"), array('1', '2'))) { ?>
-                                                        <button data-id="<?= $datos[0]['con_numero'] ?>" type="button" id="btn-procesar-expedientes" class="btn btn-sm btn-danger btn-procesar-expedientes">
+                                                        <button type="button" class="btn btn-sm btn-success me-2 mb-2" data-bs-toggle="modal" data-bs-target="#modalExcelReport">
+                                                            Reporte General
+                                                        </button>
+                                                        <button data-id="<?= $datos[0]['con_numero'] ?>" type="button" id="btn-procesar-expedientes" class="btn btn-sm btn-danger btn-procesar-expedientes mb-2">
                                                             Procesar expedientes de la MPV para esta convocatoria
                                                         </button>
                                                     <?php } ?>
                                                 </div>
-                                                <div class="col-sm-4 ">
+                                                <div class="col-sm-6">
                                                     <?php
                                                     $totalPostulaciones = 0;
                                                     foreach ($datos as $indice => $dato) {
@@ -169,6 +172,56 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalExcelReport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">GENERAR REPORTE</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <form id="formReportExcelGeneral" action="/evaluacion/convocatoria/<?=$convocatoria_id?>/inscripcion/reporte/excel" method="post" target="_blank">
+                    <div class="mb-3 row">
+                        <label class="col-4 col-form-label">Inscripción</label>
+                        <div class="col-8">
+                            <select class="form-control" name="inscripcion_id" required>
+                                <option selected hidden value="">[SELECCIONE]</option>
+                                <option value="-1">TODOS</option>
+                                <?php
+                                    foreach ($datos as $dato) {
+                                ?>
+                                <option value="<?= $dato['gin_id'] ?>"><?= $dato['mod_abreviatura'] . " " . $dato['niv_descripcion'] . ($dato['esp_descripcion'] != "-" ? " " . $dato['esp_descripcion'] : "") ?></option>
+                                <?php
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-4 col-form-label">Estado</label>
+                        <div class="col-8">
+                            <select class="form-control" name="estado" required>
+                                <option selected hidden value="">[SELECCIONE]</option>
+                                <option value="-1">TODOS</option>
+                                <option value="enviado">Enviado</option>
+                                <option value="revisado">Revisado</option>
+                                <option value="rechazado">Rechazado</option>
+                                <option value="finalizado">Finalizado</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-success" form="formReportExcelGeneral">Generar Excel</button>
+        </div>
         </div>
     </div>
 </div>
