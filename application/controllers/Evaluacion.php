@@ -295,147 +295,17 @@ class Evaluacion extends CI_Controller {
         $this->reporte_excel($convocatoria_id, $inscripcion_id, 'finalizado', 'FICHA_FINAL');
     }
 
+    public function reporte_excel_pendiente($convocatoria_id, $inscripcion_id) {
+        $this->reporte_excel($convocatoria_id, $inscripcion_id, 'enviado', 'EXPENDIENTES_SIN_EVALUAR');
+    }
+
     public function reporte_excel($convocatoria_id, $inscripcion_id, $estado, $ficha) {
-        $response = $this->evaluacion_model->report($convocatoria_id, $inscripcion_id, $estado);
+        $response = $this->evaluacion_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado, true);
         if (!$response['success']) {
             echo $response['message'];
         }
         $records = $response['data']['records'];
-
-        //reporte total aqui
-        //$datos = $this->evaluacion_expediente->reporte_pdf_general();
-        $datos = [];
-        /* A partir de ahora cualquier salida al navegador se guardarÃ¡ en un buffer */
-        /* Obtenemos el listado de locales disponibles en el sistema */
-        file_put_contents('log.txt', shell_exec('locale -a'), FILE_APPEND);
-        set_time_limit(0);
-        setlocale(LC_ALL, 'es_ES');
-        $fecha = date('d/m/Y H:i:s');
-        ini_set('memory_limit', '-1');
-        // $datos = null;
-        // $datos = $this->gestion->listar_reporte_horas();
-    
-        $this->load->library('excel');
-
-        $hoja = $this->excel->getActiveSheet();
-
-            //activate worksheet number 1
-        $this->excel->setActiveSheetIndex(0);
-            //name the worksheet
-        $hoja->setTitle('Reporte Anex.10 - EVAL. DE EXP.');
-        //set cell A1 content with some text
-        $hoja->setCellValue('A1', 'REPORTE GENERAL EVAL. DE EXPEDIENTES - ANEXO 10 ' . $fecha);
-        //change the font size
-        $hoja->getStyle('A1')->getFont()->setSize(24);
-        //make the font become bold
-        $hoja->getStyle('A1')->getFont()->setBold(true);
-        //merge cell A1 until D1
-        $hoja->mergeCells('A1:L1');
-        //set aligment to center for that merged cell (A1 to D1)
-
-        $hoja->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('B2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('C2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('D2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('E2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('F2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('G2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('H2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('I2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('J2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('K2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('L2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-
-        $hoja->setCellValue('A2', 'ESPECIALIDAD')->getStyle('A2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('B2', 'DNI')->getStyle('B2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('C2', 'NOMBRE COMPLETO')->getStyle('C2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('D2', 'FORMACION ACAD. Y PROF.')->getStyle('D2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('E2', 'FORMACION CONTINUA')->getStyle('E2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('F2', 'EXPERIENCIA LABORAL')->getStyle('F2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('G2', 'MERITO')->getStyle('G2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('H2', 'BONIFICACION')->getStyle('H2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('I2', 'PUNTAJE FINAL')->getStyle('I2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('J2', 'OBSERVACIONES')->getStyle('J2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('K2', 'NUM. EXP')->getStyle('K2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('L2', 'ESPECIALISTA')->getStyle('L2')->getFont()->setSize(15)->setBold(true);
-
-        // $hoja->setCellValue('H2', 'HORAS EFECTIVOS')->getStyle('H2')->getFont()->setSize(15)->setBold(true);
-
-        $hoja->setAutoFilter('A2:L2');
-        $hoja->getStyle('A2:L2')->getFill()->getStartColor()->setRGB('FF0000');
-
-        $hoja->getColumnDimension('A')->setAutoSize(true);
-        $hoja->getColumnDimension('B')->setAutoSize(true);
-        $hoja->getColumnDimension('C')->setAutoSize(true);
-        $hoja->getColumnDimension('D')->setAutoSize(true);
-        $hoja->getColumnDimension('E')->setAutoSize(true);
-        $hoja->getColumnDimension('F')->setAutoSize(true);
-        $hoja->getColumnDimension('G')->setAutoSize(true);
-        $hoja->getColumnDimension('H')->setAutoSize(true);
-        $hoja->getColumnDimension('I')->setAutoSize(true);
-        $hoja->getColumnDimension('J')->setAutoSize(true);
-        $hoja->getColumnDimension('K')->setAutoSize(true);
-        $hoja->getColumnDimension('L')->setAutoSize(true);
-
-        $cont = 3;
-
-        foreach ($records as $fila) {
-            $nombres_completos = $fila->nombre . ' ' . $fila->apellido_paterno . ' ' . $fila->apellido_materno;
-            $especialista = $fila->usu_nombre . ' ' . $fila->usu_apellidos;
-            $hoja->getStyle('A' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('A' . $cont, $fila->especialidad_descripcion, PHPExcel_Cell_DataType::TYPE_STRING);
-            $hoja->getStyle('B' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-
-            $hoja->setCellValue('B' . $cont, utf8_encode(" ".$fila->numero_documento) );
-
-            // $hoja->setCellValue('B' . $cont, $fila['dni'], PHPExcel_Cell_DataType::TYPE_STRING);
-
-            $hoja->getStyle('C' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('C' . $cont, $nombres_completos);
-            $hoja->getStyle('D' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('D' . $cont, $fila->formacion_academica_universidad);
-            $hoja->getStyle('E' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('E' . $cont, $fila->especializacion_tema, PHPExcel_Cell_DataType::TYPE_STRING);
-            $hoja->getStyle('F' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('F' . $cont, $fila->experiencia_laboral_institucion_educativa, PHPExcel_Cell_DataType::TYPE_STRING);
-            
-            $hoja->getStyle('G' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('G' . $cont, $fila->sumd, PHPExcel_Cell_DataType::TYPE_STRING);
-            
-            $hoja->getStyle('H' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('H' . $cont, $fila->bonif);
-            
-            $hoja->getStyle('I' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('I' . $cont, $fila->puntaje);
-            $hoja->getStyle('J' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('J' . $cont, $fila->obs, PHPExcel_Cell_DataType::TYPE_STRING);
-            $hoja->getStyle('K' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('K' . $cont, $fila->uid, PHPExcel_Cell_DataType::TYPE_STRING);
-            $hoja->getStyle('L' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('L' . $cont, $especialista, PHPExcel_Cell_DataType::TYPE_STRING);
-
-            $cont++;
-        }
-
-        $filename = $ficha . '.xls'; //save our workbook as this file name
-
-        header('Content-Type: application/vnd.ms-excel'); //mime type
-        header('Content-Disposition: attachment;filename="' . $filename . '"'); //tell browser what's the file name
-        header('Cache-Control: max-age=0'); //no cache
-        //save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
-        //if you want to save it as .XLSX Excel 2007 format
-        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
-        //force user to download the Excel file without writing it to server's HD
-        //force user to download the Excel file without writing it to server's HD
-        /* Obtenemos los caracteres adicionales o mensajes de advertencia y los
-            guardamos en el archivo "depuracion.txt" si tenemos permisos */
-        file_put_contents('depuracion.txt', ob_get_contents());
-        /* Limpiamos el búfer */
-        ob_end_clean();
-
-        $objWriter->save('php://output');
-       
+        $this->generar_reporte_excel($records, $ficha);
     }
 
     public function reporte_excel_general($convocatoria_id) {
@@ -446,8 +316,12 @@ class Evaluacion extends CI_Controller {
             echo $response['message'];
         }
         $records = $response['data']['records'];
+        $this->generar_reporte_excel($records);
+    }
 
-        $ficha = 'REPORTE_DE_EVALUACIÓN';
+    public function generar_reporte_excel($records, $ficha = null) {
+
+        $ficha = $ficha ? $ficha : 'REPORTE_DE_EVALUACIÓN';
 
         /* A partir de ahora cualquier salida al navegador se guardarÃ¡ en un buffer */
         /* Obtenemos el listado de locales disponibles en el sistema */

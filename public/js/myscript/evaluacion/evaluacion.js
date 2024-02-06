@@ -80,7 +80,7 @@ const AppAdjudicacionAdmin = () => {
                                 "targets": 0,
                                 "data": "id",
                                 "render": function ( data, type, row, meta ) {
-                                    return row.id;
+                                    return meta.row + 1;
                                 }
                             },
                             {
@@ -124,7 +124,7 @@ const AppAdjudicacionAdmin = () => {
                                 "data": "id",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return `<span class="badge bg-success" style="font-size: 0.9em;">${row.uid}</span>`;
+                                    return `<span class="badge bg-secondary" style="font-size: 0.9em;">${row.uid}</span>`;
                                 }
                             },
                             {
@@ -132,11 +132,18 @@ const AppAdjudicacionAdmin = () => {
                                 "data": "id",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return `<span class="badge bg-success" style="font-size: 0.9em;">${row.numero_expediente}</span>`;
+                                    return `<span class="badge bg-primary" style="font-size: 0.9em;">${row.numero_expediente}</span>`;
                                 }
                             },
                             {
                                 "targets": 8,
+                                "data": "estado",
+                                "render": function ( data, type, row, meta ) {
+                                    return `<span class="badge ${row.estado == 'revisado' ? 'bg-warning' : (row.estado == 'finalizado' ? 'bg-success' : 'bg-danger')}" style="font-size: 0.9em;">${row.estado}</span>`;
+                                }
+                            },
+                            {
+                                "targets": 9,
                                 "data": "id",
                                 "render": function ( data, type, row, meta ) {
                                     return `<div class="d-flex justify-content-center gap-2">                  
@@ -145,7 +152,7 @@ const AppAdjudicacionAdmin = () => {
                                 }
                             },
                             {
-                                "targets": 9,
+                                "targets": 10,
                                 "data": "created_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {

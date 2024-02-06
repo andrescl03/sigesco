@@ -50,6 +50,7 @@
                                                         <th class="text-center">ORDEN DE MERITO</th>
                                                         <th class="text-center">NÚMERO DE TRAMITE</th>
                                                         <th class="text-center">NÚMERO DE EXPEDIENTE</th>
+                                                        <th class="text-center">ESTADO</th>
                                                         <th class="text-center">ADJUNTOS</th>
                                                         <th class="text-center">ACCIONES</th>
                                                     </tr>
