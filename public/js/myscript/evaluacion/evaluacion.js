@@ -234,7 +234,6 @@ const AppAdjudicacionAdmin = () => {
                             const url = window.AppMain.url + 'public' + file.url;
                             html += `
                             <tr class="">
-                                <td scope="row">${file.id}</td>
                                 <td>${file.tipo_nombre}</td>
                                 <td>${file.nombre}</td>
                                 <td class="text-center">

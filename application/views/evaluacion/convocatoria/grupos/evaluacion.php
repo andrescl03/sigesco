@@ -82,7 +82,7 @@
                         <table class="table mb-0" width="100%">
                             <thead>
                                 <tr class="cabecera_tabla_2">
-                                    <th scope="col">N°</th>
+                                    <!--<th scope="col">N°</th> -->
                                     <th scope="col">Tipo</th>
                                     <th scope="col">Nombre</th>
                                     <th scope="col" class="text-center">Archivo</th>
