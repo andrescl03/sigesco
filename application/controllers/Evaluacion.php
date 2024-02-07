@@ -362,7 +362,7 @@ class Evaluacion extends CI_Controller {
 
         // $hoja->setCellValue('H2', 'HORAS EFECTIVOS')->getStyle('H2')->getFont()->setSize(15)->setBold(true);
 
-        $hoja->setAutoFilter('A2:L2');
+       // $hoja->setAutoFilter('A2:L2');
         $hoja->getStyle('A2:L2')->getFill()->getStartColor()->setRGB('FF0000');
 
         $hoja->getColumnDimension('A')->setAutoSize(true);
@@ -466,9 +466,9 @@ class Evaluacion extends CI_Controller {
             //activate worksheet number 1
         $this->excel->setActiveSheetIndex(0);
             //name the worksheet
-        $hoja->setTitle('Reporte EVAL. DE EXP.');
+        $hoja->setTitle('Reporte.');
         //set cell A1 content with some text
-        $hoja->setCellValue('A1', 'REPORTE GENERAL EVAL. DE EXPEDIENTES ' . $fecha);
+        $hoja->setCellValue('A1', 'REPORTE GENERAL ' . $fecha);
         //change the font size
         $hoja->getStyle('A1')->getFont()->setSize(24);
         //make the font become bold
@@ -502,7 +502,7 @@ class Evaluacion extends CI_Controller {
         $hoja->setCellValue('I2', 'ESPECIALISTA')->getStyle('I2')->getFont()->setSize(15)->setBold(true);
         // $hoja->setCellValue('H2', 'HORAS EFECTIVOS')->getStyle('H2')->getFont()->setSize(15)->setBold(true);
 
-        $hoja->setAutoFilter('A2:L2');
+     // $hoja->setAutoFilter('A:L');
         $hoja->getStyle('A2:L2')->getFill()->getStartColor()->setRGB('FF0000');
 
         $hoja->getColumnDimension('A')->setAutoSize(true);
