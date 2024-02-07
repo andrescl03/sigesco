@@ -412,6 +412,7 @@ class Evaluacion_model extends CI_Model {
           $sql = "SELECT 
                     pos.*,
                     cpp.cpe_orden,
+                    pev.puntaje,
                     epe.epe_id, 
                     usu.usu_nombre, 
                     usu.usu_apellidos, 
@@ -423,7 +424,8 @@ class Evaluacion_model extends CI_Model {
                     niv.niv_descripcion AS nivel_descripcion,
                     mdd.mod_id AS modalidad_id,
                     mdd.mod_nombre AS modalidad_descripcion,
-                    mdd.mod_abreviatura AS modalidad_abreviatura
+                    mdd.mod_abreviatura AS modalidad_abreviatura,
+                    pep.plantilla AS prerequisito_plantilla
 
                   FROM postulaciones pos
                   INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento
@@ -434,14 +436,50 @@ class Evaluacion_model extends CI_Model {
                   INNER JOIN especialidades AS esp ON esp.esp_id = gin.especialidades_esp_id
                   INNER JOIN niveles AS niv ON niv.niv_id = esp.niveles_niv_id
                   INNER JOIN modalidades AS mdd ON mdd.mod_id = niv.modalidad_mod_id 
-
+                  LEFT JOIN postulacion_evaluaciones pev ON pev.postulacion_id = pos.id AND pev.promedio = 1
+                  LEFT JOIN postulacion_evaluaciones pep ON pep.postulacion_id = pos.id AND pep.promedio = 0  
                   WHERE pos.deleted_at IS NULL 
                   AND pos.convocatoria_id = $convocatoria_id
                   $where
-                  ORDER BY mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC";
+                  ORDER BY mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC, cpp.cpe_orden ASC, pev.puntaje DESC;";
 
           $items = $this->db->query($sql)->result_object();
 
+          foreach ($items as $k => $o) {
+            $prerequisito_observacion = "";
+            $prerequisito_especialidad = "";
+            if ($o->prerequisito_plantilla) {
+              $prerequisito_plantilla = json_decode($o->prerequisito_plantilla);
+              $sections = $prerequisito_plantilla->sections;
+              foreach ($sections as $k2 => $o2) {
+                $groups = $o2->groups;
+                $countgroups = count($groups);
+                foreach ($groups as $k3 => $o3) {
+                  if ($k3 == ($countgroups - 2)) { // penultimo
+                    $questions = $o3->questions;
+                    foreach ($questions as $k4 => $o4) {
+                      if ($o4->observation_status == 1) {
+                        $prerequisito_observacion = $o4->observation;
+                      }
+                    }
+                  }
+                  if (in_array($o->especialidad_id, [19,25])) { // especialidad especifica
+                    if ($k3 == ($countgroups - 1)) { // ultimo
+                      $questions = $o3->questions;
+                      foreach ($questions as $k4 => $o4) {
+                        if ($o4->observation_status == 1) {
+                          $prerequisito_especialidad = $o4->observation;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            $items[$k]->prerequisito_observacion = $prerequisito_observacion;
+            $items[$k]->prerequisito_especialidad = $prerequisito_especialidad;
+          }
+          
           $res['success'] = true;
           $res['data'] = ['records' => $items];
           $res['message'] = 'successfully';
