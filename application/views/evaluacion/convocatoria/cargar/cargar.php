@@ -39,7 +39,9 @@
                                                             <?php } ?>  
 
                                                             <div class="vr"></div>
-                                                            <button type="button" class="btn btn-outline-success btn-sm btn_descargarReporte" ><b><i class="fa-solid fa-cloud-arrow-down fa-lg"></i></i> Descargar Reporte</b></button>
+                                                            <a type="button" target="_blank" href="<?php echo base_url().'evaluacion/convocatoria/'.$dato['convocatorias_con_id'].'/inscripcion/'.$dato['gin_id'].'/pendiente/exportar' ?>" class="btn btn-outline-success btn-sm" >
+                                                                <b><i class="fa-solid fa-cloud-arrow-down fa-lg"></i></i> Descargar Reporte</b>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>

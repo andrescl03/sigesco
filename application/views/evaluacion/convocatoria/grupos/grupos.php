@@ -27,6 +27,10 @@
                                                         <button type="button" class="btn btn-sm btn-success me-2 mb-2" data-bs-toggle="modal" data-bs-target="#modalExcelReport">
                                                             Reporte General
                                                         </button>
+                                                        <a type="button" target="_blank" href="<?php echo base_url().'evaluacion/convocatoria/'. $datos[0]['con_numero'] .'/inscripcion/preliminar/exportar' ?>"  class="btn btn-sm btn-primary me-2 mb-2">
+                                                            Reporte General Preliminar
+                                                        </a>
+                                        
                                                         <button data-id="<?= $datos[0]['con_numero'] ?>" type="button" id="btn-procesar-expedientes" class="btn btn-sm btn-danger btn-procesar-expedientes mb-2">
                                                             Procesar expedientes de la MPV para esta convocatoria
                                                         </button>
