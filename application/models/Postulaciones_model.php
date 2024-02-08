@@ -158,7 +158,7 @@ class Postulaciones_model extends CI_Model
                 }
             }
 
-            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL ORDER BY orden ASC";
+            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL AND edit in (0) ORDER BY orden ASC";
             $my_tipo_archivos = $this->db->query($sql)->result_object();
 
             $keys_uploads_tipo_archivos = [];
@@ -567,7 +567,7 @@ class Postulaciones_model extends CI_Model
             $sql = "SELECT PA.*, TA.nombre AS tipo_nombre FROM postulacion_archivos PA INNER JOIN tipo_archivos TA ON PA.tipo_id = TA.id WHERE PA.deleted_at IS NULL AND PA.postulacion_id = ?";
             $postulacion_archivos = $this->db->query($sql, compact('postulacion_id'))->result_object();
 
-            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL ORDER BY orden ASC";
+            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL AND edit in (0,1) ORDER BY orden ASC";
             $tipo_archivos = $this->db->query($sql)->result_object();
 
             $response['success'] = true;
@@ -761,7 +761,7 @@ class Postulaciones_model extends CI_Model
                 }
             }
 
-            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL ORDER BY orden ASC";
+            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL AND edit in (0,1) ORDER BY orden ASC";
             $my_tipo_archivos = $this->db->query($sql)->result_object();
 
             $keys_uploads_tipo_archivos = [];
