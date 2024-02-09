@@ -642,7 +642,7 @@ class Postulaciones_model extends CI_Model
         try {
             $postulacion_id = $args['id'];
             $this->load->library('form_validation');
-            $this->form_validation->set_rules('nombre', 'nombre', 'trim|required|min_length[3]|max_length[100]');
+            /*$this->form_validation->set_rules('nombre', 'nombre', 'trim|required|min_length[3]|max_length[100]');
             $this->form_validation->set_rules('apellido_paterno', 'apellido_paterno', 'trim|required|min_length[3]|max_length[100]');
             $this->form_validation->set_rules('apellido_materno', 'apellido_materno', 'trim|required|min_length[3]|max_length[100]');
             $this->form_validation->set_rules('direccion', 'direccion', 'trim|required|min_length[3]|max_length[100]');
@@ -655,13 +655,9 @@ class Postulaciones_model extends CI_Model
             $this->form_validation->set_rules('nacionalidad', 'nacionalidad', 'trim|required');
             $this->form_validation->set_rules('nombre_via', 'nombre_via', 'trim|required');
             $this->form_validation->set_rules('numero_celular', 'numero_celular', 'trim|required');
-            // $this->form_validation->set_rules('numero_documento', 'numero_documento', 'trim|required');
-            // $this->form_validation->set_rules('tipo_documento', 'tipo_documento', 'trim|required');
             $this->form_validation->set_rules('numero_telefono', 'numero_telefono', 'trim|required');
             $this->form_validation->set_rules('via_id', 'via_id', 'trim|required');
             $this->form_validation->set_rules('zona_id', 'zona_id', 'trim|required');
-            // $this->form_validation->set_rules('convocatoria_id', 'convocatoria_id', 'trim|required');
-            // $this->form_validation->set_rules('inscripcion_id', 'inscripcion_id', 'trim|required');
             $this->form_validation->set_rules('cuss', 'cuss', 'trim');
             $this->form_validation->set_rules('afiliacion', 'afiliacion', 'trim');
 
@@ -670,7 +666,7 @@ class Postulaciones_model extends CI_Model
                 log_message_ci("Ingresa a registrar expediente " . json_encode($this->form_validation->error_array()));
 
                 throw new Exception("No cumple con los datos requeridos          => " . json_encode($response['errors']));
-            }
+            }*/
 
             $apellido_materno = $this->input->post("apellido_materno", true);
             $apellido_paterno = $this->input->post("apellido_paterno", true);
@@ -698,8 +694,6 @@ class Postulaciones_model extends CI_Model
             $nombre_zona      = $this->input->post("nombre_zona", true);
             $via_id           = $this->input->post("via_id", true);
             $zona_id          = $this->input->post("zona_id", true);
-            // $convocatoria_id  = $this->input->post("convocatoria_id", true);
-            // $inscripcion_id   = $this->input->post("inscripcion_id", true);
 
             $tipo_archivos          = isset($_POST['tipo_archivos'])          ? $_POST['tipo_archivos']                             : [];
             $especializaciones      = isset($_POST['especializaciones'])      ? json_decode($_POST['especializaciones'], true)      : [];
