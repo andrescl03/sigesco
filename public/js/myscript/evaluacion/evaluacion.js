@@ -169,7 +169,13 @@ const AppAdjudicacionAdmin = () => {
                                             </div>` : '-';
                                 }
                             }
-                        ]
+                        ],
+                        "createdRow": function(row, data, dataIndex) {
+                            if (data.estado_evaluacion == 2) {
+                                $(row).addClass('bg-warning bg-gradient');
+                            }
+                        }
+
                     });
                 },
                 attachedfiles: (id) => {

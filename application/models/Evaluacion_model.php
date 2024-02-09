@@ -362,14 +362,19 @@ class Evaluacion_model extends CI_Model {
                     epe.epe_id, 
                     usu.usu_nombre, 
                     usu.usu_apellidos, 
-                    usu.usu_dni 
+                    usu.usu_dni,
+                    pe.estado as estado_evaluacion
                   FROM postulaciones pos
                   INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id
                   INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id $filterByUser
-                  INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
+                  INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
+                  /**TEMPORAL 09022024 */
+                  INNER JOIN postulacion_evaluaciones pe ON pos.id = pe.postulacion_id
                   WHERE pos.deleted_at IS NULL 
                   AND pos.convocatoria_id = $convocatoria_id
                   AND pos.inscripcion_id = $inscripcion_id
+                  /*TEMPORAL*/
+                  AND pe.ficha_id = 3
                   $whereEstado
                   $filterText
                   GROUP BY pos.id
