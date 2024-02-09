@@ -70,6 +70,9 @@
                                             <tbody>
                                                 <?php
                                                 $i = 0;
+                                                $total_cantidad_sin_evaluar = 0;
+                                                $total_cantidad_preliminar = 0;
+                                                $total_cantidad_final = 0;
                                                 foreach ($datos as $dato) {
                                                     $cadena = $dato['con_id'] . "||" . $dato['gin_id'];
                                                     $parte_1 = ($dato['tp_asigando'] > 0 ? $dato['tp_asigando'] : 0) + ($dato['te_asigando'] > 0 ? $dato['te_asigando'] : 0);
@@ -168,9 +171,23 @@
                                                             </div>           
                                                         </td>                                                            -->
                                                         </tr>
-                                                <?php $i++;
+                                                <?php 
+                                                
+                                                $total_cantidad_sin_evaluar += $dato['cantidad_sin_evaluar'] ;
+                                                $total_cantidad_preliminar += $dato['cantidad_preliminar'] ;
+                                                $total_cantidad_final += $dato['cantidad_final'];
+                                                $i++;
                                                     }
                                                 } ?>
+                                                <tr>
+                                                    <td class="text-center"><b><?= $i + 1; ?></b></td>
+                                                    <td class="text-center"><b>TOTAL</b></td>
+                                                    <td class="text-center"><span class="badge bg-danger text-white" style="font-size: 1em;"><?= $totalPostulaciones ?></span></td>
+                                                    <td class="text-center"><span class="badge bg-danger text-white" style="font-size: 1em;"><?= $total_cantidad_sin_evaluar ?></span></td>
+                                                    <td class="text-center"><span class="badge bg-danger text-white" style="font-size: 1em;"><?= $total_cantidad_preliminar ?></span></td>
+                                                    <td class="text-center">
+                                                    <span class="badge bg-danger text-white" style="font-size: 1em;"><?= $total_cantidad_final ?></span>
+                                                     </tr>
                                             </tbody>
                                         </table>
                                     </div>
