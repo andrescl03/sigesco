@@ -348,8 +348,15 @@ class Evaluacion_model extends CI_Model {
           if ($search) {
               $value = $search['value'];
               if (strlen($value) > 0) {
-                  /*$filterText = " AND AC.name LIKE('%{$value}%') 
-                                  OR TC.name LIKE('%{$value}%')";*/
+                  $filterText = " AND (
+                                       pos.nombre LIKE('%{$value}%') 
+                                    OR pos.apellido_paterno LIKE('%{$value}%')
+                                    OR pos.apellido_materno LIKE('%{$value}%')
+                                    OR pos.uid LIKE('%{$value}%')
+                                    OR pos.numero_expediente LIKE('%{$value}%')
+                                    OR pos.numero_documento LIKE('%{$value}%')
+                                    OR cpp.cpe_orden LIKE('%{$value}%')
+                                  ) ";
               }
           }
           $sigesco_tus_iduser = $this->session->userdata('sigesco_tus_iduser');
@@ -366,7 +373,7 @@ class Evaluacion_model extends CI_Model {
                     pe.estado as estado_evaluacion,
                     pe.estado as prerequisito_estado
                   FROM postulaciones pos
-                  INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id
+                  INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id AND cpp.cpe_documento = pos.numero_documento
                   INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id $filterByUser
                   INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
                   /**TEMPORAL 09022024 */
@@ -378,8 +385,7 @@ class Evaluacion_model extends CI_Model {
                   -- AND pe.ficha_id = 3
                   $whereEstado
                   $filterText
-                  GROUP BY pos.id
-                  ORDER BY pos.id DESC";
+                  ORDER BY cpp.cpe_orden DESC";
 
 
           $items = $this->db->query($sql)->result_object();

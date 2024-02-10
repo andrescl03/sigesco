@@ -6,7 +6,7 @@
         <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
         <li class="breadcrumb-item"><a href="<?php echo base_url()."evaluacion/convocatoria/".encryption('0||0'); ?>"> Evaluación de postulantes</a></li>
         <li class="breadcrumb-item"><a href="<?php echo base_url()."evaluacion/convocatoria/".encryption($convocatoria_id.'||0'); ?>"> Grupo de inscripción</a></li>
-        <li class="breadcrumb-item active">Preliminar</li>
+        <li class="breadcrumb-item active"><?= $any == 'preliminar' ? 'Preliminares' : 'Finales' ?></li>
     </ol>
     <div class="app-row">
         <div class="col-md-12">
@@ -29,7 +29,12 @@
                                                                 </a>
                                                             </div>
                                                             <div class="vr"></div>
-                                                            <div class="col-sm-6"><input type="text" class="form-control form-control-sm" id="txt_buscador" placeholder="Buscar..." ></div>
+                                                            <div class="col-sm-6">
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control form-control-sm shadow-none" placeholder="Escribe aquí..." id="txtBuscador">
+                                                                    <button type="button" class="input-group-text btn btn-sm btn-primary shadow-none" id="btnBuscador">Buscar</button>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

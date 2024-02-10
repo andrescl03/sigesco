@@ -23,7 +23,16 @@ const AppAdjudicacionAdmin = () => {
                     self.pagination(self.onActionRows);
                 },
                 clicks: () => {
-           
+                    const btn = dom.querySelector('#btnBuscador');
+                    if (btn) {
+                        btn.addEventListener('click', (e) => {
+                            const input = dom.querySelector('#txtBuscador');
+                            if (input) {
+                                sweet2.loading({text:'Buscando...'});
+                                self.table.search(input.value.trim()).draw();
+                            }
+                        });
+                    }
                 },
                 pagination: (_callback = ()=>{}) => {
                     self.table = $('#tableIndex').DataTable({
@@ -69,10 +78,8 @@ const AppAdjudicacionAdmin = () => {
                                 inscripcion_id: inscripcion_id 
                            }
                         },
-                        initComplete: function () {
-                            sweet2.loading(false);
-                        },
                         "fnDrawCallback": function(oSettings, json) {
+                            sweet2.loading(false);
                             const response = oSettings.json;
                             if (response.success) {
                                 _callback();
@@ -171,17 +178,19 @@ const AppAdjudicacionAdmin = () => {
                                 "data": "created_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return  any == 'preliminar' ? `<button type="button" class="btn btn-sm btn-light btn-active-light me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    return  `<button type="button" class="btn btn-sm btn-light btn-active-light me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Acción
                                             </button>
                                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-2 dropdown-menu dropdown-menu-start">
-                                                <div class="menu-item px-3 py-2">
-                                                    <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/revaluar" class="menu-link text-danger px-3">Revaluar</a>
-                                                </div>
+                                                ${
+                                                    any == 'preliminar' ? ` <div class="menu-item px-3 py-2">
+                                                                                <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/revaluar" class="menu-link text-danger px-3">Revaluar</a>
+                                                                            </div>` : ``
+                                                }
                                                 <div class="menu-item px-3 py-2">
                                                     <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/editar" class="menu-link text-danger px-3">Editar</a>
                                                 </div>
-                                            </div>` : '-';
+                                            </div>`;
                                 }
                             }
                         ],
