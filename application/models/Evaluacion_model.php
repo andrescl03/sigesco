@@ -422,7 +422,6 @@ class Evaluacion_model extends CI_Model {
                     usu.usu_nombre, 
                     usu.usu_apellidos, 
                     usu.usu_dni,
-
                     esp.esp_id AS especialidad_id,
                     esp.esp_descripcion AS especialidad_descripcion,
                     niv.niv_id AS nivel_id,
@@ -430,8 +429,8 @@ class Evaluacion_model extends CI_Model {
                     mdd.mod_id AS modalidad_id,
                     mdd.mod_nombre AS modalidad_descripcion,
                     mdd.mod_abreviatura AS modalidad_abreviatura,
-                    pep.plantilla AS prerequisito_plantilla
-
+                    pep.plantilla AS prerequisito_plantilla,
+                    pep.estado as prerequisito_estado
                   FROM postulaciones pos
                   INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento
                   INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id

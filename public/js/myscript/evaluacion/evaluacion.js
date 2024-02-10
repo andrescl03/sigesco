@@ -171,7 +171,7 @@ const AppAdjudicacionAdmin = () => {
                             }
                         ],
                         "createdRow": function(row, data, dataIndex) {
-                            if (data.estado_evaluacion == 2) {
+                            if (data.estado_evaluacion == 2 || data.estado_evaluacion == 0)  {
                                 $(row).addClass('bg-warning bg-gradient');
                             }
                         }
