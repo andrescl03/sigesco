@@ -363,18 +363,19 @@ class Evaluacion_model extends CI_Model {
                     usu.usu_nombre, 
                     usu.usu_apellidos, 
                     usu.usu_dni,
-                    pe.estado as estado_evaluacion
+                    pe.estado as estado_evaluacion,
+                    pe.estado as prerequisito_estado
                   FROM postulaciones pos
                   INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id
                   INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id $filterByUser
                   INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
                   /**TEMPORAL 09022024 */
-                  INNER JOIN postulacion_evaluaciones pe ON pos.id = pe.postulacion_id
+                  INNER JOIN postulacion_evaluaciones pe ON pos.id = pe.postulacion_id AND pe.promedio = 0
                   WHERE pos.deleted_at IS NULL 
                   AND pos.convocatoria_id = $convocatoria_id
                   AND pos.inscripcion_id = $inscripcion_id
                   /*TEMPORAL*/
-                  AND pe.ficha_id = 3
+                  -- AND pe.ficha_id = 3
                   $whereEstado
                   $filterText
                   GROUP BY pos.id
@@ -450,6 +451,7 @@ class Evaluacion_model extends CI_Model {
           $items = $this->db->query($sql)->result_object();
 
           foreach ($items as $k => $o) {
+            $prerequisito_estado_texto = "pendiente";
             $prerequisito_observacion = "";
             $prerequisito_especialidad = "";
             if ($o->prerequisito_plantilla) {
@@ -480,8 +482,20 @@ class Evaluacion_model extends CI_Model {
                 }
               }
             }
+            switch (intval($o->prerequisito_estado)) {
+              case 0:
+                $prerequisito_estado_texto = "no cumple";
+              break;
+              case 1:
+                $prerequisito_estado_texto = "cumple";
+              break;
+              case 2:
+                $prerequisito_estado_texto = "observado";
+              break;
+            }
             $items[$k]->prerequisito_observacion = $prerequisito_observacion;
             $items[$k]->prerequisito_especialidad = $prerequisito_especialidad;
+            $items[$k]->prerequisito_estado_texto = $prerequisito_estado_texto;
           }
           
           $res['success'] = true;

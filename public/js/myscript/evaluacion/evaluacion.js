@@ -69,6 +69,9 @@ const AppAdjudicacionAdmin = () => {
                                 inscripcion_id: inscripcion_id 
                            }
                         },
+                        initComplete: function () {
+                            sweet2.loading(false);
+                        },
                         "fnDrawCallback": function(oSettings, json) {
                             const response = oSettings.json;
                             if (response.success) {
@@ -113,10 +116,10 @@ const AppAdjudicacionAdmin = () => {
                             },
                             {
                                 "targets": 5,
-                                "data": "uid",
+                                "data": "cpe_orden",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return '';
+                                    return row.cpe_orden;
                                 }
                             },
                             {
@@ -139,7 +142,19 @@ const AppAdjudicacionAdmin = () => {
                                 "targets": 8,
                                 "data": "estado",
                                 "render": function ( data, type, row, meta ) {
-                                    return `<span class="badge ${row.estado == 'revisado' ? 'bg-warning' : (row.estado == 'finalizado' ? 'bg-success' : 'bg-danger')}" style="font-size: 0.9em;">${row.estado}</span>`;
+                                    let estado = '';
+                                    switch (Number(row.prerequisito_estado)) {
+                                        case 0:
+                                            estado = `<span class="badge bg-danger" style="font-size: 0.9em;">NO CUMPLE</span>`;
+                                        break;
+                                        case 1:
+                                            estado = `<span class="badge bg-success" style="font-size: 0.9em;">CUMPLE</span>`;
+                                        break;
+                                        case 2:                                            
+                                            estado = `<span class="badge bg-info" style="font-size: 0.9em;">OBSERVADO</span>`;
+                                        break;
+                                    }
+                                    return estado;
                                 }
                             },
                             {
@@ -171,12 +186,13 @@ const AppAdjudicacionAdmin = () => {
                             }
                         ],
                         "createdRow": function(row, data, dataIndex) {
-                            if (data.estado_evaluacion == 2 || data.estado_evaluacion == 0)  {
+                            if (data.prerequisito_estado == 2 || data.prerequisito_estado == 0)  {
                                 $(row).addClass('bg-warning bg-gradient');
                             }
                         }
 
                     });
+                    sweet2.loading();
                 },
                 attachedfiles: (id) => {
                     return new Promise((resolve, reject)=>{
