@@ -277,6 +277,18 @@ class Evaluacion extends CI_Controller {
         }    
     }
 
+
+    public function procesar_expedientes($convocatoria_id, $inscripcion_id)
+    {
+        if ($convocatoria_id > 0 && $inscripcion_id > 0) {
+
+            $this->output
+                ->set_content_type('application/json')->set_output(json_encode($this->evaluacion_model->procesarExpedientesPreliminarCumpleFinal($convocatoria_id, $inscripcion_id)));
+        } else {
+            show_404();
+        }
+    }
+
     public function revaluarPreliFinal($id) {
         $datos = $this->postulaciones_model->show(['id' => $id]);
         $this->layout->css(array(base_url()."public/css/ficha.css?t=".date("mdYHis")));

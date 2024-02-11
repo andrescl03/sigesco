@@ -45,8 +45,6 @@
                                                     ?>
                                                     <div class="d-flex align-content-start flex-wrap gap-3">
                                                         CANTIDAD DE POSTULANTES PARA LA CONVOCATORIA <?= sprintf('%04d', $datos[0]['con_numero']) . "-" . $datos[0]['con_anio'] ?>:<b><?php echo $totalPostulaciones ?> REGISTROS</b>
-                                                        <!--CANTIDAD DE POSTULANTES PARA LA CONVOCATORIA <?= sprintf('%04d', $datos[0]['con_numero']) . "-" . $datos[0]['con_anio'] ?>:<b>NO DISPONIBLE TEMPORALMENTE</b>-->
-
                                                     </div>
                                                 </div>
                                             </div>

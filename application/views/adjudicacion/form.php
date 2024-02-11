@@ -120,7 +120,7 @@
                                             Cancelar
                                         </a>
                                         <button type="submit" class="btn btn-primary" form="formAdjudicacion">
-                                            Guardar
+                                            Adjudicar
                                         </button>
                                     </div>
                                 </div>
