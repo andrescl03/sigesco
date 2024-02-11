@@ -1,11 +1,12 @@
 
-const viewfichaDetail = () => {
+const viewfichaDetail = (pageActive = 1) => {
 
 	const dom = document.querySelector('#containerFicha');
+	dom.innerHTML = ``;
 	const postulant_id = dom.getAttribute('data-id');
-	dom.removeAttribute('data-id');
+	//dom.removeAttribute('data-id');
 	const revaluar = dom.getAttribute('data-revaluar');
-	dom.removeAttribute('data-revaluar');
+	//dom.removeAttribute('data-revaluar');
 	const domHeader = document.createElement('div');
 	domHeader.classList.add('mb-3', 'text-center');
 	domHeader.style.display = 'flex';
@@ -14,10 +15,11 @@ const viewfichaDetail = () => {
 	const domBody = document.createElement('div');
 	dom.appendChild(domBody);
 
-	let currentActive = 1;
+	let currentActive = pageActive;
 	const textWraps = [];
 
 	function getStatusName (id) {
+		console.log(id);
 		const options = [
 			'NO CUMPLE',
 			'CUMPLE',
@@ -159,6 +161,32 @@ const viewfichaDetail = () => {
 		alertDiv.appendChild(closeButton);
 		return alertDiv;
 	}
+
+	function showAlertModal({title, message, type, button}) {
+		// Crear el div de la alerta con JavaScript
+		var alertDiv = document.createElement("div");
+		alertDiv.className = "alert alert-" + type;
+		alertDiv.setAttribute("role", "alert");
+	
+		// Crear elementos internos de la alerta
+		var heading = document.createElement("h4");
+		heading.className = "alert-heading";
+		heading.textContent = title;
+	
+		var paragraph = document.createElement("p");
+		paragraph.textContent = message;		   
+		
+		var hr = document.createElement("hr");
+
+		// Agregar los elementos internos al div de la alerta
+		alertDiv.appendChild(heading);
+		alertDiv.appendChild(paragraph);
+		alertDiv.appendChild(hr);
+		alertDiv.appendChild(button);
+	
+		// Agregar la alerta al cuerpo del documento
+		return alertDiv;
+	}
 	
 	function getDetail() {
 		return new Promise(function (resolve, reject) {
@@ -219,11 +247,20 @@ const viewfichaDetail = () => {
 			total: 0,
 			especialidad_prelaciones: data.especialidad_prelaciones,
 			tipo_id: data.convocatoria.con_tipo,
-			revisado: 0
+			revisado: 0,
+			modalPrerequisito: new bootstrap.Modal(document.querySelector('#modalPrerequisito'))
 		};
 
 		const isPUN = () => {
 			return self.tipo_id == 1;
+		}
+
+		const isPrerequisito = () => {
+			return Number(self.ficha.promedio) == 0;
+		}
+
+		const isAnexo = () => {
+			return Number(self.ficha.promedio) == 1;
 		}
 
 		const setFormModule = (id) => {
@@ -483,11 +520,12 @@ const viewfichaDetail = () => {
 
 			const footer = document.createElement('div');
 			footer.classList.add('mt-3', 'text-end');
+			
 			const btnSave = document.createElement('button');
 			btnSave.classList.add('btn', 'btn-primary');
 			btnSave.innerText = 'Guardar';
 			btnSave.addEventListener('click', (e) => {
-				if (Number(self.ficha.promedio) == 0) { // Prerequisito
+				if (isPrerequisito()) { // Prerequisito
 					if (isValidFichaRequisito()) {
 						return;
 					}
@@ -495,75 +533,124 @@ const viewfichaDetail = () => {
 				} else {
 					self.revisado = 1;
 				}
+				saveAll(false, isPrerequisito() ? 1 : 2);
+			});
+
+			const btnModalSave = document.createElement('button');
+			btnModalSave.type = "button";
+			btnModalSave.className = "btn btn-dark me-2";
+			btnModalSave.textContent = "Procesar Información";
+			btnModalSave.setAttribute("data-bs-toggle", "modal");
+			btnModalSave.setAttribute("data-bs-target", "#modalPrerequisito");
+
+			if (self.postulante.estado != 'finalizado' && isPrerequisito()) {
+				footer.appendChild(btnModalSave);
+			}
+
+			const btnSaveAll1 = document.createElement('button');
+			btnSaveAll1.classList.add('btn', 'btn-danger', 'ms-2');
+			btnSaveAll1.innerText = 'Guardar y finalizar';
+			btnSaveAll1.addEventListener('click', (e) => {
+				saveAll(true, isPrerequisito() ? 1 : 2);
+			});
+
+			const btnSaveNext = document.createElement('button');
+			btnSaveNext.classList.add('btn', 'btn-success', 'ms-2');
+			btnSaveNext.innerText = 'Guardar y siguiente';
+			btnSaveNext.addEventListener('click', (e) => {
+				saveAll(false, 2);
+			});
+
+			const btnSave2 = document.createElement('button');
+			btnSave2.classList.add('btn', 'btn-info', 'ms-2');
+			btnSave2.innerText = 'Guardar y dar por revisado';
+			btnSave2.addEventListener('click', (e) => {
+				if (isValidFichaRequisito()) {
+					return;
+				}
 				saveAll(false);
 			});
 
 			if (self.postulante.estado != 'finalizado') {
-				if (revaluar == 0 && self.postulante.estado == 'enviado') {
-					footer.appendChild(btnSave);
-				} else if (revaluar == 1) { // --
-					footer.appendChild(btnSave);
-				} else if (revaluar == 0 && isPUN() && self.postulante.estado == 'revisado') {
-					// footer.appendChild(btnSave);
-				}			
+				if (isAnexo()) {
+					if (revaluar == 0 && self.postulante.estado == 'enviado') {
+						footer.appendChild(btnSave);
+					} else if (revaluar == 1) { // --
+						footer.appendChild(btnSave);
+					}			
+				}
 			}
 			if (self.postulante.estado != 'finalizado') {
 				if (currentActive == textWraps.length && self.postulante.estado == 'revisado') { // Annexo
-					const btnSaveAll = document.createElement('button');
-					btnSaveAll.classList.add('btn', 'btn-danger', 'ms-2');
-					btnSaveAll.innerText = 'Guardar y finalizar';
-					btnSaveAll.addEventListener('click', (e) => {
-						saveAll(true);
-					});
-					
 					if (revaluar == 0 && self.postulante.estado == 'enviado') {
-						footer.appendChild(btnSaveAll);
+						footer.appendChild(btnSaveAll1);
 					} else if (revaluar == 1) {
-						footer.appendChild(btnSaveAll);
-					} else if (revaluar == 0 && isPUN() && self.postulante.estado == 'revisado') {
-						// footer.appendChild(btnSaveAll);
+						footer.appendChild(btnSaveAll1);
 					}
 				} else {
 					if (isPUN()) { // prerequisito
 						self.revisado = 1;
-						const btnSave2 = document.createElement('button');
-						btnSave2.classList.add('btn', 'btn-success', 'ms-2');
-						btnSave2.innerText = 'Guardar y dar por revisado';
-						btnSave2.addEventListener('click', (e) => {
-							if (isValidFichaRequisito()) {
-								return;
+						if (isAnexo()) {
+							if (revaluar == 0 && self.postulante.estado == 'enviado' && Number(self.ficha.promedio) == 0) {
+								footer.appendChild(btnSave2);
 							}
-							saveAll(false);
-						});
-						if (revaluar == 0 && self.postulante.estado == 'enviado' && Number(self.ficha.promedio) == 0) {
-							footer.appendChild(btnSave2);
-						} else if (revaluar == 1) {
-							// footer.appendChild(btnSave2);
-						} else if (revaluar == 0 && isPUN() && self.postulante.estado == 'revisado') {
-							// footer.appendChild(btnSave2);
 						}
 					}
 					if (revaluar == 1) {
-						const btnSaveAll = document.createElement('button');
-						btnSaveAll.classList.add('btn', 'btn-danger', 'ms-2');
-						btnSaveAll.innerText = 'Guardar y finalizar';
-						btnSaveAll.addEventListener('click', (e) => {
-							saveAll(true);
-						});
-						if (revaluar == 0 && self.postulante.estado == 'enviado') {
-							footer.appendChild(btnSaveAll);
-						} else if (revaluar == 1) {
-							footer.appendChild(btnSaveAll);
-						} else if (revaluar == 0 && isPUN() && self.postulante.estado == 'revisado') {
-							footer.appendChild(btnSaveAll);
+						if (isAnexo()) {
+							if (revaluar == 0 && self.postulante.estado == 'enviado') {
+								footer.appendChild(btnSaveAll1);
+							} else if (revaluar == 1) {
+								footer.appendChild(btnSaveAll1);
+							} else if (revaluar == 0 && isPUN() && self.postulante.estado == 'revisado') {
+								footer.appendChild(btnSaveAll1);
+							}
 						}
 					}
 				}
 			}
+
+			const modalBodyPrerequisitos = document.querySelectorAll('.modal-body-prerequisito');
+			modalBodyPrerequisitos.forEach(modalBody => {
+				modalBody.innerHTML = ``;
+				if (isPrerequisito()) {
+					modalBody.appendChild(showAlertModal({
+						title: 'Guardar!',
+						message: 'El sistema guardará los datos de la ficha temporalmente para que pueda seguir editando y relizando las correcciones necesarias.',
+						type: 'primary',
+						button: btnSave
+					}));
+
+					modalBody.appendChild(showAlertModal({
+						title: 'Revisar Anexo!',
+						message: 'El sistema guardará los datos de la ficha y podrá acceder a la ficha de anexo para continuar con el proceso de evaluación.',
+						type: 'success',
+						button: btnSaveNext
+					}));
+					if (revaluar == 0) {
+						modalBody.appendChild(showAlertModal({
+							title: 'Dar por Revisado!',
+							message: 'Si esta seguro de que los datos de la ficha está correctamente evaluada y no requiere de un anexo.',
+							type: 'info',
+							button: btnSave2
+						}));
+					}
+					if (revaluar == 1) {
+						modalBody.appendChild(showAlertModal({
+							title: 'Finalizar Evaluación!',
+							message: 'Si esta seguro de que los datos de la ficha está correctamente evaluada se procederá a guardar y finalizar el proceso de evaluación.',
+							type: 'danger',
+							button: btnSaveAll1
+						}));
+					}
+				}
+			});
+			console.log(footer);
 			domBody.appendChild(footer);
 		}
 
-		const saveAll = (any) => {
+		const saveAll = (any, page = 1) => {
+			console.log(page);
 			if (calculation()) {
 				sweet2.show({
 					type: 'question',
@@ -599,12 +686,14 @@ const viewfichaDetail = () => {
 							} else {
 								currentActive = 1;
 							}
+							self.modalPrerequisito.hide();
 							sweet2.show({
 								type: 'success', 
 								text: message,
 								onOk: () => {
-									window.location.reload();
-									sweet2.loading({text: 'Actualizando información'});
+									viewfichaDetail(page);
+									// window.location.reload();
+									// sweet2.loading({text: 'Actualizando información'});
 								}
 							});
 						})
@@ -818,7 +907,7 @@ const viewfichaDetail = () => {
 		
 						if(currentActive === 1) {
 							progressBackButton.disabled = true
-							progressNextButton.disabled = false
+							progressNextButton.disabled = self.postulante.estado == 'finalizado' ? false : true // false
 							if(currentActive === textWraps.length) {
 								progressNextButton.disabled = true
 							}
@@ -978,11 +1067,13 @@ const viewfichaDetail = () => {
 	}
 
 	const build = () => {
+		sweet2.loading();
 		domHeader.innerHTML = ``;
 		domBody.innerHTML = ``;
 		getDetail()
 		.then((data) => {
 			init(data);
+			sweet2.loading(false);
 		})
 		.catch((error) => {
 			sweet2.show({type: 'error', text: error});

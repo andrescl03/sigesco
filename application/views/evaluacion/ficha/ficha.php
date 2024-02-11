@@ -449,6 +449,19 @@
                                 <div id="containerFicha" data-id="<?php echo $postulante->id ?>" data-revaluar="<?= $revaluar ?>">
                                 </div>
                             </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="modalPrerequisito" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">PROCESAR INFORMACIÓN</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body modal-body-prerequisito">
+                                        
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
