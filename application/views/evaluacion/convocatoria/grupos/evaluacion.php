@@ -35,6 +35,10 @@
                                                                     <button type="button" class="input-group-text btn btn-sm btn-primary shadow-none" id="btnBuscador">Buscar</button>
                                                                 </div>
                                                             </div>
+                                                            <div class="vr"></div>
+                                                            <div class="col">
+                                                                <button type="button" class="btn btn-sm btn-dark float-end pagination-btn-all">Procesar registros a Preliminar</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

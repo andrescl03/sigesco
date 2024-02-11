@@ -535,4 +535,31 @@ class Evaluacion_model extends CI_Model {
     return $response; 
   }
 
+  public function status() {
+    $response = $this->tools->responseDefault();
+    try {
+
+      $ids   = $this->input->post("ids", true);
+      $estado = $this->input->post("estado", true);
+
+      $ids =  json_decode($ids);
+
+      if (count($ids) == 0) {
+        throw new Exception("Es necesario los registros de los docentes");
+      }
+
+      foreach ($ids as $k => $id) {
+        $this->db->update('postulaciones', ['estado' => $estado], ['id' => $id]);
+      }
+
+      $response['success'] = true;
+      $response['status']  = 200;
+      $response['message'] = 'Se proceso correctamente';
+
+    } catch (\Exception $e) {
+        $response['message'] = $e->getMessage();
+    }
+    return $response; 
+  }
+
 }
