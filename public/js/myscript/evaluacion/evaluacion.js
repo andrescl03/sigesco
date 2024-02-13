@@ -259,8 +259,10 @@ const AppAdjudicacionAdmin = () => {
                                                     <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/editar" class="menu-link text-danger px-3">Editar</a>
                                                 </div>
                                             </div>` : `
-                                                <input type="checkbox" value="${row.id}" class="pagination-check-item">
-                                            `;
+                                            <input type="checkbox" value="${row.id}" class="pagination-check-item">
+                                            <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/revaluar">
+                                                <i class="fa fa-file-text ms-3 fa-xl text-dark" aria-hidden="true" title="Visualizar Evaluación"></i>
+                                            </a>`;
                                 }
                             }
                         ],
