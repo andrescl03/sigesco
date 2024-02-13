@@ -410,3 +410,8 @@ ALTER TABLE tipo_archivos ADD COLUMN `edit` INT(11) NULL DEFAULT '0' AFTER `orde
 INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`,`edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (10, 'Reclamo', 0, 10, 1, '2024-02-08 16:42:03', '2024-02-08 16:42:03', NULL);
 
 update `tipo_archivos` set `edit` = 0 where edit is null;
+
+
+/******************************* 13/02/2024 ****************/
+
+update postulaciones set estado = 'revisado' where estado = 'rechazado'
