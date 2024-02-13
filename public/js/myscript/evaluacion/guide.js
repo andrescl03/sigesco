@@ -162,11 +162,14 @@ const viewfichaDetail = (pageActive = 1) => {
 		return alertDiv;
 	}
 
-	function showAlertModal({title, message, type, button}) {
+	function showAlertModal({title, message, type, button, id = null}) {
 		// Crear el div de la alerta con JavaScript
 		var alertDiv = document.createElement("div");
 		alertDiv.className = "alert alert-" + type;
 		alertDiv.setAttribute("role", "alert");
+		if (id) {
+			alertDiv.setAttribute("id", id);			
+		}
 	
 		// Crear elementos internos de la alerta
 		var heading = document.createElement("h4");
@@ -186,6 +189,13 @@ const viewfichaDetail = (pageActive = 1) => {
 	
 		// Agregar la alerta al cuerpo del documento
 		return alertDiv;
+	}
+
+	function hiddenNextAnexo(value) {
+		const alertNextAnexo = document.querySelector('#alertNextAnexo');
+		if (alertNextAnexo) {
+			alertNextAnexo.style.display = Number(value) == 0 ? 'none' : 'block';
+		}
 	}
 	
 	function getDetail() {
@@ -481,6 +491,7 @@ const viewfichaDetail = (pageActive = 1) => {
 					{
 						change: (e) => {
 							self.ficha.evaluacion_estado = e.target.value;
+							hiddenNextAnexo(self.ficha.evaluacion_estado);
 						}
 					},
 					self.ficha.evaluacion_estado
@@ -570,7 +581,6 @@ const viewfichaDetail = (pageActive = 1) => {
 				}
 				saveAll(false);
 			});
-
 			if (self.postulante.estado != 'finalizado') {
 				if (isAnexo()) {
 					if (revaluar == 0 && self.postulante.estado == 'enviado') {
@@ -625,8 +635,10 @@ const viewfichaDetail = (pageActive = 1) => {
 						title: 'Revisar Anexo!',
 						message: 'El sistema guardará los datos de la ficha y podrá acceder a la ficha de anexo para continuar con el proceso de evaluación.',
 						type: 'success',
-						button: btnSaveNext
+						button: btnSaveNext,
+						id: 'alertNextAnexo'
 					}));
+
 					if (revaluar == 0) {
 						modalBody.appendChild(showAlertModal({
 							title: 'Dar por Revisado!',
@@ -645,7 +657,7 @@ const viewfichaDetail = (pageActive = 1) => {
 					}
 				}
 			});
-			console.log(footer);
+			hiddenNextAnexo(self.ficha.evaluacion_estado);
 			domBody.appendChild(footer);
 		}
 

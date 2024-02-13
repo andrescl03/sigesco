@@ -25,7 +25,6 @@ const AppAdjudicacionAdmin = () => {
                 },
                 clicks: () => {
                     const btn = dom.querySelector('#btnBuscador');
-                    const btn_expediente_preliminar_a_final = dom.querySelector('#btn-procesar-expedientes-preliminar-final');
 
                     if (btn) {
                         btn.addEventListener('click', (e) => {
@@ -36,6 +35,9 @@ const AppAdjudicacionAdmin = () => {
                             }
                         });
                     }
+
+                    const btn_expediente_preliminar_a_final = dom.querySelector('#btn-procesar-expedientes-preliminar-final');
+
                     if (btn_expediente_preliminar_a_final) {
                         btn_expediente_preliminar_a_final.addEventListener('click', (e) => {
                             sweet2.show({
@@ -48,6 +50,58 @@ const AppAdjudicacionAdmin = () => {
                             });
                         });
                     }
+                    const btnAlls = document.querySelectorAll('.pagination-btn-all');
+                    btnAlls.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            let ids = [];
+                            const checks = document.querySelectorAll('.pagination-check-item');
+                            checks.forEach(check => {
+                                if (check.checked) {
+                                    ids.push(check.value);
+                                }
+                            });
+                            if (ids.length == 0) {
+                                sweet2.show({
+                                    type: 'info',
+                                    text: 'Tiene que seleccionar al menos un registro de la lista'
+                                });
+                                return;
+                            }
+                            sweet2.show({
+                                type: 'question',
+                                title: '¿Estás seguro de procesar estos registros?',
+                                text: `Los registros se mostrarán en la lista preliminar, se procesará ${ids.length} registro(s)`,
+                                showCancelButton: true,
+                                onOk: () => {
+                                    sweet2.loading();
+                                    const stringids = JSON.stringify(ids);
+                                    const formData = new FormData();
+                                    formData.append('ids', stringids);
+                                    formData.append('estado', 'revisado');
+                                    self.sendPostulants(formData)
+                                    .then(({success, data, message}) => {
+                                        if (!success) {
+                                            throw message;
+                                        }
+                                        sweet2.show({
+                                            type: 'success',
+                                            text: message,
+                                            onOk: () => {
+                                                sweet2.loading({text: 'Actualizando información...'});
+                                                self.table.ajax.reload();
+                                            }
+                                        });
+                                    })
+                                    .catch((error) => {
+                                        sweet2.show({
+                                            type: 'error',
+                                            html: message
+                                        });
+                                    })
+                                }
+                            });
+                        });
+                    });
                 },
                 pagination: (_callback = ()=>{}) => {
                     self.table = $('#tableIndex').DataTable({
@@ -193,19 +247,20 @@ const AppAdjudicacionAdmin = () => {
                                 "data": "created_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return  `<button type="button" class="btn btn-sm btn-light btn-active-light me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    return  any == 'preliminar' ? `
+                                            <button type="button" class="btn btn-sm btn-light btn-active-light me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Acción
                                             </button>
                                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-2 dropdown-menu dropdown-menu-start">
-                                                ${
-                                                    any == 'preliminar' ? ` <div class="menu-item px-3 py-2">
-                                                                                <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/revaluar" class="menu-link text-danger px-3">Revaluar</a>
-                                                                            </div>` : ``
-                                                }
+                                                <div class="menu-item px-3 py-2">
+                                                    <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/revaluar" class="menu-link text-danger px-3">Revaluar</a>
+                                                </div>
                                                 <div class="menu-item px-3 py-2">
                                                     <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/editar" class="menu-link text-danger px-3">Editar</a>
                                                 </div>
-                                            </div>`;
+                                            </div>` : `
+                                                <input type="checkbox" value="${row.id}" class="pagination-check-item">
+                                            `;
                                 }
                             }
                         ],
@@ -261,9 +316,36 @@ const AppAdjudicacionAdmin = () => {
                             contentType: false,
                         })
                         .done(function (response) {
-                            resolve(response);
+                            
                             sweet2.loading(false);
+                            sweet2.show({
+                                type: 'success',
+                                text: response.message,
+                                onOk: () => {
+                                    self.table.ajax.reload();
+                                }
+                            });
 
+                            resolve(response);
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
+                        });
+                    });
+                }, 
+                sendPostulants: (formData) => {
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + `evaluacion/convocatoria/inscripcion/postulantes/status`,
+                            method: 'POST',
+                            dataType: 'json',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function (response) {
+                            resolve(response);
                         })
                         .fail(function (xhr, status, error) {
                             sweet2.show({type:'error', text:error});
@@ -312,7 +394,6 @@ const AppAdjudicacionAdmin = () => {
             },
             renders: {
                 attachedfilesRender: (files) => {
-                    console.log(files);
                     let html = `<tr><td colspan="3" class="text-center">No hay registros para mostrar<td></tr>`;
                     if (files.length > 0) {
                         html = ``,

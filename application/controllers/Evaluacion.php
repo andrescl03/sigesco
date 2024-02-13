@@ -288,6 +288,16 @@ class Evaluacion extends CI_Controller {
             show_404();
         }
     }
+    
+    public function status() {
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->evaluacion_model->status()));
+        } else {
+            show_404();
+        }    
+    }
 
     public function revaluarPreliFinal($id) {
         $datos = $this->postulaciones_model->show(['id' => $id]);

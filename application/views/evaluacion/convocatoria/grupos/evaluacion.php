@@ -37,9 +37,17 @@
                                                             </div>
                                                             <?php
                                                             if (in_array($this->session->userdata("sigesco_tus_iduser"), array('3')) && $any == 'preliminar') { ?>
-                                                                <button data-id="<?= $datos[0]['con_numero'] ?>" type="button" id="btn-procesar-expedientes-preliminar-final" class="btn btn-sm btn-success btn-procesar-expedientes-preliminar-final mb-2">
+                                                                <button  data-id="<?= $datos[0]['con_numero'] ?>" type="button" id="btn-procesar-expedientes-preliminar-final" class="btn btn-sm btn-success btn-procesar-expedientes-preliminar-final mb-2">
                                                                     Procesar expedientes con estado CUMPLE a etapa FINAL
                                                                 </button>
+                                                            <?php } ?>
+
+                                                            <?php
+                                                            if ($any != 'preliminar') { ?>
+                                                            <div class="vr"></div>
+                                                            <div class="col">
+                                                                <button type="button" class="btn btn-sm btn-dark float-end pagination-btn-all">Procesar registros a Preliminar</button>
+                                                            </div>
                                                             <?php } ?>
                                                         </div>
                                                     </div>
