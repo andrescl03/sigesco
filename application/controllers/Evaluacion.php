@@ -325,6 +325,9 @@ class Evaluacion extends CI_Controller {
         $this->reporte_excel($convocatoria_id, -1 , 'revisado', 'FICHA_PRELIMINAR');
     }
 
+    public function reporte_excel_final_total($convocatoria_id) {
+        $this->reporte_excel($convocatoria_id, -1 , 'finalizado', 'FICHA_FINAL');
+    }
 
     public function reporte_excel($convocatoria_id, $inscripcion_id, $estado, $ficha) {
         $response = $this->evaluacion_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado, true);

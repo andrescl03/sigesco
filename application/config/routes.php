@@ -87,6 +87,8 @@ $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/preliminar/exportar'] 
 $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/final/exportar'] = 'evaluacion/reporte_excel_final/$1/$2';
 $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/pendiente/exportar'] = 'evaluacion/reporte_excel_pendiente/$1/$2';
 $route['evaluacion/convocatoria/(:num)/inscripcion/preliminar/exportar'] = 'evaluacion/reporte_excel_preliminar_total/$1';
+$route['evaluacion/convocatoria/(:num)/inscripcion/final/exportar'] = 'evaluacion/reporte_excel_final_total/$1';
+
 $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/procesar/expedientes'] = 'evaluacion/procesar_expedientes/$1/$2';
 
 $route['adjudicaciones/create'] = 'adjudicaciones/create';
