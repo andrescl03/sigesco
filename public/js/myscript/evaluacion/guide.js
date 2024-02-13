@@ -562,6 +562,7 @@ const viewfichaDetail = (pageActive = 1) => {
 			btnSaveAll1.classList.add('btn', 'btn-danger', 'ms-2');
 			btnSaveAll1.innerText = 'Guardar y finalizar';
 			btnSaveAll1.addEventListener('click', (e) => {
+				self.revisado = 1;
 				saveAll(true, isPrerequisito() ? 1 : 2);
 			});
 

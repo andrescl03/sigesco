@@ -1188,9 +1188,9 @@ class Postulaciones_model extends CI_Model
             }*/
 
             if ($revisado == 1) {
-                if ($evaluacion_estado == 0) {
+                /*if ($evaluacion_estado == 0) {
                     $estado = 'rechazado';
-                }
+                }*/
                 $this->db->update('postulaciones', ['estado' => $estado], array('id' => $id));
             }
 
