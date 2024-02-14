@@ -124,7 +124,7 @@ class Adjudicaciones_model extends CI_Model
 
       $sql = "SELECT PL.* , moda.*, nive.*
               FROM plazas AS PL
-              LEFT JOIN adjudicaciones AD ON AD.postulacion_id = PL.plz_id
+              LEFT JOIN adjudicaciones AD ON AD.plaza_id = PL.plz_id
               INNER JOIN modalidades moda ON moda.mod_id = PL.mod_id
               INNER JOIN niveles as nive ON nive.niv_id = PL.nivel_id
               AND AD.id IS NULL";
