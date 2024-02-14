@@ -1424,11 +1424,11 @@ class ReporteDocumento extends CI_Controller {
 
         $this->pdf->SetFont('Arial', 'B', 6);
 
-        // $xml = simplexml_load_string($datos [0] ['firmas'], 'SimpleXMLElement', LIBXML_NOCDATA);
-        // $lista_firmas = json_decode(json_encode((array) $xml), TRUE);
-        // $lista_firmas = $lista_firmas['miembro'];
+      /*     $xml = simplexml_load_string($firmas, 'SimpleXMLElement', LIBXML_NOCDATA);
+          $lista_firmas = json_decode(json_encode((array) $xml), TRUE);
+          $lista_firmas = $lista_firmas['miembro']; */
 
-        // $totalfirmas = count($lista_firmas);
+         $totalfirmas = count($firmas);
         $contador = 0;
         $lista_firmas = $firmas;
         // var_dump($firmas); exit;
@@ -1471,7 +1471,7 @@ class ReporteDocumento extends CI_Controller {
             else {
                 $protocol = 'http://';
             }
-            $hostname = $protocol .  $_SERVER['SERVER_NAME'] . '/public';
+            $hostname = $protocol .  $this->config->config['base_url'] . '/public';
 
             $imagen = $fila->usu_firma ? ($hostname. utf8_decode($fila->usu_firma)) : "https://img.freepik.com/foto-gratis/fondo_53876-32170.jpg";
 

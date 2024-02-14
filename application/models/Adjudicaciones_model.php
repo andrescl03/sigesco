@@ -154,6 +154,9 @@ class Adjudicaciones_model extends CI_Model
   {
     $response = $this->tools->responseDefault();
     try {
+      
+      $firmas  = $this->input->post("firmas", true);
+      $firmas = json_decode($firmas);
 
       $plaza_id = $this->input->post("plaza_id", true);
       $postulacion_id  = $this->input->post("postulacion_id", true);
@@ -168,7 +171,20 @@ class Adjudicaciones_model extends CI_Model
         'fecha_final' => $fecha_final,
         'fecha_registro' => $fecha_registro
       ]);
+
+      
       $id =  $this->db->insert_id(); // para saber el id ingresado
+      
+      if (count($firmas) > 0) {
+        $inserts = array();
+        foreach ($firmas as $key => $item) {
+            $inserts[] = [
+                'adjudicacion_id' => $id,
+                'usuario_id' => $item->usu_id
+            ];
+        }
+        $this->db->insert_batch('adjudicacion_firmas', $inserts);
+      }
       
       $response['success'] = true;
       $response['status']  = 200;
