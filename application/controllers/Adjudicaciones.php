@@ -92,4 +92,10 @@ class Adjudicaciones extends CI_Controller {
                 ->set_output(json_encode($this->adjudicaciones_model->contrato($id)));
     }
 
+    public function usuarioFirmas() {
+        return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->adjudicaciones_model->usuarioFirmas()));
+    }
+
 }

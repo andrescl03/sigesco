@@ -131,8 +131,17 @@ class Adjudicaciones_model extends CI_Model
       $sql = "SELECT * FROM usuarios";
       $usuarios = $this->db->query($sql)->result_object();
 
+      $sigesco_id = $this->session->userdata("sigesco_id");   
+
+      $sql = "SELECT 
+                e1.* 
+              FROM usuarios e1 
+              INNER JOIN adjudicaciones_usuario_firmas e2 ON e1.usu_id = e2.usuario_id 
+              WHERE e2.parent_id = $sigesco_id";
+      $usuario_firmas = $this->db->query($sql)->result_object();
+
       $response['success'] = true;
-      $response['data']  = compact('postulaciones', 'plazas', 'usuarios', 'adjudicacion');
+      $response['data']  = compact('postulaciones', 'plazas', 'usuarios', 'adjudicacion', 'usuario_firmas');
       $response['status']  = 200;
       $response['message'] = 'detail';
     } catch (\Exception $e) {
@@ -386,4 +395,46 @@ class Adjudicaciones_model extends CI_Model
     }
     return compact('adjudicacion');
   }
+
+  public function usuarioFirmas() {
+
+    $response = $this->tools->responseDefault();
+    try {
+
+      $ids = $this->input->post("ids", true);
+      $ids = json_decode($ids);
+
+      $sigesco_id = $this->session->userdata("sigesco_id");   
+      
+      $this->db->delete('adjudicaciones_usuario_firmas', array('parent_id' => $sigesco_id));
+      if (count($ids) > 0) {
+        $inserts = array();
+        foreach ($ids as $key => $value) {
+          $inserts[] = [
+            'usuario_id' => $value,
+            'parent_id' => $sigesco_id
+          ];
+        }
+        $this->db->insert_batch('adjudicaciones_usuario_firmas', $inserts);
+      }
+
+      $sigesco_id = $this->session->userdata("sigesco_id");   
+
+      $sql = "SELECT 
+                e1.* 
+              FROM usuarios e1 
+              INNER JOIN adjudicaciones_usuario_firmas e2 ON e1.usu_id = e2.usuario_id 
+              WHERE e2.parent_id = $sigesco_id";
+      $usuario_firmas = $this->db->query($sql)->result_object();
+
+      $response['success'] = true;
+      $response['status']  = 200;
+      $response['data']    = compact('usuario_firmas');
+      $response['message'] = 'Se guardo correctamente';
+    } catch (\Exception $e) {
+      $response['message'] = $e->getMessage();
+    }
+    return $response;
+  }
+
 }

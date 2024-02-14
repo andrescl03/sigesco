@@ -1,3 +1,39 @@
+<style>
+    .modal-body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /*height: 100vh;*/
+        margin: 0;
+    }
+
+    .dual-listbox-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .listbox {
+        list-style: none;
+        border: 1px solid #ccc;
+        width: 300px;
+        height: 500px;
+        overflow-y: auto;
+        margin-bottom: 15px;
+    }
+
+    .listbox li {
+        cursor: pointer;
+        margin: 7px 0;
+        padding: 5px 15px;
+        font-size: 13px;
+    }
+
+    .controls {
+        margin: 100px 20px;
+    }
+
+</style>
 <?php $edit = isset($data['adjudicacion']) ? true : false ?>
 <div id="AppFormAdjudicacionAdmin" data-id="<?php echo $edit ? $data['adjudicacion']->id : 0 ?>" data-now="<?php echo date('Y-m-d H:i'); ?>">
     <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> <?php echo $edit ? "Editar" : "Crear" ?> Adjudicación</b></h4>
@@ -103,7 +139,10 @@
                                                         <div class="d-flex">
                                                             <h5 class="col"><span class="badge rounded-pill bg-light text-info me-1 fs-7">4</span> Firmas en el acta</h5>
                                                             <div class="col text-end">
-                                                                <button type="button" class="btn btn-sm btn-outline-light btn-firma">
+                                                                <button type="button" class="btn btn-sm btn-outline-light mb-2 btn-usuario-firma">
+                                                                    <i class="fa-solid fa-edit fa-lg me-1"></i> Gestionar
+                                                                </button>
+                                                                <button type="button" class="btn btn-sm btn-outline-light mb-2 btn-firma">
                                                                     <i class="fa-solid fa-file-signature fa-lg me-1"></i> Buscar Firma
                                                                 </button>
                                                             </div>
@@ -284,6 +323,54 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="button" class="btn btn-primary btn-firma-add">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalUsuarioFirmas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Listado de Firmas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="dual-listbox-container">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                    <h5 class="mb-2">Todos los usuarios</h5>
+                                        <ul id="left-listbox" class="listbox" data-list="left" draggable="true">
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <div class="controls">
+                                            <button class="btn btn-primary" id="move-right">
+                                                Mover Derecha 
+                                                <i class="fa fa-chevron-right ms-2" aria-hidden="true"></i><i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                            </button><br><br>
+                                            <button class="btn btn-primary" id="move-left">
+                                                <i class="fa fa-chevron-left" aria-hidden="true"></i><i class="fa fa-chevron-left me-2" aria-hidden="true"></i>
+                                                Mover Izquierda
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h5 class="mb-2">Mis usuarios</h5>
+                                        <ul id="right-listbox" class="listbox" data-list="right" draggable="true">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary btn-usuario-firma-add">Guardar</button>
                 </div>
             </div>
         </div>

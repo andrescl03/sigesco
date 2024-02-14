@@ -11,6 +11,7 @@ const AppAdjudicacionAdmin = () => {
                     modalFirmas: {},
                     modalDocentes: {},
                     modalPlazas: {},
+                    modalUsuarioFirmas: {},
 
                     plazas: [],
                     tplazas: [],
@@ -22,13 +23,15 @@ const AppAdjudicacionAdmin = () => {
                     postulacion: {},
                     firmas: [],
                     edit: adjudicacion_id > 0,
-                    adjudicacion: {}
+                    adjudicacion: {},
+                    usuarioFirmas: [],
                 }
             },
             mounted: function () {
                 self.modalDocentes = self.modal('modalDocentes');
                 self.modalPlazas = self.modal('modalPlazas');
                 self.modalFirmas = self.modal('modalFirmas');
+                self.modalUsuarioFirmas = self.modal('modalUsuarioFirmas');
                 self.initialize();
             },
             methods: {
@@ -40,6 +43,9 @@ const AppAdjudicacionAdmin = () => {
                         self.plazas = response.plazas;
                         self.tplazas = response.plazas;
                         self.usuarios = response.usuarios;
+                        self.usuarioFirmas = response.usuario_firmas;
+                        self.firmasReload();
+
                         dom.querySelector('input[name="fecha_registro"]').value = now;
                         if (self.edit) {
                             if (Object.keys(response.adjudicacion).length > 0) {
@@ -52,10 +58,46 @@ const AppAdjudicacionAdmin = () => {
                     });
 
                 },
+                firmasReload: () => {
+                    self.firmas = [];
+                    self.usuarioFirmas.forEach(item => {
+                        self.firmas.push(item);
+                    });
+
+                    if (self.firmas.length > 0) {
+                        self.firmasRender();
+                    }
+                },
                 isValid: () => {
                     return Object.keys(self.plaza).length > 0 && Object.keys(self.postulacion).length > 0;
                 },
                 clicks: () => {
+
+                    const btnUsuarioFirmaAdds = document.querySelectorAll('.btn-usuario-firma-add');
+                    btnUsuarioFirmaAdds.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const selectedItems = Array.from(document.getElementById('right-listbox').querySelectorAll('li'));
+                            const ids = [];
+                            selectedItems.forEach(li => {
+                                ids.push(Number(li.getAttribute('data-value')));
+                            });
+                            const formData = new FormData();
+                            formData.append('ids', JSON.stringify(ids));
+                            self.setUsuarioFirma(formData)
+                            .then(({success, data, message}) => {
+                                if (!success) {
+                                    throw message;
+                                }
+                                self.usuarioFirmas = data.usuario_firmas;
+                                self.firmasReload();
+                                self.modalUsuarioFirmas.hide();
+                                sweet2.show({type:'success', text: message});
+                            })
+                            .catch((error) => {
+                                sweet2.show({type:'error', text: error});
+                            })
+                        });
+                    });
 
                     const docenteRender = () => {
                         document.querySelector(".search-postulaciones").value = '';
@@ -382,6 +424,15 @@ const AppAdjudicacionAdmin = () => {
                         });
                     });
 
+                    const btnUsuarioFirma = document.querySelectorAll('.btn-usuario-firma');
+                    btnUsuarioFirma.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            console.log(self.usuarioFirmas);
+                            self.duallistbox(self.usuarios, self.usuarioFirmas);
+                            self.modalUsuarioFirmas.show();
+                        })
+                    });
+
                     const btnObtenerFechaActual = document.querySelectorAll('.btn-obtener-fecha-actual');
 
                     btnObtenerFechaActual.forEach(btn => {
@@ -497,6 +548,25 @@ const AppAdjudicacionAdmin = () => {
                     self.docenteRender();
                     self.firmasRender();
                 },
+                setUsuarioFirma: (formData) => {
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + `adjudicaciones/usuarios/firmas`,
+                            method: 'POST',
+                            dataType: 'json',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function (response) {
+                            resolve(response);
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
+                        });
+                    });
+                },
                 getResource: () => {
                     const formData = new FormData();
                     formData.append('adjudicacion_id', adjudicacion_id);
@@ -556,6 +626,104 @@ const AppAdjudicacionAdmin = () => {
                         });
                     });
                 },
+                duallistbox: (rights, lefts) => {
+
+                    const leftListbox = document.getElementById('left-listbox');
+                    const rightListbox = document.getElementById('right-listbox');
+                    const moveRightBtn = document.getElementById('move-right');
+                    const moveLeftBtn = document.getElementById('move-left');
+                    leftListbox.innerHTML = ``;
+                    rightListbox.innerHTML = ``;
+                    const aux_rights = [];
+                    rights.forEach(e1 => {
+                        let free = true;
+                        lefts.forEach(e2 => {
+                            if (e1.usu_id == e2.usu_id) {
+                                free = false;     
+                            }
+                        });
+                        if (free) {
+                            aux_rights.push(e1);
+                        }
+                    });
+                    rights = aux_rights;
+
+                    if (leftListbox) {
+                        rights.forEach(o => {
+                            leftListbox.innerHTML += `<li data-value="${o.usu_id}"> <div class="d-block">${o.usu_dni}</div> ${o.usu_apellidos} ${o.usu_nombre}</li>`;
+                        });
+                    }
+
+                    if (rightListbox) {
+                        lefts.forEach(o => {
+                            rightListbox.innerHTML += `<li data-value="${o.usu_id}"> <div class="d-block">${o.usu_dni}</div> ${o.usu_apellidos} ${o.usu_nombre}</li>`;
+                        });
+                    }
+                    
+                    moveRightBtn.addEventListener('click', function () {
+                      moveSelectedItems(leftListbox, rightListbox);
+                    });
+                  
+                    moveLeftBtn.addEventListener('click', function () {
+                      moveSelectedItems(rightListbox, leftListbox);
+                    });
+                  
+                    function moveSelectedItems(source, destination) {
+                      const selectedItems = Array.from(source.querySelectorAll('li[data-selected="true"]'));
+                  
+                      selectedItems.forEach((item) => {
+                        const clonedItem = item.cloneNode(true);
+                        clonedItem.removeAttribute('data-selected');
+                        destination.appendChild(clonedItem);
+                        item.remove();
+                      });
+                    }
+                  
+                    document.addEventListener('click', function (event) {
+                      const clickedItem = event.target;
+                  
+                      if (clickedItem.tagName === 'LI') {
+                        toggleSelection(clickedItem);
+                      }
+                    });
+                  
+                    function toggleSelection(item) {
+                      const isSelected = item.getAttribute('data-selected') === 'true';
+                      isSelected ? item.removeAttribute('data-selected') : item.setAttribute('data-selected', 'true');
+                      if (!isSelected) {
+                        item.style.fontWeight = '700';
+                        item.style.backgroundColor = 'yellow';
+                      } else {
+                        item.style.fontWeight = '500';
+                        item.style.backgroundColor = 'white';
+                      }
+                    }
+                  
+                    document.addEventListener('dragstart', function (event) {
+                      event.dataTransfer.setData('text/plain', event.target.dataset.value);
+                    });
+                  
+                    document.addEventListener('dragover', function (event) {
+                      event.preventDefault();
+                    });
+                  
+                    document.addEventListener('drop', function (event) {
+                      const data = event.dataTransfer.getData('text/plain');
+                      const targetList = event.target.dataset.list;
+                  
+                      if (targetList === 'left' || targetList === 'right') {
+                        const target = document.getElementById(`${targetList}-listbox`);
+                        const item = document.querySelector(`li[data-value="${data}"]`);
+                  
+                        if (item && target) {
+                          item.setAttribute('data-selected', 'true');
+                          target.appendChild(item);
+                        }
+                        event.preventDefault();
+                      }
+                    });
+
+                }
             },
             renders: {
                 firmasRender: () => {

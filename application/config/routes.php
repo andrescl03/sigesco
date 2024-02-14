@@ -91,6 +91,7 @@ $route['evaluacion/convocatoria/(:num)/inscripcion/final/exportar'] = 'evaluacio
 
 $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/procesar/expedientes'] = 'evaluacion/procesar_expedientes/$1/$2';
 
+$route['adjudicaciones/usuarios/firmas'] = 'adjudicaciones/usuarioFirmas';
 $route['adjudicaciones/create'] = 'adjudicaciones/create';
 $route['adjudicaciones/(:num)/edit'] = 'adjudicaciones/edit/$1';
 $route['adjudicaciones/postulantes/(:num)/status'] = 'adjudicaciones/updateStatus/$1';
