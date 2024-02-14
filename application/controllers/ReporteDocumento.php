@@ -1559,9 +1559,10 @@ class ReporteDocumento extends CI_Controller {
         /*
           $this->pdf->Image('' . $qr . '', 180, 5, 23, 23);
          */
-        $this->pdf->Line(80, 260, 130, 260);
-        $this->pdf->Rect(140, 240, 20, 25);
+        $this->pdf->Line(80, 265, 130, 265);
+        $this->pdf->Rect(150, 240, 20, 25);
         $this->pdf->Cell(85, 7, '', '', 0, 'C', 0);
+
 
 
        /*
@@ -1575,6 +1576,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(80, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(5, 7, '', '', 0, 'LU', 0);
         $this->pdf->Cell(0, 7, $tipo_documento . ' ' . $postulante->numero_documento, '', 0, 'LU', 0);
+
 
 
         $this->pdf->SetFont('Arial', 'B', 6);
