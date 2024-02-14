@@ -444,4 +444,4 @@ CREATE TABLE `adjudicaciones_usuario_firmas` (
 	PRIMARY KEY (`id`) USING BTREE
 );
 
-
+ALTER TABLE plazas ADD COLUMN `nivel` VARCHAR(255) NULL DEFAULT NULL;

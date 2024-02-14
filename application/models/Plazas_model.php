@@ -29,9 +29,15 @@ class Plazas_model extends CI_Model {
               GROUP BY e1.loc_codigo
               ORDER BY e2.mod_nombre ASC";
         $colegios = $this->db->query($sql)->result_object();
+
+        $sql = "SELECT 
+                e2.*
+                FROM modularie e2
+                ORDER BY e2.mod_nombre ASC";
+        $niveles = $this->db->query($sql)->result_object();
   
         $response['success'] = true;
-        $response['data']  = compact('periodos', 'procesos', 'colegios');
+        $response['data']  = compact('periodos', 'procesos', 'colegios', 'niveles');
         $response['status']  = 200;
         $response['message'] = 'Se proceso correctamente';
   
@@ -95,30 +101,6 @@ class Plazas_model extends CI_Model {
       return $res;
     }
 
-  
-
-  public function attachedfiles($id) {
-    $response = $this->tools->responseDefault();
-    try {
-      $sql = "SELECT 
-                par.*,
-                tar.nombre AS tipo_nombre
-              FROM postulacion_archivos par
-              INNER JOIN tipo_archivos tar ON tar.id = par.tipo_id
-              WHERE par.deleted_at IS NULL 
-              AND par.postulacion_id = ?";
-      $archivos = $this->db->query($sql, ['postulacion_id' => $id])->result_object();
-      $response['success'] = true;
-      $response['data']  = compact('archivos');
-      $response['status']  = 200;
-      $response['message'] = 'Files of postulant';
-
-    } catch (\Exception $e) {
-        $response['message'] = $e->getMessage();
-    }
-    return $response; 
-  }
-
   public function store() {
 
     $response = $this->tools->responseDefault();
@@ -135,6 +117,10 @@ class Plazas_model extends CI_Model {
       $tipo_vacante = $this->input->post("tipo_vacante", true);
       $motivo_vacante  = $this->input->post("motivo_vacante", true);
       $codigo_plaza  = $this->input->post("codigo_plaza", true);
+      $mod_id  = $this->input->post("mod_id", true);
+
+      $sql = "SELECT * FROM modularie WHERE mod_id = ?";
+      $school = $this->db->query($sql, ['mod_id'=>$mod_id])->row();
 
       $data = [
         'codigo_plaza' => $codigo_plaza,
@@ -148,6 +134,9 @@ class Plazas_model extends CI_Model {
         'fecha_reg' => $this->tools->getDateHour(),
         'tipo_proceso' => $tipo_proceso,
         'estado' => $estado,
+        'mod_id' => $mod_id,
+        'ie'=>@$school->mod_nombre,
+        'nivel'=>@$school->mod_nivel
       ];
       
       $this->db->insert('plazas',$data);
@@ -187,9 +176,15 @@ class Plazas_model extends CI_Model {
       $tipo_vacante = $this->input->post("tipo_vacante", true);
       $motivo_vacante  = $this->input->post("motivo_vacante", true);
       $codigo_plaza  = $this->input->post("codigo_plaza", true);
+      $mod_id  = $this->input->post("mod_id", true);
+      $colegio_id = $this->input->post("colegio_id", true);
+
+      $sql = "SELECT * FROM modularie WHERE mod_id = ?";
+      $school = $this->db->query($sql, ['mod_id'=>$mod_id])->row();
 
       $data = [
         'codigo_plaza' => $codigo_plaza,
+        'colegio_id' => $colegio_id,
         'ie' => $ie,
         'especialidad' => $especialidad,
         'tipo_convocatoria' => $tipo_convocatoria,
@@ -197,9 +192,12 @@ class Plazas_model extends CI_Model {
         'tipo_vacante' => $tipo_vacante,
         'motivo_vacante' => $motivo_vacante,
         'periodo_id' => $periodo_id,
-        // 'fecha_reg' => $this->tools->getDateHour(),
+        'fecha_mod' => $this->tools->getDateHour(),
         'tipo_proceso' => $tipo_proceso,
         'estado' => $estado,
+        'mod_id' => $mod_id,
+        'ie'=>@$school->mod_nombre,
+        'nivel'=>@$school->mod_nivel
       ];
       
       $this->db->update('plazas', $data, ['plz_id' => $id]);

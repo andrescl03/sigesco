@@ -6,7 +6,9 @@ const AppPlazaIndex = () => {
                 return {
                     table: {},
                     modalPlaza: new bootstrap.Modal(dom.querySelector('#modalPlaza')),
-                    any: 0
+                    any: 0,
+                    niveles: [],
+                    colegio_niveles: []
                 }
             },
             mounted: function () {
@@ -14,10 +16,38 @@ const AppPlazaIndex = () => {
             },
             methods: {
                 initialize: () => {
+                    self.info();
                     self.clicks();
                     self.pagination(self.onActionRows);
                 },
+                info: () => {
+                    const data = dom.querySelector('#dataNiveles').innerHTML;
+                    self.niveles = JSON.parse(data);
+                },
                 clicks: () => {
+
+                    const selectColegios = dom.querySelectorAll('.select-colegio');
+                    selectColegios.forEach(select => {
+                        select.addEventListener('change', (e) => {
+                            const loc_id = e.target.value;
+                            self.colegio_niveles = [];
+                            self.niveles.forEach(nivel => {
+                                if (nivel.localie_loc_id == loc_id) {
+                                    self.colegio_niveles.push(nivel);
+                                }
+                            });
+                            const selectNiveles = dom.querySelectorAll('.select-nivel');
+                            selectNiveles.forEach(select => {
+                                let html = `<option value="" hidden selected>Elegir...</option>`;
+                                if (self.colegio_niveles.length > 0) {
+                                    self.colegio_niveles.forEach(n => {
+                                        html += `<option value="${n.mod_id}">${n.mod_nivel}</option>`;
+                                    });
+                                }
+                                select.innerHTML = html;
+                            });
+                        });
+                    });
                     
                     const btnCreates = dom.querySelectorAll('.btn-create');
                     btnCreates.forEach(btn => {
@@ -418,8 +448,6 @@ const AppPlazaIndex = () => {
                     });
                 },
                 setPlaza: (plaza) => {
-                    console.log(plaza);
-                    console.log(plaza.tipo_vacante);
                     dom.querySelector('select[name="periodo_id"]').value = plaza.periodo_id;
                     dom.querySelector('select[name="estado"]').value = plaza.estado;
                     dom.querySelector('select[name="tipo_proceso"]').value = plaza.tipo_proceso;
@@ -430,6 +458,25 @@ const AppPlazaIndex = () => {
                     dom.querySelector('input[name="jornada"]').value = plaza.jornada;
                     dom.querySelector('select[name="tipo_vacante"]').value = plaza.tipo_vacante;
                     dom.querySelector('input[name="motivo_vacante"]').value = plaza.motivo_vacante;
+
+                    const loc_id = plaza.colegio_id;
+                    self.colegio_niveles = [];
+                    self.niveles.forEach(nivel => {
+                        if (nivel.localie_loc_id == loc_id) {
+                            self.colegio_niveles.push(nivel);
+                        }
+                    });
+                    const selectNiveles = dom.querySelectorAll('.select-nivel');
+                    selectNiveles.forEach(select => {
+                        let html = `<option value="" hidden selected>Elegir...</option>`;
+                        if (self.colegio_niveles.length > 0) {
+                            self.colegio_niveles.forEach(n => {
+                                html += `<option value="${n.mod_id}">${n.mod_nivel}</option>`;
+                            });
+                        }
+                        select.innerHTML = html;
+                    });
+                    dom.querySelector('select[name="mod_id"]').value = plaza.mod_id;
                 }
             },
             renders: {
