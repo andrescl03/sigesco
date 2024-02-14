@@ -2599,7 +2599,7 @@ class ReporteDocumento extends CI_Controller {
          $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
          $this->pdf->SetFont('Arial', '', 8);
 
-        $this->pdf->Cell(40, 7, 'NUM. DE EXPEDIENTE', '', 0, 'L', 0);
+        $this->pdf->Cell(40, 7, utf8_decode('Nº DE EXPEDIENTE'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
         $this->pdf->SetFont('Arial', 'B', 8);
         $this->pdf->Cell(40, 7, utf8_decode($postulante->numero_expediente), '', 0, 'L', 0);
