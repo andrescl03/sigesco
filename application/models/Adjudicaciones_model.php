@@ -122,9 +122,10 @@ class Adjudicaciones_model extends CI_Model
       
       $postulaciones = $this->getPostulaciones();      
 
-      $sql = "SELECT PL.* 
+      $sql = "SELECT PL.* , moda.*
               FROM plazas AS PL
               LEFT JOIN adjudicaciones AD ON AD.postulacion_id = PL.plz_id
+              INNER JOIN modalidades moda ON moda.mod_id = PL.mod_id
               AND AD.id IS NULL";
       $plazas = $this->db->query($sql)->result_object();
 

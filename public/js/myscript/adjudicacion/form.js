@@ -320,7 +320,7 @@ const AppAdjudicacionAdmin = () => {
                                                         <td>${plaza.plz_id}</td>
                                                         <td>${plaza.codigoPlaza}</td>
                                                         <td>${plaza.ie}</td>
-                                                        <td>${plaza.mod_id}</td>
+                                                        <td>${plaza.mod_abreviatura}</td>
                                                         <td>${plaza.cargo}</td>
                                                         <td>${plaza.especialidad}</td>
                                                         <td>${plaza.jornada}</td>
