@@ -106,6 +106,13 @@ $route['configuracion/periodos/(:num)/remove'] = 'configuracion/eliminarPeriodo/
 $route['postulaciones/(:num)/ficha'] = 'postulaciones/ficha/$1';
 $route['postulaciones/(:num)/fichas'] = 'postulaciones/fichas/$1';
 
+$route['configuracion/plazas'] = 'plazas/index';
+$route['configuracion/plazas/store'] = 'plazas/store';
+$route['configuracion/plazas/pagination'] = 'plazas/pagination';
+$route['configuracion/plazas/(:num)/update'] = 'plazas/update/$1';
+$route['configuracion/plazas/(:num)/remove'] = 'plazas/remove/$1';
+$route['configuracion/plazas/(:num)/edit'] = 'plazas/edit/$1';
+
 $route['default_controller'] = 'index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

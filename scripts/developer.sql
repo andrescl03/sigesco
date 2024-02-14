@@ -410,3 +410,14 @@ ALTER TABLE tipo_archivos ADD COLUMN `edit` INT(11) NULL DEFAULT '0' AFTER `orde
 INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`,`edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (10, 'Reclamo', 0, 10, 1, '2024-02-08 16:42:03', '2024-02-08 16:42:03', NULL);
 
 update `tipo_archivos` set `edit` = 0 where edit is null;
+
+
+/*********************** 12/02/2024 **********************/
+ALTER TABLE plazas ADD COLUMN `tipo_proceso` INT(11) NULL DEFAULT '0';
+ALTER TABLE plazas ADD COLUMN `tipo_convocatoria` INT(11) NULL DEFAULT '0';
+ALTER TABLE plazas ADD COLUMN `periodo_id` INT(11) NULL DEFAULT '0';
+ALTER TABLE plazas ADD COLUMN `nivel_id` INT(11) NULL DEFAULT '0';
+ALTER TABLE plazas ADD COLUMN `codigo_plaza` VARCHAR(255) NULL DEFAULT NULL;
+ALTER TABLE plazas ADD COLUMN `deleted_at` DATETIME NULL DEFAULT NULL;
+
+
