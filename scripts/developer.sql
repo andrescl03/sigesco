@@ -431,3 +431,17 @@ ALTER TABLE postulaciones ADD COLUMN `intentos_adjudicacion` INT(11) NULL DEFAUL
 UPDATE cuadro_pun_exp
 SET cpe_s5 = CONCAT(CAST(cpe_s5 AS CHAR), '.00')
 WHERE cpe_s5 NOT LIKE '%.%';
+
+
+/****************************** 14/02/2024 ***********************/
+CREATE TABLE `adjudicaciones_usuario_firmas` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`usuario_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`parent_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+);
+
+
