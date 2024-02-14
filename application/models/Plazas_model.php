@@ -61,13 +61,12 @@ class Plazas_model extends CI_Model {
               $value = $search['value'];
               if (strlen($value) > 0) {
                   $filterText = " AND (
-                                      pos.nombre LIKE('%{$value}%') 
-                                    OR pos.apellido_paterno LIKE('%{$value}%')
-                                    OR pos.apellido_materno LIKE('%{$value}%')
-                                    OR pos.uid LIKE('%{$value}%')
-                                    OR pos.numero_expediente LIKE('%{$value}%')
-                                    OR pos.numero_documento LIKE('%{$value}%')
-                                    OR cpp.cpe_orden LIKE('%{$value}%')
+                                      plz.ie LIKE('%{$value}%') 
+                                    OR plz.codigo_plaza LIKE('%{$value}%')
+                                    OR plz.especialidad LIKE('%{$value}%')
+                                    OR plz.jornada LIKE('%{$value}%')
+                                    OR plz.nivel LIKE('%{$value}%')
+                                    OR plz.tipo_vacante LIKE('%{$value}%')
                                   ) ";
               }
           }
