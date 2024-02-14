@@ -1471,7 +1471,7 @@ class ReporteDocumento extends CI_Controller {
             else {
                 $protocol = 'http://';
             }
-            $hostname = $protocol .  $this->config->config['base_url'] . '/public';
+            $hostname = $protocol . $_SERVER['SERVER_NAME']  . '/sigesco/public';
 
             $imagen = $fila->usu_firma ? ($hostname. utf8_decode($fila->usu_firma)) : "https://img.freepik.com/foto-gratis/fondo_53876-32170.jpg";
 

@@ -7,8 +7,10 @@
             $periodos = $data['periodos'];
             $procesos = $data['procesos'];
             $colegios = $data['colegios']; 
-    ?>
+            $niveles  = $data['niveles']; 
+?>
     <div class="app-row" id="AppIndexPlaza">
+        <div id="dataNiveles" style="display:none;"><?= json_encode($niveles); ?></div>
         <div class="col-md-12">
             <div class="tile">
                 <div class="tile-body">
@@ -152,22 +154,18 @@
 
                                     <div class="col-md-2 mb-2 mt-1"><b>Institución Educativa:</b></div>
                                     <div class="col-md-10 mb-2">
-                                        <select class="form-select form-select-sm" name="colegio_id" required>
+                                        <select class="form-select form-select-sm select-colegio" name="colegio_id" required>
                                             <option value="" hidden>Elegir...</option>
                                             <?php foreach ($colegios as $colegio) { ?>
-                                                <option value="<?= $colegio->loc_id ?>" <?= $colegio->loc_id == 1 ? "Selected" : "" ?>><?= $colegio->mod_nombre ?></option>
+                                                <option value="<?= $colegio->loc_id ?>"><?= $colegio->mod_nombre ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
 
                                     <div class="col-md-2 mb-2 mt-1"><b>Nivel:</b></div>
                                     <div class="col-md-10 mb-2">
-                                        <select class="form-select form-select-sm" name="nivel">
-                                            <option value="" hidden>Elegir...</option>
-                                            <?php $tipos = [['id' => 1, 'descripcion' => 'INICIAL'],  ['id' => 2, 'descripcion' => 'PRIMARIA'] , ['id' => 3, 'descripcion' => 'SECUNDARIA'] ]; ?>
-                                            <?php foreach ($tipos as $tipo) { ?>
-                                                <option value="<?= $tipo['id'] ?>" <?= $tipo['id'] == 1 ? "Selected" : "" ?>><?= $tipo['descripcion'] ?></option>
-                                            <?php } ?>
+                                        <select class="form-select form-select-sm select-nivel" name="mod_id">
+                                            <option value="" hidden selected>Elegir...</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2 mb-2 mt-1"><b>Especialidad:</b></div>

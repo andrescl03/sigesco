@@ -448,3 +448,4 @@ CREATE TABLE `adjudicaciones_usuario_firmas` (
 
 ALTER TABLE usuarios ADD COLUMN `usu_firma` VARCHAR(255) NULL DEFAULT NULL AFTER `usu_pass`;
 
+ALTER TABLE plazas ADD COLUMN `nivel` VARCHAR(255) NULL DEFAULT NULL;
