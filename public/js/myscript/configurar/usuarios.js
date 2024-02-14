@@ -143,7 +143,6 @@ var btn_cargarFirma = function () {
 		if (file) {
             var formData = new FormData();
             formData.append('archivo', file);
-            formData.append('a', "a");
 
             $.ajax({
                 url: 'CargarFirmaUsuario', // Reemplaza con la URL de tu script de procesamiento
@@ -151,9 +150,12 @@ var btn_cargarFirma = function () {
                 data: formData,
                 processData: false,
                 contentType: false,
+				dataType: 'json',
                 success: function (response) {
                     // Manejar la respuesta del servidor si es necesario
-                    console.log(response);
+
+					console.log(response);
+                    alertify.success('<b style="color:#fff;">' + response.success + '</b>');	
                 },
                 error: function (error) {
                     // Manejar errores si es necesario

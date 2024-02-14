@@ -130,6 +130,13 @@ class Configurar extends CI_Controller {
 						'formato' => $extension,
 						'peso'    => $item['size'],
 					];
+
+					$this->configurar_model->registrarFirmaUsuario($this->session->userdata('sigesco_id'), $filepath);
+
+
+					$mensaje["success"]="Se cargó correctamente la firma.";	
+					$mensaje["estado"]=true;	
+					echo json_encode($mensaje);	
 				}
 			}
 		}
