@@ -32,7 +32,6 @@
     .controls {
         margin: 100px 20px;
     }
-
 </style>
 <?php $edit = isset($data['adjudicacion']) ? true : false ?>
 <div id="AppFormAdjudicacionAdmin" data-id="<?php echo $edit ? $data['adjudicacion']->id : 0 ?>" data-now="<?php echo date('Y-m-d H:i'); ?>">
@@ -254,28 +253,29 @@
                                 <input type="text" class="search search-plazas form-control" placeholder="Buscar">
                             </div>
                         </div>
-                        <div class="col-md-12 table-responsive">
-                            <table class="table table-bordered table-plazas mb-0">
-                                <thead>
-                                    <tr class="cabecera_tabla_2">
-                                        <th>#</th>
-                                        <th>Código Plaza</th>
-                                        <th>Insitución Educativa</th>
-                                        <th>Modalidad</th>
-                                        <th>Nivel</th>
-                                        <th>Especialidad</th>
-                                        <th>Jornada</th>
-                                        <th>Tipo Vacante</th>
-                                        <th>Motivo</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-plazas mb-0">
+                                    <thead>
+                                        <tr class="cabecera_tabla_2">
+                                            <th>#</th>
+                                            <th>Código Plaza</th>
+                                            <th>Insitución Educativa</th>
+                                            <th>Modalidad</th>
+                                            <th>Nivel</th>
+                                            <th>Especialidad</th>
+                                            <th>Jornada</th>
+                                            <th>Tipo Vacante</th>
+                                            <th>Motivo</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-
 
                 </div>
                 <div class="modal-footer">
@@ -342,14 +342,14 @@
                             <div class="dual-listbox-container">
                                 <div class="row">
                                     <div class="col-md-4">
-                                    <h5 class="mb-2">Todos los usuarios</h5>
+                                        <h5 class="mb-2">Todos los usuarios</h5>
                                         <ul id="left-listbox" class="listbox" data-list="left" draggable="true">
                                         </ul>
                                     </div>
                                     <div class="col-md-4 text-center">
                                         <div class="controls">
                                             <button class="btn btn-primary" id="move-right">
-                                                Mover Derecha 
+                                                Mover Derecha
                                                 <i class="fa fa-chevron-right ms-2" aria-hidden="true"></i><i class="fa fa-chevron-right" aria-hidden="true"></i>
                                             </button><br><br>
                                             <button class="btn btn-primary" id="move-left">

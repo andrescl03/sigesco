@@ -1293,7 +1293,9 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'Apellidos y Nombres', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($postulante->nombre), '', 0, 'L', 0);
+
+        $this->pdf->Cell(0, 7, utf8_decode(  $postulante->apellido_paterno . " " . $postulante->apellido_materno . ", " . $postulante->nombre), '', 0, 'L', 0);
+        
         $this->pdf->Ln(4);
 
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
@@ -1373,17 +1375,67 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(90, 7, utf8_decode('o campo de conocimiento'), '', 0, 'L', 0);
 
         
+        $nivel_nombre;
+
+        if($plaza->nivel_id == 1){
+            $nivel_nombre = 'Inicial';
+        }
+        if($plaza->nivel_id == 2){
+            $nivel_nombre = 'Primaria';
+        }
+        if($plaza->nivel_id == 3){
+            $nivel_nombre = 'Secundaria';
+        }
+        if($plaza->nivel_id == 4){
+            $nivel_nombre = '(*)';
+        }
+        if($plaza->nivel_id == 5){
+            $nivel_nombre = 'Avanzado';
+        }
+        if($plaza->nivel_id == 6){
+            $nivel_nombre = 'IOnicial/Primaria';
+        }
+        if($plaza->nivel_id == 7){
+            $nivel_nombre = 'Primaria';
+        }
+        if($plaza->nivel_id == 8){
+            $nivel_nombre = 'Inicial';
+        }
         
+        $modalidad_nombre;
+
+        if($plaza->mod_id == 1){
+            $modalidad_nombre = 'EBR';
+        }
+        if($plaza->mod_id == 2){
+            $modalidad_nombre = 'PRITE';
+        }
+        if($plaza->mod_id == 3){
+            $modalidad_nombre = 'EBE';
+        }
+        if($plaza->mod_id == 4){
+            $modalidad_nombre = 'EBA';
+        }
+        if($plaza->mod_id == 5){
+            $modalidad_nombre = 'ETP';
+        }
+        if($plaza->mod_id == 6){
+            $modalidad_nombre = 'VARIOS';
+        }
+   
+
+
+
         $this->pdf->Ln(5);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'Nivel / Ciclo', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($convocatoria->nivel_nombre), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($nivel_nombre), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'Modalidad / Forma', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($convocatoria->modalidad_nombre), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($modalidad_nombre), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'Jornada Laboral', '', 0, 'L', 0);
@@ -1401,17 +1453,17 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'Distrito', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($postulante->distrito_nombre), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode('SAN JUAN DE LURIGANCHO / AGUSTINO'), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'Provincia', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($postulante->provincia_nombre), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode('LIMA'), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'Departamento', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($postulante->departamento_nombre), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode('LIMA'), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'UGEL', '', 0, 'L', 0);
@@ -1471,17 +1523,21 @@ class ReporteDocumento extends CI_Controller {
             else {
                 $protocol = 'http://';
             }
-            $hostname = $protocol . $_SERVER['SERVER_NAME']  . '/sigesco/public';
+            // $hostname = $protocol . $_SERVER['SERVER_NAME']  . '/sigesco/public';
 
-            $imagen = $fila->usu_firma ? ($hostname. utf8_decode($fila->usu_firma)) : "https://img.freepik.com/foto-gratis/fondo_53876-32170.jpg";
+            //$imagen = $fila->usu_firma ? (utf8_decode($fila->usu_firma)) : "https://img.freepik.com/foto-gratis/fondo_53876-32170.jpg";
+
 
             //            $this->pdf->MultiCell(15, 10, $this->pdf->Image("./Archivo/" . $imagen, $this->pdf->GetX() + 40, $this->pdf->GetY() + 4, 55), 0, "C");
 
             // $this->pdf->Cell(11, 11, $this->pdf->Image(__DIR__."/../../public" . $imagen, $this->pdf->GetX() + 25, $this->pdf->GetY() - 20, 40), 0);
             // https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Firma_Ildefonso_Leal.jpg/800px-Firma_Ildefonso_Leal.jpg
-            
-            $this->pdf->Cell(11, 11, $this->pdf->Image($imagen, $this->pdf->GetX() + 25, $this->pdf->GetY() - 20, 40), 0);
 
+            if ($fila->usu_firma) {
+                $this->pdf->Cell(11, 11, $this->pdf->Image('public/' . utf8_decode($fila->usu_firma), $this->pdf->GetX() + 25, $this->pdf->GetY() - 20, 40), 0);
+            } else {
+                $this->pdf->Cell(11, 11, $this->pdf->Image('https://img.freepik.com/foto-gratis/fondo_53876-32170.jpg', $this->pdf->GetX() + 25, $this->pdf->GetY() - 20, 40), 0);
+            }
 
             $this->pdf->Cell(15, 7, '', '', 0, 'C', 0);
             $this->pdf->Cell(40, 7, utf8_decode($fila->usu_nombre), 'T', 0, 'C', 0);
@@ -2533,6 +2589,56 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Ln(5);
         
 
+        $nivel_nombre;
+
+        if($plaza->nivel_id == 1){
+            $nivel_nombre = 'Inicial';
+        }
+        if($plaza->nivel_id == 2){
+            $nivel_nombre = 'Primaria';
+        }
+        if($plaza->nivel_id == 3){
+            $nivel_nombre = 'Secundaria';
+        }
+        if($plaza->nivel_id == 4){
+            $nivel_nombre = '(*)';
+        }
+        if($plaza->nivel_id == 5){
+            $nivel_nombre = 'Avanzado';
+        }
+        if($plaza->nivel_id == 6){
+            $nivel_nombre = 'IOnicial/Primaria';
+        }
+        if($plaza->nivel_id == 7){
+            $nivel_nombre = 'Primaria';
+        }
+        if($plaza->nivel_id == 8){
+            $nivel_nombre = 'Inicial';
+        }
+        
+        $modalidad_nombre;
+
+        if($plaza->mod_id == 1){
+            $modalidad_nombre = 'EBR';
+        }
+        if($plaza->mod_id == 2){
+            $modalidad_nombre = 'PRITE';
+        }
+        if($plaza->mod_id == 3){
+            $modalidad_nombre = 'EBE';
+        }
+        if($plaza->mod_id == 4){
+            $modalidad_nombre = 'EBA';
+        }
+        if($plaza->mod_id == 5){
+            $modalidad_nombre = 'ETP';
+        }
+        if($plaza->mod_id == 6){
+            $modalidad_nombre = 'VARIOS';
+        }
+   
+
+
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->SetFont('Arial', 'BU', 9);
         $this->pdf->Cell(40, 7, '1.2. DATOS DE LA PLAZA', '', 0, 'L', 0);
@@ -2543,11 +2649,11 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->SetFont('Arial', '', 8);
 
-        $this->pdf->Cell(40, 7, 'NIVEL Y/O MODALIDAD', '', 0, 'L', 0);
+        $this->pdf->Cell(40, 7, 'NIVEL EDUCATIVO', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
         $this->pdf->SetFont('Arial', 'B', 8);
 
-        $this->pdf->Cell(0, 7, utf8_decode("AAA"), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($nivel_nombre), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         
 
@@ -2556,7 +2662,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(40, 7, utf8_decode('INSTITUCION EDUCATIVA'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
         $this->pdf->SetFont('Arial', 'B', 8);
-        $this->pdf->Cell(0, 7, utf8_decode($plaza->codigoPlaza), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($plaza->ie), '', 0, 'L', 0);
         $this->pdf->Ln(4);
 
 
@@ -2565,7 +2671,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(40, 7, utf8_decode('CODIGO DE PLAZA'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
         $this->pdf->SetFont('Arial', 'B', 8);
-        $this->pdf->Cell(0, 7, utf8_decode($plaza->ie), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($plaza->codigoPlaza), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         
        
@@ -2644,7 +2750,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(40, 7, 'DE LA ADJUDICACION', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
         $this->pdf->SetFont('Arial', 'B', 8);
-        $this->pdf->Cell(0, 7, utf8_decode("__________________"), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode("PRUEBA NACIONAL"), '', 0, 'L', 0); //TEMPORAL
         $this->pdf->Ln(10);
 
          $this->pdf->SetFont('Arial', '', 10);
@@ -2696,7 +2802,7 @@ class ReporteDocumento extends CI_Controller {
 //        $this->pdf->setExpediente($datos [0] ['expediente']);
 //        $this->pdf->setCodVerificacion($datos [0] ['detalleID']);
 
-       $fileName = 'Resolucion-' . "AA" . '.pdf'; 
+       $fileName = 'Resolucion-' . $postulante->numero_documento . '.pdf'; 
         $this->pdf->Output($fileName, 'I');
         ob_end_flush();
     }

@@ -321,7 +321,7 @@ const AppAdjudicacionAdmin = () => {
                                                         <td>${plaza.codigoPlaza}</td>
                                                         <td>${plaza.ie}</td>
                                                         <td>${plaza.mod_abreviatura}</td>
-                                                        <td>${plaza.cargo}</td>
+                                                        <td>${plaza.niv_descripcion}</td>
                                                         <td>${plaza.especialidad}</td>
                                                         <td>${plaza.jornada}</td>
                                                         <td>${plaza.tipo_vacante}</td>
@@ -338,6 +338,16 @@ const AppAdjudicacionAdmin = () => {
                                     }
                                     tbody.innerHTML = html;
                                 });
+
+                                $('.table-plazas').DataTable({
+                                    "destroy": true,
+                                    "ordering": false,
+                                    "bAutoWidth": false,
+                                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],   
+                                    "oLanguage": dt_Idioma,
+                                    "paging":true		        	
+                                }); 
+
                             }
 
                             document.querySelector(".search-plazas").addEventListener('input', function () {
