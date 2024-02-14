@@ -70,6 +70,7 @@ $route['web/postulaciones/(:any)'] = 'postulacionesWeb/edit/$1';
 
 $route['reportes/adjudicaciones/(:num)/acta'] = 'reporteDocumento/adjudicacion/$1';
 $route['reportes/adjudicaciones/(:num)/contrato'] = 'reporteDocumento/contrato/$1';
+$route['reportes/adjudicaciones/(:num)/rd'] = 'reporteDocumento/resolucion/$1';
 
 $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/preliminar'] = 'evaluacion/indexPreliminar/$1/$2';
 $route['evaluacion/convocatoria/(:num)/inscripcion/(:num)/final'] = 'evaluacion/indexFinal/$1/$2';

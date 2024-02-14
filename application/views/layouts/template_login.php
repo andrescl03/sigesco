@@ -1,9 +1,4 @@
-<!--
-  Desarrollado por: Ing. Luis Alberto Arrascue Bazan
-  Cel: 959817779
-  correo: abluis15@gmail.com
-  Año 2022
--->
+
 <!DOCTYPE html>
 <html lang="es">
     <head>

@@ -1540,6 +1540,1107 @@ class ReporteDocumento extends CI_Controller {
       
         ob_end_flush();
     }
+
+
+
+    public function rd($id) {
+        $this->load->library('pdf');
+        // $convocatoriaID = $this->input->get('conv');
+        // $plazaID = $this->input->get('plaza');
+
+        $datos = []; // $this->documento->obtener_datos_acta($convocatoriaID, $plazaID);
+
+        $detail = $this->adjudicaciones_model->f_detail($id);
+        $adjudicacion = $detail['adjudicacion'];
+
+        $postulante = $adjudicacion->postulacion;
+        $convocatoria = $adjudicacion->convocatoria;
+        $plaza = $adjudicacion->plaza;
+        $firmas = $adjudicacion->firmas;
+        $tipo_documento = $postulante->tipo_documento == 1 ? 'DNI' : 'C.E';
+        // echo json_encode($firmas); exit;
+        $this->db->reconnect();
+
+        if (empty($adjudicacion)) {
+            redirect("adjudicaciones");
+        }
+        ob_start();
+        $this->pdf = new Pdf ();
+        $this->pdf->header = 0;
+
+        // Agregamos una página
+        $this->pdf->AddPage();
+
+        // Define el alias para el número de página que se imprimirá en el pie
+        $this->pdf->AliasNbPages();
+
+
+
+        $this->pdf->SetFont('Arial', 'B', 13);
+        $modo = 1;
+
+        $this->pdf->Cell(0, 10, utf8_decode('Unidad de Gestión Educativa Local Nº 05 - San Juan de Lurigancho y El Agustino'), 0, 0, 'C');
+        $this->pdf->Ln(6);
+        $this->pdf->SetFont('Arial', 'B', 7);
+        $this->pdf->Cell(0, 10, utf8_decode('"Año del Bicentenario, de la consolidación de nuestra Independencia, y de la conmemoración de las heroicas batallas de Junín y Ayacucho."'), 0, 0, 'C');
+        $this->pdf->Ln(5);
+        $this->pdf->SetFont('Arial', 'B', 15);
+        $this->pdf->Ln(10);
+        $this->pdf->Cell(0, 7, utf8_decode('Resolución Directoral Nº - 2024'), 0,0,'C');
+        $this->pdf->Ln(10);
+
+
+        $this->pdf->SetFont('Arial', '', 9);
+        $this->pdf->Cell(0, 10, 'San Juan de Lurigancho y El Agustino,', '', 0, 'C');
+        $this->pdf->Ln(10);
+
+        $this->pdf->SetFont('Arial', '', 9);
+        $this->pdf->Cell(0, 10, 'Vistos, los documentos adjuntos, y:', '', 0, 'C');
+        $this->pdf->Ln(7);
+        
+        $this->pdf->SetFont('Arial', 'B', 9);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+
+        $this->pdf->Cell(0, 10, 'CONSIDERANDO:', '', 0, 'L');
+        $this->pdf->Ln(7);
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Que, es política del Ministerio de Educación garantizar el buen inicio del año'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('escolar en concordancia con las políticas priorizadas y los compromisos de gestión escolar;'), '', 0, 'L');
+        $this->pdf->Ln(10);
+
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Que, el artículo 76° de la Ley N° 29944, Ley de Reforma Magisterial dispone que'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('las plazas vacantes existentes en las instituciones educativas públicas no cubiertas por nombramiento son atendidas vía concurso'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('público de contratación docente;'), '', 0, 'L');
+        $this->pdf->Ln(7);
+
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Que, el artículo 1° de la Ley Nº 30328, Ley que establece medidas en materia'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('educativa y dicta otras disposiciones, señala que el Contrato de Servicio Docente regulado en la Ley de Reforma Magisterial tiene'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('por finalidad permitir la contratación temporal del profesorado en instituciones educativas públicas de educación básica y técnico'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('productiva; es de plazo determinado y procede en el caso que exista plaza vacante en las instituciones educativas;'), '', 0, 'L');
+        $this->pdf->Ln(7);
+
+
+        
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Que, por Decreto Supremo Nº 020-2023-MINEDU, se aprueba la Norma que regula'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('el procedimiento para las contrataciones de profesores y su renovación en el marco del contrato de servicio docente en educación'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('básica y técnico productiva, a que hace referencia la ley N° 30328, ley que establece medidas en materia educativa y dicta otras'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('disposiciones, con el objetivo de establecer disposiciones en relación al procedimiento, requisitos y condiciones para la'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('contratación de profesores y la renovación de su contrato, en los programas educativos y en las IIEE públicas de Educación Básica'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('y Técnico Productiva.'), '', 0, 'L');
+        $this->pdf->Ln(7);
+
+
+
+                
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Estando a lo actuado por el comité de contratación docente / Jefe de Recursos'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Humanos, con el visto bueno de las dependencias correspondientes de la UGEL, el contrato suscrito entre el docente adjudicado y el'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('titular de la entidad, y;'), '', 0, 'L');
+        $this->pdf->Ln(7);
+
+
+
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('De conformidad con la Ley N° 28044 Ley General de Educación, Ley N° 29944 Ley'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('de Reforma Magisterial y su modificatoria, Ley N° 31953:Ley de Presupuesto del Sector Público para el Año Fiscal 2024, Ley Nº'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('30328, Ley que establece medidas en materia educativa y dicta otras disposiciones, el Decreto Supremo N° 004-2013-ED que'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('aprueba el Reglamento de la Ley de Reforma Magisterial y sus modificatorias, el Decreto Supremo N° 001-2015-MINEDU, que'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('aprueba el Reglamento de Organización y Funciones del Ministerio de Educación, el Manual de Operaciones de la DRELM aprobado'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('por R.M. 215-2015-MINEDU y las facultades previstas en la Ley 27444 Ley del Procedimiento Administrativo General;'), '', 0, 'L');
+        $this->pdf->Ln(10);
+
+
+        
+        $this->pdf->SetFont('Arial', 'B', 9);
+        $this->pdf->Cell(69,
+        10, '', '', 0, 'C', 0);
+
+        $this->pdf->Cell(0, 10, 'SE RESUELVE:', '', 0, 'L');
+        $this->pdf->Ln(7);
+
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('ARTÍCULO 1º.- APROBAR EL CONTRATO, por servicios personales según el '), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('anexo que forma parte de la presente, suscrito por la Unidad Ejecutora y el personal docente que a continuación se indica:'), '', 0, 'L');
+        $this->pdf->Ln(5);
+
+
+        // Agregamos una página
+        $this->pdf->AddPage();
+
+
+        $this->pdf->SetFont('Arial', 'B', 9);
+        $this->pdf->Cell(20, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, '1.1.        DATOS PERSONALES:', '', 0, 'L');
+
+        $this->pdf->Ln(7);
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'APELLIDOS Y NOMBRES', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->nombre . " " . $postulante->apellido_paterno . " " . $postulante->apellido_materno), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'DOC. DE IDENTIDAD', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+        
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'SEXO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'FECHA DE NACIMIENTO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'REGIMEN PENSIONARIO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+        
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'CUSSPP', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'FECHA DE AFILIACION', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+                
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'TÍTULO Y/O GRADO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'ESPECIALIDAD', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(10);
+
+
+
+        $this->pdf->SetFont('Arial', 'B', 9);
+        $this->pdf->Cell(20, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, '1.2.        DATOS DE LA PLAZA:', '', 0, 'L');
+
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'NIVEL EDUCATIVO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'INSTITUCION EDUCATIVA', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($plaza->ie), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'CÓDIGO DE PLAZA', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($plaza->codigoPlaza), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'CARGO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($plaza->cargo), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'MOTIVO DE LA VACANTE', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($plaza->motivo_vacante), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+
+        $this->pdf->Ln(10);
+
+
+
+        $this->pdf->SetFont('Arial', 'B', 9);
+        $this->pdf->Cell(20, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, '1.3.        DATOS DEL CONTRATO:', '', 0, 'L');
+
+        $this->pdf->Ln(6);
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'Nº DE EXPEDIENTE', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'REFERENCIA', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'VIGENCIA DEL CONTRATO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'JORNADA LABORAL ', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+        
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'DE LA ADJUDICACION  ', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+
+        $this->pdf->Ln(7);
+
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('ARTICULO 2°.- ESTABLECER, conforme al Anexo 1 del Decreto Supremo N° 020-'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('2023-MINEDU, que contiene el documento “Contrato de Servicio Docente”, es causal de resolución del contrato cualquiera de los motivos'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('señalados en la Cláusula Sexta.'), '', 0, 'L');
+      
+        $this->pdf->Ln(5);
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('ARTICULO 3°.- AFÉCTESE a la cadena presupuestal correspondiente de acuerdo al Texto'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Único Ordenado del Clasificador de Gastos, tal como lo dispone La Ley N° 31953 que aprueba el Presupuesto del Sector Público para el Año Fiscal '), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('2024.'), '', 0, 'L');
+      
+        $this->pdf->Ln(5);
+
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('ARTÍCULO 4°.- NOTIFICAR, la presente resolución a la parte interesada e instancias'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('administrativas pertinentes para su conocimiento y acciones de Ley.'), '', 0, 'L');
+        $this->pdf->Ln(5);
+
+
+        
+     
+        $y = $this->pdf->GetY();
+        $x = $this->pdf->GetX();
+        $this->pdf->SetXY($x, $y + 1.5);
+        $this->pdf->MultiCell(0, 4, utf8_decode($plaza->motivo_vacante), 0, 'L', 0);
+        $y = $this->pdf->GetY();
+        $x = $this->pdf->GetX();
+        $this->pdf->SetXY($x, $y - 1.5);
+       
+           $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 7, utf8_decode('Área Curricular / Especialidad'), '', 0, 'L', 0);
+        $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
+        $y = $this->pdf->GetY();
+        $x = $this->pdf->GetX();
+        $this->pdf->SetXY($x, $y + 1.5);
+        $this->pdf->MultiCell(0, 4, utf8_decode($plaza->especialidad), 0, 'L', 0);
+        $y = $this->pdf->GetY();
+        $x = $this->pdf->GetX();
+        $this->pdf->SetXY($x, $y - 1.5);
+
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+
+        $this->pdf->Cell(90, 7, utf8_decode('o campo de conocimiento'), '', 0, 'L', 0);
+
+        
+        
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 7, 'Nivel / Ciclo', '', 0, 'L', 0);
+        $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($convocatoria->nivel_nombre), '', 0, 'L', 0);
+        $this->pdf->Ln(4);
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 7, 'Modalidad / Forma', '', 0, 'L', 0);
+        $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($convocatoria->modalidad_nombre), '', 0, 'L', 0);
+        $this->pdf->Ln(4);
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 7, 'Jornada Laboral', '', 0, 'L', 0);
+        $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($plaza->jornada), '', 0, 'L', 0);
+        $this->pdf->Ln(4);
+      
+    
+  
+
+
+        $this->pdf->SetFont('Arial', 'B', 6);
+
+        // $xml = simplexml_load_string($datos [0] ['firmas'], 'SimpleXMLElement', LIBXML_NOCDATA);
+        // $lista_firmas = json_decode(json_encode((array) $xml), TRUE);
+        // $lista_firmas = $lista_firmas['miembro'];
+
+        // $totalfirmas = count($lista_firmas);
+        $contador = 0;
+        $lista_firmas = $firmas;
+        // var_dump($firmas); exit;
+        foreach ($lista_firmas as $fila) {
+            $y = $this->pdf->GetY();
+            $x = $this->pdf->GetX();
+
+            if ($x + 40 > 180) {
+                $this->pdf->Ln(30);
+            }
+
+            if ($contador != 0 && $contador % 3 == 0) {
+                if ($totalfirmas - $contador == 2) {
+                    $this->pdf->Cell(30, 7, '', '', 0, 'C', 0);
+                }
+                if ($totalfirmas - $contador == 1) {
+                    $this->pdf->Cell(55, 7, '', '', 0, 'C', 0);
+                }
+            }
+
+
+
+            $xpx = $this->pdf->GetX();
+        
+            if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+                isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+                $protocol = 'https://';
+            }
+            else {
+                $protocol = 'http://';
+            }
+            $hostname = $protocol .  $_SERVER['SERVER_NAME'] . '/public';
+
+            $imagen = $fila->usu_firma ? ($hostname. utf8_decode($fila->usu_firma)) : "https://img.freepik.com/foto-gratis/fondo_53876-32170.jpg";
+
+       
+            
+            $this->pdf->Cell(11, 11, $this->pdf->Image($imagen, $this->pdf->GetX() + 25, $this->pdf->GetY() - 20, 40), 0);
+
+
+            $this->pdf->Cell(15, 7, '', '', 0, 'C', 0);
+            $this->pdf->Cell(40, 7, utf8_decode($fila->usu_nombre), 'T', 0, 'C', 0);
+            $yp = $this->pdf->GetY();
+            $xp = $this->pdf->GetX();
+            $this->pdf->SetXY($xpx + 20, $yp + 6);
+            $this->pdf->MultiCell(50, 2, utf8_decode($fila->usu_apellidos), 0, 'C');
+
+            $this->pdf->SetXY($xp, $yp);
+            ++$contador;
+        }
+
+
+
+
+      
+        /* FOOTER */
+        $this->pdf->SetY(- 38);
+        /*
+          $this->pdf->Image('' . $qr . '', 180, 5, 23, 23);
+         */
+        $this->pdf->Line(80, 260, 130, 260);
+        $this->pdf->Rect(140, 240, 20, 25);
+        $this->pdf->Cell(85, 7, '', '', 0, 'C', 0);
+
+
+       /*
+         $this->pdf->SetFont('Arial', 'B', 6);
+        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['nombres']),'', 0, 'LU', 0);
+        $this->pdf->Ln(4);*/
+
+       
+        $this->pdf->Cell(35, 7, 'Firma del Docente', '', 0, 'LU', 0);
+        $this->pdf->Ln(4);
+        $this->pdf->Cell(80, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(5, 7, '', '', 0, 'LU', 0);
+        $this->pdf->Cell(0, 7, $tipo_documento . ' ' . $postulante->numero_documento, '', 0, 'LU', 0);
+
+
+        $this->pdf->SetFont('Arial', 'B', 6);
+        $this->pdf->Cell(35, 7, '', '', 0, 'LU', 0);
+        $this->pdf->Ln(4);
+
+         $this->pdf->SetFont('Arial', 'B', 6);
+         $this->pdf->Ln(2);
+
+        
+        // $this->pdf->setExpediente($datos [0] ['expediente']);
+        // $this->pdf->setCodVerificacion($datos [0] ['detalleID']);
+        // $this->pdf->setClave($datos [0] ['claveExpediente']);
+
+        $fileName = 'RD-' . $postulante->uid . '.pdf'; 
+        $this->pdf->Output($fileName,'I');
+        
+        
+      
+        ob_end_flush();
+    }
+
+
+
+
+
+
+
+    /*public function rd($id) {
+        $this->load->library('pdf');
+        // $convocatoriaID = $this->input->get('conv');
+        // $plazaID = $this->input->get('plaza');
+
+        $datos = []; // $this->documento->obtener_datos_acta($convocatoriaID, $plazaID);
+
+        $detail = $this->adjudicaciones_model->f_detail($id);
+        $adjudicacion = $detail['adjudicacion'];
+
+        $postulante = $adjudicacion->postulacion;
+        $convocatoria = $adjudicacion->convocatoria;
+        $plaza = $adjudicacion->plaza;
+        $firmas = $adjudicacion->firmas;
+        $tipo_documento = $postulante->tipo_documento == 1 ? 'DNI' : 'C.E';
+        // echo json_encode($firmas); exit;
+        $this->db->reconnect();
+
+        if (empty($adjudicacion)) {
+            redirect("adjudicaciones");
+        }
+        ob_start();
+        $this->pdf = new Pdf ();
+        $this->pdf->header = 0;
+
+        // Agregamos una página
+        $this->pdf->AddPage();
+
+        // Define el alias para el número de página que se imprimirá en el pie
+        $this->pdf->AliasNbPages();
+
+
+
+        $this->pdf->SetFont('Arial', 'B', 13);
+        $modo = 1;
+
+        $this->pdf->Cell(0, 10, utf8_decode('Unidad de Gestión Educativa Local Nº 05 - San Juan de Lurigancho y El Agustino'), 0, 0, 'C');
+        $this->pdf->Ln(6);
+        $this->pdf->SetFont('Arial', 'B', 7);
+        $this->pdf->Cell(0, 10, utf8_decode('"Año del Bicentenario, de la consolidación de nuestra Independencia, y de la conmemoración de las heroicas batallas de Junín y Ayacucho."'), 0, 0, 'C');
+        $this->pdf->Ln(5);
+        $this->pdf->SetFont('Arial', 'B', 15);
+        $this->pdf->Ln(10);
+        $this->pdf->Cell(0, 7, utf8_decode('Resolución Directoral Nº - 2024'), 0,0,'C');
+        $this->pdf->Ln(10);
+
+
+        $this->pdf->SetFont('Arial', '', 9);
+        $this->pdf->Cell(0, 10, 'San Juan de Lurigancho y El Agustino,', '', 0, 'C');
+        $this->pdf->Ln(10);
+
+        $this->pdf->SetFont('Arial', '', 9);
+        $this->pdf->Cell(0, 10, 'Vistos, los documentos adjuntos, y:', '', 0, 'C');
+        $this->pdf->Ln(7);
+        
+        $this->pdf->SetFont('Arial', 'B', 9);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+
+        $this->pdf->Cell(0, 10, 'CONSIDERANDO:', '', 0, 'L');
+        $this->pdf->Ln(7);
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Que, es política del Ministerio de Educación garantizar el buen inicio del año'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('escolar en concordancia con las políticas priorizadas y los compromisos de gestión escolar;'), '', 0, 'L');
+        $this->pdf->Ln(10);
+
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Que, el artículo 76° de la Ley N° 29944, Ley de Reforma Magisterial dispone que'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('las plazas vacantes existentes en las instituciones educativas públicas no cubiertas por nombramiento son atendidas vía concurso'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('público de contratación docente;'), '', 0, 'L');
+        $this->pdf->Ln(7);
+
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Que, el artículo 1° de la Ley Nº 30328, Ley que establece medidas en materia'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('educativa y dicta otras disposiciones, señala que el Contrato de Servicio Docente regulado en la Ley de Reforma Magisterial tiene'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('por finalidad permitir la contratación temporal del profesorado en instituciones educativas públicas de educación básica y técnico'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('productiva; es de plazo determinado y procede en el caso que exista plaza vacante en las instituciones educativas;'), '', 0, 'L');
+        $this->pdf->Ln(7);
+
+
+        
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Que, por Decreto Supremo Nº 020-2023-MINEDU, se aprueba la Norma que regula'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('el procedimiento para las contrataciones de profesores y su renovación en el marco del contrato de servicio docente en educación'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('básica y técnico productiva, a que hace referencia la ley N° 30328, ley que establece medidas en materia educativa y dicta otras'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('disposiciones, con el objetivo de establecer disposiciones en relación al procedimiento, requisitos y condiciones para la'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('contratación de profesores y la renovación de su contrato, en los programas educativos y en las IIEE públicas de Educación Básica'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('y Técnico Productiva.'), '', 0, 'L');
+        $this->pdf->Ln(7);
+
+
+
+                
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Estando a lo actuado por el comité de contratación docente / Jefe de Recursos'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Humanos, con el visto bueno de las dependencias correspondientes de la UGEL, el contrato suscrito entre el docente adjudicado y el'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('titular de la entidad, y;'), '', 0, 'L');
+        $this->pdf->Ln(7);
+
+
+
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('De conformidad con la Ley N° 28044 Ley General de Educación, Ley N° 29944 Ley'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('de Reforma Magisterial y su modificatoria, Ley N° 31953:Ley de Presupuesto del Sector Público para el Año Fiscal 2024, Ley Nº'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('30328, Ley que establece medidas en materia educativa y dicta otras disposiciones, el Decreto Supremo N° 004-2013-ED que'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('aprueba el Reglamento de la Ley de Reforma Magisterial y sus modificatorias, el Decreto Supremo N° 001-2015-MINEDU, que'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('aprueba el Reglamento de Organización y Funciones del Ministerio de Educación, el Manual de Operaciones de la DRELM aprobado'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('por R.M. 215-2015-MINEDU y las facultades previstas en la Ley 27444 Ley del Procedimiento Administrativo General;'), '', 0, 'L');
+        $this->pdf->Ln(10);
+
+
+        
+        $this->pdf->SetFont('Arial', 'B', 9);
+        $this->pdf->Cell(69,
+        10, '', '', 0, 'C', 0);
+
+        $this->pdf->Cell(0, 10, 'SE RESUELVE:', '', 0, 'L');
+        $this->pdf->Ln(7);
+
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('ARTÍCULO 1º.- APROBAR EL CONTRATO, por servicios personales según el '), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('anexo que forma parte de la presente, suscrito por la Unidad Ejecutora y el personal docente que a continuación se indica:'), '', 0, 'L');
+        $this->pdf->Ln(5);
+
+
+        // Agregamos una página
+        $this->pdf->AddPage();
+
+
+        $this->pdf->SetFont('Arial', 'B', 9);
+        $this->pdf->Cell(20, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, '1.1.        DATOS PERSONALES:', '', 0, 'L');
+
+        $this->pdf->Ln(7);
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'APELLIDOS Y NOMBRES', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->nombre . " " . $postulante->apellido_paterno . " " . $postulante->apellido_materno), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'DOC. DE IDENTIDAD', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+        
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'SEXO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'FECHA DE NACIMIENTO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'REGIMEN PENSIONARIO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+        
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'CUSSPP', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'FECHA DE AFILIACION', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+                
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'TÍTULO Y/O GRADO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'ESPECIALIDAD', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(10);
+
+
+
+        $this->pdf->SetFont('Arial', 'B', 9);
+        $this->pdf->Cell(20, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, '1.2.        DATOS DE LA PLAZA:', '', 0, 'L');
+
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'NIVEL EDUCATIVO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'INSTITUCION EDUCATIVA', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($plaza->ie), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'CÓDIGO DE PLAZA', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($plaza->codigoPlaza), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'CARGO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($plaza->cargo), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'MOTIVO DE LA VACANTE', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($plaza->motivo_vacante), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+
+        $this->pdf->Ln(10);
+
+
+
+        $this->pdf->SetFont('Arial', 'B', 9);
+        $this->pdf->Cell(20, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, '1.3.        DATOS DEL CONTRATO:', '', 0, 'L');
+
+        $this->pdf->Ln(6);
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'Nº DE EXPEDIENTE', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'REFERENCIA', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'VIGENCIA DEL CONTRATO', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'JORNADA LABORAL ', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+        $this->pdf->Ln(6);
+
+        
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(32, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 10, 'DE LA ADJUDICACION  ', '', 0, 'L');
+        $this->pdf->Cell(10, 10, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
+
+        $this->pdf->Ln(7);
+
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('ARTICULO 2°.- ESTABLECER, conforme al Anexo 1 del Decreto Supremo N° 020-'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('2023-MINEDU, que contiene el documento “Contrato de Servicio Docente”, es causal de resolución del contrato cualquiera de los motivos'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('señalados en la Cláusula Sexta.'), '', 0, 'L');
+      
+        $this->pdf->Ln(5);
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('ARTICULO 3°.- AFÉCTESE a la cadena presupuestal correspondiente de acuerdo al Texto'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('Único Ordenado del Clasificador de Gastos, tal como lo dispone La Ley N° 31953 que aprueba el Presupuesto del Sector Público para el Año Fiscal '), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('2024.'), '', 0, 'L');
+      
+        $this->pdf->Ln(5);
+
+
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(69, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('ARTÍCULO 4°.- NOTIFICAR, la presente resolución a la parte interesada e instancias'), '', 0, 'L');
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(10, 10, '', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 10, utf8_decode('administrativas pertinentes para su conocimiento y acciones de Ley.'), '', 0, 'L');
+        $this->pdf->Ln(5);
+
+
+        
+     
+        $y = $this->pdf->GetY();
+        $x = $this->pdf->GetX();
+        $this->pdf->SetXY($x, $y + 1.5);
+        $this->pdf->MultiCell(0, 4, utf8_decode($plaza->motivo_vacante), 0, 'L', 0);
+        $y = $this->pdf->GetY();
+        $x = $this->pdf->GetX();
+        $this->pdf->SetXY($x, $y - 1.5);
+       
+           $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 7, utf8_decode('Área Curricular / Especialidad'), '', 0, 'L', 0);
+        $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
+        $y = $this->pdf->GetY();
+        $x = $this->pdf->GetX();
+        $this->pdf->SetXY($x, $y + 1.5);
+        $this->pdf->MultiCell(0, 4, utf8_decode($plaza->especialidad), 0, 'L', 0);
+        $y = $this->pdf->GetY();
+        $x = $this->pdf->GetX();
+        $this->pdf->SetXY($x, $y - 1.5);
+
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+
+        $this->pdf->Cell(90, 7, utf8_decode('o campo de conocimiento'), '', 0, 'L', 0);
+
+        
+        
+        $this->pdf->Ln(5);
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 7, 'Nivel / Ciclo', '', 0, 'L', 0);
+        $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($convocatoria->nivel_nombre), '', 0, 'L', 0);
+        $this->pdf->Ln(4);
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 7, 'Modalidad / Forma', '', 0, 'L', 0);
+        $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($convocatoria->modalidad_nombre), '', 0, 'L', 0);
+        $this->pdf->Ln(4);
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 7, 'Jornada Laboral', '', 0, 'L', 0);
+        $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($plaza->jornada), '', 0, 'L', 0);
+        $this->pdf->Ln(4);
+      
+    
+  
+
+
+        $this->pdf->SetFont('Arial', 'B', 6);
+
+        // $xml = simplexml_load_string($datos [0] ['firmas'], 'SimpleXMLElement', LIBXML_NOCDATA);
+        // $lista_firmas = json_decode(json_encode((array) $xml), TRUE);
+        // $lista_firmas = $lista_firmas['miembro'];
+
+        // $totalfirmas = count($lista_firmas);
+        $contador = 0;
+        $lista_firmas = $firmas;
+        // var_dump($firmas); exit;
+        foreach ($lista_firmas as $fila) {
+            $y = $this->pdf->GetY();
+            $x = $this->pdf->GetX();
+
+            if ($x + 40 > 180) {
+                $this->pdf->Ln(30);
+            }
+
+            if ($contador != 0 && $contador % 3 == 0) {
+                if ($totalfirmas - $contador == 2) {
+                    $this->pdf->Cell(30, 7, '', '', 0, 'C', 0);
+                }
+                if ($totalfirmas - $contador == 1) {
+                    $this->pdf->Cell(55, 7, '', '', 0, 'C', 0);
+                }
+            }
+
+
+
+            $xpx = $this->pdf->GetX();
+        
+            if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+                isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+                $protocol = 'https://';
+            }
+            else {
+                $protocol = 'http://';
+            }
+            $hostname = $protocol .  $_SERVER['SERVER_NAME'] . '/public';
+
+            $imagen = $fila->usu_firma ? ($hostname. utf8_decode($fila->usu_firma)) : "https://img.freepik.com/foto-gratis/fondo_53876-32170.jpg";
+
+       
+            
+            $this->pdf->Cell(11, 11, $this->pdf->Image($imagen, $this->pdf->GetX() + 25, $this->pdf->GetY() - 20, 40), 0);
+
+
+            $this->pdf->Cell(15, 7, '', '', 0, 'C', 0);
+            $this->pdf->Cell(40, 7, utf8_decode($fila->usu_nombre), 'T', 0, 'C', 0);
+            $yp = $this->pdf->GetY();
+            $xp = $this->pdf->GetX();
+            $this->pdf->SetXY($xpx + 20, $yp + 6);
+            $this->pdf->MultiCell(50, 2, utf8_decode($fila->usu_apellidos), 0, 'C');
+
+            $this->pdf->SetXY($xp, $yp);
+            ++$contador;
+        }
+
+
+
+
+      
+        /* FOOTER */
+      //  $this->pdf->SetY(- 38);
+        /*
+          $this->pdf->Image('' . $qr . '', 180, 5, 23, 23);
+         */
+       /* $this->pdf->Line(80, 260, 130, 260);
+        $this->pdf->Rect(140, 240, 20, 25);
+        $this->pdf->Cell(85, 7, '', '', 0, 'C', 0);
+*/
+
+       /*
+         $this->pdf->SetFont('Arial', 'B', 6);
+        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['nombres']),'', 0, 'LU', 0);
+        $this->pdf->Ln(4);*/
+
+      /* 
+        $this->pdf->Cell(35, 7, 'Firma del Docente', '', 0, 'LU', 0);
+        $this->pdf->Ln(4);
+        $this->pdf->Cell(80, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(5, 7, '', '', 0, 'LU', 0);
+        $this->pdf->Cell(0, 7, $tipo_documento . ' ' . $postulante->numero_documento, '', 0, 'LU', 0);
+
+
+        $this->pdf->SetFont('Arial', 'B', 6);
+        $this->pdf->Cell(35, 7, '', '', 0, 'LU', 0);
+        $this->pdf->Ln(4);
+
+         $this->pdf->SetFont('Arial', 'B', 6);
+         $this->pdf->Ln(2);
+
+        
+        // $this->pdf->setExpediente($datos [0] ['expediente']);
+        // $this->pdf->setCodVerificacion($datos [0] ['detalleID']);
+        // $this->pdf->setClave($datos [0] ['claveExpediente']);
+
+        $fileName = 'RD-' . $postulante->uid . '.pdf'; 
+        $this->pdf->Output($fileName,'I');
+        
+        
+      
+        ob_end_flush();
+    }*/
+
     /** FINAL - GENERACIÓN DE DOCUMENTO DE ADJUDICACIÓN (ACTA DE ADJUDICACIÓN) * */
 
     /** INICIO - GENERACIÓN DEL DOCUMENTO DE RESERVA (ACTA DE PETICIÓN Y CONFORMIDAD) * */
@@ -2316,21 +3417,31 @@ class ReporteDocumento extends CI_Controller {
     
     
     
-    public function resolucion() {
+    public function resolucion($id) {
 
-        $this->load->library('Pdf_papeleta');
+        $this->load->library('pdf');
 
-        $convocatoriaID = $this->input->get('conv');
-        $plazaID = $this->input->get('plaza');
-        $datos = $this->documento->obtener_datos_acta($convocatoriaID, $plazaID);
+        $datos = []; // $this->documento->obtener_datos_acta($convocatoriaID, $plazaID);
+
+        $detail = $this->adjudicaciones_model->f_detail($id);
+        $adjudicacion = $detail['adjudicacion'];
+
+        $postulante = $adjudicacion->postulacion;
+        $convocatoria = $adjudicacion->convocatoria;
+        $plaza = $adjudicacion->plaza;
+        $firmas = $adjudicacion->firmas;
+        $tipo_documento = $postulante->tipo_documento == 1 ? 'DNI' : 'C.E';
+
         $this->db->reconnect();
 
-        if (empty($datos)) {
-            redirect("adjudicacion/adjudicar/" . $convocatoriaID, "refresh");
+        if (empty($adjudicacion)) {
+            redirect("adjudicaciones");
         }
         ob_start();
 
-        $this->pdf = new Pdf_papeleta ();
+        $this->pdf = new Pdf ();
+
+        $this->pdf->header = 0;
 
         // Agregamos una página
         $this->pdf->AddPage();
@@ -2338,53 +3449,38 @@ class ReporteDocumento extends CI_Controller {
         // Define el alias para el número de página que se imprimirá en el pie
         $this->pdf->AliasNbPages();
 
-        /*
-         * Se define el titulo, márgenes izquierdo, derecho y
-         * el color de relleno predeterminado
-         */
-
-
-//        $this->pdf->SetFont('Arial', 'B', 13);
-//        $this->pdf->Ln(6);
-//        $this->pdf->Ln(10);
-//        $this->pdf->Cell(0, 10, utf8_decode('Resolución Directoral N° ______________ - 2018 '), 0, 0, 'C');
-//        $this->pdf->SetFont('Arial', '', 10);
-//        $this->pdf->Ln(20);
-        
-//        $this->pdf->SetMargins ( 20, 17, 20 );
-        
             $this->pdf->SetFont ( 'Times', 'B', 9 );
                         
                     $this->pdf->setFillColor ( 230, 230, 230 );
             $this->pdf->SetFont ( 'Times', 'BI', 13 );
             
             $this->pdf->Ln ( 2 );
-            $this->pdf->Cell ( 200, 7, utf8_decode ( 'Unidad de Gestión Educativa Local Nº 05 - SJL' ), 0, 0, 'C', 0 );
+            $this->pdf->Cell ( 200, 7, utf8_decode ( 'Unidad de Gestión Educativa Local Nº 05 - San Juan de Lurigancho y El Agustino' ), 0, 0, 'C', 0 );
             $this->pdf->Ln ( 6 );
-            $this->pdf->SetFont ( 'Arial', 'I', 9 );
-            $this->pdf->Cell ( 200, 5, utf8_decode ( '"Decenio de la Igualdad de Oportunidades para mujeres y hombres"' ), 0, 0, 'C', 0 );
+            $this->pdf->SetFont ( 'Arial', 'IB', 9 );
+            $this->pdf->Cell ( 200, 5, utf8_decode ( '"Año del Bicentenario, de la consolidación de nuestra Independencia,' ), 0, 0, 'C', 0 );
                         $this->pdf->Ln ( 5 );
-            $this->pdf->SetFont ( 'Arial', 'I', 9 );
-                        $this->pdf->Cell ( 200, 5, utf8_decode ( '"Año del Diálogo y Reconciliación Nacional"' ), 0, 0, 'C', 0 );
-            $this->pdf->Ln ( 28 );
+            $this->pdf->SetFont ( 'Arial', 'IB', 9 );
+                        $this->pdf->Cell ( 200, 5, utf8_decode ( 'y de la conmemoración de las heroicas batallas de Junín y Ayacucho."' ), 0, 0, 'C', 0 );
+            $this->pdf->Ln ( 35 );
                         
-            $this->pdf->Image ( 'images/escudo.jpg', 97, 29, 16 );
+            $this->pdf->Image ( 'public/images/escudo.jpg', 97, 30, 25 );
 
-            $this->pdf->SetFont ( 'Times', 'BI', 21  );
+            $this->pdf->SetFont ( 'Times', 'BI', 17  );
             
-            $this->pdf->Cell ( 170, 6, utf8_decode ( 'Resolución Directoral Nº _______-2018' ), 0, 0, 'C', 0 );
+            $this->pdf->Cell ( 170, 6, utf8_decode ( 'Resolución Directoral Nº _______-2024' ), 0, 0, 'C', 0 );
             $this->pdf->Ln ( 9 );
         
                         $fontSize = 10;
             $cellHeight = 4.4;
             $this->pdf->SetFont ( 'Arial', '', $fontSize );
 //          $this->pdf->Cell(10, $cellHeight, utf8_decode( '' ), 0, 0, 'J', 0);
-            $this->pdf->Cell(102, 5, utf8_decode( 'SJL,' ), 0, 0, 'C', 0);
-            $this->pdf->Ln ( 5 );
+            $this->pdf->Cell(144, 5, utf8_decode( 'San Juan de Lurigancho y El Agustino,' ), 0, 0, 'C', 0);
+            $this->pdf->Ln ( 10 );
                         $this->pdf->SetFont ( 'Arial', '', $fontSize );
 //          $this->pdf->Cell(10, $cellHeight, utf8_decode( '' ), 0, 0, 'J', 0);
-            $this->pdf->Cell(144, 5, utf8_decode( 'Vistos los documentos adjuntos, y;' ), 0, 0, 'C', 0);
-            $this->pdf->Ln ( 5 );
+            $this->pdf->Cell(144, 5, utf8_decode( 'Vistos, los documentos adjuntos, y;' ), 0, 0, 'C', 0);
+            $this->pdf->Ln ( 10 );
                                 $this->pdf->SetFont ( 'Arial', 'B', $fontSize );
             $mensaje = 'CONSIDERANDO:';
 //          $this->pdf->Cell(10, $cellHeight, utf8_decode( '' ), 0, 0, 'J', 0);
@@ -2394,46 +3490,59 @@ class ReporteDocumento extends CI_Controller {
                         
         $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('                 Que es política del Ministerio de Educación garantizar el buen inicio del año escolar en concordancia de las políticas priorizadas y los compromisos de gestión escolar conforme a las disposiciones que se señala en la Resolución Ministerial N° 0657-2017-MINEDU, que aprueba "Orientaciones para el Desarrollo del Año Escolar 2018 en las Instituciones Educativas y el Programas de la Educación Básica";'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('                 Que, es política del Ministerio de Educación garantizar el buen inicio del año escolar en concordancia con las políticas priorizadas y los compromisos de gestión escolar;'), 0);
         $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->Ln(4);
         
         $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('                 Que, el artículo 76 de la Ley N° 29944, Ley de Reforma Magisterial dispone que las plazas vacantes existentes en las instituciones educativas públicas no cubiertas por nombramiento son atendidas vía concurso publico de contratación docente;".'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('                 Que, el artículo 76° de la Ley N° 29944, Ley de Reforma Magisterial dispone que las plazas vacantes existentes en las instituciones educativas públicas no cubiertas por nombramiento son atendidas vía concurso público de contratación docente'), 0);
         $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->Ln(4);
         
         $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('                 Que el artículo 1 de la Ley N| 30328, Ley que establece medidas en materia educativa y dicta otras disposiciones, señala que le Contrato de Servicio Docente regulado en la Ley de Reforma Magisterial tiene por finalidad permitir la contratación temporal del profesorado en las instituciones públicas de educación básica y técnico productiva; es de plazo determinado y procede en el caso que exista plaza vacante en las instituciones educativas.".'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('                 Que, el artículo 1° de la Ley Nº 30328, Ley que establece medidas en materia educativa y dicta otras disposiciones, señala que el Contrato de Servicio Docente regulado en la Ley de Reforma Magisterial tiene por finalidad permitir la contratación temporal del profesorado en instituciones educativas públicas de educación básica y técnico productiva; es de plazo determinado y procede en el caso que exista plaza vacante en las instituciones educativas;'), 0);
         $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->Ln(4);
         
    $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('                 Que por Decreto Supremo N° 001-2017-MINEDU, se aprueba la Norma que regula el procedimiento, requisitos y condiciones para las contrataciones en l marco del Contrato del Servicio Docente que hace referencia la Ley N° 30328 Ley que establece medidas en materia educativa y dicta otras disposiciones, con la finalidad de establecer  disposiciones para la contratación del servicio docente en los programas educativos y en las instituciones educativas públicas en Educación Básica y Técnico Productiva; y ".'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('                 Que, por Decreto Supremo Nº 020-2023-MINEDU, se aprueba la Norma que regula el procedimiento para las contrataciones de profesores y su renovación en el marco del contrato de servicio docente en educación básica y técnico productiva, a que hace referencia la ley N° 30328, ley que establece medidas en materia educativa y dicta otras disposiciones, con el objetivo de establecer disposiciones en relación al procedimiento, requisitos y condiciones para la contratación de profesores y la renovación de su contrato, en los programas educativos y en las IIEE públicas de Educación Básica y Técnico Productiva'), 0);
         $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->Ln(4);
         
         $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('                 De conformidad con la Ley N° 28044,  Ley General de Educación , Ley N°  28044 Ley de la Reforma Magisterial y su modificatorio, Ley N° 30693, Ley de Presupuesto del Sector público para el año Fiscal 2018, Ley N° 30328, Ley que establece medidas en materia educativa y dicta otras disposiciones, el Decreto Supremo N° 007-2013-ed, Reglamento de la Ley de Reforma Magisterial y sus modificatorias, el Decreto Supremo N°001-2015-MINEDU, Reglamento de Organización y Funciones del Ministerio de Educación;".'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('                 Estando a lo actuado por el comité de contratación docente / Jefe de Recursos Humanos, con el visto bueno de las dependencias correspondientes de la UGEL, el contrato suscrito entre el docente adjudicado y el titular de la entidad, y;'), 0);
         $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->Ln(4);
+
+        $this->pdf->SetFont('Arial', '', 10);
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('                 De conformidad con la Ley N° 28044 Ley General de Educación, Ley N° 29944 Ley de Reforma Magisterial y su modificatoria, Ley N° 31953:Ley de Presupuesto del Sector Público para el Año Fiscal 2024, Ley Nº 30328, Ley que establece medidas en materia educativa y dicta otras disposiciones, el Decreto Supremo N° 004-2013-ED que aprueba el Reglamento de la Ley de Reforma Magisterial y sus modificatorias, el Decreto Supremo N° 001-2015-MINEDU, que aprueba el Reglamento de Organización y Funciones del Ministerio de Educación, el Manual de Operaciones de la DRELM aprobado por R.M. 215-2015-MINEDU y las facultades previstas en la Ley 27444 Ley del Procedimiento Administrativo General;
+        '), 0);
+        $this->pdf->SetFont('Arial', '', 10);
+        $this->pdf->Ln(4);
+
         
              $this->pdf->SetFont('Arial', 'B', 10);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('                 SE RESUELVE.'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('                 SE RESUELVE:'), 0);
         $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->Ln(4);
         
            $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('                 ARTICULO 1°.- APROBAR EL CONTRATO, por servicios personale3s suscrito por la unidad jecutora y el perosnal que a continuaci´pon se indica:.'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('                 ARTÍCULO 1º.- APROBAR EL CONTRATO, por servicios personales según el anexo que forma parte de la presente, suscrito por la Unidad Ejecutora y el personal docente que a continuación se indica:'), 0);
         $this->pdf->SetFont('Arial', '', 10);
-        $this->pdf->Ln(4);
         
+        
+        $this->pdf->Ln(5);
+        
+
+
+
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->SetFont('Arial', 'BU', 9);
         $this->pdf->Cell(40, 7, '1.1. DATOS PERSONALES', '', 0, 'L', 0);
@@ -2443,59 +3552,83 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'APELLIDOS Y NOMBRES', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['nombres']), '', 0, 'L', 0);
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(0, 7, utf8_decode($postulante->nombre . " " . $postulante->apellido_paterno . " " . $postulante->apellido_materno), '', 0, 'L', 0);
         $this->pdf->Ln(4);
 
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->SetFont('Arial', '', 8);
         $this->pdf->Cell(40, 7, utf8_decode('DOC. DE IDENTIDAD'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['tipodoc'].' '.$datos [0] ['numdoc']), '', 0, 'L', 0);
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(0, 7, utf8_decode($postulante->numero_documento), '', 0, 'L', 0);
         $this->pdf->Ln(4);
 
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->SetFont('Arial', '', 8);
         $this->pdf->Cell(40, 7, utf8_decode('SEXO '), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['sexo']), '', 0, 'L', 0);
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(0, 7, utf8_decode($postulante->genero == 'M' ? 'MASCULINO': 'FEMENINO'), '', 0, 'L', 0);
         $this->pdf->Ln(4);
  
-                $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->SetFont('Arial', '', 8);
         $this->pdf->Cell(40, 7, utf8_decode('FECHA DE NACIMIENTO'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['fecnac']), '', 0, 'L', 0);
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(0, 7, utf8_decode($postulante->fecha_nacimiento), '', 0, 'L', 0);
         $this->pdf->Ln(4);
-        
-                $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->Cell(40, 7, utf8_decode('CODIGO MODULAR'), '', 0, 'L', 0);
-        $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode('10'.$datos [0] ['numdoc']), '', 0, 'L', 0);
-        $this->pdf->Ln(4);
-        
-                $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+
+         
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->SetFont('Arial', '', 8);
         $this->pdf->Cell(40, 7, utf8_decode('REGIMEN PENSIONARIO'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['pensionario']), '', 0, 'L', 0);
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(0, 7, utf8_decode($postulante->afiliacion == 'AFP' ? 'A.F.P.' : 'O.N.P.'), '', 0, 'L', 0);
         $this->pdf->Ln(4);
-        
-            $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->Cell(40, 7, 'CUISSP', '', 0, 'L', 0);
+
+
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(40, 7, 'CUSSPP', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(40, 7, utf8_decode($datos [0] ['cuissp']), '', 0, 'L', 0);
-        $this->pdf->Cell(15, 7, 'F. AFIL', '', 0, 'LU', 0);
-        $this->pdf->Cell(10, 7, '  :', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['fecafi']), '', 0, 'L', 0);
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(40, 7, utf8_decode($postulante->cuss), '', 0, 'L', 0);
         $this->pdf->Ln(4);
+
+
         
-                $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->SetFont('Arial', '', 8);
+        $this->pdf->Cell(40, 7, utf8_decode('FECHA DE AFILIACIÓN'), '', 0, 'L', 0);
+        $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(0, 7, utf8_decode(""), '', 0, 'L', 0);
+        $this->pdf->Ln(4);
+
+
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->SetFont('Arial', '', 8);
         $this->pdf->Cell(40, 7, utf8_decode('TITULO Y/O GRADO DE INST.'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['titulo']), '', 0, 'L', 0);
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(0, 7, utf8_decode(""), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         
-                $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+
+
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->SetFont('Arial', '', 8);
+
         $this->pdf->Cell(40, 7, utf8_decode('ESPECIALIDAD'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['especialidad']), '', 0, 'L', 0);
-        $this->pdf->Ln(250);
+        $this->pdf->SetFont('Arial', 'B', 8);
+        $this->pdf->Cell(0, 7, utf8_decode(""), '', 0, 'L', 0);
+
+
+        $this->pdf->Ln(5);
         
 
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
@@ -2503,30 +3636,34 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(40, 7, '1.2. DATOS DE LA PLAZA', '', 0, 'L', 0);
         $this->pdf->SetFont('Arial', '', 8);
         $this->pdf->Ln(7);
- 
+
+
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'NIVEL Y/O MODALIDAD', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['modalidad']), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode("AAA"), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         
+
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, utf8_decode('INSTITUCION EDUCATIVA'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['ie']), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode("AAA"), '', 0, 'L', 0);
         $this->pdf->Ln(4);
 
-        
-        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->Cell(40, 7, utf8_decode('CÓDIGO DE PLAZA'), '', 0, 'L', 0);
+
+                $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 7, utf8_decode('CODIGO DE PLAZA'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['codigoPlaza']), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($plaza->codigoPlaza), '', 0, 'L', 0);
         $this->pdf->Ln(4);
+        
+       
         
                 $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'CARGO', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['cargo']), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($plaza->cargo), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
@@ -2535,18 +3672,11 @@ class ReporteDocumento extends CI_Controller {
         $y = $this->pdf->GetY();
         $x = $this->pdf->GetX();
         $this->pdf->SetXY($x, $y + 1.5);
-        $this->pdf->MultiCell(0, 4, utf8_decode($datos [0] ['motivoVacante']), 0, 'L', 0);
+        $this->pdf->MultiCell(0, 4, utf8_decode($plaza->motivo_vacante), 0, 'L', 0);
+        
+      
         
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->Cell(40, 7, 'ESPECIALIDAD(ES) A DICTAR', '', 0, 'L', 0);
-        $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $y = $this->pdf->GetY();
-        $x = $this->pdf->GetX();
-        $this->pdf->SetXY($x, $y + 1.5);
-        $this->pdf->MultiCell(0, 4, utf8_decode($datos [0] ['especialidad']), 0, 'L', 0);
-         $this->pdf->Ln(8);
-        
-               $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->SetFont('Arial', 'BU', 9);
         $this->pdf->Cell(40, 7, '1.3. DATOS DEL  CONTRATO', '', 0, 'L', 0);
         $this->pdf->SetFont('Arial', '', 8);
@@ -2555,8 +3685,8 @@ class ReporteDocumento extends CI_Controller {
          $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'NUM. DE EXPEDIENTE', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(40, 7, utf8_decode($datos [0] ['expediente']), '', 0, 'L', 0);
-        $this->pdf->Cell(15, 7, 'NUM. DE FOLIO', '', 0, 'LU', 0);
+        $this->pdf->Cell(40, 7, utf8_decode($postulante->numero_expediente), '', 0, 'L', 0);
+        $this->pdf->Cell(15, 7, utf8_decode('Nº DE FOLIOS'), '', 0, 'LU', 0);
         $this->pdf->Cell(10, 7, '  :', '', 0, 'C', 0);
 //        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['numExpediente']), '', 0, 'L', 0);
         $this->pdf->Ln(4);
@@ -2564,25 +3694,25 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'REFERENCIA', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode('ACTA DE ADJUDICACIÓN DEL COMITÉ DE CONTRATO DOCENTE - UGEL 05'), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode(''), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'VIGENCIA DEL CONTRATO', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode('DESDE EL'.' '.$datos [0] ['fechaInicio'].' '.'HASTA EL'.' '.$datos [0] ['fechaTermino']), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode('Desde el '. $adjudicacion->fecha_inicio .  ' hasta el '. $adjudicacion->fecha_final .""), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'JORNADA LABORAL', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['jornada']).' '.'Hrs. PEDAGOGICAS', '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($plaza->jornada).' '. utf8_decode('Horas Pedagógicas'), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->Cell(40, 7, 'ADJUDICACION', '', 0, 'L', 0);
+        $this->pdf->Cell(40, 7, 'DE LA ADJUDICACION', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['etapa']), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode(""), '', 0, 'L', 0);
         $this->pdf->Ln(10);
 
              $this->pdf->SetFont('Arial', '', 10);
@@ -2612,25 +3742,29 @@ class ReporteDocumento extends CI_Controller {
             
  
             $this->pdf->SetFont ( 'Arial', 'B', $fontSize );
-            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'NELLY RUFINA CUNZA PRINCIPE' ), 0, 0, 'C', 0 );
+            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'Lic. JENNY KEITH LARA QUISPE' ), 0, 0, 'C', 0 );
             $this->pdf->Ln ( $cellHeight - 0.7 );
             $this->pdf->SetFont ( 'Arial', '', $fontSize - 1 );
-            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'Directora de la Unidad de Gestión Educativa Local Nº 05 - SJL' ), 0, 0, 'C', 0 );
+            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'Directora del Programa Sectorial II' ), 0, 0, 'C', 0 );
+            $this->pdf->Ln ( 4 );
+
+            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'Unidad de Gestión Educativa Local Nº 05 - San Juan de Lurigancho y El Agustino' ), 0, 0, 'C', 0 );
+
             $this->pdf->Ln ( 7 );
                         
             $this->pdf->SetFont ( 'Arial', '', 5.2 );
-            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'MGGP/DUGEL.04' ), 0, 0, 'L', 0 );
+            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'JKLQ/D.UGEL05' ), 0, 0, 'L', 0 );
             $this->pdf->Ln ( 2.5 );
-            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'RJMA/J(e)ARH' ), 0, 0, 'L', 0 );
+            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'CMLLF/J.ARH' ), 0, 0, 'L', 0 );
             $this->pdf->Ln ( 2.5 );
-            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'YVR/CEAP' ), 0, 0, 'L', 0 );
+            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'JRMC/C.EAP-ARH' ), 0, 0, 'L', 0 );
             $this->pdf->Ln ( 2.5 );
-            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'CAMS/TS' ), 0, 0, 'L', 0 );
+            $this->pdf->Cell ( 170, $cellHeight, utf8_decode ( 'JMQ/TEC. ADM-EAP' ), 0, 0, 'L', 0 );
         
 //        $this->pdf->setExpediente($datos [0] ['expediente']);
 //        $this->pdf->setCodVerificacion($datos [0] ['detalleID']);
 
-       $fileName = 'Resolucion-' . $datos [0] ['expediente'] . '.pdf'; 
+       $fileName = 'Resolucion-' . "AA" . '.pdf'; 
         $this->pdf->Output($fileName, 'I');
         ob_end_flush();
     }
