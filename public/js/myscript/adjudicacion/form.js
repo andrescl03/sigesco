@@ -25,6 +25,8 @@ const AppAdjudicacionAdmin = () => {
                     edit: adjudicacion_id > 0,
                     adjudicacion: {},
                     usuarioFirmas: [],
+                    dataTablePlazas: {},
+                    dataTablePostulantes: {}
                 }
             },
             mounted: function () {
@@ -72,6 +74,28 @@ const AppAdjudicacionAdmin = () => {
                     return Object.keys(self.plaza).length > 0 && Object.keys(self.postulacion).length > 0;
                 },
                 clicks: () => {
+
+                    const btnSearchs = dom.querySelectorAll('.btn-search');
+                    btnSearchs.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const input = dom.querySelector('#txtBuscador');
+                            if (input) {
+                                sweet2.loading({text:'Buscando...'});
+                                self.dataTablePlazas.search(input.value.trim()).draw();
+                            }
+                        });                        
+                    });
+
+                    const btnSearchs1 = dom.querySelectorAll('.btn-search-1');
+                    btnSearchs1.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const input = dom.querySelector('#txtBuscador1');
+                            if (input) {
+                                sweet2.loading({text:'Buscando...'});
+                                self.dataTablePostulantes.search(input.value.trim()).draw();
+                            }
+                        });                        
+                    });
 
                     const btnUsuarioFirmaAdds = document.querySelectorAll('.btn-usuario-firma-add');
                     btnUsuarioFirmaAdds.forEach(btn => {
@@ -194,6 +218,7 @@ const AppAdjudicacionAdmin = () => {
                                                     throw message;
                                                 }
                                                 sweet2.show({type:'success', text:message});
+
                                                 self.postulaciones = data.postulaciones;
                                                 docenteRender();
                                             })
@@ -262,6 +287,12 @@ const AppAdjudicacionAdmin = () => {
                     const btnDocente = document.querySelectorAll('.btn-docente');
                     btnDocente.forEach(btn => {
                         btn.addEventListener('click', (e) => {
+                            self.modalDocentes.show();
+                            setTimeout(() => {
+                                self.listPostulantes(self.onActionRowsPostulantes);                                
+                            }, 250);
+                            
+                            return;
                             docenteRender();
                             self.modalDocentes.show();
                         });
@@ -289,14 +320,22 @@ const AppAdjudicacionAdmin = () => {
                             } else {
                                 sweet2.show({type:'error', text:'Debe de seleccionar un docente'});
                             }
-                            console.log('click');
                         });
                     });
 
                     const btnPlaza = document.querySelectorAll('.btn-plaza');
                     btnPlaza.forEach(btn => {
                         btn.addEventListener('click', (e) => {
-
+                            if (Object.keys(self.postulacion).length == 0) {
+                                sweet2.show({type:'info', text:'Debe de seleccionar un docente'});
+                                return;
+                            }
+                            self.modalPlazas.show();
+                            setTimeout(() => {
+                                self.listPlazas();                                
+                            }, 250);
+                            
+                            return;
                             if (Object.keys(self.postulacion).length == 0) {
                                 sweet2.show({type:'info', text:'Debe de seleccionar un docente'});
                                 return;
@@ -318,7 +357,7 @@ const AppAdjudicacionAdmin = () => {
                                         self.plazas.forEach(plaza => {
                                             html +=`<tr>
                                                         <td>${plaza.plz_id}</td>
-                                                        <td>${plaza.codigoPlaza}</td>
+                                                        <td>${plaza.codigo_plaza}</td>
                                                         <td>${plaza.ie}</td>
                                                         <td>${plaza.mod_abreviatura}</td>
                                                         <td>${plaza.niv_descripcion}</td>
@@ -381,7 +420,6 @@ const AppAdjudicacionAdmin = () => {
                             if (isvalid) {
                                 if (isvalid > 0) {
                                     self.plaza = self.plazas.find((o) => { return o.plz_id === isvalid });
-                                    console.log(self.plaza);
                                     self.plazaRender();
                                     self.modalPlazas.hide();
                                 }
@@ -437,7 +475,6 @@ const AppAdjudicacionAdmin = () => {
                     const btnUsuarioFirma = document.querySelectorAll('.btn-usuario-firma');
                     btnUsuarioFirma.forEach(btn => {
                         btn.addEventListener('click', (e) => {
-                            console.log(self.usuarioFirmas);
                             self.duallistbox(self.usuarios, self.usuarioFirmas);
                             self.modalUsuarioFirmas.show();
                         })
@@ -576,6 +613,367 @@ const AppAdjudicacionAdmin = () => {
                             sweet2.show({type:'error', text:error});
                         });
                     });
+                },
+                listPlazas: (_callback = ()=>{}) => {
+                    if (Object.keys(self.dataTablePlazas).length == 0) {
+                        self.dataTablePlazas = $('#tablePlazas').DataTable({
+                            language: {
+                                "sProcessing": "Procesando...",
+                                "sLengthMenu": "Mostrar _MENU_ registros",
+                                "sZeroRecords": "No se encontraron resultados",
+                                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                "sInfoPostFix": "",
+                                "sSearch": "Buscar:",
+                                "sUrl": "",
+                                "sInfoThousands": ",",
+                                "sLoadingRecords": "Cargando...",
+                                "oPaginate": {
+                                "sFirst": "Primero",
+                                "sLast": "Último",
+                                "sNext": "Siguiente",
+                                "sPrevious": "Anterior"
+                                },
+                                "oAria": {
+                                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                }
+                            },
+                            searching: true,
+                            ordering: false,  
+                            responsive: true,
+                            "processing" : true,
+                            "serverSide" : true,
+                            "order" : [],
+                            "retrieve": true,
+                            "dom": '<l<t>ip>',	
+                            "ajax": {
+                            "url": window.AppMain.url + 'adjudicaciones/plazas',
+                            "method": "POST",
+                            "dataType": "json",
+                            "data": {
+                            }
+                            },
+                            "fnDrawCallback": function(oSettings, json) {
+                                sweet2.loading(false);
+                                const response = oSettings.json;
+                                if (response.success) {
+                                    self.plazas = response.data;
+                                    _callback();
+                                }
+                            },
+                            "columnDefs": [
+                                {
+                                    "targets": 0,
+                                    "data": "plz_id",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.plz_id;
+                                    }
+                                },
+                                {
+                                    "targets": 1,
+                                    "data": "codigo_plaza",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.codigo_plaza;
+                                    }
+                                },
+                                {
+                                    "targets": 2,
+                                    "data": "ie",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.ie;                                    
+                                    }
+                                },
+                                {
+                                    "targets": 3,
+                                    "data": "especialidad",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.especialidad;
+                                    }
+                                },
+                                {
+                                    "targets": 4,
+                                    "data": "jornada",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.jornada;
+                                    }
+                                },
+                                {
+                                    "targets": 5,
+                                    "data": "tipo_vacante",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.tipo_vacante;
+                                    }
+                                },
+                                {
+                                    "targets": 6,
+                                    "data": "motivo_vacante",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.motivo_vacante;
+                                        // return `<span class="badge bg-secondary" style="font-size: 0.9em;">${row.uid}</span>`;
+                                    }
+                                },
+                                {
+                                    "targets": 7,
+                                    "data": "deleted_at",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return ` <input class="form-check-input" name="check_plaza" type="radio" value="${row.plz_id}">`;
+                                    }
+                                }
+                            ]
+                        });
+                    } else {
+                        self.dataTablePlazas.ajax.reload();
+                    }
+                    sweet2.loading();
+                },
+                listPostulantes: (_callback = ()=>{}) => {
+                    if (Object.keys(self.dataTablePostulantes).length == 0) {
+                        self.dataTablePostulantes = $('#tablePostulantes').DataTable({
+                            language: {
+                                "sProcessing": "Procesando...",
+                                "sLengthMenu": "Mostrar _MENU_ registros",
+                                "sZeroRecords": "No se encontraron resultados",
+                                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                "sInfoPostFix": "",
+                                "sSearch": "Buscar:",
+                                "sUrl": "",
+                                "sInfoThousands": ",",
+                                "sLoadingRecords": "Cargando...",
+                                "oPaginate": {
+                                "sFirst": "Primero",
+                                "sLast": "Último",
+                                "sNext": "Siguiente",
+                                "sPrevious": "Anterior"
+                                },
+                                "oAria": {
+                                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                }
+                            },
+                            searching: true,
+                            ordering: false,  
+                            responsive: true,
+                            "processing" : true,
+                            "serverSide" : true,
+                            "order" : [],
+                            "retrieve": true,
+                            "dom": '<l<t>ip>',	
+                            "ajax": {
+                            "url": window.AppMain.url + 'adjudicaciones/postulantes',
+                            "method": "POST",
+                            "dataType": "json",
+                            "data": {
+                            }
+                            },
+                            "fnDrawCallback": function(oSettings, json) {
+                                sweet2.loading(false);
+                                const response = oSettings.json;
+                                if (response.success) {
+                                    self.postulaciones = response.data;
+                                    _callback();
+                                }
+                            },
+                            "columnDefs": [
+                                {
+                                    "targets": 0,
+                                    "data": "id",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.id;
+                                    }
+                                },
+                                {
+                                    "targets": 1,
+                                    "data": "apellido_paterno",
+                                    "render": function ( data, type, row, meta ) {
+                                        return `${row.apellido_paterno} ${row.apellido_materno} ${row.nombre}`;
+                                    }
+                                },
+                                {
+                                    "targets": 2,
+                                    "data": "numero_documento",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.numero_documento;                                    
+                                    }
+                                },
+                                {
+                                    "targets": 3,
+                                    "data": "modalidad_nombre",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.modalidad_nombre;
+                                    }
+                                },
+                                {
+                                    "targets": 4,
+                                    "data": "nivel_nombre",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.nivel_nombre;
+                                    }
+                                },
+                                {
+                                    "targets": 5,
+                                    "data": "especialidad_nombre",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.especialidad_nombre;
+                                    }
+                                },
+                                {
+                                    "targets": 6,
+                                    "data": "puntaje",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.puntaje;
+                                    }
+                                },
+                                {
+                                    "targets": 7,
+                                    "data": "fecha_registro",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.fecha_registro;
+                                    }
+                                },
+                                {
+                                    "targets": 8,
+                                    "data": "estado_adjudicacion",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        let status = '<span class="text-primary fw-bold">PENDIENTE</span>';
+                                        switch (Number(row.estado_adjudicacion)) {
+                                            case 1:
+                                                status = 'REGISTRADO';
+                                            break;
+                                            case 2:
+                                                status = '<span class="text-danger fw-bold">NO SE PRESENTO</span>';
+                                            break;
+                                            case 3:
+                                                status = '<span class="text-warning fw-bold">EN ESPERA</span>';
+                                            break;
+                                        }
+                                        return status;
+                                    }
+                                },
+                                {
+                                    "targets": 9,
+                                    "data": "intentos_adjudicacion",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return `${!row.intentos_adjudicacion ? 0 : row.intentos_adjudicacion}`;
+                                    }
+                                },
+                                {
+                                    "targets": 10,
+                                    "data": "fecha_registro",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return `<input class="form-check-input" name="check_docente" type="radio" value="${row.id}">`;
+                                    }
+                                },
+                                {
+                                    "targets": 11,
+                                    "data": "deleted_at",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return `<div class="btn-group dropstart">
+                                                    <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa-solid fa-file-signature fa-lg"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item btn-wait-postulante" href="#" data-id="${row.id}"><i class="fa fa-clock-o me-2" aria-hidden="true"></i> En espera</a></li>
+                                                        <li><a class="dropdown-item btn-unlink-postulante" href="#" data-id="${row.id}"><i class="fa fa-user-times me-2" aria-hidden="true"></i> No se presento</a></li>
+                                                    </ul>
+                                                </div>`;
+                                    }
+                                }
+                            ]
+                        });
+                    } else {
+                        self.dataTablePostulantes.ajax.reload();
+                    }
+                    sweet2.loading();
+                },
+                onActionRowsPostulantes: () => {
+                    const unlinks = document.querySelectorAll(".btn-unlink-postulante");
+                    if (unlinks.length > 0) {
+                        unlinks.forEach(btn => {
+                            const id = btn.getAttribute('data-id');
+                            btn.addEventListener('click', function (e) {
+                                sweet2.show({
+                                    type: 'question',
+                                    text: '¿Estás seguro de separar al docente de la adjudicación?',
+                                    showCancelButton: true,
+                                    onOk: () => {
+                                        sweet2.loading();
+                                        const formData = new FormData();
+                                        formData.append('status', 2);
+                                        self.updateStatus(`adjudicaciones/postulantes/${id}/status`, formData)
+                                        .then(({success, data, message}) => {
+                                            if (!success) {
+                                                throw message;
+                                            }
+                                            sweet2.show({
+                                                type:'success', 
+                                                text:message,
+                                                onOk:()=>{
+                                                    sweet2.loading({text:'Actualizando...'});                                            
+                                                    self.dataTablePostulantes.ajax.reload();
+                                                }
+                                            });
+                                            // self.postulaciones = data.postulaciones;
+                                            // docenteRender();
+                                        })
+                                        .catch(error => sweet2.show({type:'error', text:error}));
+                                    }
+                                });
+                            }); 
+                        });
+                    }
+                    const waits = document.querySelectorAll(".btn-wait-postulante");
+                    if (waits.length > 0) {
+                        waits.forEach(btn => {
+                            const id = btn.getAttribute('data-id');
+                            btn.addEventListener('click', function (e) {
+                                sweet2.show({
+                                    type: 'question',
+                                    text: '¿Estás seguro de poner en espera al docente?',
+                                    showCancelButton: true,
+                                    onOk: () => {
+                                        sweet2.loading();
+                                        const formData = new FormData();
+                                        formData.append('status', 3);
+                                        self.updateStatus(`adjudicaciones/postulantes/${id}/status`, formData)
+                                        .then(({success, data, message}) => {
+                                            if (!success) {
+                                                throw message;
+                                            }
+                                            sweet2.show({
+                                                type:'success', 
+                                                text:message,
+                                                onOk:()=>{
+                                                    sweet2.loading({text:'Actualizando...'});                                            
+                                                    self.dataTablePostulantes.ajax.reload();
+                                                }
+                                            });
+                                            // self.postulaciones = data.postulaciones;
+                                            // docenteRender();
+                                        })
+                                        .catch(error => sweet2.show({type:'error', text:error}));
+                                    }
+                                })
+                            })
+                        })
+                    }    
                 },
                 getResource: () => {
                     const formData = new FormData();

@@ -13,7 +13,7 @@ class Adjudicaciones_model extends CI_Model
   }
 
   public function pagination($request) {
-      $res = $this->tools->responseDefault();
+      $response = $this->tools->responseDefault();
       try {
 
           $draw   = $request['draw'];
@@ -51,37 +51,37 @@ class Adjudicaciones_model extends CI_Model
 
           $recordsFiltered = ($recordsTotal / $length) * $length;
 
-          $res['success'] = true;
-          $res['data'] = $adjudicaciones;
-          $res['recordsTotal'] = $recordsTotal;
-          $res['recordsFiltered'] = $recordsFiltered;
-          $res['message'] = 'successfully';
+          $response['success'] = true;
+          $response['data'] = $adjudicaciones;
+          $response['recordsTotal'] = $recordsTotal;
+          $response['recordsFiltered'] = $recordsFiltered;
+          $response['message'] = 'successfully';
       } catch (\Exception $e) {
-          $res['message'] = $e->getMessage();
+          $response['message'] = $e->getMessage();
       }
-      return $res;
+      return $response;
   }
 
   public function datedefault()
   {
 
-    $response = $this->tools->responseDefault();
+    $responseponse = $this->tools->responseDefault();
 
     try {
 
-      $response['data'] = $this->tools->getDateHour("Y-m-d H:i");
-      $response['success'] = true;
-      $response['message'] = 'se obtuvo correctamente la información';
+      $responseponse['data'] = $this->tools->getDateHour("Y-m-d H:i");
+      $responseponse['success'] = true;
+      $responseponse['message'] = 'se obtuvo correctamente la información';
 
-      $response['status']  = 200;
+      $responseponse['status']  = 200;
     } catch (\Exception $e) {
-      $response['message'] = $e->getMessage();
+      $responseponse['message'] = $e->getMessage();
     }
-    return $response;
+    return $responseponse;
   }
 
   public function resource() {
-    $response = $this->tools->responseDefault();
+    $responseponse = $this->tools->responseDefault();
     try {
 
       $adjudicacion_id = $this->input->post("adjudicacion_id", true);
@@ -120,7 +120,7 @@ class Adjudicaciones_model extends CI_Model
         $adjudicacion->firmas = $this->db->query($sql, ['id' => $adjudicacion->id])->result_object();
       }
       
-      $postulaciones = $this->getPostulaciones();      
+      $postulaciones = []; // $this->getPostulaciones();      
 
       $sql = "SELECT PL.* , moda.*, nive.*
               FROM plazas AS PL
@@ -128,7 +128,7 @@ class Adjudicaciones_model extends CI_Model
               INNER JOIN modalidades moda ON moda.mod_id = PL.mod_id
               INNER JOIN niveles as nive ON nive.niv_id = PL.nivel_id
               AND AD.id IS NULL";
-      $plazas = $this->db->query($sql)->result_object();
+      $plazas = []; // $this->db->query($sql)->result_object();
 
       $sql = "SELECT * FROM usuarios";
       $usuarios = $this->db->query($sql)->result_object();
@@ -142,19 +142,19 @@ class Adjudicaciones_model extends CI_Model
               WHERE e2.parent_id = $sigesco_id";
       $usuario_firmas = $this->db->query($sql)->result_object();
 
-      $response['success'] = true;
-      $response['data']  = compact('postulaciones', 'plazas', 'usuarios', 'adjudicacion', 'usuario_firmas');
-      $response['status']  = 200;
-      $response['message'] = 'detail';
+      $responseponse['success'] = true;
+      $responseponse['data']  = compact('postulaciones', 'plazas', 'usuarios', 'adjudicacion', 'usuario_firmas');
+      $responseponse['status']  = 200;
+      $responseponse['message'] = 'detail';
     } catch (\Exception $e) {
-      $response['message'] = $e->getMessage();
+      $responseponse['message'] = $e->getMessage();
     }
-    return $response;
+    return $responseponse;
   }
 
   public function store()
   {
-    $response = $this->tools->responseDefault();
+    $responseponse = $this->tools->responseDefault();
     try {
       
       $firmas  = $this->input->post("firmas", true);
@@ -188,18 +188,18 @@ class Adjudicaciones_model extends CI_Model
         $this->db->insert_batch('adjudicacion_firmas', $inserts);
       }
       
-      $response['success'] = true;
-      $response['status']  = 200;
-      $response['message'] = 'Se guardo correctamente';
+      $responseponse['success'] = true;
+      $responseponse['status']  = 200;
+      $responseponse['message'] = 'Se guardo correctamente';
     } catch (\Exception $e) {
-      $response['message'] = $e->getMessage();
+      $responseponse['message'] = $e->getMessage();
     }
-    return $response;
+    return $responseponse;
   }
 
   public function update($request)
   {
-    $response = $this->tools->responseDefault();
+    $responseponse = $this->tools->responseDefault();
     try {
       $id = $request['id'];
       $firmas  = $this->input->post("firmas", true);
@@ -228,18 +228,18 @@ class Adjudicaciones_model extends CI_Model
         $this->db->insert_batch('adjudicacion_firmas', $inserts);
       }
 
-      $response['success'] = true;
-      $response['status']  = 200;
-      $response['message'] = 'Se guardo correctamente';
+      $responseponse['success'] = true;
+      $responseponse['status']  = 200;
+      $responseponse['message'] = 'Se guardo correctamente';
     } catch (\Exception $e) {
-      $response['message'] = $e->getMessage();
+      $responseponse['message'] = $e->getMessage();
     }
-    return $response;
+    return $responseponse;
   }
 
   public function remove($request)
   {
-      $response = $this->tools->responseDefault();
+      $responseponse = $this->tools->responseDefault();
       try {
 
           $id = isset($request['id']) ? $request['id'] : 0;
@@ -252,18 +252,18 @@ class Adjudicaciones_model extends CI_Model
 
           $this->db->update('adjudicaciones', ['deleted_at' => $this->tools->getDateHour()], array('id' => $id));
        
-          $response['success'] = true;
-          $response['status']  = 200;
-          $response['message'] = 'Se elimino correctamente';
+          $responseponse['success'] = true;
+          $responseponse['status']  = 200;
+          $responseponse['message'] = 'Se elimino correctamente';
       } catch (\Exception $e) {
-          $response['message'] = $e->getMessage();
+          $responseponse['message'] = $e->getMessage();
       }
-      return $response;
+      return $responseponse;
   }
 
   public function edit($request)
   {
-      $response = $this->tools->responseDefault();
+      $responseponse = $this->tools->responseDefault();
       try {
 
           $id = isset($request['id']) ? $request['id'] : 0;
@@ -273,14 +273,14 @@ class Adjudicaciones_model extends CI_Model
             show_404();
           }
        
-          $response['success'] = true;
-          $response['data']    = compact('adjudicacion', 'id');
-          $response['status']  = 200;
-          $response['message'] = 'Editar adjudicación';
+          $responseponse['success'] = true;
+          $responseponse['data']    = compact('adjudicacion', 'id');
+          $responseponse['status']  = 200;
+          $responseponse['message'] = 'Editar adjudicación';
       } catch (\Exception $e) {
-          $response['message'] = $e->getMessage();
+          $responseponse['message'] = $e->getMessage();
       }
-      return $response;
+      return $responseponse;
   }
 
   public function getPostulaciones() {
@@ -313,7 +313,7 @@ class Adjudicaciones_model extends CI_Model
   }
 
   public function updateStatus($id) {
-    $response = $this->tools->responseDefault();
+    $responseponse = $this->tools->responseDefault();
     try {
 
         $status  = $this->input->post("status", true);
@@ -334,14 +334,14 @@ class Adjudicaciones_model extends CI_Model
         $this->db->update('postulaciones', ['estado_adjudicacion' => $status], array('id' => $id));
         $postulaciones = $this->getPostulaciones(); 
     
-        $response['success'] = true;
-        $response['status']  = 200;
-        $response['data']    = compact('postulaciones');
-        $response['message'] = 'Se proceso correctamente';
+        $responseponse['success'] = true;
+        $responseponse['status']  = 200;
+        $responseponse['data']    = compact('postulaciones');
+        $responseponse['message'] = 'Se proceso correctamente';
     } catch (\Exception $e) {
-        $response['message'] = $e->getMessage();
+        $responseponse['message'] = $e->getMessage();
     }
-    return $response;
+    return $responseponse;
   }
 
   public function f_detail($adjudicacion_id) {
@@ -416,7 +416,7 @@ class Adjudicaciones_model extends CI_Model
 
   public function usuarioFirmas() {
 
-    $response = $this->tools->responseDefault();
+    $responseponse = $this->tools->responseDefault();
     try {
 
       $ids = $this->input->post("ids", true);
@@ -445,12 +445,143 @@ class Adjudicaciones_model extends CI_Model
               WHERE e2.parent_id = $sigesco_id";
       $usuario_firmas = $this->db->query($sql)->result_object();
 
-      $response['success'] = true;
-      $response['status']  = 200;
-      $response['data']    = compact('usuario_firmas');
-      $response['message'] = 'Se guardo correctamente';
+      $responseponse['success'] = true;
+      $responseponse['status']  = 200;
+      $responseponse['data']    = compact('usuario_firmas');
+      $responseponse['message'] = 'Se guardo correctamente';
     } catch (\Exception $e) {
-      $response['message'] = $e->getMessage();
+      $responseponse['message'] = $e->getMessage();
+    }
+    return $responseponse;
+  }
+
+  public function plazas() {
+    $response = $this->tools->responseDefault();
+    try {
+
+        $draw   = $this->input->post("draw", true);
+        $length = $this->input->post("length", true);
+        $start  = $this->input->post("start", true);
+        $search = $this->input->post("search", true);
+
+        $filterText = '';
+        if ($search) {
+            $value = $search['value'];
+            if (strlen($value) > 0) {
+                $filterText = " AND (
+                                    plz.ie LIKE('%{$value}%') 
+                                  OR plz.codigo_plaza LIKE('%{$value}%')
+                                  OR plz.especialidad LIKE('%{$value}%')
+                                  OR plz.jornada LIKE('%{$value}%')
+                                  OR plz.nivel LIKE('%{$value}%')
+                                  OR plz.tipo_vacante LIKE('%{$value}%')
+                                ) ";
+            }
+        }
+
+        $sql = "SELECT 
+                  plz.*
+                FROM plazas plz
+                LEFT JOIN adjudicaciones adj ON adj.plaza_id = plz.plz_id
+                WHERE plz.deleted_at IS NULL 
+                AND adj.id IS NULL
+                $filterText
+                ORDER BY plz.plz_id DESC";
+
+
+        $items = $this->db->query($sql)->result_object();
+
+        $recordsTotal = count($items);
+
+        $sql .= " LIMIT {$start}, {$length}";
+
+        $items = $this->db->query($sql)->result_object();
+
+        $recordsFiltered = ($recordsTotal / $length) * $length;
+
+        $response['success'] = true;
+        $response['data'] = $items;
+        $response['recordsTotal'] = $recordsTotal;
+        $response['recordsFiltered'] = $recordsFiltered;
+        $response['message'] = 'successfully';
+    } catch (\Exception $e) {
+        $response['message'] = $e->getMessage();
+    }
+    return $response;
+  }
+
+  public function postulantes() {
+    $response = $this->tools->responseDefault();
+    try {
+
+        $draw   = $this->input->post("draw", true);
+        $length = $this->input->post("length", true);
+        $start  = $this->input->post("start", true);
+        $search = $this->input->post("search", true);
+
+        $filterText = '';
+        if ($search) {
+            $value = $search['value'];
+            if (strlen($value) > 0) {
+                $filterText = " AND (
+                                    P.numero_documento LIKE('%{$value}%')
+                                  OR P.nombre LIKE('%{$value}%')
+                                  OR P.apellido_paterno LIKE('%{$value}%') 
+                                  OR P.apellido_materno LIKE('%{$value}%')
+                                  OR P.numero_expediente LIKE('%{$value}%')
+                                  OR M.mod_nombre LIKE('%{$value}%')
+                                  OR N.niv_descripcion LIKE('%{$value}%')
+                                  OR E.esp_descripcion LIKE('%{$value}%')
+                                ) ";
+            }
+        }
+
+        $sql = "SELECT
+                    P.*,
+                    M.mod_id AS modalidad_id,
+                    M.mod_nombre AS modalidad_nombre,
+                    N.niv_id AS nivel_id,
+                    N.niv_descripcion AS nivel_nombre,
+                    E.esp_id AS especialidad_id,
+                    E.esp_descripcion AS especialidad_nombre,
+                    GI.gin_id AS inscripcion_id,
+                    C.con_tipo as con_tipo,
+                    PE.puntaje
+                FROM postulaciones P
+                LEFT JOIN postulacion_evaluaciones PE ON PE.postulacion_id = P.id AND PE.promedio = 1
+                INNER JOIN convocatorias C ON C.con_id = P.convocatoria_id
+                INNER JOIN convocatorias_detalle CD ON CD.convocatorias_con_id = C.con_id
+                INNER JOIN grupo_inscripcion GI ON GI.gin_id = CD.grupo_inscripcion_gin_id AND GI.gin_id = P.inscripcion_id
+                INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
+                INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
+                INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
+                LEFT JOIN adjudicaciones AD ON AD.postulacion_id = P.id AND AD.deleted_at IS NULL               
+                WHERE P.deleted_at IS NULL
+                AND P.estado = 'finalizado'
+                AND P.estado_adjudicacion IN (0,2, 3) 
+                AND intentos_adjudicacion <  2
+                AND AD.id IS NULL
+                $filterText
+                ORDER BY P.id DESC";
+
+
+        $items = $this->db->query($sql)->result_object();
+
+        $recordsTotal = count($items);
+
+        $sql .= " LIMIT {$start}, {$length}";
+
+        $items = $this->db->query($sql)->result_object();
+
+        $recordsFiltered = ($recordsTotal / $length) * $length;
+
+        $response['success'] = true;
+        $response['data'] = $items;
+        $response['recordsTotal'] = $recordsTotal;
+        $response['recordsFiltered'] = $recordsFiltered;
+        $response['message'] = 'successfully';
+    } catch (\Exception $e) {
+        $response['message'] = $e->getMessage();
     }
     return $response;
   }

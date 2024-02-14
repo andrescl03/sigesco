@@ -98,4 +98,24 @@ class Adjudicaciones extends CI_Controller {
                 ->set_output(json_encode($this->adjudicaciones_model->usuarioFirmas()));
     }
 
+    public function plazas() {
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->adjudicaciones_model->plazas($_POST)));
+        } else {
+            show_404();
+        }    
+    }
+
+    public function postulantes() {
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->adjudicaciones_model->postulantes($_POST)));
+        } else {
+            show_404();
+        }    
+    }
+
 }

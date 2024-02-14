@@ -177,7 +177,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="modalDocentes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalDocentes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -187,7 +187,7 @@
                 <div class="modal-body">
 
                     <div class="row mb-3">
-                        <div class="col-md-4">
+                        <!-- <div class="col-md-4">
                             <div class="mb-3">
                                 <select class="form-select select-tipo-docente" name="">
                                     <option value="" selected>[TODOS]</option>
@@ -201,10 +201,16 @@
                             <div class="form-group pull-right mb-2">
                                 <input type="text" class="search search-postulaciones form-control" placeholder="Buscar">
                             </div>
+                        </div> -->
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-sm shadow-none" placeholder="Escribe aquí..." id="txtBuscador1">
+                                <button type="button" class="input-group-text btn btn-sm btn-primary shadow-none btn-search-1">Buscar</button>
+                            </div>
                         </div>
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table class="table table-bordered results table-postulaciones mb-0">
+                                <table class="table table-bordered results table-postulaciones mb-0" id="tablePostulantes">
                                     <thead>
                                         <tr class="cabecera_tabla_2">
                                             <th>#</th>
@@ -238,7 +244,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="modalPlazas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalPlazas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -248,32 +254,31 @@
                 <div class="modal-body">
 
                     <div class="row mb-3">
-                        <div class="col-md-12">
-                            <div class="form-group pull-right mb-2">
-                                <input type="text" class="search search-plazas form-control" placeholder="Buscar">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-sm shadow-none" placeholder="Escribe aquí..." id="txtBuscador">
+                                <button type="button" class="input-group-text btn btn-sm btn-primary shadow-none btn-search">Buscar</button>
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-plazas mb-0">
+                         
+                                <table class="table table-bordered table-plazas mb-0" id="tablePlazas" width="100%">
                                     <thead>
                                         <tr class="cabecera_tabla_2">
                                             <th>#</th>
                                             <th>Código Plaza</th>
                                             <th>Insitución Educativa</th>
-                                            <th>Modalidad</th>
-                                            <th>Nivel</th>
                                             <th>Especialidad</th>
-                                            <th>Jornada</th>
-                                            <th>Tipo Vacante</th>
-                                            <th>Motivo</th>
+                                            <th>Jordana</th>
+                                            <th>Tipo vacante</th>
+                                            <th>Motivo vacante</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     </tbody>
                                 </table>
-                            </div>
+                         
                         </div>
                     </div>
 
