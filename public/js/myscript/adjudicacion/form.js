@@ -50,6 +50,7 @@ const AppAdjudicacionAdmin = () => {
                         self.clicks();
                         sweet2.loading(false);
                     });
+
                 },
                 isValid: () => {
                     return Object.keys(self.plaza).length > 0 && Object.keys(self.postulacion).length > 0;
@@ -70,7 +71,7 @@ const AppAdjudicacionAdmin = () => {
                                                 status = 'REGISTRADO';
                                             break;
                                             case 2:
-                                                status = 'NO SE PRESENTO';
+                                                status = '<span class="text-danger fw-bold">NO SE PRESENTO</span>';
                                             break;
                                             case 3:
                                                 status = '<span class="text-warning fw-bold">EN ESPERA</span>';
@@ -86,6 +87,7 @@ const AppAdjudicacionAdmin = () => {
                                                     <td>${postulacion.puntaje ?? 0}</td>
                                                     <td>${postulacion.fecha_registro}</td>
                                                     <td>${status}</td>
+                                                    <td class="text-center">${!postulacion.intentos_adjudicacion ? 0 : postulacion.intentos_adjudicacion}</td>
                                                     <td>
                                                         <input class="form-check-input" name="check_docente" type="radio" value="${postulacion.id}">
                                                     </td>
@@ -109,6 +111,16 @@ const AppAdjudicacionAdmin = () => {
                                 }
                                 tbody.innerHTML = html;
                             });
+
+                            $('.table-postulaciones').DataTable({
+                                "destroy": true,
+                                "ordering": false,
+                                "bAutoWidth": false,
+                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],   
+                                "oLanguage": dt_Idioma,
+                                "paging":true		        	
+                            }); 
+                            
                         }
 
                         document.querySelector(".search-postulaciones").addEventListener('input', function () {
@@ -369,7 +381,40 @@ const AppAdjudicacionAdmin = () => {
                             self.modalFirmas.show();
                         });
                     });
-                    
+
+                    const btnObtenerFechaActual = document.querySelectorAll('.btn-obtener-fecha-actual');
+
+                    btnObtenerFechaActual.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            $.ajax({
+                                url: window.AppMain.url + `admin/adjudicaciones/datedefault`,
+                                method: 'get',
+                                dataType: 'json',
+                                processData: false,
+                                contentType: false,
+                            })
+                                .done(function ({ success, data, message }) {
+
+                                    document.querySelector('input[name="fecha_registro"]').value = data;
+                                })
+                                .fail(function (xhr, status, error) {
+                                    sweet2.show({ type: 'error', text: error });
+                                });
+                        })
+                    });
+
+                    const btnObtenerFechaInicioFin = document.querySelectorAll('.btn-obtener-fecha-inicio-fin');
+                    btnObtenerFechaInicioFin.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+
+                            document.querySelector('input[name="fecha_inicio"').value = '2024-03-01';
+                            document.querySelector('input[name="fecha_final"').value = '2024-12-31';
+
+
+                        })
+                    });
+
+
                     const btnFirmaAdd = document.querySelectorAll('.btn-firma-add');
                     btnFirmaAdd.forEach(btn => {
                         btn.addEventListener('click', (e) => {
@@ -410,8 +455,10 @@ const AppAdjudicacionAdmin = () => {
 
                     const formAdjudicacion = document.getElementById('formAdjudicacion');
                     if (formAdjudicacion) {
+
                         formAdjudicacion.addEventListener('submit', (e) => {
                             e.preventDefault();
+
                             if (!self.isValid()) {
                                 sweet2.show({type:'error', text:'Debe de seleccionar un docente y una plaza'});
                                 return;

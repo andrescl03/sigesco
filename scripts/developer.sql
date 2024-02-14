@@ -415,3 +415,9 @@ update `tipo_archivos` set `edit` = 0 where edit is null;
 /******************************* 13/02/2024 ****************/
 
 update postulaciones set estado = 'revisado' where estado = 'rechazado'
+
+ALTER TABLE postulaciones ADD COLUMN `intentos_adjudicacion` INT(11) NULL DEFAULT '0' AFTER `cuss`;
+
+UPDATE cuadro_pun_exp
+SET cpe_s5 = CONCAT(CAST(cpe_s5 AS CHAR), '.00')
+WHERE cpe_s5 NOT LIKE '%.%';
