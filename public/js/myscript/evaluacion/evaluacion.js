@@ -18,19 +18,36 @@ const AppAdjudicacionAdmin = () => {
                 self.initialize();
             },
             methods: {
+                
                 initialize: () => {
                     self.clicks();
                     self.pagination(self.onActionRows);
                 },
                 clicks: () => {
                     const btn = dom.querySelector('#btnBuscador');
+
                     if (btn) {
                         btn.addEventListener('click', (e) => {
                             const input = dom.querySelector('#txtBuscador');
                             if (input) {
-                                sweet2.loading({text:'Buscando...'});
+                                sweet2.loading({ text: 'Buscando...' });
                                 self.table.search(input.value.trim()).draw();
                             }
+                        });
+                    }
+
+                    const btn_expediente_preliminar_a_final = dom.querySelector('#btn-procesar-expedientes-preliminar-final');
+
+                    if (btn_expediente_preliminar_a_final) {
+                        btn_expediente_preliminar_a_final.addEventListener('click', (e) => {
+                            sweet2.show({
+                                type: 'question',
+                                html: '¿Estás seguro que deseas enviar los expedientes con estado CUMPLE a ETAPA FINAL?',
+                                showCancelButton: true,
+                                onOk: () => {
+                                    self.processFilesToFinal();
+                                }
+                            });
                         });
                     }
                     const btnAlls = document.querySelectorAll('.pagination-btn-all');
@@ -270,6 +287,47 @@ const AppAdjudicacionAdmin = () => {
                             contentType: false,
                         })
                         .done(function (response) {
+
+                            /*PENDIENTE*/
+                        /*     if(response.status == 500){
+                                alert("aea");
+                                sweet2.show({type:'error'});
+
+
+                            } */
+
+                            
+                            resolve(response);
+
+
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
+                        });
+                    });
+                }, 
+                processFilesToFinal: (id) => {
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + `evaluacion/convocatoria/${convocatoria_id}/inscripcion/${inscripcion_id}/procesar/expedientes`,
+                            method: 'POST',
+                            dataType: 'json',
+                            data: {},
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function (response) {
+                            
+                            sweet2.loading(false);
+                            sweet2.show({
+                                type: 'success',
+                                text: response.message,
+                                onOk: () => {
+                                    self.table.ajax.reload();
+                                }
+                            });
+
                             resolve(response);
                         })
                         .fail(function (xhr, status, error) {

@@ -128,7 +128,7 @@ class Plazas_model extends CI_Model {
       $estado  = $this->input->post("estado", true);
       $tipo_proceso = $this->input->post("tipo_proceso", true);
       $tipo_convocatoria  = $this->input->post("tipo_convocatoria", true);
-      $ie = $this->input->post("ie", true);
+      $colegio_id = $this->input->post("colegio_id", true);
       $nivel  = $this->input->post("nivel", true);
       $especialidad = $this->input->post("especialidad", true);
       $jornada  = $this->input->post("jornada", true);
@@ -138,7 +138,7 @@ class Plazas_model extends CI_Model {
 
       $data = [
         'codigo_plaza' => $codigo_plaza,
-        'ie' => $ie,
+        'colegio_id' => $colegio_id,
         'especialidad' => $especialidad,
         'tipo_convocatoria' => $tipo_convocatoria,
         'jornada' => $jornada,

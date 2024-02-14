@@ -277,6 +277,18 @@ class Evaluacion extends CI_Controller {
         }    
     }
 
+
+    public function procesar_expedientes($convocatoria_id, $inscripcion_id)
+    {
+        if ($convocatoria_id > 0 && $inscripcion_id > 0) {
+
+            $this->output
+                ->set_content_type('application/json')->set_output(json_encode($this->evaluacion_model->procesarExpedientesPreliminarCumpleFinal($convocatoria_id, $inscripcion_id)));
+        } else {
+            show_404();
+        }
+    }
+    
     public function status() {
         if ($this->input->post()) {
             $this->output
@@ -313,6 +325,9 @@ class Evaluacion extends CI_Controller {
         $this->reporte_excel($convocatoria_id, -1 , 'revisado', 'FICHA_PRELIMINAR');
     }
 
+    public function reporte_excel_final_total($convocatoria_id) {
+        $this->reporte_excel($convocatoria_id, -1 , 'finalizado', 'FICHA_FINAL');
+    }
 
     public function reporte_excel($convocatoria_id, $inscripcion_id, $estado, $ficha) {
         $response = $this->evaluacion_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado, true);

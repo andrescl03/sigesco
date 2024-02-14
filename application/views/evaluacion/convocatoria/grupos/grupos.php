@@ -21,7 +21,7 @@
                                                         <div class="col-sm-12"><input type="text" class="form-control form-control-sm" id="txt_buscador" placeholder="Buscar..."></div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-6">
                                                     <?php
                                                     if (in_array($this->session->userdata("sigesco_tus_iduser"), array('1', '2'))) { ?>
                                                         <button type="button" class="btn btn-sm btn-success me-2 mb-2" data-bs-toggle="modal" data-bs-target="#modalExcelReport">
@@ -30,13 +30,16 @@
                                                         <a type="button" target="_blank" href="<?php echo base_url() . 'evaluacion/convocatoria/' . $datos[0]['con_numero'] . '/inscripcion/preliminar/exportar' ?>" class="btn btn-sm btn-primary me-2 mb-2">
                                                             Reporte General Preliminar
                                                         </a>
+                                                        <a type="button" target="_blank" href="<?php echo base_url() . 'evaluacion/convocatoria/' . $datos[0]['con_numero'] . '/inscripcion/final/exportar' ?>" class="btn btn-sm btn-primary me-2 mb-2">
+                                                            Reporte General Final
+                                                        </a>
 
                                                         <button data-id="<?= $datos[0]['con_numero'] ?>" type="button" id="btn-procesar-expedientes" class="btn btn-sm btn-danger btn-procesar-expedientes mb-2">
                                                             Procesar expedientes de la MPV para esta convocatoria
                                                         </button>
                                                     <?php } ?>
                                                 </div>
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-4">
                                                     <?php
                                                     $totalPostulaciones = 0;
                                                     foreach ($datos as $indice => $dato) {
@@ -45,8 +48,6 @@
                                                     ?>
                                                     <div class="d-flex align-content-start flex-wrap gap-3">
                                                         CANTIDAD DE POSTULANTES PARA LA CONVOCATORIA <?= sprintf('%04d', $datos[0]['con_numero']) . "-" . $datos[0]['con_anio'] ?>:<b><?php echo $totalPostulaciones ?> REGISTROS</b>
-                                                        <!--CANTIDAD DE POSTULANTES PARA LA CONVOCATORIA <?= sprintf('%04d', $datos[0]['con_numero']) . "-" . $datos[0]['con_anio'] ?>:<b>NO DISPONIBLE TEMPORALMENTE</b>-->
-
                                                     </div>
                                                 </div>
                                             </div>

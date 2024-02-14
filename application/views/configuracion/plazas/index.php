@@ -152,7 +152,7 @@
 
                                     <div class="col-md-2 mb-2 mt-1"><b>Institución Educativa:</b></div>
                                     <div class="col-md-10 mb-2">
-                                        <select class="form-select form-select-sm" name="ie" required>
+                                        <select class="form-select form-select-sm" name="colegio_id" required>
                                             <option value="" hidden>Elegir...</option>
                                             <?php foreach ($colegios as $colegio) { ?>
                                                 <option value="<?= $colegio->loc_id ?>" <?= $colegio->loc_id == 1 ? "Selected" : "" ?>><?= $colegio->mod_nombre ?></option>

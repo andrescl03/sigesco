@@ -331,6 +331,7 @@ class Evaluacion_model extends CI_Model {
         return $sql->result_array();  
     }
 
+
     public function pagination() {
       $res = $this->tools->responseDefault();
       try {
@@ -561,5 +562,59 @@ class Evaluacion_model extends CI_Model {
     }
     return $response; 
   }
+
+  public function procesarExpedientesPreliminarCumpleFinal($convocatoria_id, $inscripcion_id)
+  {
+
+    $response = $this->tools->responseDefault();
+
+    try {
+      $dni_especialista = $this->session->userdata("sigesco_dni");
+
+      $sql = "SELECT 
+      pos.*,
+      epe.epe_id, 
+      usu.usu_nombre, 
+      usu.usu_apellidos, 
+      usu.usu_dni,
+      pep.plantilla AS prerequisito_plantilla,
+      pep.estado as prerequisito_estado
+    FROM postulaciones pos
+    INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
+    INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
+    INNER JOIN postulacion_evaluaciones pep ON pep.postulacion_id = pos.id AND pep.promedio = 0  
+    WHERE pos.deleted_at IS NULL 
+    AND pos.convocatoria_id = $convocatoria_id
+    AND pos.inscripcion_id = $inscripcion_id
+    AND pep.estado = 1
+    AND pos.estado = 'revisado'
+    AND epe.epe_especialistaAsignado  = $dni_especialista ";
+
+      $items = $this->db->query($sql)->result_object();
+
+      if(!$items){
+        throw new Exception("No sé encontraron más expedientes con estado CUMPLE en la etapa PRELIMINAR");
+      }
+      $id_postulantes = [];
+      foreach ($items as $item) {
+        $id_postulantes[] = $item->id;
+      }
+      $data = [
+        'estado' => 'finalizado',
+      ];
+
+      $this->db->where_in('id', $id_postulantes);
+      $sql = $this->db->update('postulaciones', $data);
+      $num_rows_affected = $this->db->affected_rows();
+
+      $response['success'] = true;
+      $response['status']  = 200;
+      $response['message'] = 'se proceso correctamente ' . $num_rows_affected . ' registros';
+    } catch (\Exception $e) {
+      $response['message'] = $e->getMessage();
+    }
+    return $response;
+  }
+
 
 }

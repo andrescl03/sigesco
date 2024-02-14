@@ -1273,13 +1273,13 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(0, 10, utf8_decode('ACTA DE ADJUDICACIÓN'), 0, 0, 'C');
         $this->pdf->Ln(6);
         $this->pdf->SetFont('Arial', '', 10);
-        $this->pdf->Cell(0, 10, utf8_decode('CONTRATACIÓN POR RESULTADOS DE LA PUN'), 0, 0, 'C');
+        $this->pdf->Cell(0, 10, utf8_decode('CONTRATACIÓN POR RESULTADOS DE LA PN'), 0, 0, 'C');
         $this->pdf->Ln(5);
         $this->pdf->SetFont('Arial', '', 9);
         $this->pdf->Ln(10);
         // $this->Cell(20, 4,utf8_decode('De conformida con el resultado obtenido en el Proceso para Contratación de Docentes, regulado por la Norma Técnica aprobada con R.M. Nº 023-2015-MINEDU, se adjunta el cargo vacante a:'),'',0, 'L', 0);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('De conformidad con el resultado obtenido en el Proceso para Contratación de Docentes, regulado por la Norma Técnica aprobada con ' . $postulante->numero_documento . '-MINEDU, se adjudica el cargo vacante a:'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('De conformidad con el resultado obtenido en el Proceso para Contratación de Docentes, regulado por la Norma Técnica aprobada con D.S. N° 0020-2023-MINEDU, se adjudica el cargo vacante a:'), 0);
         $this->pdf->Ln(3);
 
         $this->pdf->Ln(5);
@@ -1310,6 +1310,14 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
         $this->pdf->Cell(0, 7, utf8_decode(strtoupper($this->num2letras($postulante->puntaje))), '', 0, 'L', 0);
 
+        $this->pdf->Ln(4);
+
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 7, utf8_decode('Etapa de contratación'), '', 0, 'L', 0);
+        $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
+        $this->pdf->Cell(40, 7, 'Segunda Etapa', '', 0, 'L', 0);
+        
+        
         $this->pdf->Ln(8);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->SetFont('Arial', 'BU', 9);
@@ -1359,10 +1367,14 @@ class ReporteDocumento extends CI_Controller {
         $y = $this->pdf->GetY();
         $x = $this->pdf->GetX();
         $this->pdf->SetXY($x, $y - 1.5);
+
+        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+
+        $this->pdf->Cell(90, 7, utf8_decode('o campo de conocimiento'), '', 0, 'L', 0);
+
         
         
-        
-        $this->pdf->Ln(4);
+        $this->pdf->Ln(5);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'Nivel / Ciclo', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);

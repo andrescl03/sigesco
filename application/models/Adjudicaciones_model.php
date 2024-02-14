@@ -62,6 +62,24 @@ class Adjudicaciones_model extends CI_Model
       return $res;
   }
 
+  public function datedefault()
+  {
+
+    $response = $this->tools->responseDefault();
+
+    try {
+
+      $response['data'] = $this->tools->getDateHour("Y-m-d H:i");
+      $response['success'] = true;
+      $response['message'] = 'se obtuvo correctamente la información';
+
+      $response['status']  = 200;
+    } catch (\Exception $e) {
+      $response['message'] = $e->getMessage();
+    }
+    return $response;
+  }
+
   public function resource() {
     $response = $this->tools->responseDefault();
     try {
@@ -92,7 +110,7 @@ class Adjudicaciones_model extends CI_Model
                 INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
                 INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
                 INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id     
-                WHERE P.deleted_at IS NULL AND P.id = ?";
+                WHERE P.deletede?";
         $adjudicacion->postulacion = $this->db->query($sql, ['id' => $adjudicacion->postulacion_id])->row();
         $sql = "SELECT
                   US.*
@@ -261,7 +279,8 @@ class Adjudicaciones_model extends CI_Model
               LEFT JOIN adjudicaciones AD ON AD.postulacion_id = P.id AND AD.deleted_at IS NULL               
               WHERE P.deleted_at IS NULL
               AND P.estado = 'finalizado'
-              AND P.estado_adjudicacion IN (0, 3)
+              AND P.estado_adjudicacion IN (0,2, 3) 
+              AND intentos_adjudicacion <  2
               AND AD.id IS NULL";
     return $this->db->query($sql)->result_object();
   }
@@ -278,6 +297,13 @@ class Adjudicaciones_model extends CI_Model
             throw new Exception("No sé encuentra registrado en está adjudicación");
         }
 
+        $intentos_postulante = (!$postulacion->intentos_adjudicacion) ? 1 : (intval($postulacion->intentos_adjudicacion) + 1);
+
+      if ($intentos_postulante <= 2) {
+
+        $this->db->update('postulaciones', ['estado_adjudicacion' => $status, 'intentos_adjudicacion' => $intentos_postulante], array('id' => $id));
+      }
+      
         $this->db->update('postulaciones', ['estado_adjudicacion' => $status], array('id' => $id));
         $postulaciones = $this->getPostulaciones(); 
     
@@ -310,7 +336,7 @@ class Adjudicaciones_model extends CI_Model
                       E.esp_descripcion AS especialidad_nombre,
                       GI.gin_id AS inscripcion_id,
                       C.con_tipo AS con_tipo,
-                      PE.puntaje,
+                      CPE.cpe_s5 AS puntaje,
                       P.distrito AS distrito_nombre,
                       P.provincia AS provincia_nombre,
                       P.departamento AS departamento_nombre
@@ -322,6 +348,7 @@ class Adjudicaciones_model extends CI_Model
                   INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
                   INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
                   INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
+                  INNER JOIN cuadro_pun_exp CPE ON P.numero_documento = CPE.cpe_documento
                   WHERE P.deleted_at IS NULL AND P.id = ?";
           $adjudicacion->postulacion = $this->db->query($sql, ['id' => $adjudicacion->postulacion_id])->row();
 
