@@ -16,7 +16,7 @@
     .listbox {
         list-style: none;
         border: 1px solid #ccc;
-        width: 300px;
+        /*width: 300px;*/
         height: 500px;
         overflow-y: auto;
         margin-bottom: 15px;
