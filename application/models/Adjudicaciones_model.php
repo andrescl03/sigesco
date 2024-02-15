@@ -127,7 +127,7 @@ class Adjudicaciones_model extends CI_Model
               LEFT JOIN adjudicaciones AD ON AD.plaza_id = PL.plz_id
               INNER JOIN modalidades moda ON moda.mod_id = PL.mod_id
               INNER JOIN niveles as nive ON nive.niv_id = PL.nivel_id
-              AND AD.id IS NULL";
+              WHERE AD.id IS NULL OR AD.deleted_at IS NOT NULL";
       $plazas = []; // $this->db->query($sql)->result_object();
 
       $sql = "SELECT * FROM usuarios";
@@ -467,6 +467,7 @@ class Adjudicaciones_model extends CI_Model
         $filterText = '';
         if ($search) {
             $value = $search['value'];
+
             if (strlen($value) > 0) {
                 $filterText = " AND (
                                     plz.ie LIKE('%{$value}%') 
@@ -476,20 +477,22 @@ class Adjudicaciones_model extends CI_Model
                                   OR plz.nivel LIKE('%{$value}%')
                                   OR plz.tipo_vacante LIKE('%{$value}%')
                                 ) ";
+
             }
         }
 
         $sql = "SELECT 
                   plz.*
                 FROM plazas plz
-                LEFT JOIN adjudicaciones adj ON adj.plaza_id = plz.plz_id
+                LEFT JOIN adjudicaciones adj ON adj.plaza_id = plz.plz_id 
                 WHERE plz.deleted_at IS NULL 
-                AND adj.id IS NULL
+                AND (adj.id IS NULL 
+                OR adj.deleted_at is not null)
                 $filterText
                 ORDER BY plz.plz_id DESC";
 
-
         $items = $this->db->query($sql)->result_object();
+
 
         $recordsTotal = count($items);
 
