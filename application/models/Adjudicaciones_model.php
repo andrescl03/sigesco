@@ -41,7 +41,7 @@ class Adjudicaciones_model extends CI_Model
                   INNER JOIN plazas AS PLA ON PLA.plz_id = AD.plaza_id
                   WHERE AD.deleted_at IS NULL
                   $filterText
-                  ORDER BY AD.id DESC";
+                  ORDER BY fecha_registro desc";
           $adjudicaciones = $this->db->query($sql)->result_object();
           $recordsTotal = count($adjudicaciones);
 
