@@ -449,3 +449,7 @@ CREATE TABLE `adjudicaciones_usuario_firmas` (
 ALTER TABLE usuarios ADD COLUMN `usu_firma` VARCHAR(255) NULL DEFAULT NULL AFTER `usu_pass`;
 
 ALTER TABLE plazas ADD COLUMN `nivel` VARCHAR(255) NULL DEFAULT NULL;
+
+
+/*************************** 16/02/2024 *************************/
+ALTER TABLE postulacion_evaluaciones ADD COLUMN `prelacion_id` INT(11) NULL DEFAULT '0' AFTER `promedio`;

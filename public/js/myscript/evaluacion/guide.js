@@ -19,7 +19,6 @@ const viewfichaDetail = (pageActive = 1) => {
 	const textWraps = [];
 
 	function getStatusName (id) {
-		console.log(id);
 		const options = [
 			'NO CUMPLE',
 			'CUMPLE',
@@ -256,6 +255,7 @@ const viewfichaDetail = (pageActive = 1) => {
 			total_question: 0,
 			total: 0,
 			especialidad_prelaciones: data.especialidad_prelaciones,
+			especialidad_id: data.especialidad_id,
 			tipo_id: data.convocatoria.con_tipo,
 			revisado: 0,
 			modalPrerequisito: new bootstrap.Modal(document.querySelector('#modalPrerequisito'))
@@ -525,6 +525,49 @@ const viewfichaDetail = (pageActive = 1) => {
 
 			}
 
+			if (Number(self.ficha.promedio) == 1) {
+				const options = [];
+				self.especialidad_prelaciones.forEach(o => {
+					options.push({ value: o.id, text: o.prelacion });
+				});
+				element = createSelect(
+					options,
+					{ class: 'form-control text-center', id: 'prelacionFicha' },
+					{
+						change: (e) => {
+							self.ficha.evaluacion_prelacion_id = e.target.value;
+						}
+					},
+					self.ficha.evaluacion_prelacion_id
+				);
+
+				const colr1 = document.createElement('div');
+				colr1.classList.add('row');
+
+					const cols0 = document.createElement('div');
+					cols0.classList.add('col-md-7');
+
+					const cols1 = document.createElement('div');
+					cols1.classList.add('col-md-5', 'float-end');
+
+						const divgroup = document.createElement('div');
+						divgroup.classList.add('input-group');
+
+							const span1 = document.createElement('span');
+							span1.classList.add('input-group-text');
+							span1.innerText = 'Prelación';
+							span1.style.minWidth = '100px';
+
+						divgroup.appendChild(span1);
+						divgroup.appendChild(element);
+
+					cols1.appendChild(divgroup);
+
+				colr1.appendChild(cols0);
+				colr1.appendChild(cols1);
+				domBody.appendChild(colr1);
+			}
+
 			const alertDiv = document.createElement('div');
 			alertDiv.id = 'divAlert';
 			domBody.appendChild(alertDiv);
@@ -663,7 +706,6 @@ const viewfichaDetail = (pageActive = 1) => {
 		}
 
 		const saveAll = (any, page = 1) => {
-			console.log(page);
 			if (calculation()) {
 				sweet2.show({
 					type: 'question',
@@ -685,8 +727,10 @@ const viewfichaDetail = (pageActive = 1) => {
 						formData.append('revisado', self.revisado);
 						if (Number(self.ficha.promedio) == 1) {
 							formData.append('evaluacion_estado', 1);			
+							formData.append('evaluacion_prelacion_id', self.ficha.evaluacion_prelacion_id);
 						} else {
 							formData.append('evaluacion_estado', self.ficha.evaluacion_estado);
+							formData.append('evaluacion_prelacion_id', 0);
 						}
 						sweet2.loading();
 						setFicha(formData)
@@ -946,6 +990,12 @@ const viewfichaDetail = (pageActive = 1) => {
 		}
 
 		const viewFicha = () => {
+			let prelacion = 'No Disponible';
+			self.especialidad_prelaciones.forEach(o => {
+				if (o.id == self.ficha.evaluacion_prelacion_id) {
+					prelacion = o.prelacion;
+				}
+			});
 			let total = 0;
 			let ls = 0;
 			let lg = 0;
@@ -1071,6 +1121,9 @@ const viewfichaDetail = (pageActive = 1) => {
                 </table>
 				${
 					Number(self.ficha.promedio) == 0 ? `<div class="col-md-12"><h5>Estado: ${getStatusName(Number(self.ficha.evaluacion_estado))}</h5></div>` : ``
+				}
+				${
+					Number(self.ficha.promedio) == 1 ? `<div class="col-md-12"><h5>Prelación: ${prelacion}</h5></div>` : ``
 				}
 			</div>`;
 			domBody.innerHTML = html;

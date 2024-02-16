@@ -1118,6 +1118,7 @@ class Postulaciones_model extends CI_Model
             $estado    = $this->input->post("estado", true);
             $evaluacion_estado    = $this->input->post("evaluacion_estado", true);
             $revisado    = $this->input->post("revisado", true);
+            $evaluacion_prelacion_id = $this->input->post("evaluacion_prelacion_id", true);
 
             $sql = "SELECT 
                         P.*
@@ -1154,6 +1155,7 @@ class Postulaciones_model extends CI_Model
                     'plantilla'      => $plantilla,
                     'puntaje'        => $puntaje,
                     'estado'         => $evaluacion_estado,
+                    'prelacion_id'   => $evaluacion_prelacion_id
                 ];
                 $this->db->update('postulacion_evaluaciones', $update, array('postulacion_id'=>$id, 'ficha_id'=>$ficha_id));
             } else {
@@ -1164,6 +1166,7 @@ class Postulaciones_model extends CI_Model
                     'postulacion_id' => $id,
                     'fecha_registro' => $this->tools->getDateHour(),
                     'estado'         => $evaluacion_estado,
+                    'prelacion_id'   => $evaluacion_prelacion_id,
                     'orden'          => $orden,
                     'promedio'       => $promedio
                 ];
@@ -1250,7 +1253,8 @@ class Postulaciones_model extends CI_Model
                         P.*,
                         PE.plantilla AS evaluacion_plantilla,
                         PE.estado AS evaluacion_estado,
-                        PE.puntaje AS evaluacion_puntaje
+                        PE.puntaje AS evaluacion_puntaje,
+                        PE.prelacion_id AS evaluacion_prelacion_id
                     FROM periodo_fichas AS P 
                     INNER JOIN periodo_ficha_especialidades AS PFE ON PFE.periodo_ficha_id = P.id
                     LEFT JOIN postulacion_evaluaciones AS PE ON P.id = PE.ficha_id AND PE.postulacion_id = {$id} AND PE.deleted_at IS NULL
