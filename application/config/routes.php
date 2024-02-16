@@ -104,6 +104,7 @@ $route['admin/adjudicaciones/store'] = 'adjudicaciones/store';
 $route['admin/adjudicaciones/(:num)/remove'] = 'adjudicaciones/remove/$1';
 $route['admin/adjudicaciones/(:num)/update'] = 'adjudicaciones/update/$1';
 $route['admin/adjudicaciones/datedefault'] = 'adjudicaciones/datedefault';
+$route['admin/adjudicaciones/reporte'] = 'adjudicaciones/generar_reporte_adjudicados';
 
 $route['configuracion/periodos/store'] = 'configuracion/registraPeriodo';
 $route['configuracion/periodos/(:num)'] = 'configuracion/editarPeriodo/$1';
