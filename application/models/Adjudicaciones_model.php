@@ -53,7 +53,7 @@ class Adjudicaciones_model extends CI_Model
               $value = $search['value'];
               if (strlen($value) > 0) {
                   $filterText
-                              = " AND PLA.ie LIKE('%{$value}%') 
+                              = " AND ( PLA.ie LIKE('%{$value}%') 
                                   OR POS.numero_documento LIKE('%{$value}%')
                                   OR POS.nombre LIKE('%{$value}%')
                                   OR POS.apellido_paterno LIKE('%{$value}%')
@@ -62,7 +62,7 @@ class Adjudicaciones_model extends CI_Model
                                   OR PLA.codigoPlaza LIKE('%{$value}%')
                                   OR MODA.mod_abreviatura LIKE('%{$value}%')
                                   OR NIVE.niv_descripcion LIKE('%{$value}%')
-                                  OR PLA.especialidad LIKE('%{$value}%')";
+                                  OR PLA.especialidad LIKE('%{$value}%') )";
                                    
               }
           }
