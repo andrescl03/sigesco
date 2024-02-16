@@ -1393,7 +1393,7 @@ class ReporteDocumento extends CI_Controller {
             $nivel_nombre = 'Avanzado';
         }
         if($plaza->nivel_id == 6){
-            $nivel_nombre = 'IOnicial/Primaria';
+            $nivel_nombre = 'Inicial/Primaria';
         }
         if($plaza->nivel_id == 7){
             $nivel_nombre = 'Primaria';
@@ -2609,7 +2609,7 @@ class ReporteDocumento extends CI_Controller {
             $nivel_nombre = 'Avanzado';
         }
         if($plaza->nivel_id == 6){
-            $nivel_nombre = 'IOnicial/Primaria';
+            $nivel_nombre = 'Inicial/Primaria';
         }
         if($plaza->nivel_id == 7){
             $nivel_nombre = 'Primaria';
