@@ -34,7 +34,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-2" >
-                                                                <button type="button" target="_blank" class="btn-reporte-adjudicados btn btn-sm btn-primary">
+                                                                <button type="button" class="btn-reporte-adjudicados btn btn-sm btn-primary">
                                                                     Reporte adjudicados
                                                                 </button>
                                                             </div>

@@ -47,6 +47,27 @@ class Plazas_model extends CI_Model {
       return $response; 
     }
 
+  public function f_details_plazas()
+  {
+    $sql = "SELECT 
+      plz.*,
+      moda.mod_abreviatura,
+      nive.niv_descripcion
+    FROM plazas plz
+    LEFT JOIN adjudicaciones adj ON adj.plaza_id = plz.plz_id
+    INNER JOIN modalidades moda ON plz.mod_id = moda.mod_id
+    INNER JOIN niveles nive ON nive.niv_id =  plz.nivel_id
+    WHERE plz.deleted_at IS NULL 
+    AND (adj.id IS NULL 
+    OR adj.deleted_at is not null)
+    ORDER BY plz.plz_id DESC";
+    $plazas = $this->db->query($sql)->result_object();
+
+
+    return $plazas;
+  }
+
+  
     public function pagination() {
       $res = $this->tools->responseDefault();
       try {
