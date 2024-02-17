@@ -123,7 +123,8 @@ class Adjudicaciones extends CI_Controller {
 
         $ficha = 'REPORTE GENERAL DE ADJUDICADOS';
 
-        $records = $this->adjudicaciones_model->f_details_adjudicados();
+
+        $records = $this->adjudicaciones_model->f_details_adjudicados($_POST);
 
         file_put_contents('log.txt', shell_exec('locale -a'), FILE_APPEND);
         set_time_limit(0);

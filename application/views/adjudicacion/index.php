@@ -34,9 +34,9 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-2" >
-                                                                <a type="button" target="_blank" href="<?php echo base_url() . 'admin/adjudicaciones/reporte' ?>" class="btn btn-sm btn-primary">
+                                                                <button type="button" target="_blank" class="btn-reporte-adjudicados btn btn-sm btn-primary">
                                                                     Reporte adjudicados
-                                                                </a>
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>

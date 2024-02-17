@@ -6,7 +6,8 @@ const AppAdjudicacionAdmin = () => {
                 return {
                     table: {},
                     plaza: {},
-                    postulacion: {}
+                    postulacion: {},
+                    valueBuscador: ''
                 }
             },
             mounted: function () {
@@ -31,7 +32,50 @@ const AppAdjudicacionAdmin = () => {
                             }
                         });                        
                     });
-           
+
+                    const btnReporteAdjudicados = dom.querySelectorAll('.btn-reporte-adjudicados');
+
+                    btnReporteAdjudicados.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+ 
+                            if (self.valueBuscador != null) {
+                                let formData = new FormData();
+                                formData.append('value', self.valueBuscador);
+                                sweet2.loading();
+                                $.ajax({
+                                    url: window.AppMain.url + `admin/adjudicaciones/reporte`,
+                                    method: 'POST',
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false,
+                                    xhrFields: {
+                                        responseType: 'blob'
+                                    },
+                                    success: function (data, status, xhr) {
+                                        sweet2.loading(false);
+                                        var filename = "";
+                                        var disposition = xhr.getResponseHeader('Content-Disposition');
+                                        if (disposition && disposition.indexOf('attachment') !== -1) {
+                                            var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                                            var matches = filenameRegex.exec(disposition);
+                                            if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                                        }
+                                        var type = xhr.getResponseHeader('Content-Type');
+                                        var blob = new Blob([data], { type: type });
+
+                                         var link = document.createElement('a');
+                                        link.href = window.URL.createObjectURL(blob);
+                                        link.download = filename;
+                                        link.click();
+                                    },
+                                    error: function (xhr, status, error) {
+                                        sweet2.show({ type: 'error', text: error });
+                                    }
+                                });
+                            }
+                        })
+                    })
+
                 },
                 getResource: (formData) => {
                     return new Promise((resolve, reject)=>{
@@ -112,9 +156,11 @@ const AppAdjudicacionAdmin = () => {
                                "dataType": "json",
                                "data": {}
                             },
-                            "fnDrawCallback": function(oSettings, json) {
+                            "fnDrawCallback": function (oSettings, json) {
                                 const response = oSettings.json;
                                 if (response.success) {
+                                    const input = dom.querySelector('#txt_buscador');
+                                    self.valueBuscador = input.value.trim();
                                     _callback();
                                 }
                             },

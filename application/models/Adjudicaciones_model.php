@@ -11,10 +11,29 @@ class Adjudicaciones_model extends CI_Model
   public function index() {
     return [];
   }
+ 
 
-
-  public function f_details_adjudicados()
+  public function f_details_adjudicados($POST)
   {
+    
+    $value = $this->input->post("value", true);
+
+    $filterText = '';
+    if ($value) {
+      if (strlen($value) > 0) {
+        $filterText
+        = " AND ( PLA.ie LIKE('%{$value}%') 
+                            OR POS.numero_documento LIKE('%{$value}%')
+                            OR POS.nombre LIKE('%{$value}%')
+                            OR POS.apellido_paterno LIKE('%{$value}%')
+                            OR POS.apellido_materno LIKE('%{$value}%')
+                            OR CONCAT(POS.nombre, ' ', POS.apellido_paterno, ' ', POS.apellido_materno) LIKE('%{$value}%')
+                            OR PLA.codigoPlaza LIKE('%{$value}%')
+                            OR MODA.mod_abreviatura LIKE('%{$value}%')
+                            OR NIVE.niv_descripcion LIKE('%{$value}%')
+                            OR PLA.especialidad LIKE('%{$value}%') )";
+      }
+    }
 
     $sql = "SELECT 
     AD.*,
@@ -32,12 +51,12 @@ class Adjudicaciones_model extends CI_Model
           INNER JOIN plazas AS PLA ON PLA.plz_id = AD.plaza_id
           INNER JOIN modalidades AS MODA ON PLA.mod_id = MODA.mod_id
           INNER JOIN niveles AS NIVE ON NIVE.niv_id = PLA.nivel_id
-          WHERE AD.deleted_at IS NULL";
+          WHERE AD.deleted_at IS NULL $filterText
+                  ORDER BY fecha_registro desc";
 
     $adjudicaciones = $this->db->query($sql)->result_object();
     return $adjudicaciones;
   }
-
 
   public function pagination($request) {
       $response = $this->tools->responseDefault();
