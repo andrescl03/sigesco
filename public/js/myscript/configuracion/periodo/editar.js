@@ -383,6 +383,8 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 // Crear un elemento de título de tarjeta (card-title)
                 var titleElement = document.createElement('h5');
                 titleElement.classList.add('card-title');
+                titleElement.style.height = '60px';
+                titleElement.style.overflowY = 'hidden';
                 titleElement.textContent = ficha.nombre;
 
                 // Crear un elemento de subtítulo de tarjeta (card-subtitle)
@@ -391,7 +393,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 subtitleElement.textContent = ficha.promedio == 1 ? 'Evaluado' : 'Ficha';
 
                 // Crear un elemento de texto de tarjeta (card-text)
-                var textElement = document.createElement('p');
+                var textElement = document.createElement('div');
                 textElement.classList.add('card-text', 'mb-3');
                 textElement.style.height = '75px';
                 textElement.style.overflowY = 'hidden';

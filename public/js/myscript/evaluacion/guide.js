@@ -525,7 +525,7 @@ const viewfichaDetail = (pageActive = 1) => {
 
 			}
 
-			if (Number(self.ficha.promedio) == 1) {
+			if (Number(self.ficha.promedio) == 1 && !isPUN()) {
 				const options = [];
 				self.especialidad_prelaciones.forEach(o => {
 					options.push({ value: o.id, text: o.prelacion });
@@ -1123,7 +1123,7 @@ const viewfichaDetail = (pageActive = 1) => {
 					Number(self.ficha.promedio) == 0 ? `<div class="col-md-12"><h5>Estado: ${getStatusName(Number(self.ficha.evaluacion_estado))}</h5></div>` : ``
 				}
 				${
-					Number(self.ficha.promedio) == 1 ? `<div class="col-md-12"><h5>Prelación: ${prelacion}</h5></div>` : ``
+					Number(self.ficha.promedio) == 1 && !isPUN() ? `<div class="col-md-12"><h5>Prelación: ${prelacion}</h5></div>` : ``
 				}
 			</div>`;
 			domBody.innerHTML = html;
