@@ -267,7 +267,7 @@ class Configuracion extends CI_Controller
         $objPHPExcel->setActiveSheetIndex(0);
         //Obtengo el numero de filas del archivo							
         $numRows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
-        $detalle_cabecera = ["N°", "DOCUMENTO_DE_IDENTIDAD", "APELLIDO_PATERNO", "APELLIDO_MATERNO", "NOMBRES", "ID_ESPECIALIDAD", "S1", "S2", "S3", "S4", "S5", "ORDEN DE MERITO","AFILIACION","CUSS"];
+        $detalle_cabecera = ["N°", "DOCUMENTO_DE_IDENTIDAD", "APELLIDO_PATERNO", "APELLIDO_MATERNO", "NOMBRES", "ID_ESPECIALIDAD", "S1", "S2", "S3", "S4", "S5", "ORDEN DE MERITO","AFILIACION","CUSPP"];
         $letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L","M","N"];
         $cumple = 1;
         for ($i = 0; $i < count($letras); $i++) {
