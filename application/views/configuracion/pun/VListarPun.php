@@ -13,7 +13,7 @@
                 <th class="text-center">S3</th>
                 <th class="text-center">ORDEN DE MERITO</th>
                 <th class="text-center">TIPO DE AFILIACION</th>
-                <th class="text-center">CUSS</th>
+                <th class="text-center">CUSPP</th>
 			</tr>
 		</thead>
 		<tbody>

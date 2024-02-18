@@ -1209,7 +1209,7 @@ const AppConvovatoriaWeb = () => {
                                                     <div class="col-lg-7">${item.fechatermino_rd}</div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-lg-5">Fecha de termino</div>
+                                                    <div class="col-lg-5">Cantidad de meses</div>
                                                     <div class="col-lg-7">${item.cantidad_mesesrd}</div>
                                                 </div>
                                             </div>`;

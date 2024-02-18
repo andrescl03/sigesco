@@ -157,7 +157,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="mb-3 row">
-                                                            <label class="col-xl-4 col-lg-4 col-form-label">CUSS</label>
+                                                            <label class="col-xl-4 col-lg-4 col-form-label">CUSPP</label>
                                                             <div class="col-xl-8 col-lg-8">
                                                                 <input type="text" name="cuss" class="form-control form-control-solid form-control-validate  input-number form-input-validate" maxlength="50">
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
@@ -643,7 +643,7 @@
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header bg-danger text-white">
-                                                        <h5 class="modal-title" id="exampleModalLabel">RESUMEN</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">RESUMEN DE MI POSTULACIÓN</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body p-4" id="previewPostulant">

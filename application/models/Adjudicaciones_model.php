@@ -11,6 +11,52 @@ class Adjudicaciones_model extends CI_Model
   public function index() {
     return [];
   }
+ 
+
+  public function f_details_adjudicados($POST)
+  {
+    
+    $value = $this->input->post("value", true);
+
+    $filterText = '';
+    if ($value) {
+      if (strlen($value) > 0) {
+        $filterText
+        = " AND ( PLA.ie LIKE('%{$value}%') 
+                            OR POS.numero_documento LIKE('%{$value}%')
+                            OR POS.nombre LIKE('%{$value}%')
+                            OR POS.apellido_paterno LIKE('%{$value}%')
+                            OR POS.apellido_materno LIKE('%{$value}%')
+                            OR CONCAT(POS.nombre, ' ', POS.apellido_paterno, ' ', POS.apellido_materno) LIKE('%{$value}%')
+                            OR PLA.codigoPlaza LIKE('%{$value}%')
+                            OR MODA.mod_abreviatura LIKE('%{$value}%')
+                            OR NIVE.niv_descripcion LIKE('%{$value}%')
+                            OR PLA.especialidad LIKE('%{$value}%') )";
+      }
+    }
+
+    $sql = "SELECT 
+    AD.*,
+    POS.numero_documento,
+    POS.nombre,
+    POS.apellido_paterno,
+    POS.apellido_materno,
+    PLA.codigoPlaza,
+    PLA.ie,
+    MODA.mod_abreviatura,
+    NIVE.niv_descripcion,
+    PLA.especialidad
+        FROM adjudicaciones AS AD
+          INNER JOIN postulaciones AS POS ON POS.id = AD.postulacion_id
+          INNER JOIN plazas AS PLA ON PLA.plz_id = AD.plaza_id
+          INNER JOIN modalidades AS MODA ON PLA.mod_id = MODA.mod_id
+          INNER JOIN niveles AS NIVE ON NIVE.niv_id = PLA.nivel_id
+          WHERE AD.deleted_at IS NULL $filterText
+                  ORDER BY fecha_registro desc";
+
+    $adjudicaciones = $this->db->query($sql)->result_object();
+    return $adjudicaciones;
+  }
 
   public function pagination($request) {
       $response = $this->tools->responseDefault();
@@ -25,23 +71,40 @@ class Adjudicaciones_model extends CI_Model
           if ($search) {
               $value = $search['value'];
               if (strlen($value) > 0) {
-                  /*$filterText = " AND AC.name LIKE('%{$value}%') 
-                                  OR TC.name LIKE('%{$value}%')";*/
+                  $filterText
+                              = " AND ( PLA.ie LIKE('%{$value}%') 
+                                  OR POS.numero_documento LIKE('%{$value}%')
+                                  OR POS.nombre LIKE('%{$value}%')
+                                  OR POS.apellido_paterno LIKE('%{$value}%')
+                                  OR POS.apellido_materno LIKE('%{$value}%')
+                                  OR CONCAT(POS.nombre, ' ', POS.apellido_paterno, ' ', POS.apellido_materno) LIKE('%{$value}%')
+                                  OR PLA.codigoPlaza LIKE('%{$value}%')
+                                  OR MODA.mod_abreviatura LIKE('%{$value}%')
+                                  OR NIVE.niv_descripcion LIKE('%{$value}%')
+                                  OR PLA.especialidad LIKE('%{$value}%') )";
+                                   
               }
           }
 
-          $sql = "SELECT 
-                    AD.*,
-                    POS.nombre,
-                    POS.apellido_paterno,
-                    POS.apellido_materno,
-                    PLA.codigoPlaza
-                  FROM adjudicaciones AS AD
-                  INNER JOIN postulaciones AS POS ON POS.id = AD.postulacion_id
-                  INNER JOIN plazas AS PLA ON PLA.plz_id = AD.plaza_id
-                  WHERE AD.deleted_at IS NULL
+        $sql = "SELECT 
+          AD.*,
+          POS.numero_documento,
+          POS.nombre,
+          POS.apellido_paterno,
+          POS.apellido_materno,
+          PLA.codigoPlaza,
+          PLA.ie,
+          MODA.mod_abreviatura,
+          NIVE.niv_descripcion,
+          PLA.especialidad
+        FROM adjudicaciones AS AD
+        INNER JOIN postulaciones AS POS ON POS.id = AD.postulacion_id
+        INNER JOIN plazas AS PLA ON PLA.plz_id = AD.plaza_id
+        INNER JOIN modalidades AS MODA ON PLA.mod_id = MODA.mod_id
+        INNER JOIN niveles AS NIVE ON NIVE.niv_id = PLA.nivel_id
+        WHERE AD.deleted_at IS NULL
                   $filterText
-                  ORDER BY AD.id DESC";
+                  ORDER BY fecha_registro desc";
           $adjudicaciones = $this->db->query($sql)->result_object();
           $recordsTotal = count($adjudicaciones);
 
@@ -124,10 +187,10 @@ class Adjudicaciones_model extends CI_Model
 
       $sql = "SELECT PL.* , moda.*, nive.*
               FROM plazas AS PL
-              LEFT JOIN adjudicaciones AD ON AD.postulacion_id = PL.plz_id
+              LEFT JOIN adjudicaciones AD ON AD.plaza_id = PL.plz_id
               INNER JOIN modalidades moda ON moda.mod_id = PL.mod_id
               INNER JOIN niveles as nive ON nive.niv_id = PL.nivel_id
-              AND AD.id IS NULL";
+              WHERE AD.id IS NULL OR AD.deleted_at IS NOT NULL";
       $plazas = []; // $this->db->query($sql)->result_object();
 
       $sql = "SELECT * FROM usuarios";
@@ -467,6 +530,7 @@ class Adjudicaciones_model extends CI_Model
         $filterText = '';
         if ($search) {
             $value = $search['value'];
+
             if (strlen($value) > 0) {
                 $filterText = " AND (
                                     plz.ie LIKE('%{$value}%') 
@@ -476,20 +540,22 @@ class Adjudicaciones_model extends CI_Model
                                   OR plz.nivel LIKE('%{$value}%')
                                   OR plz.tipo_vacante LIKE('%{$value}%')
                                 ) ";
+
             }
         }
 
         $sql = "SELECT 
                   plz.*
                 FROM plazas plz
-                LEFT JOIN adjudicaciones adj ON adj.plaza_id = plz.plz_id
+                LEFT JOIN adjudicaciones adj ON adj.plaza_id = plz.plz_id 
                 WHERE plz.deleted_at IS NULL 
-                AND adj.id IS NULL
+                AND (adj.id IS NULL 
+                OR adj.deleted_at is not null)
                 $filterText
                 ORDER BY plz.plz_id DESC";
 
-
         $items = $this->db->query($sql)->result_object();
+
 
         $recordsTotal = count($items);
 

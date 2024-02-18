@@ -335,7 +335,7 @@ class Postulaciones_model extends CI_Model
                 $ResumenPedidoID       = 731;
                 $trcID                 = 347;
             } else {
-                $ResumenPedido         = "COMITE DE CONTRATO DOCENTE (EVALUACION EXPEDIENTE) " . $this->tools->getDateHour("Y");
+                $ResumenPedido         = "PROCESO DE CONTRATACION DOCENTE 2024-EVALUACION POR EXPEDIENTE (EVAL EXP) " . $this->tools->getDateHour("Y");
                 $ResumenPedidoID       = 731;
                 $trcID                 = 347;
             }
@@ -359,7 +359,6 @@ class Postulaciones_model extends CI_Model
                 "Distrito"              => strtoupper($distrito_id),
                 "Telefono"              => $numero_telefono,
                 "CorreoElectronico"     => $correo,
-            
                 "ResumenPedido"         => $ResumenPedido,
                 "ResumenPedidoID"       => $ResumenPedidoID,
                 "trcID"                 => $trcID,

@@ -904,7 +904,7 @@ var CAsisgnarExpedientesExp=function(parametros){
 				if(data.link === undefined){					
 					ToastError.fire({title: data.error});
 				}else{
-					SwalErrorCenter.fire({					
+					SwalErrorCenter.fire({						
 						html: "<b class='h4'>"+data.error+"</b>"				
 					}).then((result) => {
 						if (result.isConfirmed) {						
