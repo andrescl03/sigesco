@@ -302,7 +302,9 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     })
                     .done(function ({success, data, message}) {
                         sweet2.show({type: success ? 'success' : 'error', html: message});
-                        resolve(data);
+                        if (success) {
+                            resolve({success, data, message});
+                        }
                     })
                     .fail(function (xhr, status, error) {
                         sweet2.show({type:'error', text:error});
