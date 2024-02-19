@@ -149,6 +149,12 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="container">
+                                                <div class="alert alert-primary d-flex align-items-center" role="alert">
+                                                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                                                    <div>
+                                                        <strong>Recuerda: </strong> Solo puedes crear dos fichas de evaluación de tipo PUN y dos fichas de Tipo Evaluación Expediente
+                                                    </div>
+                                                </div>
                                                 <form id="formficha" class="form-ficha">
                                                     <input type="hidden" class="form-control" name="id">
                                                     <input type="hidden" class="form-control" name="any" required>
