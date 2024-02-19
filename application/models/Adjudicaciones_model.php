@@ -173,7 +173,7 @@ class Adjudicaciones_model extends CI_Model
                 INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
                 INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
                 INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id     
-                WHERE P.deletede?";
+                WHERE P.deleted ?";
         $adjudicacion->postulacion = $this->db->query($sql, ['id' => $adjudicacion->postulacion_id])->row();
         $sql = "SELECT
                   US.*
