@@ -140,7 +140,7 @@ $convocatoria = $data['convocatoria'];
                             <label class="col-xl-4 col-lg-4 col-form-label">Apellido Materno</label>
                             <div class="col-xl-8 col-lg-8">
                                 <input type="text" name="apellido_materno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100" required readonly>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
+                                <div class="invalid-feedback">Por favor este campo es requerido, si usted no cuenta con un apellido, por favor colocar guiones.</div>
                             </div>
                         </div>
                         <div class="form-group row">

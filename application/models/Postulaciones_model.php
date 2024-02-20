@@ -47,9 +47,9 @@ class Postulaciones_model extends CI_Model
                 throw new Exception("No cumple con los datos requeridos          => " . json_encode($response['errors']));
             }
 
-            $apellido_materno = $this->input->post("apellido_materno", true);
-            $apellido_paterno = $this->input->post("apellido_paterno", true);
-            $nombre           = $this->input->post("nombre", true);
+            $apellido_materno = strtoupper($this->input->post("apellido_materno", true));
+            $apellido_paterno = strtoupper($this->input->post("apellido_paterno", true));
+            $nombre           = strtoupper($this->input->post("nombre", true));
             $correo           = $this->input->post("correo", true);
             $confirma_correo  = $this->input->post("confirma_correo", true);
             $direccion        = $this->input->post("direccion", true);
@@ -186,6 +186,7 @@ class Postulaciones_model extends CI_Model
             if (isset($_FILES['archivos'])) {
                 $total  = count($_FILES['archivos']['name']);
                 $files  = array();
+
                 if ($total) {
                     $path = __DIR__ . "/../../public/uploads/";
                     if (!is_dir($path)) {
@@ -230,11 +231,11 @@ class Postulaciones_model extends CI_Model
                 if ($zip->open($zipPath, ZipArchive::CREATE) !== true) {
                     throw new Exception('Failed to create ZIP file');
                 }
-    
+
                 // Add each uploaded file to the ZIP archive
                 foreach ($insert_archivos as $file) {
                     $filePath = __DIR__ . "/../../public" . $file['url']; // Assuming the files are in the "uploads" directory
-                    $zip->addFile($filePath, $file['nombre']);
+                    $zip->addFile($filePath, uniqid(time()) . "-" . $file['nombre']);
                 }
     
                 $zip->close();
@@ -330,18 +331,22 @@ class Postulaciones_model extends CI_Model
             }*/
 
             /** CREACION DEL REGISTRO EN MESA DE PARTE */
+            $tipo = '';
             if ($convocatoria->con_tipo == 1) { // PUN
                 $ResumenPedido         = "PROCESO DE CONTRATACION DOCENTE 2024-EVALUACION POR RESULTADOS (PN) " . $this->tools->getDateHour("Y");
                 $ResumenPedidoID       = 731;
                 $trcID                 = 347;
+                $tipo = 'PN';
             } else {
                 $ResumenPedido         = "PROCESO DE CONTRATACION DOCENTE 2024-EVALUACION POR EXPEDIENTE (EVAL EXP) " . $this->tools->getDateHour("Y");
                 $ResumenPedidoID       = 731;
                 $trcID                 = 347;
+                $tipo = 'Evaluacion expediente';
             }
+
             
             $data = [   
-                "TipoEnvio"             => "api",
+                "TipoEnvio"             => "api",                                                       
                 "TipoDocumentoID"       => $tipo_documento == 1 ? "2101" : "2202",
                 "TipoDocumento"         => $tipo_documento == 1 ? "DNI" : "C.E",
                 "NumeroDocumento"       => $numero_documento,
@@ -365,7 +370,7 @@ class Postulaciones_model extends CI_Model
                 "ADetallePedido"        => "CONTRATO DOCENTE " . $this->tools->getDateHour("Y") . " - " . strtoupper($apellido_paterno . " " . $apellido_materno),
                 "TipoUsuarioID"         => 3,
                 "TipoUsuario"           => "DOCENTE",
-                "AFundamentacionPedido" => strtoupper("convocatorias para el proceso de contratación docente - " . $this->tools->getDateHour("Y")),
+                "AFundamentacionPedido" => strtoupper("convocatorias para el proceso de contratación docente (" . $tipo . ") - " . $this->tools->getDateHour("Y")),
                 "fechaInicio"           => "",
                 "fechaFin"              => "",
                 "requisitos"            => strtoupper(implode(",", $requisitos)),

@@ -141,10 +141,10 @@ class Adjudicaciones extends CI_Controller {
         $hoja->setCellValue('A1', 'REPORTE GENERAL ' . $fecha);
         $hoja->getStyle('A1')->getFont()->setSize(24)->setBold(true);
 
-        $hoja->mergeCells('A1:L1');
+        $hoja->mergeCells('A1:N1');
         $hoja->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         // Encabezados y estilo
-        $headers = ['FECHA DE REGISTRO', 'NÚMERO DE DOCUMENTO', 'NOMBRES', 'APELLIDO PATERNO', 'APELLIDO MATERNO', 'CÓDIGO DE PLAZA', 'FECHA DE INICIO', 'FECHA FIN', 'NOMBRE DE LA I.E', 'MODALIDAD', 'NIVEL', 'ESPECIALIDAD'];
+        $headers = ['FECHA DE REGISTRO', 'NÚMERO DE DOCUMENTO', 'NOMBRES', 'APELLIDO PATERNO', 'APELLIDO MATERNO', 'CÓDIGO DE PLAZA', 'FECHA DE INICIO', 'FECHA FIN', 'NOMBRE DE LA I.E', 'MODALIDAD', 'NIVEL', 'ESPECIALIDAD','CORREO','CELULAR'];
         foreach ($headers as $key => $header) {
             $hoja->setCellValueByColumnAndRow($key, 2, $header);
 
@@ -155,9 +155,9 @@ class Adjudicaciones extends CI_Controller {
         }
 
         // Establecer color de fondo para encabezados
-        $hoja->getStyle('A2:L2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('FF0000');
+        $hoja->getStyle('A2:N2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('FF0000');
 
-        $columnas = range('A', 'L');
+        $columnas = range('A', 'N');
         foreach ($columnas as $columna) {
             $hoja->getColumnDimension($columna)->setAutoSize(true);
         }
@@ -168,7 +168,7 @@ class Adjudicaciones extends CI_Controller {
 
 
             // Aplicar formato de texto a todas las columnas
-            foreach (range('A', 'L') as $columna) {
+            foreach (range('A', 'N') as $columna) {
                 $hoja->getStyle($columna . $cont)->getNumberFormat()->setFormatCode('@');
             }
 
@@ -207,6 +207,12 @@ class Adjudicaciones extends CI_Controller {
 
             $hoja->getStyle('L' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $hoja->setCellValue('L' . $cont, $fila->especialidad, PHPExcel_Cell_DataType::TYPE_STRING);
+
+            $hoja->getStyle('M' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('M' . $cont, $fila->correo, PHPExcel_Cell_DataType::TYPE_STRING);
+
+            $hoja->getStyle('N' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('N' . $cont, $fila->numero_celular, PHPExcel_Cell_DataType::TYPE_STRING);
 
             $cont++;
         }

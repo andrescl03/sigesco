@@ -41,6 +41,8 @@ class Adjudicaciones_model extends CI_Model
     POS.nombre,
     POS.apellido_paterno,
     POS.apellido_materno,
+    POS.correo,
+    POS.numero_celular,
     PLA.codigoPlaza,
     PLA.ie,
     MODA.mod_abreviatura,
