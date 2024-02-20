@@ -138,6 +138,34 @@ const viewfichaDetail = (pageActive = 1) => {
 		return textInput;
 	}
 
+	// Function to create a table element
+	function createTable(datos) {
+		// Crear la tabla dinámicamente
+		var tabla = document.createElement("table");
+				
+		// Crear la fila de encabezado (cabecera)
+		var cabecera = tabla.createTHead();
+		var filaCabecera = cabecera.insertRow();
+
+		// Crear celdas de encabezado
+		for (var key in datos[0]) {
+			var th = document.createElement("th");
+			th.innerHTML = key;
+			filaCabecera.appendChild(th);
+		}
+
+		// Agregar datos a la tabla
+		var cuerpo = tabla.createTBody();
+		for (var i = 0; i < datos.length; i++) {
+			var fila = cuerpo.insertRow();
+			for (var key in datos[i]) {
+				var celda = fila.insertCell();
+				celda.innerHTML = datos[i][key];
+			}
+		}
+		return tabla
+	}
+
 	// Function to create and display a Bootstrap alert
 	function showAlert(message, alertType) {
 		// Create a div element with Bootstrap alert classes
@@ -769,7 +797,7 @@ const viewfichaDetail = (pageActive = 1) => {
 				question?.options.forEach(o => {
 					options.push({
 						text: o.name,
-						value: o.name
+						value: o.score
 					});
 				});
 				element = createSelect(
@@ -815,6 +843,83 @@ const viewfichaDetail = (pageActive = 1) => {
 						validValue(question, e);
 					},
 				});
+			} else if (question.type == 'tabla') {
+				console.log(question.options);
+				var datos = [
+					{ nombre: "Ejemplo1", edad: 25 },
+					{ nombre: "Ejemplo2", edad: 30 },
+					{ nombre: "Ejemplo3", edad: 22 }
+				];
+				datos = question.options;
+				// Crear la tabla dinámicamente
+				var tabla = document.createElement("table");
+				tabla.style.minWidth = '200px';
+
+				const span = document.createElement("span");
+				span.innerHTML = question.value;
+				span.style.fontSize = '18px';
+
+				function rowCalculation(options) {
+					let total = 0;
+					options.forEach(option => {
+						const value = Number(option.value) * Number(option.score);
+						total = total + value;
+					});
+					return Number(total.toFixed(2));
+				}
+
+				// Agregar datos a la tabla
+				var cuerpo = tabla.createTBody();
+				for (var i = 0; i < datos.length; i++) {
+					const option = question.options[i];
+					var fila = cuerpo.insertRow();
+					
+					var celda1 = fila.insertCell();
+					celda1.style.minWidth = '90px';
+					celda1.style.padding = '5px';
+					celda1.innerHTML = option.name;
+
+					var celda2 = fila.insertCell();
+					celda2.style.padding = '5px';
+					celda2.appendChild(createNumberInput(
+						{ 
+							class: 'form-control text-center', 
+							value: '', 
+							placeholder: '0', 
+							value: option.value
+						}, {
+							keyup: (e) => {
+								option.value = e.target.value;
+								span.innerHTML = t;
+								question.value = t;
+								if (Number(question.value) > Number(question.score)) {
+									span.style.color = 'red';
+								} else {
+									span.style.color = '#212529';
+								}
+								calculation();
+							},
+							change: (e) => {
+								option.value = e.target.value;
+								let t = rowCalculation(question.options);
+								span.innerHTML = t;
+								question.value = t;
+								if (Number(question.value) > Number(question.score)) {
+									span.style.color = 'red';
+								} else {
+									span.style.color = '#212529';
+								}
+								calculation();
+							},
+						}
+					));
+				}
+				var filaf = cuerpo.insertRow();
+				var celdaf = fila.insertCell();
+				celdaf.setAttribute('colspan', '2');
+				celdaf.appendChild(span);
+				filaf.appendChild(celdaf);
+				element = tabla;
 			}
 			return element;
 		}
