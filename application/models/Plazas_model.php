@@ -82,7 +82,8 @@ class Plazas_model extends CI_Model {
               $value = $search['value'];
               if (strlen($value) > 0) {
                   $filterText = " AND (
-                                      plz.ie LIKE('%{$value}%') 
+                                       plz.plz_id LIKE('%{$value}%') 
+                                    OR plz.ie LIKE('%{$value}%') 
                                     OR plz.codigo_plaza LIKE('%{$value}%')
                                     OR plz.especialidad LIKE('%{$value}%')
                                     OR plz.jornada LIKE('%{$value}%')
@@ -127,7 +128,7 @@ class Plazas_model extends CI_Model {
     try {
 
       $periodo_id = $this->input->post("periodo_id", true);
-      $estado  = $this->input->post("estado", true);
+      // $estado  = $this->input->post("estado", true);
       $tipo_proceso = $this->input->post("tipo_proceso", true);
       $tipo_convocatoria  = $this->input->post("tipo_convocatoria", true);
       $colegio_id = $this->input->post("colegio_id", true);
@@ -153,7 +154,7 @@ class Plazas_model extends CI_Model {
         'periodo_id' => $periodo_id,
         'fecha_reg' => $this->tools->getDateHour(),
         'tipo_proceso' => $tipo_proceso,
-        'estado' => $estado,
+        'estado' => 1, // $estado
         'mod_id' => $mod_id,
         'ie'=>@$school->mod_nombre,
         'nivel'=>@$school->mod_nivel
@@ -186,7 +187,7 @@ class Plazas_model extends CI_Model {
       }
 
       $periodo_id = $this->input->post("periodo_id", true);
-      $estado  = $this->input->post("estado", true);
+      // $estado  = $this->input->post("estado", true);
       $tipo_proceso = $this->input->post("tipo_proceso", true);
       $tipo_convocatoria  = $this->input->post("tipo_convocatoria", true);
       $ie = $this->input->post("ie", true);
@@ -214,7 +215,7 @@ class Plazas_model extends CI_Model {
         'periodo_id' => $periodo_id,
         'fecha_mod' => $this->tools->getDateHour(),
         'tipo_proceso' => $tipo_proceso,
-        'estado' => $estado,
+        // 'estado' => $estado,
         'mod_id' => $mod_id,
         'ie'=>@$school->mod_nombre,
         'nivel'=>@$school->mod_nivel
@@ -268,11 +269,54 @@ class Plazas_model extends CI_Model {
           if (!$plaza) {
             throw new Exception("No sé encuentra registrado está plaza");
           }
+          $plaza_id = $plaza->plz_id;
+          $sql = "SELECT 
+                    adj.*,
+                    pos.nombre,
+                    pos.apellido_paterno,
+                    pos.apellido_materno,
+                    pos.numero_documento,
+                    pos.correo,
+                    pos.numero_celular
+                  FROM adjudicaciones AS adj
+                  INNER JOIN postulaciones AS pos ON adj.postulacion_id = pos.id
+                  WHERE adj.plaza_id = {$plaza_id}
+                  AND adj.deleted_at IS NULL";
+          $plaza_adjudicaciones = $this->db->query($sql)->result_object();
        
           $response['success'] = true;
           $response['status']  = 200;
-          $response['data']    = compact('plaza');
+          $response['data']    = compact('plaza', 'plaza_adjudicaciones');
           $response['message'] = 'Se proceso correctamente';
+      } catch (\Exception $e) {
+          $response['message'] = $e->getMessage();
+      }
+      return $response;
+  }
+
+  public function liberar(                                    )
+  {
+      $response = $this->tools->responseDefault();
+      try {
+
+          $id = $this->input->post("id", true);
+
+          $sql = "SELECT * FROM adjudicaciones WHERE id = ? AND deleted_at IS NULL";
+          $adjudicacion = $this->db->query($sql, compact('id'))->row();
+          if (!$adjudicacion) {
+            throw new Exception("No sé encuentra registrado está adjudicación");
+          }
+
+          $plaza_id = $adjudicacion->plaza_id;
+          $postulacion_id = $adjudicacion->postulacion_id;
+
+          $this->db->update('adjudicaciones', ['deleted_at' => $this->tools->getDateHour()], array('id' => $id));
+          $this->db->update('postulaciones', ['estado_adjudicacion' => 0, 'intentos_adjudicacion' => 0], array('id' => $postulacion_id));
+          $this->db->update('plazas', ['estado' => 1], array('plz_id' => $plaza_id));
+          
+          $response['success'] = true;
+          $response['status']  = 200;
+          $response['message'] = 'Se libero correctamente correctamente';
       } catch (\Exception $e) {
           $response['message'] = $e->getMessage();
       }

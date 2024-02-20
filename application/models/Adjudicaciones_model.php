@@ -173,7 +173,7 @@ class Adjudicaciones_model extends CI_Model
                 INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
                 INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
                 INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id     
-                WHERE P.deletede?";
+                WHERE P.deleted_at IS NULL";
         $adjudicacion->postulacion = $this->db->query($sql, ['id' => $adjudicacion->postulacion_id])->row();
         $sql = "SELECT
                   US.*
@@ -533,7 +533,8 @@ class Adjudicaciones_model extends CI_Model
 
             if (strlen($value) > 0) {
                 $filterText = " AND (
-                                    plz.ie LIKE('%{$value}%') 
+                                    plz_id LIKE('%{$value}%')
+                                  OR plz.ie LIKE('%{$value}%') 
                                   OR plz.codigo_plaza LIKE('%{$value}%')
                                   OR plz.especialidad LIKE('%{$value}%')
                                   OR plz.jornada LIKE('%{$value}%')
@@ -590,7 +591,8 @@ class Adjudicaciones_model extends CI_Model
             $value = $search['value'];
             if (strlen($value) > 0) {
                 $filterText = " AND (
-                                    P.numero_documento LIKE('%{$value}%')
+                                     P.id LIKE('%{$value}%')
+                                  OR P.numero_documento LIKE('%{$value}%')
                                   OR P.nombre LIKE('%{$value}%')
                                   OR P.apellido_paterno LIKE('%{$value}%') 
                                   OR P.apellido_materno LIKE('%{$value}%')

@@ -278,7 +278,7 @@ const AppAdjudicacionAdmin = () => {
                                                 <a href="${window.AppMain.url}adjudicaciones/${row.id}/edit" class="menu-link text-danger px-3">Editar</a>
                                             </div>
                                             <div class="menu-item px-3 py-2">
-                                                <a href="javascript:void(0);" class="menu-link text-danger px-3 btn-remove" data-id="${row.id}">Eliminar</a>
+                                                <a href="javascript:void(0);" class="menu-link text-danger px-3 btn-remove" data-id="${row.id}">Liberar</a>
                                             </div>
                                         </div>`;
                                     }
@@ -289,6 +289,25 @@ const AppAdjudicacionAdmin = () => {
                  
             
 
+                },
+                liberar: (formData) => {
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + `configuracion/plazas/postulantes/liberar`,
+                            method: 'POST',
+                            dataType: 'json',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function (response) {
+                            resolve(response);
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
+                        });
+                    });
                 },
                 remove: (id) => {
                     return new Promise((resolve, reject)=>{
@@ -331,12 +350,15 @@ const AppAdjudicacionAdmin = () => {
                         btn.addEventListener('click', function (e) {
                             sweet2.show({
                                 type: 'question',
-                                title: '¿Estás seguro de eliminar este elemento?',
+                                title: '¿Estás seguro de liberar esta plaza?',
                                 showCancelButton: true,
                                 onOk: () => {
                                     sweet2.loading();
                                     const id = e.target.getAttribute('data-id');
-                                    self.remove(id)
+                                    const formData = new FormData();
+                                    formData.append('id', id);
+                                    // self.remove(id)
+                                    self.liberar(formData)
                                     .then(({success, data, message}) => {
                                         if (!success) {
                                             throw message;

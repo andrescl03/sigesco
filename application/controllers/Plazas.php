@@ -41,6 +41,12 @@ class Plazas extends CI_Controller {
                 ->set_output(json_encode($this->plazas_model->edit(compact('id'))));
     }
 
+    public function liberar() {
+        return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->plazas_model->liberar()));
+    }
+
     public function pagination() {
         return $this->output
                 ->set_content_type('application/json')
