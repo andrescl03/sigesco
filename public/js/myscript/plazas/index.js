@@ -6,6 +6,8 @@ const AppPlazaIndex = () => {
                 return {
                     table: {},
                     modalPlaza: new bootstrap.Modal(dom.querySelector('#modalPlaza')),
+                    modalAdjudicaciones: new bootstrap.Modal(dom.querySelector('#modalAdjudicaciones')),
+                    modalConfirmAdjudicacion: new bootstrap.Modal(dom.querySelector('#modalConfirmAdjudicacion')),
                     any: 0,
                     niveles: [],
                     colegio_niveles: []
@@ -102,6 +104,39 @@ const AppPlazaIndex = () => {
                             })
                         });
                     });
+
+                    const formConfirmAdjudicacions = dom.querySelectorAll('.form-confirm-adjudicacion');
+                    formConfirmAdjudicacions.forEach(form => {
+                        form.addEventListener('submit', (e) => {
+                            e.preventDefault();
+                            const formData = new FormData(e.target);
+                            const id = self.any;
+                            self.liberar(formData)
+                            .then(({success, data, message}) => {
+                                if (!success) {
+                                    throw message;
+                                }
+                                self.edit(id)
+                                .then((response) => {
+                                    if (!response.success) {
+                                        throw response.message;
+                                    }
+                                    sweet2.show({type:'success', text:message});
+                                    self.modalConfirmAdjudicacion.hide();
+                                    const { plaza_adjudicaciones } = response.data;
+                                    self.renderAwards(plaza_adjudicaciones);
+                                })
+                                .catch(error => {
+                                    sweet2.show({type:'error', text:error});
+                                })
+                                
+                            })
+                            .catch(error => {
+                                sweet2.show({type:'error', text:error});
+                            });
+                        })
+                    });
+
                     return;
                     const btnAlls = document.querySelectorAll('.pagination-btn-all');
                     btnAlls.forEach(btn => {
@@ -263,8 +298,7 @@ const AppPlazaIndex = () => {
                                 "data": "estado",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return row.estado;
-                                    // return `<span class="badge bg-primary" style="font-size: 0.9em;">${row.numero_expediente}</span>`;
+                                    return row.estado == 0 ? `<span class="badge bg-danger">Cerrado</span>` : `<span class="badge bg-success">Abierto</span>`;
                                 }
                             },
                             /*{
@@ -306,6 +340,9 @@ const AppPlazaIndex = () => {
                                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-2 dropdown-menu dropdown-menu-start">
                                                 <div class="menu-item px-3 py-2">
                                                     <a href="#" class="menu-link text-danger px-3 btn-edit" data-id="${row.plz_id}">Editar</a>
+                                                </div>
+                                                <div class="menu-item px-3 py-2">
+                                                    <a href="#" class="menu-link text-danger px-3 btn-award" data-id="${row.plz_id}">Adjudicados</a>
                                                 </div>
                                                 <div class="menu-item px-3 py-2">
                                                     <a href="#" class="menu-link text-danger px-3 btn-remove" data-id="${row.plz_id}">Eliminar</a>
@@ -389,10 +426,95 @@ const AppPlazaIndex = () => {
                             sweet2.show({type:'error', text:error});
                         });
                     });
+                },
+                liberar: (formData) => {
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + `configuracion/plazas/postulantes/liberar`,
+                            method: 'POST',
+                            dataType: 'json',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function (response) {
+                            resolve(response);
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
+                        });
+                    });
                 }, 
+                
+                renderAwards: (items) => {
+                    const tbodies = dom.querySelectorAll('.tbody-adjudicaciones');
+                    tbodies.forEach(tbody => {
+                        let rows = ``;
+                        if (items.length == 0) {
+                            rows = `<tr><td colspan="8" class="text-center">No hay registros para mostrar</td></tr>`;
+                        } else {
+                            items.forEach(o => {
+                                rows += `<tr>
+                                            <td>
+                                                ${o.nombre} ${o.apellido_paterno} ${o.apellido_materno}
+                                                <br>${o.numero_documento}
+                                            </td>
+                                            <td>${o.fecha_registro}</td>
+                                            <td>${o.fecha_inicio}</td>
+                                            <td>${o.fecha_final}</td>
+                                            <td>${o.observacion ?? ''}</td>
+                                            <td>${o.fecha_liberacion ?? ''}</td>
+                                            <td>${
+                                                o.estado == 1 ? `<span class="badge bg-success">Adjudicado</span>` : `<span class="badge bg-info">Liberado</span>`
+                                            }</td>
+                                            <td>
+                                                ${
+                                                    o.estado == 1 ?  
+                                                    `<button class="btn btn-sm btn-danger btn-remove-adj" data-id="${o.id}">Liberar</button>`
+                                                    : ``
+                                                }
+                                            </td>
+                                         </tr>`;
+                            });
+                        }
+                        tbody.innerHTML = rows;
+                    });
+                    const btns = dom.querySelectorAll('.btn-remove-adj');
+                    btns.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            dom.querySelector('#formConfirmAdjudicacion').reset();
+                            const id = e.target.getAttribute('data-id');
+                            dom.querySelector('#adjudicacion_id').value = id;
+                            self.modalConfirmAdjudicacion.show();
+                        });
+                    });
+                },
                 onActionRows: () => {
                     const btnEdits = document.querySelector('#' + container).querySelectorAll('.btn-edit'),
-                        btnRemoves = document.querySelector('#' + container).querySelectorAll('.btn-remove');
+                        btnRemoves = document.querySelector('#' + container).querySelectorAll('.btn-remove'),
+                        btnAwards = document.querySelector('#' + container).querySelectorAll('.btn-award');
+
+
+                    btnAwards.forEach(btn => {
+                        btn.addEventListener('click', async function (e) {
+                            try {
+                                sweet2.loading();
+                                const id = e.target.getAttribute('data-id');
+                                const { success, data, message } = await self.edit(id);
+                                if (!success) {
+                                    throw message;
+                                }
+                                sweet2.loading(false);
+                                self.any = id;
+                                const { plaza_adjudicaciones } = data;
+                                self.renderAwards(plaza_adjudicaciones);
+                                self.modalAdjudicaciones.show();
+                            } catch (error) {
+                                sweet2.show({type:'error', text:error});                             
+                            }
+                        });
+                    });
                     
                     btnEdits.forEach(btn => {
                         btn.addEventListener('click', async function (e) {
@@ -449,7 +571,7 @@ const AppPlazaIndex = () => {
                 },
                 setPlaza: (plaza) => {
                     dom.querySelector('select[name="periodo_id"]').value = plaza.periodo_id;
-                    dom.querySelector('select[name="estado"]').value = plaza.estado;
+                    // dom.querySelector('select[name="estado"]').value = plaza.estado;
                     dom.querySelector('select[name="tipo_proceso"]').value = plaza.tipo_proceso;
                     dom.querySelector('input[name="codigo_plaza"]').value = plaza.codigo_plaza;
                     dom.querySelector('select[name="tipo_convocatoria"]').value = plaza.tipo_convocatoria;

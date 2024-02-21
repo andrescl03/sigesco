@@ -123,13 +123,13 @@ $niveles  = $data['niveles'];
                                         <?php } ?>
                                     </select>
                                 </div>
-                                <div class="col-md-2 mb-2 mt-1"><b>Estado:</b></div>
+                                <!--div class="col-md-2 mb-2 mt-1"><b>Estado:</b></div>
                                 <div class="col-md-4 mb-2">
                                     <select class="form-select form-select-sm" name="estado" required>
                                         <option value="1">Abierto</option>
                                         <option value="0">Cerrado</option>
                                     </select>
-                                </div>
+                                </div-->
 
                                 <div class="w-100"></div>
 
@@ -242,6 +242,68 @@ $niveles  = $data['niveles'];
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-success" form="formReportExcelGeneral">Generar Excel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAdjudicaciones" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">HISTORIAL DE ADJUDICACIONES</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Postulante</th>
+                                        <th scope="col">Fecha Registro</th>
+                                        <th scope="col">Fecha Inicio</th>
+                                        <th scope="col">Fecha Final</th>
+                                        <th scope="col">Observacion</th>
+                                        <th scope="col">Fecha Liberación</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbody-adjudicaciones">
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalConfirmAdjudicacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">LIBERAR ADJUDICACIÓN</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <form id="formConfirmAdjudicacion" class="form-confirm-adjudicacion">
+                            <input type="hidden" name="id" id="adjudicacion_id" value="">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Observación</label>
+                                <textarea class="form-control" name="observacion" id="adjudicacion_observacion" rows="3"></textarea>
+                            </div>
+                        </form>                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" form="formConfirmAdjudicacion">Guardar</button>
                 </div>
             </div>
         </div>

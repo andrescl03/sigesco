@@ -104,7 +104,7 @@ class Adjudicaciones_model extends CI_Model
         INNER JOIN plazas AS PLA ON PLA.plz_id = AD.plaza_id
         INNER JOIN modalidades AS MODA ON PLA.mod_id = MODA.mod_id
         INNER JOIN niveles AS NIVE ON NIVE.niv_id = PLA.nivel_id
-        WHERE AD.deleted_at IS NULL
+        WHERE AD.deleted_at IS NULL AND AD.estado = 1
                   $filterText
                   ORDER BY fecha_registro desc";
           $adjudicaciones = $this->db->query($sql)->result_object();
@@ -175,7 +175,7 @@ class Adjudicaciones_model extends CI_Model
                 INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
                 INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
                 INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id     
-                WHERE P.deleted_at = ?";
+                WHERE P.deleted_at IS NULL";
         $adjudicacion->postulacion = $this->db->query($sql, ['id' => $adjudicacion->postulacion_id])->row();
         $sql = "SELECT
                   US.*
@@ -236,7 +236,8 @@ class Adjudicaciones_model extends CI_Model
         'plaza_id' => $plaza_id,
         'fecha_inicio' => $fecha_inicio,
         'fecha_final' => $fecha_final,
-        'fecha_registro' => $fecha_registro
+        'fecha_registro' => $fecha_registro,
+        'estado'  => 1
       ]);
 
       
@@ -373,7 +374,7 @@ class Adjudicaciones_model extends CI_Model
               AND P.estado = 'finalizado'
               AND P.estado_adjudicacion IN (0,2, 3) 
               AND intentos_adjudicacion <  2
-              AND AD.id IS NULL";
+              AND AD.estado = 1";
     return $this->db->query($sql)->result_object();
   }
 
@@ -535,7 +536,8 @@ class Adjudicaciones_model extends CI_Model
 
             if (strlen($value) > 0) {
                 $filterText = " AND (
-                                    plz.ie LIKE('%{$value}%') 
+                                    plz_id LIKE('%{$value}%')
+                                  OR plz.ie LIKE('%{$value}%') 
                                   OR plz.codigo_plaza LIKE('%{$value}%')
                                   OR plz.especialidad LIKE('%{$value}%')
                                   OR plz.jornada LIKE('%{$value}%')
@@ -551,8 +553,7 @@ class Adjudicaciones_model extends CI_Model
                 FROM plazas plz
                 LEFT JOIN adjudicaciones adj ON adj.plaza_id = plz.plz_id 
                 WHERE plz.deleted_at IS NULL 
-                AND (adj.id IS NULL 
-                OR adj.deleted_at is not null)
+                AND adj.estado = 1
                 $filterText
                 ORDER BY plz.plz_id DESC";
 
@@ -592,7 +593,8 @@ class Adjudicaciones_model extends CI_Model
             $value = $search['value'];
             if (strlen($value) > 0) {
                 $filterText = " AND (
-                                    P.numero_documento LIKE('%{$value}%')
+                                     P.id LIKE('%{$value}%')
+                                  OR P.numero_documento LIKE('%{$value}%')
                                   OR P.nombre LIKE('%{$value}%')
                                   OR P.apellido_paterno LIKE('%{$value}%') 
                                   OR P.apellido_materno LIKE('%{$value}%')
@@ -628,7 +630,7 @@ class Adjudicaciones_model extends CI_Model
                 AND P.estado = 'finalizado'
                 AND P.estado_adjudicacion IN (0,2, 3) 
                 AND intentos_adjudicacion <  2
-                AND AD.id IS NULL
+                AND AD.estado = 1
                 $filterText
                 ORDER BY P.id DESC";
 

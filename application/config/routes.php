@@ -121,6 +121,7 @@ $route['configuracion/plazas/pagination'] = 'plazas/pagination';
 $route['configuracion/plazas/(:num)/update'] = 'plazas/update/$1';
 $route['configuracion/plazas/(:num)/remove'] = 'plazas/remove/$1';
 $route['configuracion/plazas/(:num)/edit'] = 'plazas/edit/$1';
+$route['configuracion/plazas/postulantes/liberar'] = 'plazas/liberar';
 $route['configuracion/plazas/exportar'] = 'plazas/reporte_plazas';
 
 $route['default_controller'] = 'index';

@@ -453,3 +453,9 @@ ALTER TABLE plazas ADD COLUMN `nivel` VARCHAR(255) NULL DEFAULT NULL;
 
 /*************************** 16/02/2024 *************************/
 ALTER TABLE postulacion_evaluaciones ADD COLUMN `prelacion_id` INT(11) NULL DEFAULT '0' AFTER `promedio`;
+
+
+/********************************* 20/02/2024 ****************************/
+ALTER TABLE adjudicaciones ADD COLUMN estado INT(11) NULL DEFAULT '1' AFTER `plaza_id`;
+ALTER TABLE adjudicaciones ADD COLUMN fecha_liberacion DATETIME NULL DEFAULT NULL AFTER `plaza_id`;
+ALTER TABLE adjudicaciones ADD COLUMN observacion VARCHAR(255) NULL DEFAULT NULL AFTER `plaza_id`;
