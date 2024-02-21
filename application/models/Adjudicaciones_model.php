@@ -253,6 +253,8 @@ class Adjudicaciones_model extends CI_Model
         }
         $this->db->insert_batch('adjudicacion_firmas', $inserts);
       }
+
+      $this->db->update('plazas', ['estado'=>0], array('plz_id' => $plaza_id));
       
       $responseponse['success'] = true;
       $responseponse['status']  = 200;
@@ -553,8 +555,9 @@ class Adjudicaciones_model extends CI_Model
                 FROM plazas plz
                 LEFT JOIN adjudicaciones adj ON adj.plaza_id = plz.plz_id 
                 WHERE plz.deleted_at IS NULL 
-                AND adj.estado = 1
+                AND (adj.id IS NULL OR adj.estado = 0)
                 $filterText
+                GROUP BY plz.plz_id
                 ORDER BY plz.plz_id DESC";
 
         $items = $this->db->query($sql)->result_object();

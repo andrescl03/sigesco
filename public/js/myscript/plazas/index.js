@@ -125,6 +125,7 @@ const AppPlazaIndex = () => {
                                     self.modalConfirmAdjudicacion.hide();
                                     const { plaza_adjudicaciones } = response.data;
                                     self.renderAwards(plaza_adjudicaciones);
+                                    self.table.ajax.reload();
                                 })
                                 .catch(error => {
                                     sweet2.show({type:'error', text:error});
