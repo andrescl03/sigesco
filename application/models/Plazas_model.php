@@ -58,7 +58,7 @@ class Plazas_model extends CI_Model {
     INNER JOIN modalidades moda ON plz.mod_id = moda.mod_id
     INNER JOIN niveles nive ON nive.niv_id =  plz.nivel_id
     WHERE plz.deleted_at IS NULL 
-    AND adj.estado = 1
+    AND (adj.id IS NULL OR adj.estado = 0)
     ORDER BY plz.plz_id DESC";
     $plazas = $this->db->query($sql)->result_object();
 
