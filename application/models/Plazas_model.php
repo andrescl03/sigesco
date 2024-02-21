@@ -58,8 +58,7 @@ class Plazas_model extends CI_Model {
     INNER JOIN modalidades moda ON plz.mod_id = moda.mod_id
     INNER JOIN niveles nive ON nive.niv_id =  plz.nivel_id
     WHERE plz.deleted_at IS NULL 
-    AND (adj.id IS NULL 
-    OR adj.deleted_at is not null)
+    AND adj.estado = 1
     ORDER BY plz.plz_id DESC";
     $plazas = $this->db->query($sql)->result_object();
 
@@ -300,6 +299,7 @@ class Plazas_model extends CI_Model {
       try {
 
           $id = $this->input->post("id", true);
+          $observacion = $this->input->post("observacion", true);
 
           $sql = "SELECT * FROM adjudicaciones WHERE id = ? AND deleted_at IS NULL";
           $adjudicacion = $this->db->query($sql, compact('id'))->row();
@@ -310,7 +310,7 @@ class Plazas_model extends CI_Model {
           $plaza_id = $adjudicacion->plaza_id;
           $postulacion_id = $adjudicacion->postulacion_id;
 
-          $this->db->update('adjudicaciones', ['deleted_at' => $this->tools->getDateHour()], array('id' => $id));
+          $this->db->update('adjudicaciones', ['observacion' => $observacion, 'estado' => 0, 'fecha_liberacion' => $this->tools->getDateHour()], array('id' => $id));
           $this->db->update('postulaciones', ['estado_adjudicacion' => 0, 'intentos_adjudicacion' => 0], array('id' => $postulacion_id));
           $this->db->update('plazas', ['estado' => 1], array('plz_id' => $plaza_id));
           

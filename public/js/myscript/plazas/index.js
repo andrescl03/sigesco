@@ -7,6 +7,7 @@ const AppPlazaIndex = () => {
                     table: {},
                     modalPlaza: new bootstrap.Modal(dom.querySelector('#modalPlaza')),
                     modalAdjudicaciones: new bootstrap.Modal(dom.querySelector('#modalAdjudicaciones')),
+                    modalConfirmAdjudicacion: new bootstrap.Modal(dom.querySelector('#modalConfirmAdjudicacion')),
                     any: 0,
                     niveles: [],
                     colegio_niveles: []
@@ -103,6 +104,39 @@ const AppPlazaIndex = () => {
                             })
                         });
                     });
+
+                    const formConfirmAdjudicacions = dom.querySelectorAll('.form-confirm-adjudicacion');
+                    formConfirmAdjudicacions.forEach(form => {
+                        form.addEventListener('submit', (e) => {
+                            e.preventDefault();
+                            const formData = new FormData(e.target);
+                            const id = self.any;
+                            self.liberar(formData)
+                            .then(({success, data, message}) => {
+                                if (!success) {
+                                    throw message;
+                                }
+                                self.edit(id)
+                                .then((response) => {
+                                    if (!response.success) {
+                                        throw response.message;
+                                    }
+                                    sweet2.show({type:'success', text:message});
+                                    self.modalConfirmAdjudicacion.hide();
+                                    const { plaza_adjudicaciones } = response.data;
+                                    self.renderAwards(plaza_adjudicaciones);
+                                })
+                                .catch(error => {
+                                    sweet2.show({type:'error', text:error});
+                                })
+                                
+                            })
+                            .catch(error => {
+                                sweet2.show({type:'error', text:error});
+                            });
+                        })
+                    });
+
                     return;
                     const btnAlls = document.querySelectorAll('.pagination-btn-all');
                     btnAlls.forEach(btn => {
@@ -412,63 +446,55 @@ const AppPlazaIndex = () => {
                         });
                     });
                 }, 
+                
+                renderAwards: (items) => {
+                    const tbodies = dom.querySelectorAll('.tbody-adjudicaciones');
+                    tbodies.forEach(tbody => {
+                        let rows = ``;
+                        if (items.length == 0) {
+                            rows = `<tr><td colspan="8" class="text-center">No hay registros para mostrar</td></tr>`;
+                        } else {
+                            items.forEach(o => {
+                                rows += `<tr>
+                                            <td>
+                                                ${o.nombre} ${o.apellido_paterno} ${o.apellido_materno}
+                                                <br>${o.numero_documento}
+                                            </td>
+                                            <td>${o.fecha_registro}</td>
+                                            <td>${o.fecha_inicio}</td>
+                                            <td>${o.fecha_final}</td>
+                                            <td>${o.observacion ?? ''}</td>
+                                            <td>${o.fecha_liberacion ?? ''}</td>
+                                            <td>${
+                                                o.estado == 1 ? `<span class="badge bg-success">Adjudicado</span>` : `<span class="badge bg-info">Liberado</span>`
+                                            }</td>
+                                            <td>
+                                                ${
+                                                    o.estado == 1 ?  
+                                                    `<button class="btn btn-sm btn-danger btn-remove-adj" data-id="${o.id}">Liberar</button>`
+                                                    : ``
+                                                }
+                                            </td>
+                                         </tr>`;
+                            });
+                        }
+                        tbody.innerHTML = rows;
+                    });
+                    const btns = dom.querySelectorAll('.btn-remove-adj');
+                    btns.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            dom.querySelector('#formConfirmAdjudicacion').reset();
+                            const id = e.target.getAttribute('data-id');
+                            dom.querySelector('#adjudicacion_id').value = id;
+                            self.modalConfirmAdjudicacion.show();
+                        });
+                    });
+                },
                 onActionRows: () => {
                     const btnEdits = document.querySelector('#' + container).querySelectorAll('.btn-edit'),
                         btnRemoves = document.querySelector('#' + container).querySelectorAll('.btn-remove'),
                         btnAwards = document.querySelector('#' + container).querySelectorAll('.btn-award');
 
-                    const renderAwards = (items) => {
-                        const tbodies = dom.querySelectorAll('.tbody-adjudicaciones');
-                        tbodies.forEach(tbody => {
-                            let rows = ``;
-                            if (items.length == 0) {
-                                rows = `<tr><td colspan="5" class="text-center">No hay registros para mostrar</td></tr>`;
-                            } else {
-                                items.forEach(o => {
-                                    rows += `<tr>
-                                                <td>
-                                                    ${o.nombre} ${o.apellido_paterno} ${o.apellido_materno}
-                                                    <br>${o.numero_documento}
-                                                </td>
-                                                <td>${o.fecha_registro}</td>
-                                                <td>${o.fecha_inicio}</td>
-                                                <td>${o.fecha_final}</td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-danger btn-remove-adj" data-id="${o.id}">Liberar</button>
-                                                </td>
-                                             </tr>`;
-                                });
-                            }
-                            tbody.innerHTML = rows;
-                        });
-                        const btns = dom.querySelectorAll('.btn-remove-adj');
-                        btns.forEach(btn => {
-                            btn.addEventListener('click', (e) => {
-                                const id = e.target.getAttribute('data-id');
-                                sweet2.show({
-                                    type: 'question',
-                                    title: '¿Estás seguro de liberar a este postulante de esta plaza?',
-                                    showCancelButton: true,
-                                    onOk: () => {
-                                        const formData = new FormData();
-                                        formData.append('id', id);
-                                        self.liberar(formData)
-                                        .then(({success, data, message}) => {
-                                            if (!success) {
-                                                throw message;
-                                            }
-                                            sweet2.show({type:'success', text:message});
-                                            self.modalAdjudicaciones.hide();
-                                            self.table.ajax.reload();
-                                        })
-                                        .catch(error => {
-                                            sweet2.show({type:'error', text:error});
-                                        });
-                                    }
-                                });
-                            });
-                        });
-                    }
 
                     btnAwards.forEach(btn => {
                         btn.addEventListener('click', async function (e) {
@@ -482,7 +508,7 @@ const AppPlazaIndex = () => {
                                 sweet2.loading(false);
                                 self.any = id;
                                 const { plaza_adjudicaciones } = data;
-                                renderAwards(plaza_adjudicaciones);
+                                self.renderAwards(plaza_adjudicaciones);
                                 self.modalAdjudicaciones.show();
                             } catch (error) {
                                 sweet2.show({type:'error', text:error});                             

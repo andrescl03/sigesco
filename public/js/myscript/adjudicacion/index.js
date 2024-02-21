@@ -277,9 +277,9 @@ const AppAdjudicacionAdmin = () => {
                                             <div class="menu-item px-3 py-2">
                                                 <a href="${window.AppMain.url}adjudicaciones/${row.id}/edit" class="menu-link text-danger px-3">Editar</a>
                                             </div>
-                                            <div class="menu-item px-3 py-2">
+                                            <!--div class="menu-item px-3 py-2">
                                                 <a href="javascript:void(0);" class="menu-link text-danger px-3 btn-remove" data-id="${row.id}">Liberar</a>
-                                            </div>
+                                            </div-->
                                         </div>`;
                                     }
                                 }
