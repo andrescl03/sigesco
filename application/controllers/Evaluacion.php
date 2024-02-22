@@ -334,8 +334,8 @@ class Evaluacion extends CI_Controller {
         if (!$response['success']) {
             echo $response['message'];
         }
-        $records = $response['data']['records'];
-        $this->generar_reporte_excel($records, $ficha);
+        // $records = $response['data']['records'];
+        $this->generar_reporte_excel($response['data'], $ficha);
     }
 
     public function reporte_excel_general($convocatoria_id) {
@@ -345,12 +345,13 @@ class Evaluacion extends CI_Controller {
         if (!$response['success']) {
             echo $response['message'];
         }
-        $records = $response['data']['records'];
-        $this->generar_reporte_excel($records);
+        // $records = $response['data']['records'];
+        $this->generar_reporte_excel($response['data']);
     }
 
-    public function generar_reporte_excel($records, $ficha = null) {
-
+    public function generar_reporte_excel($data, $ficha = null) {
+        $records = $data['records'];
+        $convocatoria = $data['convocatoria'];
         $ficha = $ficha ? $ficha : 'REPORTE_DE_EVALUACIÓN';
 
         /* A partir de ahora cualquier salida al navegador se guardarÃ¡ en un buffer */
@@ -378,7 +379,7 @@ class Evaluacion extends CI_Controller {
         //make the font become bold
         $hoja->getStyle('A1')->getFont()->setBold(true);
         //merge cell A1 until D1
-        $hoja->mergeCells('A1:L1');
+        $hoja->mergeCells('A1:M1');
         //set aligment to center for that merged cell (A1 to D1)
 
         $hoja->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -394,6 +395,9 @@ class Evaluacion extends CI_Controller {
         $hoja->getStyle('J2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $hoja->getStyle('K2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $hoja->getStyle('L2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        if ($convocatoria->con_tipo == 2) {
+            $hoja->getStyle('M2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        }
 
         $hoja->setCellValue('A2', 'INSCRIPCIÓN')->getStyle('A2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('B2', 'DNI')->getStyle('B2')->getFont()->setSize(15)->setBold(true);
@@ -407,9 +411,12 @@ class Evaluacion extends CI_Controller {
         $hoja->setCellValue('J2', 'PUNTAJE')->getStyle('F2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('K2', 'OBSERVACIÓN')->getStyle('K2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('L2', 'ESPECIALIDAD DEL DOCENTE (ETP)')->getStyle('L2')->getFont()->setSize(15)->setBold(true);
+        if ($convocatoria->con_tipo == 2) {
+            $hoja->setCellValue('M2', 'PRELACIÓN')->getStyle('M2')->getFont()->setSize(15)->setBold(true);
+        }
 
      // $hoja->setAutoFilter('A:L');
-        $hoja->getStyle('A2:L2')->getFill()->getStartColor()->setRGB('FF0000');
+        $hoja->getStyle('A2:M2')->getFill()->getStartColor()->setRGB('FF0000');
 
         $hoja->getColumnDimension('A')->setAutoSize(true);
         $hoja->getColumnDimension('B')->setAutoSize(true);
@@ -423,7 +430,9 @@ class Evaluacion extends CI_Controller {
         $hoja->getColumnDimension('J')->setAutoSize(true);
         $hoja->getColumnDimension('K')->setAutoSize(true);
         $hoja->getColumnDimension('L')->setAutoSize(true);
-
+        if ($convocatoria->con_tipo == 2) {
+            $hoja->getColumnDimension('M')->setAutoSize(true);
+        }
         $cont = 3;
 
         foreach ($records as $fila) {
@@ -467,6 +476,10 @@ class Evaluacion extends CI_Controller {
             $hoja->getStyle('L' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $hoja->setCellValue('L' . $cont, $fila->prerequisito_especialidad, PHPExcel_Cell_DataType::TYPE_STRING);
 
+            if ($convocatoria->con_tipo == 2) {
+                $hoja->getStyle('M' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $hoja->setCellValue('M' . $cont, $fila->prelacion, PHPExcel_Cell_DataType::TYPE_STRING);    
+            }
             $cont++;
         }
 
