@@ -438,23 +438,23 @@ class Evaluacion_model extends CI_Model {
                     mdd.mod_nombre AS modalidad_descripcion,
                     mdd.mod_abreviatura AS modalidad_abreviatura,
                     pep.plantilla AS prerequisito_plantilla,
-                    pep.estado as prerequisito_estado
+                    pep.estado as prerequisito_estado,
+                    epre.prelacion
                   FROM postulaciones pos
-                  INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento
                   INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
-                  INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
-                  
-                  INNER JOIN grupo_inscripcion AS gin ON cpp.grupo_inscripcion_gin_id = gin.gin_id
+                  INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado                  
+                  INNER JOIN grupo_inscripcion AS gin ON pos.inscripcion_id = gin.gin_id
                   INNER JOIN especialidades AS esp ON esp.esp_id = gin.especialidades_esp_id
                   INNER JOIN niveles AS niv ON niv.niv_id = esp.niveles_niv_id
                   INNER JOIN modalidades AS mdd ON mdd.mod_id = niv.modalidad_mod_id 
+                  LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
                   LEFT JOIN postulacion_evaluaciones pev ON pev.postulacion_id = pos.id AND pev.promedio = 1
                   LEFT JOIN postulacion_evaluaciones pep ON pep.postulacion_id = pos.id AND pep.promedio = 0  
+                  LEFT JOIN especialidad_prelaciones epre ON epre.id = pev.prelacion_id
                   WHERE pos.deleted_at IS NULL 
                   AND pos.convocatoria_id = $convocatoria_id
                   $where
-                  ORDER BY mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC, cpp.cpe_orden ASC, pev.puntaje DESC;";
-
+                  ORDER BY mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC,  epre.prelacion ASC, pev.puntaje DESC, cpp.cpe_orden ASC;";
           $items = $this->db->query($sql)->result_object();
 
           foreach ($items as $k => $o) {
@@ -504,9 +504,12 @@ class Evaluacion_model extends CI_Model {
             $items[$k]->prerequisito_especialidad = $prerequisito_especialidad;
             $items[$k]->prerequisito_estado_texto = $prerequisito_estado_texto;
           }
-          
-          $res['success'] = true;
-          $res['data'] = ['records' => $items];
+          // echo json_encode($items); exit;
+          $sql = "SELECT * FROM convocatorias WHERE con_id = ?";
+          $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
+
+          $res['success'] = convocatoria;
+          $res['data'] = ['records' => $items, 'convocatoria' => $convocatoria];
           $res['message'] = 'successfully';
       } catch (\Exception $e) {
           $res['message'] = $e->getMessage();
