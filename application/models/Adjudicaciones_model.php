@@ -631,7 +631,7 @@ class Adjudicaciones_model extends CI_Model
                 AND P.estado = 'finalizado'
                 AND P.estado_adjudicacion IN (0,2, 3) 
                 AND intentos_adjudicacion <  2
-                AND AD.estado = 1
+                AND (AD.id IS NULL OR AD.estado = 1)
                 $filterText
                 ORDER BY P.id DESC";
 
