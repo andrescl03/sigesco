@@ -844,7 +844,6 @@ const viewfichaDetail = (pageActive = 1) => {
 					},
 				});
 			} else if (question.type == 'tabla') {
-				console.log(question.options);
 				var datos = [
 					{ nombre: "Ejemplo1", edad: 25 },
 					{ nombre: "Ejemplo2", edad: 30 },
@@ -856,7 +855,7 @@ const viewfichaDetail = (pageActive = 1) => {
 				tabla.style.minWidth = '200px';
 
 				const span = document.createElement("span");
-				span.innerHTML = question.value;
+				span.innerHTML = question.value === undefined ? 0 : question.value;
 				span.style.fontSize = '18px';
 
 				function rowCalculation(options) {
