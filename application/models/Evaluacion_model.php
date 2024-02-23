@@ -179,9 +179,9 @@ class Evaluacion_model extends CI_Model {
                 usu.usu_apellidos, 
                 usu.usu_dni 
               FROM postulaciones pos
-              LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento
               LEFT JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
               LEFT JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
+              LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
               WHERE pos.deleted_at IS NULL 
               AND pos.estado = 'enviado'
               AND pos.convocatoria_id = $convId
@@ -221,9 +221,9 @@ class Evaluacion_model extends CI_Model {
             usu.usu_apellidos, 
             usu.usu_dni 
           FROM postulaciones pos
-          INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento
           INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id AND epe.epe_especialistaAsignado = $usuario
           INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
+          LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
           WHERE pos.deleted_at IS NULL 
           AND pos.convocatoria_id = $convId
           AND pos.inscripcion_id = $insId AND pos.estado = 'enviado'";
