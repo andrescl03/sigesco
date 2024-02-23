@@ -374,11 +374,11 @@ class Evaluacion_model extends CI_Model {
                     pe.estado as estado_evaluacion,
                     pe.estado as prerequisito_estado
                   FROM postulaciones pos
-                  INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id AND cpp.cpe_documento = pos.numero_documento
                   INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id $filterByUser
                   INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
                   /**TEMPORAL 09022024 */
                   INNER JOIN postulacion_evaluaciones pe ON pos.id = pe.postulacion_id AND pe.promedio = 0
+                  LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
                   WHERE pos.deleted_at IS NULL 
                   AND pos.convocatoria_id = $convocatoria_id
                   AND pos.inscripcion_id = $inscripcion_id
