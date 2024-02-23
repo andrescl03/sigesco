@@ -890,6 +890,7 @@ const viewfichaDetail = (pageActive = 1) => {
 						}, {
 							keyup: (e) => {
 								option.value = e.target.value;
+								let t = rowCalculation(question.options);
 								span.innerHTML = t;
 								question.value = t;
 								if (Number(question.value) > Number(question.score)) {
