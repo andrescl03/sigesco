@@ -670,14 +670,15 @@ const viewfichaDetail = (pageActive = 1) => {
 						footer.appendChild(btnSaveAll1);
 					}
 				} else {
-					if (isPUN()) { // prerequisito
-						self.revisado = 1;
-						if (isAnexo()) {
+					// if (isPUN()) { // prerequisito
+						// self.revisado = 1;
+						// if (isAnexo()) {
 							if (revaluar == 0 && self.postulante.estado == 'enviado' && Number(self.ficha.promedio) == 0) {
+								self.revisado = 1;
 								footer.appendChild(btnSave2);
 							}
-						}
-					}
+						// }
+					// }
 					if (revaluar == 1) {
 						if (isAnexo()) {
 							if (revaluar == 0 && self.postulante.estado == 'enviado') {
