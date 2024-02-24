@@ -1206,7 +1206,8 @@ const viewfichaDetail = (pageActive = 1) => {
 								}
 								if (question.type == 'selectiva' ||
 								    question.type == 'marcado' ||
-									question.type == 'numerico') {
+									question.type == 'numerico' ||
+									question.type == 'tabla') {
 									total = total + value;
 								}
 							});   
