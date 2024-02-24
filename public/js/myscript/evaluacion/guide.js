@@ -655,11 +655,12 @@ const viewfichaDetail = (pageActive = 1) => {
 			});
 			if (self.postulante.estado != 'finalizado') {
 				if (isAnexo()) {
-					if (revaluar == 0 && self.postulante.estado == 'enviado') {
+					/*if (revaluar == 0 && self.postulante.estado == 'enviado') {
 						footer.appendChild(btnSave);
 					} else if (revaluar == 1) { // --
 						footer.appendChild(btnSave);
-					}			
+					}*/			
+					footer.appendChild(btnSave);
 				}
 			}
 			if (self.postulante.estado != 'finalizado') {
