@@ -458,7 +458,8 @@ class Evaluacion_model extends CI_Model {
                     mdd.mod_abreviatura AS modalidad_abreviatura,
                     pep.plantilla AS prerequisito_plantilla,
                     pep.estado as prerequisito_estado,
-                    epre.prelacion
+                    epre.prelacion,
+                    pev.plantilla AS anexo_plantilla
                   FROM postulaciones pos
                   INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
                   INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado                  
@@ -522,6 +523,7 @@ class Evaluacion_model extends CI_Model {
             $items[$k]->prerequisito_observacion = $prerequisito_observacion;
             $items[$k]->prerequisito_especialidad = $prerequisito_especialidad;
             $items[$k]->prerequisito_estado_texto = $prerequisito_estado_texto;
+            $items[$k]->anexo_plantilla = json_decode($o->anexo_plantilla);
           }
           // echo json_encode($items); exit;
           $sql = "SELECT * FROM convocatorias WHERE con_id = ?";
