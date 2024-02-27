@@ -508,7 +508,7 @@ class Evaluacion_model extends CI_Model {
           $sql = "SELECT * FROM convocatorias WHERE con_id = ?";
           $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
 
-          $res['success'] = convocatoria;
+          $res['success'] = $convocatoria;
           $res['data'] = ['records' => $items, 'convocatoria' => $convocatoria];
           $res['message'] = 'successfully';
       } catch (\Exception $e) {

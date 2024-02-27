@@ -465,7 +465,8 @@ class Evaluacion extends CI_Controller {
             $hoja->setCellValue('H' . $cont, $especialista, PHPExcel_Cell_DataType::TYPE_STRING);
            
             $hoja->getStyle('I' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('I' . $cont, $fila->cpe_orden);
+            //$hoja->setCellValue('I' . $cont, $fila->cpe_orden);
+            $hoja->setCellValue('I' . $cont, '');
 
             $hoja->getStyle('J' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $hoja->setCellValue('J' . $cont, $fila->puntaje);
