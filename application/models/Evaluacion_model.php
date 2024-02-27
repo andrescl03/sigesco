@@ -438,7 +438,7 @@ class Evaluacion_model extends CI_Model {
 
           $order = "mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC,  epre.prelacion ASC, pev.puntaje DESC, cpp.cpe_orden ASC;";
           if ($convocatoria->con_tipo == 2) { // expediente
-            $order = "mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC, pep.estado DESC, epre.prelacion ASC, pev.puntaje DESC;";
+            $order = "mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC, prerequisito_estado_orden DESC, epre.prelacion ASC, pev.puntaje DESC;";
           }
 
           $sql = "SELECT 
@@ -459,7 +459,12 @@ class Evaluacion_model extends CI_Model {
                     pep.plantilla AS prerequisito_plantilla,
                     pep.estado as prerequisito_estado,
                     epre.prelacion,
-                    pev.plantilla AS anexo_plantilla
+                    pev.plantilla AS anexo_plantilla,
+                    CASE pep.estado
+                      WHEN 0 THEN 0
+                      WHEN 1 THEN 1
+                      WHEN 2 THEN 1
+                    END AS prerequisito_estado_orden
                   FROM postulaciones pos
                   INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
                   INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado                  
@@ -477,6 +482,7 @@ class Evaluacion_model extends CI_Model {
                   ORDER BY $order";
           $items = $this->db->query($sql)->result_object();
 
+          $groups_keys_especialidad = [];
           foreach ($items as $k => $o) {
             $prerequisito_estado_texto = "pendiente";
             $prerequisito_observacion = "";
@@ -524,7 +530,17 @@ class Evaluacion_model extends CI_Model {
             $items[$k]->prerequisito_especialidad = $prerequisito_especialidad;
             $items[$k]->prerequisito_estado_texto = $prerequisito_estado_texto;
             $items[$k]->anexo_plantilla = json_decode($o->anexo_plantilla);
+            $groups_keys_especialidad[$items[$k]->especialidad_id][] = $k;
           }
+
+          foreach ($groups_keys_especialidad as $key => $keys) {
+            $contador = 1;
+            foreach ($keys as $k => $o) {
+              $items[$o]->cuadro_control = $contador;
+              $contador ++;
+            }
+          }
+
           // echo json_encode($items); exit;
           $sql = "SELECT * FROM convocatorias WHERE con_id = ?";
           $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
