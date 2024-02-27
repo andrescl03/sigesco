@@ -438,7 +438,7 @@ class Evaluacion_model extends CI_Model {
 
           $order = "mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC,  epre.prelacion ASC, pev.puntaje DESC, cpp.cpe_orden ASC;";
           if ($convocatoria->con_tipo == 2) { // expediente
-            $order = "mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC,  epre.prelacion ASC, pev.puntaje DESC, pep.estado DESC;";
+            $order = "mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC, pep.estado DESC, epre.prelacion ASC, pev.puntaje DESC;";
           }
 
           $sql = "SELECT 
