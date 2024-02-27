@@ -191,11 +191,12 @@ const AppAdjudicacionAdmin = () => {
                                 }
                             },
                             {
+                                "title": "ORDEN",
                                 "targets": 5,
                                 "data": "cpe_orden",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return row.cpe_orden;
+                                    return row.convocatoria_tipo_id == 2 ? `` : row.cpe_orden;
                                 }
                             },
                             {
