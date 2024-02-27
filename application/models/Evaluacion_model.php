@@ -372,10 +372,12 @@ class Evaluacion_model extends CI_Model {
                     usu.usu_apellidos, 
                     usu.usu_dni,
                     pe.estado as estado_evaluacion,
-                    pe.estado as prerequisito_estado
+                    pe.estado as prerequisito_estado,
+                    con.con_tipo as convocatoria_tipo_id
                   FROM postulaciones pos
                   INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id $filterByUser
                   INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
+                  INNER JOIN convocatorias con ON con.con_id = pos.convocatoria_id
                   /**TEMPORAL 09022024 */
                   INNER JOIN postulacion_evaluaciones pe ON pos.id = pe.postulacion_id AND pe.promedio = 0
                   LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
@@ -413,6 +415,17 @@ class Evaluacion_model extends CI_Model {
     public function f_report_postulant($convocatoria_id, $inscripcion_id, $estado, $modulo = null) {
       $res = $this->tools->responseDefault();
       try {
+
+          $sql = "SELECT 
+                  P.*
+              FROM convocatorias AS P 
+              WHERE P.con_id = ?";
+          $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
+
+          if (!$convocatoria) {
+            throw new Exception("No se encontro la convocatoria");
+          }
+
           $where = $inscripcion_id == -1 ? "" : " AND pos.inscripcion_id = $inscripcion_id";
           if ($modulo) {
             $sigesco_tus_iduser = $this->session->userdata('sigesco_tus_iduser');
@@ -422,6 +435,12 @@ class Evaluacion_model extends CI_Model {
           } else {
             $where .= $estado == -1 ? "" : " AND pos.estado = '$estado'";
           }
+
+          $order = "mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC,  epre.prelacion ASC, pev.puntaje DESC, cpp.cpe_orden ASC;";
+          if ($convocatoria->con_tipo == 2) { // expediente
+            $order = "mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC, pep.estado DESC, epre.prelacion ASC, pev.puntaje DESC;";
+          }
+
           $sql = "SELECT 
                     pos.*,
                     cpp.cpe_orden,
@@ -454,7 +473,7 @@ class Evaluacion_model extends CI_Model {
                   WHERE pos.deleted_at IS NULL 
                   AND pos.convocatoria_id = $convocatoria_id
                   $where
-                  ORDER BY mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC,  epre.prelacion ASC, pev.puntaje DESC, cpp.cpe_orden ASC;";
+                  ORDER BY $order";
           $items = $this->db->query($sql)->result_object();
 
           foreach ($items as $k => $o) {

@@ -407,7 +407,7 @@ class Evaluacion extends CI_Controller {
         $hoja->setCellValue('F2', 'NÚMERO DE EXPEDIENTE')->getStyle('H2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('G2', 'ESTADO')->getStyle('I2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('H2', 'ESPECIALISTA')->getStyle('J2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('I2', 'ORDEN DE MERITO')->getStyle('E2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('I2', ($convocatoria->con_tipo == 2 ? "" : "ORDEN DE MERITO"))->getStyle('E2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('J2', 'PUNTAJE')->getStyle('F2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('K2', 'OBSERVACIÓN')->getStyle('K2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('L2', 'ESPECIALIDAD DEL DOCENTE (ETP)')->getStyle('L2')->getFont()->setSize(15)->setBold(true);
@@ -439,7 +439,7 @@ class Evaluacion extends CI_Controller {
             $apellidos = $fila->apellido_paterno . ' ' . $fila->apellido_materno;
             $especialista = $fila->usu_nombre . ' ' . $fila->usu_apellidos;
             $inscripcion = $fila->modalidad_abreviatura . " " . $fila->nivel_descripcion . ($fila->especialidad_descripcion != "-" ? " " . $fila->especialidad_descripcion : "") ;
-
+            $cpe_orden = $convocatoria->con_tipo == 2 ? "" : $fila->cpe_orden;
             $hoja->getStyle('A' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $hoja->setCellValue('A' . $cont, $inscripcion, PHPExcel_Cell_DataType::TYPE_STRING);
 
@@ -465,8 +465,7 @@ class Evaluacion extends CI_Controller {
             $hoja->setCellValue('H' . $cont, $especialista, PHPExcel_Cell_DataType::TYPE_STRING);
            
             $hoja->getStyle('I' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            //$hoja->setCellValue('I' . $cont, $fila->cpe_orden);
-            $hoja->setCellValue('I' . $cont, '');
+            $hoja->setCellValue('I' . $cont, $cpe_orden);
 
             $hoja->getStyle('J' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $hoja->setCellValue('J' . $cont, $fila->puntaje);
