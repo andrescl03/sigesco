@@ -542,7 +542,7 @@ class Evaluacion extends CI_Controller {
         //make the font become bold
         $hoja->getStyle('A1')->getFont()->setBold(true);
         //merge cell A1 until D1
-        $hoja->mergeCells('A1:M1');
+        // $hoja->mergeCells('A1:M1');
         //set aligment to center for that merged cell (A1 to D1)
 
         $hoja->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -586,9 +586,10 @@ class Evaluacion extends CI_Controller {
         $hoja->setCellValue('O2', 'FORMACIÓN CONTINUA')->getStyle('O2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('P2', 'EXPERIENCIA LABORAL')->getStyle('P2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('Q2', 'MERITOS')->getStyle('Q2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('R2', 'CUADRO CONTROL')->getStyle('R2')->getFont()->setSize(15)->setBold(true);
 
      // $hoja->setAutoFilter('A:L');
-        $hoja->getStyle('A2:Q2')->getFill()->getStartColor()->setRGB('FF0000');
+        $hoja->getStyle('A2:R2')->getFill()->getStartColor()->setRGB('FF0000');
 
         $hoja->getColumnDimension('A')->setAutoSize(true);
         $hoja->getColumnDimension('B')->setAutoSize(true);
@@ -609,6 +610,7 @@ class Evaluacion extends CI_Controller {
         $hoja->getColumnDimension('O')->setAutoSize(true);
         $hoja->getColumnDimension('P')->setAutoSize(true);
         $hoja->getColumnDimension('Q')->setAutoSize(true);
+        $hoja->getColumnDimension('R')->setAutoSize(true);
         $cont = 3;
 
         foreach ($records as $fila) {
@@ -733,6 +735,8 @@ class Evaluacion extends CI_Controller {
             $hoja->getStyle('Q' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $hoja->setCellValue('Q' . $cont, $puntaje_4);
 
+            $hoja->getStyle('R' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('R' . $cont, $fila->cuadro_control);
 
             $cont++;
         }
