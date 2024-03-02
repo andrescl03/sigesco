@@ -587,7 +587,7 @@ class Evaluacion extends CI_Controller {
         $hoja->setCellValue('O2', 'FORMACIÓN CONTINUA')->getStyle('O2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('P2', 'EXPERIENCIA LABORAL')->getStyle('P2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('Q2', 'MERITOS')->getStyle('Q2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('R2', 'CUADRO CONTROL')->getStyle('R2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('R2', 'ORDEN DE MÉRITO LOCAL')->getStyle('R2')->getFont()->setSize(15)->setBold(true);
 
      // $hoja->setAutoFilter('A:L');
         $hoja->getStyle('A2:R2')->getFill()->getStartColor()->setRGB('FF0000');
