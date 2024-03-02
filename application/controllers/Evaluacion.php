@@ -327,7 +327,7 @@ class Evaluacion extends CI_Controller {
     }
 
     public function reporte_excel_final_total($convocatoria_id) {
-        $this->reporte_excel($convocatoria_id, -1 , 'finalizado', 'FICHA_FINAL');
+        $this->reporte_excel_2($convocatoria_id, -1 , 'finalizado', 'FICHA_FINAL');
     }
 
     public function reporte_excel($convocatoria_id, $inscripcion_id, $estado, $ficha) {
