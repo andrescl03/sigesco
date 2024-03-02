@@ -241,8 +241,9 @@ class Evaluacion extends CI_Controller {
         $datos = $this->postulaciones_model->show(['id' => $idCpu]);
         // $datos = $this->evaluacion_model->verFichaEvaluacion(); 
         $this->layout->css(array(base_url()."public/css/ficha.css?t=".date("mdYHis")));
-        $this->layout->js(array(base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
-        base_url()."public/js/myscript/evaluacion/guide.js?t=".date("mdYHis")));
+        $this->layout->js(array(
+            // base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
+            base_url()."public/js/myscript/evaluacion/guide.js?v=".date("mdYHis")));
         $revaluar = 0;
         $this->layout->view("ficha/ficha", compact('datos', 'revaluar')); 
 	}
@@ -303,8 +304,8 @@ class Evaluacion extends CI_Controller {
         $datos = $this->postulaciones_model->show(['id' => $id]);
         $this->layout->css(array(base_url()."public/css/ficha.css?t=".date("mdYHis")));
         $this->layout->js(array(
-            base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
-            base_url()."public/js/myscript/evaluacion/guide.js?t=".date("mdYHis")
+            // base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
+            base_url()."public/js/myscript/evaluacion/guide.js?v=".date("mdYHis")
         ));
         $revaluar = 1;
         $this->layout->view("ficha/ficha", compact('datos', 'revaluar'));       
