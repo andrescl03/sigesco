@@ -159,7 +159,7 @@ $niveles  = $data['niveles'];
                                     </select>
                                 </div>
 
-                                <div class="col-md-2 mb-2 mt-1"><b>Institución Educativa:</b></div>
+                                <!-- <div class="col-md-2 mb-2 mt-1"><b>Institución Educativa:</b></div>
                                 <div class="col-md-10 mb-2">
                                     <select class="form-select form-select-sm select-colegio" name="colegio_id" required>
                                         <option value="" hidden>Elegir...</option>
@@ -167,9 +167,9 @@ $niveles  = $data['niveles'];
                                             <option value="<?= $colegio->loc_id ?>"><?= $colegio->mod_nombre ?></option>
                                         <?php } ?>
                                     </select>
-                                </div>
+                                </div>--->
 
-                                <div class="col-md-2 mb-2 mt-1"><b>Nivel:</b></div>
+                               <!--  <div class="col-md-2 mb-2 mt-1"><b>Nivel:</b></div>
                                 <div class="col-md-10 mb-2">
                                     <select class="form-select form-select-sm select-nivel" name="mod_id">
                                         <option value="" hidden selected>Elegir...</option>
@@ -179,14 +179,14 @@ $niveles  = $data['niveles'];
                                 <div class="col-md-10 mb-2">
                                     <input class="form-control form-control-sm" name="especialidad" type="text" required />
                                 </div>
-
+--->
                                 <div class="col-md-2 mb-2 mt-1"><b>Jornada :</b></div>
                                 <div class="col-md-10 mb-2">
                                     <input class="form-control form-control-sm" name="jornada" type="number" required />
                                 </div>
 
 
-                                <div class="col-md-2 mb-2 mt-1"><b>Tipo de vacante:</b></div>
+                               <!--  <div class="col-md-2 mb-2 mt-1"><b>Tipo de vacante:</b></div>
                                 <div class="col-md-10 mb-2">
                                     <select class="form-select form-select-sm" name="tipo_vacante" required>
                                         <option value="" hidden selected>Elegir...</option>
@@ -196,7 +196,7 @@ $niveles  = $data['niveles'];
                                         <option value="Contrato por horas">Contrato por horas</option>
 
                                     </select>
-                                </div>
+                                </div>--->
                                 <div class="col-md-2 mb-2 mt-1"><b>Motivo de vacante:</b></div>
                                 <div class="col-md-10 mb-2">
                                     <input class="form-control form-control-sm" name="motivo_vacante" type="text" required />

@@ -576,10 +576,10 @@ const AppPlazaIndex = () => {
                     dom.querySelector('select[name="tipo_proceso"]').value = plaza.tipo_proceso;
                     dom.querySelector('input[name="codigo_plaza"]').value = plaza.codigo_plaza;
                     dom.querySelector('select[name="tipo_convocatoria"]').value = plaza.tipo_convocatoria;
-                    dom.querySelector('select[name="colegio_id"]').value = plaza.colegio_id;
-                    dom.querySelector('input[name="especialidad"]').value = plaza.especialidad;
+/*                     dom.querySelector('select[name="colegio_id"]').value = plaza.colegio_id;
+ */                 /*    dom.querySelector('input[name="especialidad"]').value = plaza.especialidad; */
                     dom.querySelector('input[name="jornada"]').value = plaza.jornada;
-                    dom.querySelector('select[name="tipo_vacante"]').value = plaza.tipo_vacante;
+                  /*   dom.querySelector('select[name="tipo_vacante"]').value = plaza.tipo_vacante; */
                     dom.querySelector('input[name="motivo_vacante"]').value = plaza.motivo_vacante;
 
                     const loc_id = plaza.colegio_id;
@@ -589,7 +589,7 @@ const AppPlazaIndex = () => {
                             self.colegio_niveles.push(nivel);
                         }
                     });
-                    const selectNiveles = dom.querySelectorAll('.select-nivel');
+              /*       const selectNiveles = dom.querySelectorAll('.select-nivel');
                     selectNiveles.forEach(select => {
                         let html = `<option value="" hidden selected>Elegir...</option>`;
                         if (self.colegio_niveles.length > 0) {
@@ -598,9 +598,9 @@ const AppPlazaIndex = () => {
                             });
                         }
                         select.innerHTML = html;
-                    });
-                    dom.querySelector('select[name="mod_id"]').value = plaza.mod_id;
-                }
+                    }); */
+/*                     dom.querySelector('select[name="mod_id"]').value = plaza.mod_id;
+ */                }
             },
             renders: {
                 listPostulants: (files) => {

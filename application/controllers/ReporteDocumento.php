@@ -1273,7 +1273,19 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(0, 10, utf8_decode('ACTA DE ADJUDICACIÓN'), 0, 0, 'C');
         $this->pdf->Ln(6);
         $this->pdf->SetFont('Arial', '', 10);
-        $this->pdf->Cell(0, 10, utf8_decode('CONTRATACIÓN POR RESULTADOS DE LA PN'), 0, 0, 'C');
+
+        if ($plaza->tipo_convocatoria == 1) {
+            $this->pdf->Cell(0, 10, utf8_decode('CONTRATACIÓN POR RESULTADOS DE LA PN'), 0, 0, 'C');
+        }
+        else{
+
+            
+        if ($plaza->tipo_convocatoria == 2) {
+            $this->pdf->Cell(0, 10, utf8_decode('CONTRATACIÓN POR EVALUACIÓN DE EXPEDIENTE'), 0, 0, 'C');
+        }
+
+        }
+
         $this->pdf->Ln(5);
         $this->pdf->SetFont('Arial', '', 9);
         $this->pdf->Ln(10);

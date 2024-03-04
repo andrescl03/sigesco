@@ -487,6 +487,7 @@ class Evaluacion_model extends CI_Model {
             $prerequisito_estado_texto = "pendiente";
             $prerequisito_observacion = "";
             $prerequisito_especialidad = "";
+            $prerequisito_absolucion = "";
             if ($o->prerequisito_plantilla) {
               $prerequisito_plantilla = json_decode($o->prerequisito_plantilla);
               $sections = $prerequisito_plantilla->sections;
@@ -502,6 +503,15 @@ class Evaluacion_model extends CI_Model {
                       }
                     }
                   }
+                  if ($k3 == ($countgroups - 1)) { // absolucion
+                    $questions = $o3->questions;
+                    foreach ($questions as $k4 => $o4) {
+                      if ($o4->observation_status == 1) {
+                        $prerequisito_absolucion = $o4->observation;
+                      }
+                    }
+                  }
+
                   if (in_array($o->especialidad_id, [19,25])) { // especialidad especifica
                     if ($k3 == ($countgroups - 1)) { // ultimo
                       $questions = $o3->questions;
@@ -528,6 +538,8 @@ class Evaluacion_model extends CI_Model {
             }
             $items[$k]->prerequisito_observacion = $prerequisito_observacion;
             $items[$k]->prerequisito_especialidad = $prerequisito_especialidad;
+            $items[$k]->prerequisito_absolucion = $prerequisito_absolucion;
+
             $items[$k]->prerequisito_estado_texto = $prerequisito_estado_texto;
             $items[$k]->anexo_plantilla = json_decode($o->anexo_plantilla);
             $groups_keys_especialidad[$items[$k]->especialidad_id][] = $k;

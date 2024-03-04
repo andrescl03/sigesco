@@ -205,20 +205,21 @@ class Plazas_model extends CI_Model {
 
       $data = [
         'codigo_plaza' => $codigo_plaza,
-        'colegio_id' => $colegio_id,
-        'ie' => $ie,
-        'especialidad' => $especialidad,
+        'codigoPlaza' => $codigo_plaza,
+          //'colegio_id' => $colegio_id,
+        //'ie' => $ie,
+       // 'especialidad' => $especialidad,
         'tipo_convocatoria' => $tipo_convocatoria,
         'jornada' => $jornada,
-        'tipo_vacante' => $tipo_vacante,
+       // 'tipo_vacante' => $tipo_vacante,
         'motivo_vacante' => $motivo_vacante,
         'periodo_id' => $periodo_id,
         'fecha_mod' => $this->tools->getDateHour(),
         'tipo_proceso' => $tipo_proceso,
         // 'estado' => $estado,
-        'mod_id' => $mod_id,
-        'ie'=>@$school->mod_nombre,
-        'nivel'=>@$school->mod_nivel
+        /* 'mod_id' => $mod_id, */
+        //'ie'=>@$school->mod_nombre,
+       // 'nivel'=>@$school->mod_nivel
       ];
       
       $this->db->update('plazas', $data, ['plz_id' => $id]);
