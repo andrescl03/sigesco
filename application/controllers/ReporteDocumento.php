@@ -1523,9 +1523,9 @@ class ReporteDocumento extends CI_Controller {
 
 
             $xpx = $this->pdf->GetX();
-            /*  if( $fila['firmaActiva'] == 1){
-              $this->pdf->Image($fila['firma'], $this->pdf->GetX()+15, $this->pdf->GetY()-23,42,0, 'png');
-              } */
+            // if( $fila['firmaActiva'] == 1){
+            //   $this->pdf->Image($fila['firma'], $this->pdf->GetX()+15, $this->pdf->GetY()-23,42,0, 'png');
+            // }
 
             //            $this->pdf->Cell(11,11, $this->pdf->Image('./Archivo/colegio12.png', $this->pdf->GetX(), $this->pdf->GetY(),11),1)
             //            "./Archivo/" .$imagen

@@ -432,7 +432,11 @@ class Adjudicaciones_model extends CI_Model
                       E.esp_descripcion AS especialidad_nombre,
                       GI.gin_id AS inscripcion_id,
                       C.con_tipo AS con_tipo,
-                      CPE.cpe_s5 AS puntaje,
+                      -- CPE.cpe_s5 AS puntaje,
+                      CASE C.con_tipo
+                        WHEN 1 THEN CPE.cpe_s5
+                        WHEN 2 THEN PE.puntaje
+                      END AS puntaje,
                       P.distrito AS distrito_nombre,
                       P.provincia AS provincia_nombre,
                       P.departamento AS departamento_nombre
