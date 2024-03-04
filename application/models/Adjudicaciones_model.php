@@ -447,7 +447,7 @@ class Adjudicaciones_model extends CI_Model
                   INNER JOIN cuadro_pun_exp CPE ON P.numero_documento = CPE.cpe_documento AND CPE.grupo_inscripcion_gin_id = P.inscripcion_id AND CPE.cpe_tipoCuadro = 1
                   WHERE P.deleted_at IS NULL AND P.id = ?";
           $adjudicacion->postulacion = $this->db->query($sql, ['id' => $adjudicacion->postulacion_id])->row();
-
+        
           $sql = "SELECT
                   C.*,
                   M.mod_id AS modalidad_id,

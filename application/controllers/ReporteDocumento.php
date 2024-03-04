@@ -1277,14 +1277,11 @@ class ReporteDocumento extends CI_Controller {
         if ($plaza->tipo_convocatoria == 1) {
             $this->pdf->Cell(0, 10, utf8_decode('CONTRATACIÓN POR RESULTADOS DE LA PN'), 0, 0, 'C');
         }
-        else{
-
-            
+      
         if ($plaza->tipo_convocatoria == 2) {
             $this->pdf->Cell(0, 10, utf8_decode('CONTRATACIÓN POR EVALUACIÓN DE EXPEDIENTE'), 0, 0, 'C');
         }
-
-        }
+ 
 
         $this->pdf->Ln(5);
         $this->pdf->SetFont('Arial', '', 9);
@@ -1329,7 +1326,17 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, utf8_decode('Etapa de contratación'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(40, 7, 'Segunda Etapa', '', 0, 'L', 0);
+
+
+        if ($plaza->tipo_convocatoria == 1) {
+            $this->pdf->Cell(40, 7, 'Segunda Etapa', '', 0, 'L', 0);
+        }
+      
+        if ($plaza->tipo_convocatoria == 2) {
+            $this->pdf->Cell(40, 7, 'Tercera Etapa', '', 0, 'L', 0);
+        }
+
+
         
         
         $this->pdf->Ln(8);
