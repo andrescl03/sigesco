@@ -1319,7 +1319,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(40, 7, $postulante->puntaje, '', 0, 'L', 0);
         $this->pdf->Cell(15, 7, 'En letras', '', 0, 'LU', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode(strtoupper($this->num2letras($postulante->puntaje))), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode(strtoupper($this->numeroALetras($postulante->puntaje))), '', 0, 'L', 0);
 
         $this->pdf->Ln(4);
 
@@ -1503,7 +1503,7 @@ class ReporteDocumento extends CI_Controller {
         $contador = 0;
         $lista_firmas = $firmas;
         // var_dump($firmas); exit;
-        foreach ($lista_firmas as $fila) {
+        /*foreach ($lista_firmas as $fila) {
             $y = $this->pdf->GetY();
             $x = $this->pdf->GetX();
 
@@ -1567,7 +1567,7 @@ class ReporteDocumento extends CI_Controller {
 
             $this->pdf->SetXY($xp, $yp);
             ++$contador;
-        }
+        }*/
 
 
 
@@ -3145,5 +3145,117 @@ class ReporteDocumento extends CI_Controller {
         return $end_num;
     }
 
+    function numeroALetras($numero) {
+        $unidades = array(
+            0 => 'cero',
+            1 => 'uno',
+            2 => 'dos',
+            3 => 'tres',
+            4 => 'cuatro',
+            5 => 'cinco',
+            6 => 'seis',
+            7 => 'siete',
+            8 => 'ocho',
+            9 => 'nueve'
+        );
+    
+        $decenas = array(
+            10 => 'diez',
+            20 => 'veinte',
+            30 => 'treinta',
+            40 => 'cuarenta',
+            50 => 'cincuenta',
+            60 => 'sesenta',
+            70 => 'setenta',
+            80 => 'ochenta',
+            90 => 'noventa'
+        );
+    
+        $centenas = array(
+            100 => 'cien',
+            200 => 'doscientos',
+            300 => 'trescientos',
+            400 => 'cuatrocientos',
+            500 => 'quinientos',
+            600 => 'seiscientos',
+            700 => 'setecientos',
+            800 => 'ochocientos',
+            900 => 'novecientos'
+        );
+    
+        $decimales = array(
+            10 => 'diez',
+            20 => 'veinte',
+            30 => 'treinta',
+            40 => 'cuarenta',
+            50 => 'cincuenta',
+            60 => 'sesenta',
+            70 => 'setenta',
+            80 => 'ochenta',
+            90 => 'noventa'
+        );
+    
+        // Verificar si el número es negativo
+        $esNegativo = $numero < 0;
+        $numero = abs($numero);
+    
+        // Separar la parte entera y la parte decimal
+        $parteEntera = floor($numero);
+        $parteDecimal = round(($numero - $parteEntera) * 100);
+    
+        // Convertir la parte entera a letras
+        $letrasParteEntera = '';
+    
+        if ($parteEntera == 0) {
+            $letrasParteEntera = $unidades[0];
+        } elseif ($parteEntera <= 20) {
+            $letrasParteEntera = $unidades[$parteEntera];
+        } elseif ($parteEntera < 100) {
+            $decena = floor($parteEntera / 10) * 10;
+            $unidad = $parteEntera % 10;
+            $letrasParteEntera = $decenas[$decena];
+    
+            if ($unidad > 0) {
+                $letrasParteEntera .= ' y ' . $unidades[$unidad];
+            }
+        } elseif ($parteEntera < 1000) {
+            $centena = floor($parteEntera / 100) * 100;
+            $resto = $parteEntera % 100;
+            $letrasParteEntera = $centenas[$centena];
+    
+            if ($resto > 0) {
+                $letrasParteEntera .= ' ' . numeroALetras($resto);
+            }
+        } else {
+            $letrasParteEntera = 'Número demasiado grande para convertir';
+        }
+    
+        // Convertir la parte decimal a letras
+        $letrasParteDecimal = '';
+    
+        if ($parteDecimal > 0) {
+            $letrasParteDecimal = ' punto';
+    
+            if ($parteDecimal <= 20) {
+                $letrasParteDecimal .= ' ' . $unidades[$parteDecimal];
+            } elseif ($parteDecimal < 100) {
+                $decena = floor($parteDecimal / 10) * 10;
+                $unidad = $parteDecimal % 10;
+                $letrasParteDecimal .= ' ' . $decenas[$decena];
+    
+                if ($unidad > 0) {
+                    $letrasParteDecimal .= ' y ' . $unidades[$unidad];
+                }
+            } else {
+                $letrasParteDecimal .= 'Número decimal demasiado grande para convertir';
+            }
+        }
+    
+        // Unir las partes y añadir "negativo" si es necesario
+        $letras = ($esNegativo ? 'negativo ' : '') . $letrasParteEntera . $letrasParteDecimal;
+    
+        return $letras . '/1000 Puntos ';
+    }
+    
 
 }
