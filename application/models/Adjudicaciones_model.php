@@ -444,7 +444,7 @@ class Adjudicaciones_model extends CI_Model
                   INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
                   INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
                   INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
-                  INNER JOIN cuadro_pun_exp CPE ON P.numero_documento = CPE.cpe_documento AND CPE.grupo_inscripcion_gin_id = P.inscripcion_id AND CPE.cpe_tipoCuadro = 1
+                  LEFT JOIN cuadro_pun_exp CPE ON P.numero_documento = CPE.cpe_documento AND CPE.grupo_inscripcion_gin_id = P.inscripcion_id AND CPE.cpe_tipoCuadro = 1
                   WHERE P.deleted_at IS NULL AND P.id = ?";
           $adjudicacion->postulacion = $this->db->query($sql, ['id' => $adjudicacion->postulacion_id])->row();
         
@@ -624,8 +624,7 @@ class Adjudicaciones_model extends CI_Model
                 FROM postulaciones P
                 LEFT JOIN postulacion_evaluaciones PE ON PE.postulacion_id = P.id AND PE.promedio = 1
                 INNER JOIN convocatorias C ON C.con_id = P.convocatoria_id
-                INNER JOIN convocatorias_detalle CD 
-                ON CD.convocatorias_con_id = C.con_id
+                INNER JOIN convocatorias_detalle CD ON CD.convocatorias_con_id = C.con_id
                 INNER JOIN grupo_inscripcion GI ON GI.gin_id = CD.grupo_inscripcion_gin_id AND GI.gin_id = P.inscripcion_id
                 INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
                 INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
