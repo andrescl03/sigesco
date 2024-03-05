@@ -38,6 +38,9 @@ $niveles  = $data['niveles'];
                                                             </div>
                                                         </div>
                                                         <div class="vr"></div>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm px-4" data-bs-toggle="modal" data-bs-target="#modalUploadPlaza">
+                                                            <b><i class="fa-solid fa-cloud-arrow-up fa-lg"></i> Cargar</b>
+                                                        </button>
                                                         <!--<div class="d-grid gap-2 col-sm-3">
                                                                 <div class="row">
                                                                     <div class="col-sm-5 mt-1"><b>Tipo de plaza:</b></div>
@@ -304,6 +307,37 @@ $niveles  = $data['niveles'];
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-primary" form="formConfirmAdjudicacion">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalUploadPlaza" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="staticBackdropLabel"><b><i class="fas fa-check-double fa-xs me-2"></i>Cargar Plaza</b></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formUploadPlaza" class="form-upload-plaza">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Archivo</label>
+                            <input
+                                type="file"
+                                class="form-control"
+                                name="file"
+                                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <a href="<?php echo base_url(); ?>public/files/formato_plazas.xlsx" target="_blank" download>Descargar Plantilla</a>
+                        </div>       
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal"><b><i class="fa-regular fa-circle-xmark fa-lg"></i> Cerrar</b></button>
+                    <button type="submit" class="btn btn-sm btn-primary" form="formUploadPlaza"><b><i class="far fa-check-circle fa-lg"></i> Procesar</b></button>
                 </div>
             </div>
         </div>

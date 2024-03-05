@@ -117,6 +117,7 @@ $route['postulaciones/(:num)/fichas'] = 'postulaciones/fichas/$1';
 
 $route['configuracion/plazas'] = 'plazas/index';
 $route['configuracion/plazas/store'] = 'plazas/store';
+$route['configuracion/plazas/upload'] = 'plazas/upload';
 $route['configuracion/plazas/pagination'] = 'plazas/pagination';
 $route['configuracion/plazas/(:num)/update'] = 'plazas/update/$1';
 $route['configuracion/plazas/(:num)/remove'] = 'plazas/remove/$1';

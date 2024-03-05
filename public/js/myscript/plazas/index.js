@@ -8,6 +8,7 @@ const AppPlazaIndex = () => {
                     modalPlaza: new bootstrap.Modal(dom.querySelector('#modalPlaza')),
                     modalAdjudicaciones: new bootstrap.Modal(dom.querySelector('#modalAdjudicaciones')),
                     modalConfirmAdjudicacion: new bootstrap.Modal(dom.querySelector('#modalConfirmAdjudicacion')),
+                    modalUploadPlaza: new bootstrap.Modal(dom.querySelector('#modalUploadPlaza')),
                     any: 0,
                     niveles: [],
                     colegio_niveles: []
@@ -131,6 +132,33 @@ const AppPlazaIndex = () => {
                                     sweet2.show({type:'error', text:error});
                                 })
                                 
+                            })
+                            .catch(error => {
+                                sweet2.show({type:'error', text:error});
+                            });
+                        })
+                    });
+
+                    const formUploads = dom.querySelectorAll('.form-upload-plaza');
+                    formUploads.forEach(form => {
+                        form.addEventListener('submit', (e) => {
+                            e.preventDefault();
+                            sweet2.loading();
+                            const formData = new FormData(e.target);
+                            self.upload(formData)
+                            .then(({success, data, message}) => {
+                                if (!success) {
+                                    throw message;
+                                }
+                                e.target.reset();
+                                self.modalUploadPlaza.hide();
+                                sweet2.show({
+                                    type: 'success',
+                                    text: message,
+                                    onOk: () => {
+                                        self.table.ajax.reload();
+                                    }
+                                });
                             })
                             .catch(error => {
                                 sweet2.show({type:'error', text:error});
@@ -447,7 +475,25 @@ const AppPlazaIndex = () => {
                         });
                     });
                 }, 
-                
+                upload: (formData) => {
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + `configuracion/plazas/upload`,
+                            method: 'POST',
+                            dataType: 'json',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function (response) {
+                            resolve(response);
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
+                        });
+                    });
+                },
                 renderAwards: (items) => {
                     const tbodies = dom.querySelectorAll('.tbody-adjudicaciones');
                     tbodies.forEach(tbody => {
