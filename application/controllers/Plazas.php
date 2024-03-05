@@ -110,7 +110,7 @@ class Plazas extends CI_Controller {
             }
 
             $hoja->getStyle('A' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('A' . $cont, $fila->codigoPlaza, PHPExcel_Cell_DataType::TYPE_STRING);
+            $hoja->setCellValue('A' . $cont, $fila->codigo_plaza, PHPExcel_Cell_DataType::TYPE_STRING);
 
             $hoja->getStyle('B' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $hoja->setCellValue('B' . $cont, $fila->ie);

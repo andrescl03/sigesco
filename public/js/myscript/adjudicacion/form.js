@@ -1190,7 +1190,7 @@ const AppAdjudicacionAdmin = () => {
                     let html = `No hay registro para mostrar`;
                     if (Object.keys(self.plaza).length > 0) {
                         html = `
-                        <p><strong>Código plaza</strong> ${self.plaza.codigoPlaza}</p>
+                        <p><strong>Código plaza</strong> ${self.plaza.codigo_plaza}</p>
                         <p><strong>I.E</strong> ${self.plaza.ie}</p>
                         <p><strong>Cargo</strong> ${self.plaza.cargo}</p>
                         <p><strong>Especialidad</strong> ${self.plaza.especialidad}</p>

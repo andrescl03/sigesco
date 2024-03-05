@@ -205,7 +205,6 @@ class Plazas_model extends CI_Model {
 
       $data = [
         'codigo_plaza' => $codigo_plaza,
-        'codigoPlaza' => $codigo_plaza,
           //'colegio_id' => $colegio_id,
         //'ie' => $ie,
        // 'especialidad' => $especialidad,

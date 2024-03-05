@@ -176,7 +176,7 @@ const AppAdjudicacionAdmin = () => {
                                     "targets": 1,
                                     "data": "plaza_id",
                                     "render": function ( data, type, row, meta ) {
-                                        return row.codigoPlaza;
+                                        return row.codigo_plaza;
                                     }
                                 },
                                 {

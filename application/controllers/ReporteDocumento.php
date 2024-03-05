@@ -1038,7 +1038,7 @@ class ReporteDocumento extends CI_Controller {
             $this->pdf->SetFont('Arial', '', 6);
 
             $etapa = $datos[$i]['etapa'];
-            $codigoPlaza = $datos[$i]['codigoPlaza'];
+            $codigo_plaza = $datos[$i]['codigo_plaza'];
             $ie = utf8_decode($datos[$i]['ie']);
             $modalidad = utf8_decode($datos[$i]['modalidad']);
             $nivel = utf8_decode($datos[$i]['nivel']);
@@ -1050,7 +1050,7 @@ class ReporteDocumento extends CI_Controller {
             //*** COLOCAMOS LOS DATOS EN LAS CELDAS DEL PDF ***//
             $this->pdf->Cell(5, 5, $contador, 1, 0, 'C');
             $this->pdf->Cell(30, 5, $etapa, 1, 0, 'C');
-            $this->pdf->Cell(20, 5, $codigoPlaza, 1, 0, 'C');
+            $this->pdf->Cell(20, 5, $codigo_plaza, 1, 0, 'C');
             $this->pdf->Cell(40, 5, $ie, 1, 0, 'C');
             $this->pdf->Cell(20, 5, $modalidad, 1, 0, 'C');
             $this->pdf->Cell(30, 5, $nivel, 1, 0, 'C');
@@ -1156,7 +1156,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, utf8_decode('Código Único'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['codigoPlaza']), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['codigo_plaza']), '', 0, 'L', 0);
         //******* MOTIVO DE VACANTE ********//
         $this->pdf->Ln(4);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
@@ -1353,7 +1353,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, utf8_decode('Código Único'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode($plaza->codigoPlaza), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($plaza->codigo_plaza), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'Motivo de Vacante', '', 0, 'L', 0);
@@ -1668,7 +1668,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Ln(5);
         $this->pdf->SetFont('Arial', '', 10);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 7, utf8_decode('Que, el docente voluntariamente elige la plaza vacante de la institución educativa ' . $datos [0] ['ie'] . ', código de plaza Nº ' . $datos [0] ['codigoPlaza'] . ', en uso de sus derecho amparada por la norma acotada. Sin lugar a reclamo alguno posterior en caso que la plaza sea ocupada por reubicación de excedente, reasignación por salud u otro.'), 0);
+        $this->pdf->MultiCell(180, 7, utf8_decode('Que, el docente voluntariamente elige la plaza vacante de la institución educativa ' . $datos [0] ['ie'] . ', código de plaza Nº ' . $datos [0] ['codigo_plaza'] . ', en uso de sus derecho amparada por la norma acotada. Sin lugar a reclamo alguno posterior en caso que la plaza sea ocupada por reubicación de excedente, reasignación por salud u otro.'), 0);
         $this->pdf->Ln(15);
         $this->pdf->Cell(20, 7, '', '', 0, 'C', 0);
         $this->pdf->MultiCell(0, 7, utf8_decode('Se firma el presente documento en señal de conformidad entre las partes:'), 0);
@@ -1809,7 +1809,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->MultiCell(0, 5, utf8_decode('CLÁUSULA SEGUNDA'), 0);
         $this->pdf->SetFont('', '');
         $this->pdf->Cell(5, 5, '', '', 0, 'R', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('Por el presente, la  DRE / GRE/ UGEL contrata los servicios del PROFESOR para que cumpla funciones docentes en la plaza con código ' . utf8_decode($plaza->codigoPlaza) . ' (horas libres para completar el plan de estudios) perteneciente a la Institución Educativa ' . $plaza->ie . ' de la modalidad educativa de ' . utf8_decode($convocatoria->modalidad_nombre) . ' - ' . utf8_decode($postulante->nivel_nombre) . ', ubicada en el Distrito de ' . utf8_decode($postulante->distrito_nombre) . ', Provincia de ' . utf8_decode($postulante->provincia_nombre) . ', Región de LIMA.'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('Por el presente, la  DRE / GRE/ UGEL contrata los servicios del PROFESOR para que cumpla funciones docentes en la plaza con código ' . utf8_decode($plaza->codigo_plaza) . ' (horas libres para completar el plan de estudios) perteneciente a la Institución Educativa ' . $plaza->ie . ' de la modalidad educativa de ' . utf8_decode($convocatoria->modalidad_nombre) . ' - ' . utf8_decode($postulante->nivel_nombre) . ', ubicada en el Distrito de ' . utf8_decode($postulante->distrito_nombre) . ', Provincia de ' . utf8_decode($postulante->provincia_nombre) . ', Región de LIMA.'), 0);
 
         $this->pdf->Ln(3);
         $this->pdf->Cell(5, 5, '', '', 0, 'R', 0);
@@ -2692,7 +2692,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(40, 7, utf8_decode('CODIGO DE PLAZA'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
         $this->pdf->SetFont('Arial', 'B', 8);
-        $this->pdf->Cell(0, 7, utf8_decode($plaza->codigoPlaza), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, utf8_decode($plaza->codigo_plaza), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         
        

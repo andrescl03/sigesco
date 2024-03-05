@@ -28,7 +28,7 @@ class Adjudicaciones_model extends CI_Model
                             OR POS.apellido_paterno LIKE('%{$value}%')
                             OR POS.apellido_materno LIKE('%{$value}%')
                             OR CONCAT(POS.nombre, ' ', POS.apellido_paterno, ' ', POS.apellido_materno) LIKE('%{$value}%')
-                            OR PLA.codigoPlaza LIKE('%{$value}%')
+                            OR PLA.codigo_plaza LIKE('%{$value}%')
                             OR MODA.mod_abreviatura LIKE('%{$value}%')
                             OR NIVE.niv_descripcion LIKE('%{$value}%')
                             OR PLA.especialidad LIKE('%{$value}%') )";
@@ -44,7 +44,7 @@ class Adjudicaciones_model extends CI_Model
     POS.correo,
     POS.numero_celular,
     POS.numero_expediente,
-    PLA.codigoPlaza,
+    PLA.codigo_plaza,
     PLA.ie,
     MODA.mod_abreviatura,
     NIVE.niv_descripcion,
@@ -81,7 +81,7 @@ class Adjudicaciones_model extends CI_Model
                                   OR POS.apellido_paterno LIKE('%{$value}%')
                                   OR POS.apellido_materno LIKE('%{$value}%')
                                   OR CONCAT(POS.nombre, ' ', POS.apellido_paterno, ' ', POS.apellido_materno) LIKE('%{$value}%')
-                                  OR PLA.codigoPlaza LIKE('%{$value}%')
+                                  OR PLA.codigo_plaza LIKE('%{$value}%')
                                   OR MODA.mod_abreviatura LIKE('%{$value}%')
                                   OR NIVE.niv_descripcion LIKE('%{$value}%')
                                   OR PLA.especialidad LIKE('%{$value}%') )";
@@ -95,7 +95,7 @@ class Adjudicaciones_model extends CI_Model
           POS.nombre,
           POS.apellido_paterno,
           POS.apellido_materno,
-          PLA.codigoPlaza,
+          PLA.codigo_plaza,
           PLA.ie,
           MODA.mod_abreviatura,
           NIVE.niv_descripcion,
