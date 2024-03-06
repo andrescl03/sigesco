@@ -1317,10 +1317,10 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(40, 7, 'Puntaje', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, $postulante->puntaje, '', 0, 'L', 0);
-        $this->pdf->Cell(15, 7, 'En letras', '', 0, 'LU', 0);
+      /*   $this->pdf->Cell(15, 7, 'En letras', '', 0, 'LU', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
         $this->pdf->Cell(0, 7, utf8_decode(strtoupper($this->numeroALetras($postulante->puntaje))), '', 0, 'L', 0);
-
+ */
         $this->pdf->Ln(4);
 
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
@@ -1415,7 +1415,7 @@ class ReporteDocumento extends CI_Controller {
             $nivel_nombre = 'Inicial/Primaria';
         }
         if($plaza->nivel_id == 7){
-            $nivel_nombre = 'Primaria';
+            $nivel_nombre = 'ETP';
         }
         if($plaza->nivel_id == 8){
             $nivel_nombre = 'Inicial';
@@ -1503,7 +1503,7 @@ class ReporteDocumento extends CI_Controller {
         $contador = 0;
         $lista_firmas = $firmas;
         // var_dump($firmas); exit;
-        /*foreach ($lista_firmas as $fila) {
+          foreach ($lista_firmas as $fila) {
             $y = $this->pdf->GetY();
             $x = $this->pdf->GetX();
 
@@ -1567,7 +1567,7 @@ class ReporteDocumento extends CI_Controller {
 
             $this->pdf->SetXY($xp, $yp);
             ++$contador;
-        }*/
+        } 
 
 
 
@@ -2631,7 +2631,7 @@ class ReporteDocumento extends CI_Controller {
             $nivel_nombre = 'Inicial/Primaria';
         }
         if($plaza->nivel_id == 7){
-            $nivel_nombre = 'Primaria';
+            $nivel_nombre = 'ETP';
         }
         if($plaza->nivel_id == 8){
             $nivel_nombre = 'Inicial';
