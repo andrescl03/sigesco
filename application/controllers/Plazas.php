@@ -13,7 +13,7 @@ class Plazas extends CI_Controller {
     }
 
     public function index() {
-        $this->layout->js(array(base_url() . "public/js/myscript/plazas/index.js"));
+        $this->layout->js(array(base_url() . "public/js/myscript/plazas/index.js?v=".date("mdYHis")));
         return $this->layout->view("/configuracion/plazas/index", $this->plazas_model->index());
     }
 
@@ -51,6 +51,12 @@ class Plazas extends CI_Controller {
         return $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($this->plazas_model->pagination()));
+    }
+
+    public function upload() {
+        return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->plazas_model->upload()));
     }
 
     public function reporte_plazas()
@@ -104,7 +110,7 @@ class Plazas extends CI_Controller {
             }
 
             $hoja->getStyle('A' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('A' . $cont, $fila->codigoPlaza, PHPExcel_Cell_DataType::TYPE_STRING);
+            $hoja->setCellValue('A' . $cont, $fila->codigo_plaza, PHPExcel_Cell_DataType::TYPE_STRING);
 
             $hoja->getStyle('B' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $hoja->setCellValue('B' . $cont, $fila->ie);

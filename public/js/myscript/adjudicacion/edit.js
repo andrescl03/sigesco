@@ -87,7 +87,7 @@ const AppAdjudicacionAdmin = () => {
                                             self.plazas.forEach(plaza => {
                                                 html +=`<tr>
                                                             <td>${plaza.plz_id}</td>
-                                                            <td>${plaza.codigoPlaza}</td>
+                                                            <td>${plaza.codigo_plaza}</td>
                                                             <td>${plaza.ie}</td>
                                                             <td>${plaza.mod_id}</td>
                                                             <td>${plaza.cargo}</td>
@@ -261,7 +261,7 @@ const AppAdjudicacionAdmin = () => {
                                 "targets": 1,
                                 "data": "plaza_id",
                                 "render": function ( data, type, row, meta ) {
-                                    return row.codigoPlaza;
+                                    return row.codigo_plaza;
                                 }
                             },
                             {

@@ -205,7 +205,6 @@ class Plazas_model extends CI_Model {
 
       $data = [
         'codigo_plaza' => $codigo_plaza,
-        'codigoPlaza' => $codigo_plaza,
           //'colegio_id' => $colegio_id,
         //'ie' => $ie,
        // 'especialidad' => $especialidad,
@@ -350,6 +349,119 @@ class Plazas_model extends CI_Model {
         $response['message'] = $e->getMessage();
     }
     return $response; 
+  }
+
+  public function upload() {
+    $response = $this->tools->responseDefault();
+    try {
+
+        $PATH_FILE  = 'archivos/pun' . '/';
+
+        if (!is_dir($PATH_FILE)) {
+            mkdir($PATH_FILE, 0777, true);
+        }
+
+        $name = "plazas_" . date("YmdHis");
+        $extension   = strtolower(pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION));
+        if (empty($_FILES)) {
+          throw new Exception("No se envió ningun archivo.");
+        }
+
+        $config["upload_path"]       = $PATH_FILE;
+        $config["allowed_types"]     = "xlsx";
+        $config["file_name"]         = $name . "." . $extension;
+        $config["overwrite"]         = true; //sobreescribir
+        $config["max_size"]         = 0;
+        $config["max_filename"]     = 0;
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload("file")) {
+            $error = $this->upload->display_errors();
+            throw new Exception("Ocurrió un error al cargar archivo: $error");
+        }
+
+        $nombreArchivo  = $config["file_name"]; // $this->input->post("nombreArchivo", true);
+
+        $file = $PATH_FILE . $nombreArchivo;
+
+        $archivo =  $file;
+        $this->load->library('PHPExcel');
+        // Cargo la hoja de cálculo
+        $objPHPExcel = PHPExcel_IOFactory::load($archivo);
+        //Asigno la hoja de calculo activa
+        $objPHPExcel->setActiveSheetIndex(0);
+        //Obtengo el numero de filas del archivo							
+        $numFilas = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
+        $numColumnas = ord($objPHPExcel->setActiveSheetIndex(0)->getHighestColumn()) - 64;
+        
+        $inserts = [];
+        $updates = [];
+
+        // Leer los datos de Excel
+        for ($fila = 2; $fila <= $numFilas; $fila++) {
+
+          $id                 = trim($objPHPExcel->getActiveSheet()->getCell('A' . $fila)->getCalculatedValue());
+          $codigo_plaza       = trim($objPHPExcel->getActiveSheet()->getCell('B' . $fila)->getCalculatedValue());
+          $ie                 = trim($objPHPExcel->getActiveSheet()->getCell('C' . $fila)->getCalculatedValue());
+          $especialidad       = trim($objPHPExcel->getActiveSheet()->getCell('D' . $fila)->getCalculatedValue());
+          $cargo              = trim($objPHPExcel->getActiveSheet()->getCell('E' . $fila)->getCalculatedValue());
+          $caracteristica     = trim($objPHPExcel->getActiveSheet()->getCell('F' . $fila)->getCalculatedValue());
+          $tipo               = trim($objPHPExcel->getActiveSheet()->getCell('G' . $fila)->getCalculatedValue());
+          $jornada            = trim($objPHPExcel->getActiveSheet()->getCell('H' . $fila)->getCalculatedValue());
+          $tipo_vacante       = trim($objPHPExcel->getActiveSheet()->getCell('I' . $fila)->getCalculatedValue());
+          $motivo_vacante     = trim($objPHPExcel->getActiveSheet()->getCell('J' . $fila)->getCalculatedValue());
+          $tipo_proceso       = trim($objPHPExcel->getActiveSheet()->getCell('K' . $fila)->getCalculatedValue());
+          $tipo_convocatoria  = trim($objPHPExcel->getActiveSheet()->getCell('L' . $fila)->getCalculatedValue());
+          $periodo_id         = trim($objPHPExcel->getActiveSheet()->getCell('M' . $fila)->getCalculatedValue());
+          $modalidad_id       = trim($objPHPExcel->getActiveSheet()->getCell('N' . $fila)->getCalculatedValue());
+
+          $data = [
+            'codigo_plaza'      => $codigo_plaza,
+            'ie'                => $ie,
+            'especialidad'      => $especialidad,
+            'cargo'             => $cargo,
+            'caracteristica'    => $caracteristica,
+            'tipo'              => $tipo,
+            'jornada'           => $jornada,
+            'tipo_vacante'      => $tipo_vacante,
+            'motivo_vacante'    => $motivo_vacante,
+            'tipo_convocatoria' => $tipo_convocatoria,
+            'periodo_id'        => $periodo_id,
+            'mod_id'      => $modalidad_id
+          ];
+
+          if ($id > 0) {
+            $updates[] = [
+              'data' => $data,
+              'where' => [
+                'plz_id' => $id
+              ]
+            ];
+          } else {
+            $inserts[] = $data;
+          }
+        }
+
+        if (count($inserts) > 0) {
+          $this->db->insert_batch('plazas', $inserts);
+          $affected_rows = ($this->db->affected_rows() > 0) ? 1 : 0;
+        }
+
+        if (count($updates) > 0) {
+          foreach ($updates as $k => $o) {
+            $this->db->update('plazas', $o['data'], $o['where']);  
+          }
+        }
+
+        $response['success'] = true;
+        $response['status']  = 200;
+        $response['message'] = 'Se proceso correctamente';
+  
+    } catch (\Exception $e) {
+        $response['message'] = $e->getMessage();
+    }
+    return $response;
   }
 
 }

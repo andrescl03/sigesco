@@ -188,7 +188,7 @@ class Adjudicaciones extends CI_Controller {
             $hoja->setCellValue('E' . $cont, $fila->apellido_materno, PHPExcel_Cell_DataType::TYPE_STRING);
 
             $hoja->getStyle('F' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('F' . $cont, $fila->codigoPlaza, PHPExcel_Cell_DataType::TYPE_STRING);
+            $hoja->setCellValue('F' . $cont, $fila->codigo_plaza, PHPExcel_Cell_DataType::TYPE_STRING);
 
             $hoja->getStyle('G' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $hoja->setCellValue('G' . $cont, $fila->fecha_inicio, PHPExcel_Cell_DataType::TYPE_STRING);

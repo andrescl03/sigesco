@@ -16,14 +16,6 @@
 		<tbody>
 			<?php $i=0; foreach ($datos as $dato) { ?>
 			<tr>										
-				<td class="text-center"><b><?= $i+1;?></b></td>
-                <td class="text-center"><?= $dato['codigoPlaza'] ?></td>	
-                <td><?= $dato['codigoPlaza'] ?></td>
-                <td><?= $dato['codigoPlaza'] ?></td>
-                 <td class="text-center"><?= $dato['codigoPlaza'] ?></td>
-                <td class="text-center"><?= $dato['codigoPlaza'] ?></td>
-                <td class="text-center"><?= $dato['codigoPlaza'] ?></td>
-                <td class="text-center"><?= $dato['codigoPlaza'] ?></td>
         	</tr>
 			<?php $i++; } ?>  								
 		</tbody>							
