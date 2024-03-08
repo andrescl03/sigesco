@@ -125,6 +125,14 @@ $route['configuracion/plazas/(:num)/edit'] = 'plazas/edit/$1';
 $route['configuracion/plazas/postulantes/liberar'] = 'plazas/liberar';
 $route['configuracion/plazas/exportar'] = 'plazas/reporte_plazas';
 
+$route['configuracion/prelaciones'] = 'prelaciones/index';
+$route['configuracion/prelaciones/store'] = 'prelaciones/store';
+$route['configuracion/prelaciones/create'] = 'prelaciones/create';
+$route['configuracion/prelaciones/pagination'] = 'prelaciones/pagination';
+$route['configuracion/prelaciones/(:num)/update'] = 'prelaciones/update/$1';
+$route['configuracion/prelaciones/(:num)/remove'] = 'prelaciones/remove/$1';
+$route['configuracion/prelaciones/(:num)/edit'] = 'prelaciones/edit/$1';
+
 $route['default_controller'] = 'index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
