@@ -48,7 +48,8 @@ class Adjudicaciones_model extends CI_Model
     PLA.ie,
     MODA.mod_abreviatura,
     NIVE.niv_descripcion,
-    PLA.especialidad
+    PLA.especialidad,
+    PLA.tipo_convocatoria
         FROM adjudicaciones AS AD
           INNER JOIN postulaciones AS POS ON POS.id = AD.postulacion_id
           INNER JOIN plazas AS PLA ON PLA.plz_id = AD.plaza_id
