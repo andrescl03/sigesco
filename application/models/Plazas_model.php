@@ -3,6 +3,7 @@ class Plazas_model extends CI_Model {
 
     public function __construct(){
         parent::__construct();
+        $this->load->library('tools');
     }
 
     public function index() {
@@ -139,6 +140,7 @@ class Plazas_model extends CI_Model {
       $motivo_vacante  = $this->input->post("motivo_vacante", true);
       $codigo_plaza  = $this->input->post("codigo_plaza", true);
       $mod_id  = $this->input->post("mod_id", true);
+      $cargo  = $this->input->post("cargo", true);
 
       $sql = "SELECT * FROM modularie WHERE mod_id = ?";
       $school = $this->db->query($sql, ['mod_id'=>$mod_id])->row();
@@ -157,7 +159,8 @@ class Plazas_model extends CI_Model {
         'estado' => 1, // $estado
         'mod_id' => $mod_id,
         'ie'=>@$school->mod_nombre,
-        'nivel'=>@$school->mod_nivel
+        'nivel'=>@$school->mod_nivel,
+        'cargo'=>$cargo
       ];
       
       $this->db->insert('plazas',$data);
@@ -199,26 +202,26 @@ class Plazas_model extends CI_Model {
       $codigo_plaza  = $this->input->post("codigo_plaza", true);
       $mod_id  = $this->input->post("mod_id", true);
       $colegio_id = $this->input->post("colegio_id", true);
-
+      $cargo  = $this->input->post("cargo", true);
       $sql = "SELECT * FROM modularie WHERE mod_id = ?";
       $school = $this->db->query($sql, ['mod_id'=>$mod_id])->row();
 
       $data = [
         'codigo_plaza' => $codigo_plaza,
-          //'colegio_id' => $colegio_id,
-        //'ie' => $ie,
-       // 'especialidad' => $especialidad,
+        'colegio_id' => $colegio_id,
+        'ie'=>@$school->mod_nombre,
+        'especialidad' => $especialidad,
         'tipo_convocatoria' => $tipo_convocatoria,
         'jornada' => $jornada,
-       // 'tipo_vacante' => $tipo_vacante,
+        'tipo_vacante' => $tipo_vacante,
         'motivo_vacante' => $motivo_vacante,
         'periodo_id' => $periodo_id,
         'fecha_mod' => $this->tools->getDateHour(),
         'tipo_proceso' => $tipo_proceso,
         // 'estado' => $estado,
-        /* 'mod_id' => $mod_id, */
-        //'ie'=>@$school->mod_nombre,
-       // 'nivel'=>@$school->mod_nivel
+        'mod_id' => $mod_id,
+       'nivel'=>@$school->mod_nivel,
+       'cargo'=>$cargo
       ];
       
       $this->db->update('plazas', $data, ['plz_id' => $id]);
