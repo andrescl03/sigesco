@@ -1,7 +1,7 @@
 <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Prelaciones</b></h4>
 <ol class="breadcrumb mb-2">
     <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
-    <li class="breadcrumb-item active">Plazas</li>
+    <li class="breadcrumb-item active">prelaciones</li>
 </ol>
 <div class="app-row" id="AppIndexPlaza">
     <div class="col-md-12">

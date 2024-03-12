@@ -141,10 +141,10 @@ class Adjudicaciones extends CI_Controller {
         $hoja->setCellValue('A1', 'REPORTE GENERAL ' . $fecha);
         $hoja->getStyle('A1')->getFont()->setSize(24)->setBold(true);
 
-        $hoja->mergeCells('A1:O1');
+        $hoja->mergeCells('A1:P1');
         $hoja->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         // Encabezados y estilo
-        $headers = ['FECHA DE ADJUDICACION', 'NÚMERO DE DOCUMENTO', 'NOMBRES', 'APELLIDO PATERNO', 'APELLIDO MATERNO', 'CÓDIGO DE PLAZA', 'FECHA DE INICIO', 'FECHA FIN', 'NOMBRE DE LA I.E', 'MODALIDAD', 'NIVEL', 'ESPECIALIDAD','CORREO','CELULAR','NUMERO DE EXPEDIENTE'];
+        $headers = ['FECHA DE ADJUDICACION', 'NÚMERO DE DOCUMENTO', 'NOMBRES', 'APELLIDO PATERNO', 'APELLIDO MATERNO', 'CÓDIGO DE PLAZA', 'FECHA DE INICIO', 'FECHA FIN', 'NOMBRE DE LA I.E', 'MODALIDAD', 'NIVEL', 'ESPECIALIDAD','CORREO','CELULAR','NUMERO DE EXPEDIENTE','TIPO DE CONVOCATORIA'];
         foreach ($headers as $key => $header) {
             $hoja->setCellValueByColumnAndRow($key, 2, $header);
 
@@ -155,9 +155,9 @@ class Adjudicaciones extends CI_Controller {
         }
 
         // Establecer color de fondo para encabezados
-        $hoja->getStyle('A2:O2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('FF0000');
+        $hoja->getStyle('A2:P2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('FF0000');
 
-        $columnas = range('A', 'O');
+        $columnas = range('A', 'P');
         foreach ($columnas as $columna) {
             $hoja->getColumnDimension($columna)->setAutoSize(true);
         }
@@ -168,7 +168,7 @@ class Adjudicaciones extends CI_Controller {
 
 
             // Aplicar formato de texto a todas las columnas
-            foreach (range('A', 'O') as $columna) {
+            foreach (range('A', 'P') as $columna) {
                 $hoja->getStyle($columna . $cont)->getNumberFormat()->setFormatCode('@');
             }
 
@@ -216,6 +216,9 @@ class Adjudicaciones extends CI_Controller {
 
             $hoja->getStyle('O' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $hoja->setCellValue('O' . $cont, $fila->numero_expediente, PHPExcel_Cell_DataType::TYPE_STRING);
+
+            $hoja->getStyle('P' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('P' . $cont, $fila->tipo_convocatoria == 1 ? 'SEGUNDA ETAPA PN' : 'TERCERA ETAPA EVALUACION DE EXPEDIENTES', PHPExcel_Cell_DataType::TYPE_STRING);
 
             
             $cont++;
