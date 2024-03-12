@@ -133,6 +133,14 @@ $route['configuracion/prelaciones/(:num)/update'] = 'prelaciones/update/$1';
 $route['configuracion/prelaciones/(:num)/remove'] = 'prelaciones/remove/$1';
 $route['configuracion/prelaciones/(:num)/edit'] = 'prelaciones/edit/$1';
 
+$route['configuracion/bonificaciones'] = 'bonificaciones/index';
+$route['configuracion/bonificaciones/store'] = 'bonificaciones/store';
+$route['configuracion/bonificaciones/create'] = 'bonificaciones/create';
+$route['configuracion/bonificaciones/pagination'] = 'bonificaciones/pagination';
+$route['configuracion/bonificaciones/(:num)/update'] = 'bonificaciones/update/$1';
+$route['configuracion/bonificaciones/(:num)/remove'] = 'bonificaciones/remove/$1';
+$route['configuracion/bonificaciones/(:num)/edit'] = 'bonificaciones/edit/$1';
+
 $route['default_controller'] = 'index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

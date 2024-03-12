@@ -22,9 +22,15 @@
                                                             <div class="vr"></div>
                                                             <div class="col-sm-6"><input type="text" class="form-control form-control-sm" id="txt_buscador" placeholder="Buscar..." ></div>
                                                             <div class="vr"></div>
-                                                            <div class="col-sm-2">
+                                                            <div class="col-sm-1 text-center">
                                                                 <a type="button" class="btn btn-sm btn-outline-primary" href="<?php echo base_url(); ?>prelaciones">
                                                                     Prelaciones
+                                                                </a>
+                                                            </div>
+                                                            <div class="vr"></div>
+                                                            <div class="col-sm-1 text-center">
+                                                                <a type="button" class="btn btn-sm btn-outline-primary" href="<?php echo base_url(); ?>bonificaciones">
+                                                                    Bonificaciones
                                                                 </a>
                                                             </div>
                                                         </div>

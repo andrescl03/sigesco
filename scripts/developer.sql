@@ -482,4 +482,5 @@ INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created
 INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (5, '12% Ley N 27674 por ser deportistas calificados de alto nivel a la administracion publica', 12.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
 INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (6, '8% Ley N 27674 por ser deportistas calificados de alto nivel a la administracion publica', 8.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
 INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (7, '4% Ley N 27674 por ser deportistas calificados de alto nivel a la administracion publica', 4.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (8, 'Sin Bonificacion', 0, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
 
