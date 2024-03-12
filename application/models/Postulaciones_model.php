@@ -1289,8 +1289,7 @@ class Postulaciones_model extends CI_Model
                             'id'          => $o1->id,
                             'name'        => $o1->nombre,
                             'description' => $o1->descripcion,
-                            'score'       => $o1->puntaje,
-                            'value'       => 0
+                            'score'       => $o1->puntaje
                         ]));
                     }
                     if (!isset($fichas[$k]->plantilla->bonuses)) {

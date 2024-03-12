@@ -837,7 +837,8 @@ const viewfichaDetail = function (pageActive) {
 			showCancelButton: true,
 			onOk: () => {
 			  const plantilla = {
-				sections: self.sections
+				sections: self.sections,
+				bonuses: self.bonuses
 			  };
 			  const formData = new FormData();
 			  formData.append('ficha_id', self.ficha_id);
