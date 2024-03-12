@@ -474,3 +474,12 @@ CREATE TABLE `bonificaciones` (
 );
 
 ALTER TABLE postulacion_evaluaciones ADD COLUMN `bonificacion_id` INT(11) NULL DEFAULT '0' AFTER `prelacion_id`;
+
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (1, '15% Ley N 29973 por condicion de discapacidad', 15.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:31', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (2, '10% Ley N 29948 por ser licenciado de las FFAA', 10.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:37', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (3, '20% Ley N 27674 por ser deportistas calificados de alto nivel a la administracion publica', 20.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (4, '16% Ley N 27674 por ser deportistas calificados de alto nivel a la administracion publica', 16.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (5, '12% Ley N 27674 por ser deportistas calificados de alto nivel a la administracion publica', 12.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (6, '8% Ley N 27674 por ser deportistas calificados de alto nivel a la administracion publica', 8.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (7, '4% Ley N 27674 por ser deportistas calificados de alto nivel a la administracion publica', 4.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
+
