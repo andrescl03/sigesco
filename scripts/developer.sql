@@ -459,3 +459,18 @@ ALTER TABLE postulacion_evaluaciones ADD COLUMN `prelacion_id` INT(11) NULL DEFA
 ALTER TABLE adjudicaciones ADD COLUMN estado INT(11) NULL DEFAULT '1' AFTER `plaza_id`;
 ALTER TABLE adjudicaciones ADD COLUMN fecha_liberacion DATETIME NULL DEFAULT NULL AFTER `plaza_id`;
 ALTER TABLE adjudicaciones ADD COLUMN observacion VARCHAR(255) NULL DEFAULT NULL AFTER `plaza_id`;
+
+
+/********************************** 12/03/2024 *******************************/
+CREATE TABLE `bonificaciones` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`nombre` VARCHAR(255) NULL DEFAULT NULL,
+	`puntaje` DECIMAL(9,2) NULL DEFAULT '0',
+	`descripcion` TEXT NULL DEFAULT NULL,
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+);
+
+ALTER TABLE postulacion_evaluaciones ADD COLUMN `bonificacion_id` INT(11) NULL DEFAULT '0' AFTER `prelacion_id`;

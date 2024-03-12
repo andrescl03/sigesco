@@ -1123,6 +1123,7 @@ class Postulaciones_model extends CI_Model
             $evaluacion_estado    = $this->input->post("evaluacion_estado", true);
             $revisado    = $this->input->post("revisado", true);
             $evaluacion_prelacion_id = $this->input->post("evaluacion_prelacion_id", true);
+            $evaluacion_bonificacion_id = $this->input->post("evaluacion_bonificacion_id", true);
 
             $sql = "SELECT 
                         P.*
@@ -1159,7 +1160,8 @@ class Postulaciones_model extends CI_Model
                     'plantilla'      => $plantilla,
                     'puntaje'        => $puntaje,
                     'estado'         => $evaluacion_estado,
-                    'prelacion_id'   => $evaluacion_prelacion_id
+                    'prelacion_id'   => $evaluacion_prelacion_id,
+                    'bonificacion_id'=> $evaluacion_bonificacion_id
                 ];
                 $this->db->update('postulacion_evaluaciones', $update, array('postulacion_id'=>$id, 'ficha_id'=>$ficha_id));
             } else {
@@ -1171,6 +1173,7 @@ class Postulaciones_model extends CI_Model
                     'fecha_registro' => $this->tools->getDateHour(),
                     'estado'         => $evaluacion_estado,
                     'prelacion_id'   => $evaluacion_prelacion_id,
+                    'bonificacion_id'=> $evaluacion_bonificacion_id,
                     'orden'          => $orden,
                     'promedio'       => $promedio
                 ];
@@ -1253,12 +1256,16 @@ class Postulaciones_model extends CI_Model
             $periodo_id = $inscripcion->periodos_per_id;
             $especialidad_id = $inscripcion->especialidades_esp_id;
 
+            $sql = "SELECT * FROM bonificaciones WHERE deleted_at IS NULL";
+            $bonificaciones = $this->db->query($sql)->result_object();
+
             $sql = "SELECT 
                         P.*,
                         PE.plantilla AS evaluacion_plantilla,
                         PE.estado AS evaluacion_estado,
                         PE.puntaje AS evaluacion_puntaje,
-                        PE.prelacion_id AS evaluacion_prelacion_id
+                        PE.prelacion_id AS evaluacion_prelacion_id,
+                        PE.bonificacion_id AS evaluacion_bonificacion_id
                     FROM periodo_fichas AS P 
                     INNER JOIN periodo_ficha_especialidades AS PFE ON PFE.periodo_ficha_id = P.id
                     LEFT JOIN postulacion_evaluaciones AS PE ON P.id = PE.ficha_id AND PE.postulacion_id = {$id} AND PE.deleted_at IS NULL
@@ -1274,6 +1281,21 @@ class Postulaciones_model extends CI_Model
                     if ($o->plantilla) {
                         $fichas[$k]->plantilla = json_decode($o->plantilla);
                     }    
+                }
+                if (isset($fichas[$k]->plantilla)) {
+                    $bonuses = [];
+                    foreach ($bonificaciones as $k1 => $o1) {
+                        $bonuses[] = json_decode(json_encode([
+                            'id'          => $o1->id,
+                            'name'        => $o1->nombre,
+                            'description' => $o1->descripcion,
+                            'score'       => $o1->puntaje,
+                            'value'       => 0
+                        ]));
+                    }
+                    if (!isset($fichas[$k]->plantilla->bonuses)) {
+                        $fichas[$k]->plantilla->bonuses = $bonuses;
+                    }
                 }
             }
   

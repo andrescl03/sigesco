@@ -286,7 +286,7 @@ const viewfichaDetail = function (pageActive) {
 			reject(message);
 		  }
 		}).fail(function (xhr, status, error) {
-		  reject(message);
+		  reject(error);
 		});
 	  });
 	}
@@ -315,7 +315,7 @@ const viewfichaDetail = function (pageActive) {
 			reject(message);
 		  }
 		}).fail(function (xhr, status, error) {
-		  reject(message);
+		  reject(error);
 		});
 	  });
 	}
@@ -325,6 +325,7 @@ const viewfichaDetail = function (pageActive) {
 		ficha_id: 0,
 		fichas: data.fichas,
 		sections: [],
+		bonuses: [],
 		ficha: {},
 		total_section: 0,
 		total_question: 0,
@@ -354,9 +355,11 @@ const viewfichaDetail = function (pageActive) {
 			});
 			// self.ficha.evaluacion_estado = Number(self.ficha.evaluacion_estado);
 			self.sections = [];
+			self.bonuses = [];
 			if (self.ficha.plantilla) {
 			  if (self.ficha.plantilla.sections) {
 				self.sections = self.ficha.plantilla.sections;
+				self.bonuses = self.ficha.plantilla.bonuses;
 				if (self.ficha.evaluacion_estado == 1) {
 				  if (self.postulante.estado == 'revisado' && revaluar == 0) {
 					formFichaDetail();
@@ -629,6 +632,41 @@ const viewfichaDetail = function (pageActive) {
 		  colr1.appendChild(cols1);
 		  domBody.appendChild(colr1);
 		}
+		const colr1 = document.createElement('div');
+		colr1.classList.add('row');
+		const cols0 = document.createElement('div');
+		cols0.classList.add('col-md-8', 'float-end');
+		const cols1 = document.createElement('div');
+		cols1.classList.add('col-md-4', 'float-end');
+
+		if (Number(self.ficha.promedio) == 1) {
+			const options = [];
+			self.bonuses.forEach(o => {
+			  options.push({
+				value: o.id,
+				text: o.name
+			  });
+			});
+			element = createSelect(options, {
+			  class: 'form-control text-center',
+			  id: 'bonificacionFicha'
+			}, {
+			  change: e => {
+				self.ficha.evaluacion_bonificacion_id = Number(e.target.value);
+				calculation();
+			  }
+			}, self.ficha.evaluacion_bonificacion_id);
+			const divgroup = document.createElement('div');
+			divgroup.classList.add('input-group');
+			const span1 = document.createElement('span');
+			span1.classList.add('input-group-text');
+			span1.innerText = 'Bonificación';
+			span1.style.minWidth = '100px';
+			divgroup.appendChild(span1);
+			divgroup.appendChild(element);
+			cols0.appendChild(divgroup);
+		}
+
 		if (Number(self.ficha.promedio) == 1 && !isPUN()) {
 		  const options = [];
 		  self.especialidad_prelaciones.forEach(o => {
@@ -645,12 +683,6 @@ const viewfichaDetail = function (pageActive) {
 			  self.ficha.evaluacion_prelacion_id = e.target.value;
 			}
 		  }, self.ficha.evaluacion_prelacion_id);
-		  const colr1 = document.createElement('div');
-		  colr1.classList.add('row');
-		  const cols0 = document.createElement('div');
-		  cols0.classList.add('col-md-7');
-		  const cols1 = document.createElement('div');
-		  cols1.classList.add('col-md-5', 'float-end');
 		  const divgroup = document.createElement('div');
 		  divgroup.classList.add('input-group');
 		  const span1 = document.createElement('span');
@@ -660,10 +692,10 @@ const viewfichaDetail = function (pageActive) {
 		  divgroup.appendChild(span1);
 		  divgroup.appendChild(element);
 		  cols1.appendChild(divgroup);
-		  colr1.appendChild(cols0);
-		  colr1.appendChild(cols1);
-		  domBody.appendChild(colr1);
 		}
+		colr1.appendChild(cols0);
+		colr1.appendChild(cols1);
+		domBody.appendChild(colr1);
 		const alertDiv = document.createElement('div');
 		alertDiv.id = 'divAlert';
 		domBody.appendChild(alertDiv);
@@ -801,7 +833,7 @@ const viewfichaDetail = function (pageActive) {
 		if (calculation()) {
 		  sweet2.show({
 			type: 'question',
-			html: `¿Estás seguro de guardar cambios? ${self.ficha.promedio == 1 ? `<h5>Puntaje Total</h5> <h3>${self.total}</h3>` : ``}`,
+			html: `¿Estás seguro de guardar cambios? ${self.ficha.promedio == 1 ? `<h5>Puntaje Total</h5> <h3>${self.total.toFixed(2)}</h3>` : ``}`,
 			showCancelButton: true,
 			onOk: () => {
 			  const plantilla = {
@@ -820,9 +852,11 @@ const viewfichaDetail = function (pageActive) {
 			  if (Number(self.ficha.promedio) == 1) {
 				formData.append('evaluacion_estado', 1);
 				formData.append('evaluacion_prelacion_id', self.ficha.evaluacion_prelacion_id);
+				formData.append('evaluacion_bonificacion_id', self.ficha.evaluacion_bonificacion_id);
 			  } else {
 				formData.append('evaluacion_estado', self.ficha.evaluacion_estado);
 				formData.append('evaluacion_prelacion_id', 0);
+				formData.append('evaluacion_bonificacion_id', 0);
 			  }
 			  sweet2.loading();
 			  setFicha(formData).then(_ref4 => {
@@ -1031,10 +1065,22 @@ const viewfichaDetail = function (pageActive) {
 			  if (total > self.total_section) {
 				throw `El puntaje acumulado excede el puntaje total`;
 			  }
+			  if (Number(self.ficha.evaluacion_bonificacion_id) > 0) {
+				let partial = 0;
+				if (self.bonuses) {
+					self.bonuses.forEach(o => {
+						if (o.id == self.ficha.evaluacion_bonificacion_id) {
+							let score = o.score;
+							partial = (score * total) / 100;
+						}
+					});
+				}
+				total = total + Number(partial);
+			  }
 			  self.total = total;
 			  const divTotal = domBody.querySelector('#total');
 			  if (divTotal) {
-				divTotal.innerText = self.total;
+				divTotal.innerText = self.total.toFixed(2);
 			  }
 			}
 		  } catch (error) {
@@ -1163,6 +1209,12 @@ const viewfichaDetail = function (pageActive) {
 			prelacion = o.prelacion;
 		  }
 		});
+		let bonificacion = '-';
+		self.bonuses.forEach(o => {
+			if (o.id == self.ficha.evaluacion_bonificacion_id) {
+				bonificacion = o.name;
+			}
+		});  
 		let total = 0;
 		let ls = 0;
 		let lg = 0;
@@ -1248,6 +1300,18 @@ const viewfichaDetail = function (pageActive) {
 			});
 		  }
 		});
+		if (Number(self.ficha.evaluacion_bonificacion_id) > 0) {
+			let partial = 0;
+			if (self.bonuses) {
+				self.bonuses.forEach(o => {
+					if (o.id == self.ficha.evaluacion_bonificacion_id) {
+						let score = o.score;
+						partial = (score * total) / 100;
+					}
+				});
+			}
+			total = total + Number(partial);
+		}
 		html += `
 				  ${self.ficha && self.ficha.promedio == 1 ? `<tr class="">
 							  <td colspan="3" class="text-center colvert bg-light fw-bold">PUNTAJE OBTENIDO</td>
@@ -1258,6 +1322,7 @@ const viewfichaDetail = function (pageActive) {
 				  </table>
 				  ${Number(self.ficha.promedio) == 0 ? `<div class="col-md-12"><h5>Estado: ${getStatusName(Number(self.ficha.evaluacion_estado))}</h5></div>` : ``}
 				  ${Number(self.ficha.promedio) == 1 && !isPUN() ? `<div class="col-md-12"><h5>Prelación: ${prelacion}</h5></div>` : ``}
+				  ${Number(self.ficha.promedio) == 1 ? `<div class="col-md-12"><h5>Bonificación: ${bonificacion}</h5></div>` : ``}
 			  </div>`;
 		domBody.innerHTML = html;
 	  };
