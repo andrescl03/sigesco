@@ -831,6 +831,15 @@ const viewfichaDetail = function (pageActive) {
 		  page = 1;
 		}
 		if (calculation()) {
+		  if (self.ficha.promedio == 1) {
+			if (!(Number(self.ficha.evaluacion_bonificacion_id) > 0)) {
+			  sweet2.show({
+			    type: 'info',
+				text: 'Debe de seleccionar una bonificación'
+			  });
+			  return;
+			}
+		  }
 		  sweet2.show({
 			type: 'question',
 			html: `¿Estás seguro de guardar cambios? ${self.ficha.promedio == 1 ? `<h5>Puntaje Total</h5> <h3>${self.total.toFixed(2)}</h3>` : ``}`,
