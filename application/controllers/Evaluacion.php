@@ -545,7 +545,7 @@ class Evaluacion extends CI_Controller {
         //make the font become bold
         $hoja->getStyle('A1')->getFont()->setBold(true);
         //merge cell A1 until D1
-        // $hoja->mergeCells('A1:M1');
+        $hoja->mergeCells('A1:T1');
         //set aligment to center for that merged cell (A1 to D1)
 
         $hoja->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
