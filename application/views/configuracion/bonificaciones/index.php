@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="col-md-2 mb-2 mt-1"><b>Valor:</b></div>
                                 <div class="col-md-10 mb-2">
-                                    <input class="form-control form-control-sm" name="puntaje" type="text" required />
+                                    <input class="form-control form-control-sm" name="puntaje" type="number" min="0" step="0.10" required />
                                 </div>
                             </div>
                         </form>
