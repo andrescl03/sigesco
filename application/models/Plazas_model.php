@@ -142,6 +142,16 @@ class Plazas_model extends CI_Model {
       $cargo  = $this->input->post("cargo", true);
 
       $sql = "SELECT 
+                *
+              FROM plazas
+              WHERE deleted_at IS NULL
+              AND codigo_plaza = ?";
+      $valid = $this->db->query($sql, ['codigo_plaza' => $codigo_plaza])->row();
+      if ($valid) {
+        throw new Exception("Ya existe una plaza con este código de plaza");
+      }
+
+      $sql = "SELECT 
                 e1.*,
                 e2.*
               FROM localie e1
@@ -210,7 +220,17 @@ class Plazas_model extends CI_Model {
       $colegio_id = $this->input->post("colegio_id", true);
       $cargo  = $this->input->post("cargo", true);
 
-      
+      $sql = "SELECT 
+            *
+          FROM plazas
+          WHERE deleted_at IS NULL
+          AND plz_id != ?
+          AND codigo_plaza = ?";
+      $valid = $this->db->query($sql, ['plz_id' => $id, 'codigo_plaza' => $codigo_plaza])->row();
+      if ($valid) {
+        throw new Exception("Ya existe una plaza con este código de plaza");
+      }
+
       $sql = "SELECT 
                 e1.*,
                 e2.*

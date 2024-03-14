@@ -544,11 +544,21 @@ class Evaluacion_model extends CI_Model {
 
             $items[$k]->prerequisito_estado_texto = $prerequisito_estado_texto;
             $items[$k]->anexo_plantilla = json_decode($o->anexo_plantilla);
-            $puntaje_parcial = $items[$k]->puntaje;
-            $bonificacion = $items[$k]->bonificacion;
-            if ($bonificacion > 0) {
-              $puntaje_parcial = $puntaje_parcial - (($puntaje_parcial * $bonificacion) / 100);
+
+            $puntaje_parcial = 0;
+            if ($items[$k]->anexo_plantilla) {
+              $sections = $items[$k]->anexo_plantilla->sections;
+              foreach ($sections as $k2 => $o2) {
+                $groups = $o2->groups;
+                foreach ($groups as $k3 => $o3) {
+                  $questions = $o3->questions;
+                  foreach ($questions as $k4 => $o4) {
+                    $puntaje_parcial = $puntaje_parcial + $o4->value;
+                  }
+                }
+              }
             }
+            
             $items[$k]->puntaje_parcial = number_format($puntaje_parcial, 2);
             $groups_keys_especialidad[$items[$k]->especialidad_id][] = $k;
           }

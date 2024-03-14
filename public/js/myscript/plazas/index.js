@@ -88,7 +88,7 @@ const AppPlazaIndex = () => {
                                 });
                             })
                             .catch((error)=>{
-                                console.log(error);
+                                sweet2.show({type:'error', text:error});
                             })
                         });
                     });
