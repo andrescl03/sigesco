@@ -1394,7 +1394,7 @@ class ReporteDocumento extends CI_Controller {
         $this->pdf->Cell(90, 7, utf8_decode('o campo de conocimiento'), '', 0, 'L', 0);
 
         
-        $nivel_nombre;
+        $nivel_nombre = @$postulante->nivel_nombre;
 
         if($plaza->nivel_id == 1){
             $nivel_nombre = 'Inicial';
