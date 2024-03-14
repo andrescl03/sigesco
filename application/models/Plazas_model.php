@@ -141,14 +141,18 @@ class Plazas_model extends CI_Model {
       $niv_id  = $this->input->post("niv_id", true);
       $cargo  = $this->input->post("cargo", true);
 
-      $sql = "SELECT 
+      if (is_numeric($codigo_plaza)) {
+        $sql = "SELECT 
                 *
               FROM plazas
               WHERE deleted_at IS NULL
               AND codigo_plaza = ?";
-      $valid = $this->db->query($sql, ['codigo_plaza' => $codigo_plaza])->row();
-      if ($valid) {
-        throw new Exception("Ya existe una plaza con este código de plaza");
+        $valid = $this->db->query($sql, ['codigo_plaza' => $codigo_plaza])->row();
+        if ($valid) {
+          throw new Exception("Ya existe una plaza con este código de plaza");
+        }
+      } else {
+        $codigo_plaza = strtoupper(trim($codigo_plaza));
       }
 
       $sql = "SELECT 
@@ -220,15 +224,19 @@ class Plazas_model extends CI_Model {
       $colegio_id = $this->input->post("colegio_id", true);
       $cargo  = $this->input->post("cargo", true);
 
-      $sql = "SELECT 
-            *
-          FROM plazas
-          WHERE deleted_at IS NULL
-          AND plz_id != ?
-          AND codigo_plaza = ?";
-      $valid = $this->db->query($sql, ['plz_id' => $id, 'codigo_plaza' => $codigo_plaza])->row();
-      if ($valid) {
-        throw new Exception("Ya existe una plaza con este código de plaza");
+      if (is_numeric($codigo_plaza)) {
+        $sql = "SELECT 
+              *
+            FROM plazas
+            WHERE deleted_at IS NULL
+            AND plz_id != ?
+            AND codigo_plaza = ?";
+        $valid = $this->db->query($sql, ['plz_id' => $id, 'codigo_plaza' => $codigo_plaza])->row();
+        if ($valid) {
+          throw new Exception("Ya existe una plaza con este código de plaza");
+        }
+      } else {
+        $codigo_plaza = strtoupper(trim($codigo_plaza));
       }
 
       $sql = "SELECT 
