@@ -31,14 +31,14 @@ class Plazas_model extends CI_Model {
               ORDER BY e2.mod_nombre ASC";
         $colegios = $this->db->query($sql)->result_object();
 
-        $sql = "SELECT 
+        /*$sql = "SELECT 
                 e2.*
                 FROM modularie e2
                 ORDER BY e2.mod_nombre ASC";
-        $niveles = $this->db->query($sql)->result_object();
+        $niveles = $this->db->query($sql)->result_object();*/
   
         $response['success'] = true;
-        $response['data']  = compact('periodos', 'procesos', 'colegios', 'niveles');
+        $response['data']  = compact('periodos', 'procesos', 'colegios');
         $response['status']  = 200;
         $response['message'] = 'Se proceso correctamente';
   
@@ -129,21 +129,27 @@ class Plazas_model extends CI_Model {
     try {
 
       $periodo_id = $this->input->post("periodo_id", true);
-      // $estado  = $this->input->post("estado", true);
       $tipo_proceso = $this->input->post("tipo_proceso", true);
       $tipo_convocatoria  = $this->input->post("tipo_convocatoria", true);
       $colegio_id = $this->input->post("colegio_id", true);
-      $nivel  = $this->input->post("nivel", true);
       $especialidad = $this->input->post("especialidad", true);
       $jornada  = $this->input->post("jornada", true);
       $tipo_vacante = $this->input->post("tipo_vacante", true);
       $motivo_vacante  = $this->input->post("motivo_vacante", true);
       $codigo_plaza  = $this->input->post("codigo_plaza", true);
       $mod_id  = $this->input->post("mod_id", true);
+      $niv_id  = $this->input->post("niv_id", true);
       $cargo  = $this->input->post("cargo", true);
 
-      $sql = "SELECT * FROM modularie WHERE mod_id = ?";
-      $school = $this->db->query($sql, ['mod_id'=>$mod_id])->row();
+      $sql = "SELECT 
+                e1.*,
+                e2.*
+              FROM localie e1
+              INNER JOIN modularie e2 ON e1.loc_id = e2.localie_loc_id
+              WHERE e1.loc_id = {$colegio_id}
+              GROUP BY e1.loc_codigo
+              ORDER BY e2.mod_nombre ASC";
+      $colegio = $this->db->query($sql)->row();
 
       $data = [
         'codigo_plaza' => $codigo_plaza,
@@ -158,8 +164,9 @@ class Plazas_model extends CI_Model {
         'tipo_proceso' => $tipo_proceso,
         'estado' => 1, // $estado
         'mod_id' => $mod_id,
-        'ie'=>@$school->mod_nombre,
-        'nivel'=>@$school->mod_nivel,
+        'nivel_id' => $niv_id,
+        'ie'=>@$colegio->mod_nombre,
+        'nivel'=>@$colegio->mod_nivel,
         'cargo'=>$cargo
       ];
       
@@ -190,26 +197,34 @@ class Plazas_model extends CI_Model {
       }
 
       $periodo_id = $this->input->post("periodo_id", true);
-      // $estado  = $this->input->post("estado", true);
       $tipo_proceso = $this->input->post("tipo_proceso", true);
       $tipo_convocatoria  = $this->input->post("tipo_convocatoria", true);
       $ie = $this->input->post("ie", true);
-      $nivel  = $this->input->post("nivel", true);
       $especialidad = $this->input->post("especialidad", true);
       $jornada  = $this->input->post("jornada", true);
       $tipo_vacante = $this->input->post("tipo_vacante", true);
       $motivo_vacante  = $this->input->post("motivo_vacante", true);
       $codigo_plaza  = $this->input->post("codigo_plaza", true);
       $mod_id  = $this->input->post("mod_id", true);
+      $niv_id  = $this->input->post("niv_id", true);
       $colegio_id = $this->input->post("colegio_id", true);
       $cargo  = $this->input->post("cargo", true);
-      $sql = "SELECT * FROM modularie WHERE mod_id = ?";
-      $school = $this->db->query($sql, ['mod_id'=>$mod_id])->row();
+
+      
+      $sql = "SELECT 
+                e1.*,
+                e2.*
+              FROM localie e1
+              INNER JOIN modularie e2 ON e1.loc_id = e2.localie_loc_id
+              WHERE e1.loc_id = {$colegio_id}
+              GROUP BY e1.loc_codigo
+              ORDER BY e2.mod_nombre ASC";
+      $colegio = $this->db->query($sql)->row();
 
       $data = [
         'codigo_plaza' => $codigo_plaza,
         'colegio_id' => $colegio_id,
-        'ie'=>@$school->mod_nombre,
+        'ie'=>@$colegio->mod_nombre,
         'especialidad' => $especialidad,
         'tipo_convocatoria' => $tipo_convocatoria,
         'jornada' => $jornada,
@@ -218,10 +233,10 @@ class Plazas_model extends CI_Model {
         'periodo_id' => $periodo_id,
         'fecha_mod' => $this->tools->getDateHour(),
         'tipo_proceso' => $tipo_proceso,
-        // 'estado' => $estado,
         'mod_id' => $mod_id,
-       'nivel'=>@$school->mod_nivel,
-       'cargo'=>$cargo
+        'nivel_id' => $niv_id,
+        'nivel'=>@$colegio->mod_nivel,
+        'cargo'=>$cargo
       ];
       
       $this->db->update('plazas', $data, ['plz_id' => $id]);
@@ -286,10 +301,45 @@ class Plazas_model extends CI_Model {
                   WHERE adj.plaza_id = {$plaza_id}
                   AND adj.deleted_at IS NULL";
           $plaza_adjudicaciones = $this->db->query($sql)->result_object();
+
+          $sql = "SELECT 
+                    *
+                  FROM modalidades";
+          $modalidades = $this->db->query($sql)->result_object();
+
+          $sql = "SELECT 
+                    *
+                  FROM niveles";
+          $niveles = $this->db->query($sql)->result_object();
        
           $response['success'] = true;
           $response['status']  = 200;
-          $response['data']    = compact('plaza', 'plaza_adjudicaciones');
+          $response['data']    = compact('plaza', 'plaza_adjudicaciones', 'modalidades', 'niveles', 'colegios');
+          $response['message'] = 'Se proceso correctamente';
+      } catch (\Exception $e) {
+          $response['message'] = $e->getMessage();
+      }
+      return $response;
+  }
+
+  public function create()
+  {
+      $response = $this->tools->responseDefault();
+      try {
+
+          $sql = "SELECT 
+                    *
+                  FROM modalidades";
+          $modalidades = $this->db->query($sql)->result_object();
+
+          $sql = "SELECT 
+                    *
+                  FROM niveles";
+          $niveles = $this->db->query($sql)->result_object();
+       
+          $response['success'] = true;
+          $response['status']  = 200;
+          $response['data']    = compact('modalidades', 'niveles');
           $response['message'] = 'Se proceso correctamente';
       } catch (\Exception $e) {
           $response['message'] = $e->getMessage();

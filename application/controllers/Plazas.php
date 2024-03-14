@@ -23,6 +23,12 @@ class Plazas extends CI_Controller {
                 ->set_output(json_encode($this->plazas_model->store()));
     }
 
+    public function create() {
+        return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->plazas_model->create()));
+    }
+
     public function update($id) {
         return $this->output
                 ->set_content_type('application/json')

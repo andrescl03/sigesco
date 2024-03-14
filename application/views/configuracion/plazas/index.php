@@ -7,10 +7,10 @@
 $periodos = $data['periodos'];
 $procesos = $data['procesos'];
 $colegios = $data['colegios'];
-$niveles  = $data['niveles'];
+// $niveles  = $data['niveles'];
 ?>
 <div class="app-row" id="AppIndexPlaza">
-    <div id="dataNiveles" style="display:none;"><?= json_encode($niveles); ?></div>
+    <!-- <div id="dataNiveles" style="display:none;"><?= json_encode($niveles); ?></div> -->
     <div class="col-md-12">
         <div class="tile">
             <div class="tile-body">
@@ -172,12 +172,20 @@ $niveles  = $data['niveles'];
                                     </select>
                                 </div>
 
-                                <div class="col-md-2 mb-2 mt-1"><b>Nivel:</b></div>
+                                <div class="col-md-2 mb-2 mt-1"><b>Modalidad:</b></div>
                                 <div class="col-md-10 mb-2">
-                                    <select class="form-select form-select-sm select-nivel" name="mod_id">
+                                    <select class="form-select form-select-sm select-modalidad" name="mod_id">
                                         <option value="" hidden selected>Elegir...</option>
                                     </select>
                                 </div>
+
+                                <div class="col-md-2 mb-2 mt-1"><b>Nivel:</b></div>
+                                <div class="col-md-10 mb-2">
+                                    <select class="form-select form-select-sm select-nivel" name="niv_id">
+                                        <option value="" hidden selected>Elegir...</option>
+                                    </select>
+                                </div>
+
                                 <div class="col-md-2 mb-2 mt-1"><b>Especialidad:</b></div>
                                 <div class="col-md-10 mb-2">
                                     <input class="form-control form-control-sm" name="especialidad" type="text" required />
