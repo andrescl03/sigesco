@@ -544,6 +544,12 @@ class Evaluacion_model extends CI_Model {
 
             $items[$k]->prerequisito_estado_texto = $prerequisito_estado_texto;
             $items[$k]->anexo_plantilla = json_decode($o->anexo_plantilla);
+            $puntaje_parcial = $items[$k]->puntaje;
+            $bonificacion = $items[$k]->bonificacion;
+            if ($bonificacion > 0) {
+              $puntaje_parcial = $puntaje_parcial - (($puntaje_parcial * $bonificacion) / 100);
+            }
+            $items[$k]->puntaje_parcial = number_format($puntaje_parcial, 2);
             $groups_keys_especialidad[$items[$k]->especialidad_id][] = $k;
           }
 

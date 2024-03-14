@@ -572,6 +572,10 @@ class Evaluacion extends CI_Controller {
         $hoja->getStyle('P2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $hoja->getStyle('Q2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
+        $hoja->getStyle('R2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('S2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('T2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('U2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
         $hoja->setCellValue('A2', 'NÚMERO DE EXPEDIENTE')->getStyle('A2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('B2', 'INSCRIPCIÓN')->getStyle('B2')->getFont()->setSize(15)->setBold(true);
@@ -597,9 +601,9 @@ class Evaluacion extends CI_Controller {
         if ($convocatoria->con_tipo == 2) {
             $hoja->setCellValue('T2', 'ABSOLUCION DE RECLAMO')->getStyle('T2')->getFont()->setSize(15)->setBold(true);
         }
-        
+        $hoja->setCellValue('U2', 'PUNTAJE PARCIAL')->getStyle('U2')->getFont()->setSize(15)->setBold(true);        
      // $hoja->setAutoFilter('A:L');
-        $hoja->getStyle('A2:T2')->getFill()->getStartColor()->setRGB('FF0000');
+        $hoja->getStyle('A2:U2')->getFill()->getStartColor()->setRGB('FF0000');
 
         $hoja->getColumnDimension('A')->setAutoSize(true);
         $hoja->getColumnDimension('B')->setAutoSize(true);
@@ -628,6 +632,7 @@ class Evaluacion extends CI_Controller {
         if ($convocatoria->con_tipo == 2) {
         $hoja->getColumnDimension('T')->setAutoSize(true);
         }
+        $hoja->getColumnDimension('U')->setAutoSize(true);
         $cont = 3;
 
         foreach ($records as $fila) {
@@ -770,7 +775,8 @@ class Evaluacion extends CI_Controller {
                 $hoja->setCellValue('T' . $cont, $fila->prerequisito_absolucion, PHPExcel_Cell_DataType::TYPE_STRING);    
             }
 
-
+            $hoja->getStyle('U' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('U' . $cont, $fila->puntaje_parcial);
             $cont++;
         }
 
