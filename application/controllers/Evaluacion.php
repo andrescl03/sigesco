@@ -601,7 +601,7 @@ class Evaluacion extends CI_Controller {
         if ($convocatoria->con_tipo == 2) {
             $hoja->setCellValue('T2', 'ABSOLUCION DE RECLAMO')->getStyle('T2')->getFont()->setSize(15)->setBold(true);
         }
-    //    $hoja->setCellValue('U2', 'PUNTAJE PARCIAL')->getStyle('U2')->getFont()->setSize(15)->setBold(true);        
+        $hoja->setCellValue('U2', 'PUNTAJE PARCIAL')->getStyle('U2')->getFont()->setSize(15)->setBold(true);        
      // $hoja->setAutoFilter('A:L');
         $hoja->getStyle('A2:U2')->getFill()->getStartColor()->setRGB('FF0000');
 
@@ -775,8 +775,8 @@ class Evaluacion extends CI_Controller {
                 $hoja->setCellValue('T' . $cont, $fila->prerequisito_absolucion, PHPExcel_Cell_DataType::TYPE_STRING);    
             }
 
-            //$hoja->getStyle('U' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-           // $hoja->setCellValue('U' . $cont, $fila->puntaje_parcial);
+            $hoja->getStyle('U' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+           $hoja->setCellValue('U' . $cont, $fila->puntaje_parcial);
             $cont++;
         }
 
