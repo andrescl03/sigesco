@@ -447,9 +447,10 @@ class Postulaciones_model extends CI_Model
                 FROM postulaciones AS P 
                 WHERE P.deleted_at IS NULL 
                 AND P.numero_documento = ?
-                AND P.convocatoria_id = ?
-                AND P.inscripcion_id = ?";
-            $postulacion = $this->db->query($sql, compact('documento', 'convocatoria_id', 'inscripcion_id'))->row();
+                AND P.convocatoria_id = ?";
+               // AND P.inscripcion_id = ?";
+              //$postulacion = $this->db->query($sql, compact('documento', 'convocatoria_id', 'inscripcion_id'))->row();
+            $postulacion = $this->db->query($sql, compact('documento', 'convocatoria_id'))->row();
 
             if ($postulacion) {
                 throw new Exception("Ya se encuentra registrado en está convocatoria");
