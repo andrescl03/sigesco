@@ -90,13 +90,17 @@ class Plazas_model extends CI_Model {
                                     OR plz.jornada LIKE('%{$value}%')
                                     OR plz.nivel LIKE('%{$value}%')
                                     OR plz.tipo_vacante LIKE('%{$value}%')
+                                    OR tc.descripcion LIKE('%{$value}%')
+                                    OR plz.motivo_vacante LIKE('%{$value}%')
+
                                   ) ";
               }
           }
 
           $sql = "SELECT 
-                    plz.*
+                    plz.* , tc.*
                   FROM plazas plz
+                  INNER JOIN tipo_convocatoria tc ON plz.tipo_convocatoria = tc.tipo_id 
                   WHERE plz.deleted_at IS NULL 
                   $filterText
                   ORDER BY plz.plz_id DESC";

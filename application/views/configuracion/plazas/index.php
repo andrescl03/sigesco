@@ -90,6 +90,7 @@ $colegios = $data['colegios'];
                                                     <th class="text-center">Jornada</th>
                                                     <th class="text-center">Tipo Vacante</th>
                                                     <th class="text-center">Motivo Vacante</th>
+                                                    <th class="text-center">Tipo de contrato</th>
                                                     <th class="text-center">Estado</th>
                                                     <th class="text-center">Acciones</th>
                                                 </tr>

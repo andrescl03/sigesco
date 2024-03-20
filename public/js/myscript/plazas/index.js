@@ -256,6 +256,14 @@ const AppPlazaIndex = () => {
                             },
                             {
                                 "targets": 7,
+                                "data": "descripcion",
+                                "className": "text-center",
+                                "render": function ( data, type, row, meta ) {
+                                    return row.descripcion;
+                                }
+                            },
+                            {
+                                "targets": 8,
                                 "data": "estado",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
@@ -263,7 +271,7 @@ const AppPlazaIndex = () => {
                                 }
                             },
                             {
-                                "targets": 8,
+                                "targets": 9,
                                 "data": "deleted_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
