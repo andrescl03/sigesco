@@ -225,13 +225,34 @@ const AppPlazaIndex = () => {
                             },
                             {
                                 "targets": 3,
+                                "data": "mod_abreviatura",
+                                "render": function ( data, type, row, meta ) {
+                                    return row.mod_abreviatura;                                    
+                                }
+                            },
+                            {
+                                "targets": 4,
+                                "data": "niv_descripcion",
+                                "render": function ( data, type, row, meta ) {
+                                    return row.niv_descripcion;                                    
+                                }
+                            },
+                            {
+                                "targets": 5, //FALTA MODIFICAR Y COLOCAR LA ESPECIALIDAD PADRE QUE SE CARGA
+                                "data": "ie",
+                                "render": function ( data, type, row, meta ) {
+                                    return '';                                    
+                                }
+                            },
+                            {
+                                "targets": 6,
                                 "data": "especialidad",
                                 "render": function ( data, type, row, meta ) {
                                     return row.especialidad;
                                 }
                             },
                             {
-                                "targets": 4,
+                                "targets": 7,
                                 "data": "jornada",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
@@ -239,7 +260,7 @@ const AppPlazaIndex = () => {
                                 }
                             },
                             {
-                                "targets": 5,
+                                "targets": 8,
                                 "data": "tipo_vacante",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
@@ -247,7 +268,7 @@ const AppPlazaIndex = () => {
                                 }
                             },
                             {
-                                "targets": 6,
+                                "targets": 9,
                                 "data": "motivo_vacante",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
@@ -255,7 +276,7 @@ const AppPlazaIndex = () => {
                                 }
                             },
                             {
-                                "targets": 7,
+                                "targets": 10,
                                 "data": "descripcion",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
@@ -263,7 +284,7 @@ const AppPlazaIndex = () => {
                                 }
                             },
                             {
-                                "targets": 8,
+                                "targets": 11,
                                 "data": "estado",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
@@ -271,7 +292,7 @@ const AppPlazaIndex = () => {
                                 }
                             },
                             {
-                                "targets": 9,
+                                "targets": 12,
                                 "data": "deleted_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {

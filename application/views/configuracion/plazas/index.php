@@ -86,6 +86,10 @@ $colegios = $data['colegios'];
                                                     <th class="text-center">#</th>
                                                     <th class="text-center">CÓDIGO DE PLAZA</th>
                                                     <th>I.E</th>
+                                                    <th class="text-center">Modalidad</th>
+
+                                                    <th class="text-center">Nivel</th>
+                                                    <th class="text-center">Especialidad padre</th>
                                                     <th class="text-center">Especialidad</th>
                                                     <th class="text-center">Jornada</th>
                                                     <th class="text-center">Tipo Vacante</th>
