@@ -484,43 +484,56 @@ class Plazas_model extends CI_Model {
 
           $id                 = trim($objPHPExcel->getActiveSheet()->getCell('A' . $fila)->getCalculatedValue());
           $codigo_plaza       = trim($objPHPExcel->getActiveSheet()->getCell('B' . $fila)->getCalculatedValue());
-          $ie                 = trim($objPHPExcel->getActiveSheet()->getCell('C' . $fila)->getCalculatedValue());
-          $especialidad       = trim($objPHPExcel->getActiveSheet()->getCell('D' . $fila)->getCalculatedValue());
-          $cargo              = trim($objPHPExcel->getActiveSheet()->getCell('E' . $fila)->getCalculatedValue());
-          $caracteristica     = trim($objPHPExcel->getActiveSheet()->getCell('F' . $fila)->getCalculatedValue());
-          $tipo               = trim($objPHPExcel->getActiveSheet()->getCell('G' . $fila)->getCalculatedValue());
-          $jornada            = trim($objPHPExcel->getActiveSheet()->getCell('H' . $fila)->getCalculatedValue());
-          $tipo_vacante       = trim($objPHPExcel->getActiveSheet()->getCell('I' . $fila)->getCalculatedValue());
-          $motivo_vacante     = trim($objPHPExcel->getActiveSheet()->getCell('J' . $fila)->getCalculatedValue());
-          $tipo_proceso       = trim($objPHPExcel->getActiveSheet()->getCell('K' . $fila)->getCalculatedValue());
-          $tipo_convocatoria  = trim($objPHPExcel->getActiveSheet()->getCell('L' . $fila)->getCalculatedValue());
-          $periodo_id         = trim($objPHPExcel->getActiveSheet()->getCell('M' . $fila)->getCalculatedValue());
-          $modalidad_id       = trim($objPHPExcel->getActiveSheet()->getCell('N' . $fila)->getCalculatedValue());
+          $codigo_modular     = trim($objPHPExcel->getActiveSheet()->getCell('C' . $fila)->getCalculatedValue());
+          $ie                 = trim($objPHPExcel->getActiveSheet()->getCell('D' . $fila)->getCalculatedValue());
+          $especialidad       = trim($objPHPExcel->getActiveSheet()->getCell('E' . $fila)->getCalculatedValue());
+          $cargo              = trim($objPHPExcel->getActiveSheet()->getCell('F' . $fila)->getCalculatedValue());
+          $caracteristica     = trim($objPHPExcel->getActiveSheet()->getCell('G' . $fila)->getCalculatedValue());
+          $tipo               = trim($objPHPExcel->getActiveSheet()->getCell('H' . $fila)->getCalculatedValue());
+          $jornada            = trim($objPHPExcel->getActiveSheet()->getCell('I' . $fila)->getCalculatedValue());
+          $tipo_vacante       = trim($objPHPExcel->getActiveSheet()->getCell('J' . $fila)->getCalculatedValue());
+          $motivo_vacante     = trim($objPHPExcel->getActiveSheet()->getCell('K' . $fila)->getCalculatedValue());
+          $tipo_proceso       = trim($objPHPExcel->getActiveSheet()->getCell('L' . $fila)->getCalculatedValue());
+          $tipo_convocatoria  = trim($objPHPExcel->getActiveSheet()->getCell('M' . $fila)->getCalculatedValue());
+          $periodo_id         = trim($objPHPExcel->getActiveSheet()->getCell('N' . $fila)->getCalculatedValue());
+          $modalidad_id       = trim($objPHPExcel->getActiveSheet()->getCell('O' . $fila)->getCalculatedValue());
+          $nivel_id           = trim($objPHPExcel->getActiveSheet()->getCell('P' . $fila)->getCalculatedValue());
 
-          $data = [
-            'codigo_plaza'      => $codigo_plaza,
-            'ie'                => $ie,
-            'especialidad'      => $especialidad,
-            'cargo'             => $cargo,
-            'caracteristica'    => $caracteristica,
-            'tipo'              => $tipo,
-            'jornada'           => $jornada,
-            'tipo_vacante'      => $tipo_vacante,
-            'motivo_vacante'    => $motivo_vacante,
-            'tipo_convocatoria' => $tipo_convocatoria,
-            'periodo_id'        => $periodo_id,
-            'mod_id'      => $modalidad_id
-          ];
-
-          if ($id > 0) {
-            $updates[] = [
-              'data' => $data,
-              'where' => [
-                'plz_id' => $id
-              ]
+          if (!empty($codigo_plaza) && !empty($codigo_modular)) {
+            $uniqid = false;
+            $data = [
+              'codigo_plaza'      => $codigo_plaza,
+              'codigo_modular'    => $codigo_modular,
+              'ie'                => $ie,
+              'especialidad'      => $especialidad,
+              'cargo'             => $cargo,
+              'caracteristica'    => $caracteristica,
+              'tipo'              => $tipo,
+              'jornada'           => $jornada,
+              'tipo_vacante'      => $tipo_vacante,
+              'motivo_vacante'    => $motivo_vacante,
+              'tipo_convocatoria' => $tipo_convocatoria,
+              'periodo_id'        => $periodo_id,
+              'mod_id'            => $modalidad_id,
+              'nivel_id'          => $nivel_id
             ];
-          } else {
-            $inserts[] = $data;
+
+            if (is_numeric($codigo_plaza)) {
+              $sql = "SELECT * FROM plazas WHERE codigo_plaza = ? AND deleted_at IS NULL";
+              $plaza = $this->db->query($sql, compact('codigo_plaza'))->row();
+              $uniqid = $plaza ? $plaza->plz_id : false;
+            }
+  
+            if ((is_numeric($id) && $id > 0) || $uniqid) {
+              $updates[] = [
+                'data' => $data,
+                'where' => [
+                  'plz_id' => $id > 0 ? $id : $uniqid
+                ]
+              ];
+            } else {
+              $inserts[] = $data;
+            }
           }
         }
 
