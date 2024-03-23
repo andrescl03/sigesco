@@ -7,10 +7,8 @@
 $periodos = $data['periodos'];
 $procesos = $data['procesos'];
 $colegios = $data['colegios'];
-// $niveles  = $data['niveles'];
 ?>
 <div class="app-row" id="AppIndexPlaza">
-    <!-- <div id="dataNiveles" style="display:none;"><?= json_encode($niveles); ?></div> -->
     <div class="col-md-12">
         <div class="tile">
             <div class="tile-body">
@@ -41,19 +39,6 @@ $colegios = $data['colegios'];
                                                         <button type="button" class="btn btn-outline-primary btn-sm px-4" data-bs-toggle="modal" data-bs-target="#modalUploadPlaza">
                                                             <b><i class="fa-solid fa-cloud-arrow-up fa-lg"></i> Cargar</b>
                                                         </button>
-                                                        <!--<div class="d-grid gap-2 col-sm-3">
-                                                                <div class="row">
-                                                                    <div class="col-sm-5 mt-1"><b>Tipo de plaza:</b></div>
-                                                                    <div class="col-sm-7">
-                                                                        <select class="form-select form-select-sm"  name="opt_tipoProceso" id="opt_tipoProceso" >
-                                                                            <option value="0">Elegir...</option> 
-                                                                            <?php foreach ($procesos as $proceso) { ?>
-                                                                                <option value="<?= $proceso->pro_id ?>" <?= $proceso->pro_default == 1 ? "Selected" : "" ?> ><?= $proceso->pro_descripcion ?></option>
-                                                                            <?php } ?>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>-->
                                                         <div class="vr"></div>
                                                         <div class="d-grid gap-2 col-sm-2">
                                                             <button type="button" class="btn btn-outline-primary btn-sm btn-create"><b><i class="fa-solid fa-circle-plus fa-lg"></i> Agregar</b></button>
@@ -126,16 +111,7 @@ $colegios = $data['colegios'];
                                         <?php } ?>
                                     </select>
                                 </div>
-                                <!--div class="col-md-2 mb-2 mt-1"><b>Estado:</b></div>
-                                <div class="col-md-4 mb-2">
-                                    <select class="form-select form-select-sm" name="estado" required>
-                                        <option value="1">Abierto</option>
-                                        <option value="0">Cerrado</option>
-                                    </select>
-                                </div-->
-
                                 <div class="w-100"></div>
-
                                 <div class="col-md-2 mb-2 mt-1"><b>Tipo de proceso:</b></div>
                                 <div class="col-md-10 mb-2">
                                     <select class="form-select form-select-sm" name="tipo_proceso" required>
@@ -228,8 +204,6 @@ $colegios = $data['colegios'];
             </div>
         </div>
     </div>
-
-
     <div class="modal fade" id="modalExcelReportPlazas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -262,7 +236,6 @@ $colegios = $data['colegios'];
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="modalAdjudicaciones" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -351,6 +324,42 @@ $colegios = $data['colegios'];
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal"><b><i class="fa-regular fa-circle-xmark fa-lg"></i> Cerrar</b></button>
                     <button type="submit" class="btn btn-sm btn-primary" form="formUploadPlaza"><b><i class="far fa-check-circle fa-lg"></i> Procesar</b></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalResponsePlazas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">RESUMEN DE PLAZAS CARGADAS</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Estado</th>
+                                        <th class="text-center">ID</th>
+                                        <th class="text-center">Código de plaza</th>
+                                        <th>I.E</th>
+                                        <th class="text-center">Especialidad</th>
+                                        <th class="text-center">Jornada</th>
+                                        <th class="text-center">Tipo Vacante</th>
+                                        <th class="text-center">Motivo Vacante</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbody-response-plazas">
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>

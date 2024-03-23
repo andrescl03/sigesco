@@ -436,18 +436,16 @@ class Plazas_model extends CI_Model {
     $response = $this->tools->responseDefault();
     try {
 
-        $PATH_FILE  = 'archivos/pun' . '/';
+        $PATH_FILE  = 'archivos/pun/';
 
         if (!is_dir($PATH_FILE)) {
             mkdir($PATH_FILE, 0777, true);
         }
-
         $name = "plazas_" . date("YmdHis");
         $extension   = strtolower(pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION));
         if (empty($_FILES)) {
           throw new Exception("No se envió ningun archivo.");
         }
-
         $config["upload_path"]       = $PATH_FILE;
         $config["allowed_types"]     = "xlsx";
         $config["file_name"]         = $name . "." . $extension;
@@ -456,7 +454,6 @@ class Plazas_model extends CI_Model {
         $config["max_filename"]     = 0;
 
         $this->load->library('upload', $config);
-
         if (!$this->upload->do_upload("file")) {
             $error = $this->upload->display_errors();
             throw new Exception("Ocurrió un error al cargar archivo: $error");
@@ -465,7 +462,6 @@ class Plazas_model extends CI_Model {
         $nombreArchivo  = $config["file_name"]; // $this->input->post("nombreArchivo", true);
 
         $file = $PATH_FILE . $nombreArchivo;
-
         $archivo =  $file;
         $this->load->library('PHPExcel');
         // Cargo la hoja de cálculo
@@ -476,31 +472,33 @@ class Plazas_model extends CI_Model {
         $numFilas = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
         $numColumnas = ord($objPHPExcel->setActiveSheetIndex(0)->getHighestColumn()) - 64;
         
-        $inserts = [];
-        $updates = [];
-
+        $items = [];
         // Leer los datos de Excel
         for ($fila = 2; $fila <= $numFilas; $fila++) {
+          try {
+            $resp = [
+              'success' => false,
+              'message' => "Error",
+              'data'    => []  
+            ];
+            $errors = [];
+            $id                 = trim($objPHPExcel->getActiveSheet()->getCell('A' . $fila)->getCalculatedValue());
+            $codigo_plaza       = trim($objPHPExcel->getActiveSheet()->getCell('B' . $fila)->getCalculatedValue());
+            $codigo_modular     = trim($objPHPExcel->getActiveSheet()->getCell('C' . $fila)->getCalculatedValue());
+            $ie                 = trim($objPHPExcel->getActiveSheet()->getCell('D' . $fila)->getCalculatedValue());
+            $especialidad       = trim($objPHPExcel->getActiveSheet()->getCell('E' . $fila)->getCalculatedValue());
+            $cargo              = trim($objPHPExcel->getActiveSheet()->getCell('F' . $fila)->getCalculatedValue());
+            $caracteristica     = trim($objPHPExcel->getActiveSheet()->getCell('G' . $fila)->getCalculatedValue());
+            $tipo               = trim($objPHPExcel->getActiveSheet()->getCell('H' . $fila)->getCalculatedValue());
+            $jornada            = trim($objPHPExcel->getActiveSheet()->getCell('I' . $fila)->getCalculatedValue());
+            $tipo_vacante       = trim($objPHPExcel->getActiveSheet()->getCell('J' . $fila)->getCalculatedValue());
+            $motivo_vacante     = trim($objPHPExcel->getActiveSheet()->getCell('K' . $fila)->getCalculatedValue());
+            $tipo_proceso       = trim($objPHPExcel->getActiveSheet()->getCell('L' . $fila)->getCalculatedValue());
+            $tipo_convocatoria  = trim($objPHPExcel->getActiveSheet()->getCell('M' . $fila)->getCalculatedValue());
+            $periodo_id         = trim($objPHPExcel->getActiveSheet()->getCell('N' . $fila)->getCalculatedValue());
+            $modalidad_id       = trim($objPHPExcel->getActiveSheet()->getCell('O' . $fila)->getCalculatedValue());
+            $nivel_id           = trim($objPHPExcel->getActiveSheet()->getCell('P' . $fila)->getCalculatedValue());
 
-          $id                 = trim($objPHPExcel->getActiveSheet()->getCell('A' . $fila)->getCalculatedValue());
-          $codigo_plaza       = trim($objPHPExcel->getActiveSheet()->getCell('B' . $fila)->getCalculatedValue());
-          $codigo_modular     = trim($objPHPExcel->getActiveSheet()->getCell('C' . $fila)->getCalculatedValue());
-          $ie                 = trim($objPHPExcel->getActiveSheet()->getCell('D' . $fila)->getCalculatedValue());
-          $especialidad       = trim($objPHPExcel->getActiveSheet()->getCell('E' . $fila)->getCalculatedValue());
-          $cargo              = trim($objPHPExcel->getActiveSheet()->getCell('F' . $fila)->getCalculatedValue());
-          $caracteristica     = trim($objPHPExcel->getActiveSheet()->getCell('G' . $fila)->getCalculatedValue());
-          $tipo               = trim($objPHPExcel->getActiveSheet()->getCell('H' . $fila)->getCalculatedValue());
-          $jornada            = trim($objPHPExcel->getActiveSheet()->getCell('I' . $fila)->getCalculatedValue());
-          $tipo_vacante       = trim($objPHPExcel->getActiveSheet()->getCell('J' . $fila)->getCalculatedValue());
-          $motivo_vacante     = trim($objPHPExcel->getActiveSheet()->getCell('K' . $fila)->getCalculatedValue());
-          $tipo_proceso       = trim($objPHPExcel->getActiveSheet()->getCell('L' . $fila)->getCalculatedValue());
-          $tipo_convocatoria  = trim($objPHPExcel->getActiveSheet()->getCell('M' . $fila)->getCalculatedValue());
-          $periodo_id         = trim($objPHPExcel->getActiveSheet()->getCell('N' . $fila)->getCalculatedValue());
-          $modalidad_id       = trim($objPHPExcel->getActiveSheet()->getCell('O' . $fila)->getCalculatedValue());
-          $nivel_id           = trim($objPHPExcel->getActiveSheet()->getCell('P' . $fila)->getCalculatedValue());
-
-          if (!empty($codigo_plaza) && !empty($codigo_modular)) {
-            $uniqid = false;
             $data = [
               'codigo_plaza'      => $codigo_plaza,
               'codigo_modular'    => $codigo_modular,
@@ -518,37 +516,47 @@ class Plazas_model extends CI_Model {
               'nivel_id'          => $nivel_id
             ];
 
+            if (empty($codigo_plaza)) {
+              $errors[] = 'El codigo de plaza es un campo obligatiorio';
+            }
+            if (empty($codigo_modular)) {
+              $errors[] = 'El codigo modular es un campo obligatiorio';
+            }
+
+            if (count($errors) > 0) {
+              throw new Exception(implode(",", $errors));
+            }
+
             if (is_numeric($codigo_plaza)) {
               $sql = "SELECT * FROM plazas WHERE codigo_plaza = ? AND deleted_at IS NULL";
               $plaza = $this->db->query($sql, compact('codigo_plaza'))->row();
-              $uniqid = $plaza ? $plaza->plz_id : false;
+              $id = $plaza ? $plaza->plz_id : false;
             }
-  
-            if ((is_numeric($id) && $id > 0) || $uniqid) {
-              $updates[] = [
-                'data' => $data,
-                'where' => [
-                  'plz_id' => $id > 0 ? $id : $uniqid
-                ]
-              ];
+
+            if ((is_numeric($id) && $id > 0)) {
+              $this->db->update('plazas', $data, ['plz_id' => $id]);
+              $message = "Se actualizo correctamente";
             } else {
-              $inserts[] = $data;
+              $this->db->insert('plazas', $data);
+              $id = $this->db->insert_id();
+              $message = "Se registro correctamente";
             }
+
+            $sql = "SELECT * FROM plazas WHERE plz_id = ? AND deleted_at IS NULL";
+            $plaza = $this->db->query($sql, compact('id'))->row();
+            
+            $resp['data'] = $plaza;
+            $resp['success'] = true;
+            $resp['message'] = $message;
+
+          } catch (\Exception $ee) {
+            $resp['data'] = $data;
+            $resp['message'] = $ee->getMessage();
           }
+          $items[] = $resp;
         }
-
-        if (count($inserts) > 0) {
-          $this->db->insert_batch('plazas', $inserts);
-          $affected_rows = ($this->db->affected_rows() > 0) ? 1 : 0;
-        }
-
-        if (count($updates) > 0) {
-          foreach ($updates as $k => $o) {
-            $this->db->update('plazas', $o['data'], $o['where']);  
-          }
-        }
-
         $response['success'] = true;
+        $response['data']    = compact('items');
         $response['status']  = 200;
         $response['message'] = 'Se proceso correctamente';
   
