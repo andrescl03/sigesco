@@ -511,6 +511,7 @@ class Plazas_model extends CI_Model {
             $uniqid = false;
             $data = [
               'codigo_plaza'      => $codigo_plaza,
+              'codigoPlaza'       => $codigo_plaza,
               'codigo_modular'    => $codigo_modular,
               'ie'                => $ie,
               'especialidad'      => $especialidad,
@@ -523,7 +524,9 @@ class Plazas_model extends CI_Model {
               'tipo_convocatoria' => $tipo_convocatoria,
               'periodo_id'        => $periodo_id,
               'mod_id'            => $modalidad_id,
-              'nivel_id'          => $nivel_id
+              'nivel_id'          => $nivel_id,
+              'tipo_id'           => '1',
+              'tipo_proceso'      => '1'
             ];
 
             if (is_numeric($codigo_plaza)) {
@@ -546,6 +549,11 @@ class Plazas_model extends CI_Model {
         }
 
         if (count($inserts) > 0) {
+
+          foreach ($inserts as &$insert) {
+            $insert['estado'] = '1';
+        }
+
           $this->db->insert_batch('plazas', $inserts);
           $affected_rows = ($this->db->affected_rows() > 0) ? 1 : 0;
         }
