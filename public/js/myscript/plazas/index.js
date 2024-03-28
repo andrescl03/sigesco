@@ -9,6 +9,7 @@ const AppPlazaIndex = () => {
                     modalAdjudicaciones: new bootstrap.Modal(dom.querySelector('#modalAdjudicaciones')),
                     modalConfirmAdjudicacion: new bootstrap.Modal(dom.querySelector('#modalConfirmAdjudicacion')),
                     modalUploadPlaza: new bootstrap.Modal(dom.querySelector('#modalUploadPlaza')),
+                    modalResponsePlazas: new bootstrap.Modal(dom.querySelector('#modalResponsePlazas')),
                     any: 0,
                     niveles: [],
                     modalidades: []
@@ -146,6 +147,10 @@ const AppPlazaIndex = () => {
                                         self.table.ajax.reload();
                                     }
                                 });
+                                console.log(data);
+                                if (success) {
+                                    self.listResponsePlazas(data.items);
+                                }
                             })
                             .catch(error => {
                                 sweet2.show({type:'error', text:error});
@@ -570,6 +575,35 @@ const AppPlazaIndex = () => {
                 }
             },
             renders: {
+                listResponsePlazas: (items) => {
+                    self.modalResponsePlazas.show();
+                    const tbodies = dom.querySelectorAll('.tbody-response-plazas');
+                    tbodies.forEach(tbody => {
+                        let html = ``;
+                        items.forEach(({success, data, message}) => {
+                            const item = data;
+                            html += `
+                                <tr>
+                                    <td class="text-center">
+                                        ${
+                                            success ? 
+                                            `<i class="far fa-check-circle text-success me-2"></i>` : 
+                                            `<i class="far fa-times-circle text-danger me-2"></i>`
+                                        }
+                                        ${message}
+                                    </td>
+                                    <td class="text-center">${item.plz_id ?? ''}</td>
+                                    <td class="text-center">${item.codigo_plaza}</td>
+                                    <td>${item.ie}</td>
+                                    <td class="text-center">${item.especialidad}</td>
+                                    <td class="text-center">${item.jornada}</td>
+                                    <td class="text-center">${item.tipo_vacante}</td>
+                                    <td class="text-center">${item.motivo_vacante}</td>
+                                </tr>`;
+                        });
+                        tbody.innerHTML = html;
+                    });
+                },
                 listModalidades: (mod_id = 0, niv_id = 0) => {
                     const selects = dom.querySelectorAll('.select-modalidad');
                     selects.forEach(select => {
