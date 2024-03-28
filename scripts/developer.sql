@@ -390,3 +390,100 @@ CREATE TABLE `especialidad_prelaciones` (
 	PRIMARY KEY (`id`) USING BTREE
 );
 
+/******************************* 03/02/2024 ****************/
+
+
+UPDATE postulacion_evaluaciones SET estado = 0 WHERE estado = 2;
+UPDATE postulacion_evaluaciones SET estado = 2 WHERE estado = 3;
+ 
+ -- FALTA UN SCRIPT MAS bien delicado
+
+
+CREATE INDEX idx_epe_especialistaAsignado ON evaluacion_pun_exp(epe_especialistaAsignado);
+
+
+
+/******************************* 08/02/2024 ****************/
+
+ALTER TABLE tipo_archivos ADD COLUMN `edit` INT(11) NULL DEFAULT '0' AFTER `orden`;
+
+INSERT INTO `tipo_archivos` (`id`, `nombre`, `requerido`, `orden`,`edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (10, 'Reclamo', 0, 10, 1, '2024-02-08 16:42:03', '2024-02-08 16:42:03', NULL);
+
+update `tipo_archivos` set `edit` = 0 where edit is null;
+
+
+/*********************** 12/02/2024 **********************/
+ALTER TABLE plazas ADD COLUMN `tipo_proceso` INT(11) NULL DEFAULT '0';
+ALTER TABLE plazas ADD COLUMN `tipo_convocatoria` INT(11) NULL DEFAULT '0';
+ALTER TABLE plazas ADD COLUMN `periodo_id` INT(11) NULL DEFAULT '0';
+ALTER TABLE plazas ADD COLUMN `nivel_id` INT(11) NULL DEFAULT '0';
+ALTER TABLE plazas ADD COLUMN `colegio_id` INT(11) NULL DEFAULT '0';
+ALTER TABLE plazas ADD COLUMN `codigo_plaza` VARCHAR(255) NULL DEFAULT NULL;
+ALTER TABLE plazas ADD COLUMN `deleted_at` DATETIME NULL DEFAULT NULL;
+
+
+/******************************* 13/02/2024 ****************/
+
+update postulaciones set estado = 'revisado' where estado = 'rechazado'
+
+ALTER TABLE postulaciones ADD COLUMN `intentos_adjudicacion` INT(11) NULL DEFAULT '0' AFTER `cuss`;
+
+UPDATE cuadro_pun_exp
+SET cpe_s5 = CONCAT(CAST(cpe_s5 AS CHAR), '.00')
+WHERE cpe_s5 NOT LIKE '%.%';
+
+
+/****************************** 14/02/2024 ***********************/
+CREATE TABLE `adjudicaciones_usuario_firmas` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`usuario_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`parent_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+);
+
+
+
+ALTER TABLE usuarios ADD COLUMN `usu_firma` VARCHAR(255) NULL DEFAULT NULL AFTER `usu_pass`;
+
+ALTER TABLE plazas ADD COLUMN `nivel` VARCHAR(255) NULL DEFAULT NULL;
+
+
+/*************************** 16/02/2024 *************************/
+ALTER TABLE postulacion_evaluaciones ADD COLUMN `prelacion_id` INT(11) NULL DEFAULT '0' AFTER `promedio`;
+
+
+/********************************* 20/02/2024 ****************************/
+ALTER TABLE adjudicaciones ADD COLUMN estado INT(11) NULL DEFAULT '1' AFTER `plaza_id`;
+ALTER TABLE adjudicaciones ADD COLUMN fecha_liberacion DATETIME NULL DEFAULT NULL AFTER `plaza_id`;
+ALTER TABLE adjudicaciones ADD COLUMN observacion VARCHAR(255) NULL DEFAULT NULL AFTER `plaza_id`;
+
+
+/********************************** 12/03/2024 *******************************/
+CREATE TABLE `bonificaciones` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`nombre` VARCHAR(255) NULL DEFAULT NULL,
+	`puntaje` DECIMAL(9,2) NULL DEFAULT '0',
+	`descripcion` TEXT NULL DEFAULT NULL,
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+);
+
+ALTER TABLE postulacion_evaluaciones ADD COLUMN `bonificacion_id` INT(11) NULL DEFAULT '0' AFTER `prelacion_id`;
+
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (1, '15% Ley N 29973 por condicion de discapacidad', 15.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:31', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (2, '10% Ley N 29948 por ser licenciado de las FFAA', 10.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:37', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (3, '20% Ley N 27674 por ser deportistas calificados de alto nivel a la administracion publica', 20.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (4, '16% Ley N 27674 por ser deportistas calificados de alto nivel a la administracion publica', 16.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (5, '12% Ley N 27674 por ser deportistas calificados de alto nivel a la administracion publica', 12.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (6, '8% Ley N 27674 por ser deportistas calificados de alto nivel a la administracion publica', 8.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (7, '4% Ley N 27674 por ser deportistas calificados de alto nivel a la administracion publica', 4.00, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
+INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created_at`, `updated_at`, `deleted_at`) VALUES (8, 'Sin Bonificacion', 0, NULL, '2024-03-12 01:35:43', '2024-03-12 01:37:44', NULL);
+
+/********************* 22-03-2024 ***************/
+
+ALTER TABLE plazas ADD COLUMN codigo_modular VARCHAR(255) NULL DEFAULT NULL;

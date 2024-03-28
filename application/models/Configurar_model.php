@@ -30,8 +30,18 @@ class Configurar_model extends CI_Model {
         $this->db->where(array("usu_id"=>$id));
         $this->db->update('usuarios', $data);
         return $this->db->affected_rows();        
-    } 
+    }
 
+    public function registrarFirmaUsuario($id, $filename)
+    {
+
+        $data = [
+            'usu_firma' => $filename
+        ];
+        $this->db->where(array("usu_id" => $id));
+        $this->db->update('usuarios', $data);
+        return $this->db->affected_rows();
+    }
 
 
 

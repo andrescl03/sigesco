@@ -107,7 +107,7 @@ class Configurar extends CI_Controller {
 	{
 
 		if (isset($_FILES['archivo'])) {
-			$total  = count($_FILES['archivo']['name']);
+			$total  = count((array)$_FILES['archivo']['name']);
 			$files  = array();
 			if ($total) {
 				$path = __DIR__ . "/../../public/uploads/";
@@ -130,6 +130,13 @@ class Configurar extends CI_Controller {
 						'formato' => $extension,
 						'peso'    => $item['size'],
 					];
+
+					$this->configurar_model->registrarFirmaUsuario($this->session->userdata('sigesco_id'), $filepath);
+
+
+					$mensaje["success"]="Se cargó correctamente la firma.";	
+					$mensaje["estado"]=true;	
+					echo json_encode($mensaje);	
 				}
 			}
 		}

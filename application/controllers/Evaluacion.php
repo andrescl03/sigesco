@@ -73,7 +73,7 @@ class Evaluacion extends CI_Controller {
                 $datos[$key_1]['te_mis_final']       = $docente['t_mis_final'];
             }*/
             $this->layout->js(array(base_url()."public/js/myscript/evaluacion/grupos.js?t=".date("mdYHis")));
-		    $this->layout->view("convocatoria/grupos/grupos", compact('datos')); 
+		    $this->layout->view("convocatoria/grupos/grupos", ['datos' => $datos, 'convocatoria_id' => $idCon]); 
         }
 
         if($idCon != '0' && $idGin != '0'){
@@ -106,7 +106,6 @@ class Evaluacion extends CI_Controller {
         $todos      = $this->input->post("todos",true); // 0: POR ESPECIALISTA, 1: TODOS
         $convId     = $this->input->post("convId",true);
         $usuario    = $this->session->userdata("sigesco_dni");
-
        
         switch ($tipo) {
             case '1':
@@ -242,8 +241,9 @@ class Evaluacion extends CI_Controller {
         $datos = $this->postulaciones_model->show(['id' => $idCpu]);
         // $datos = $this->evaluacion_model->verFichaEvaluacion(); 
         $this->layout->css(array(base_url()."public/css/ficha.css?t=".date("mdYHis")));
-        $this->layout->js(array(base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
-        base_url()."public/js/myscript/evaluacion/guide.js?t=".date("mdYHis")));
+        $this->layout->js(array(
+            // base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
+            base_url()."public/js/myscript/evaluacion/guide.js?v=".date("mdYHis")));
         $revaluar = 0;
         $this->layout->view("ficha/ficha", compact('datos', 'revaluar')); 
 	}
@@ -278,12 +278,34 @@ class Evaluacion extends CI_Controller {
         }    
     }
 
+
+    public function procesar_expedientes($convocatoria_id, $inscripcion_id)
+    {
+        if ($convocatoria_id > 0 && $inscripcion_id > 0) {
+
+            $this->output
+                ->set_content_type('application/json')->set_output(json_encode($this->evaluacion_model->procesarExpedientesPreliminarCumpleFinal($convocatoria_id, $inscripcion_id)));
+        } else {
+            show_404();
+        }
+    }
+    
+    public function status() {
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->evaluacion_model->status()));
+        } else {
+            show_404();
+        }    
+    }
+
     public function revaluarPreliFinal($id) {
         $datos = $this->postulaciones_model->show(['id' => $id]);
         $this->layout->css(array(base_url()."public/css/ficha.css?t=".date("mdYHis")));
         $this->layout->js(array(
-            base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
-            base_url()."public/js/myscript/evaluacion/guide.js?t=".date("mdYHis")
+            // base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
+            base_url()."public/js/myscript/evaluacion/guide.js?v=".date("mdYHis")
         ));
         $revaluar = 1;
         $this->layout->view("ficha/ficha", compact('datos', 'revaluar'));       
@@ -296,16 +318,52 @@ class Evaluacion extends CI_Controller {
         $this->reporte_excel($convocatoria_id, $inscripcion_id, 'finalizado', 'FICHA_FINAL');
     }
 
+    public function reporte_excel_pendiente($convocatoria_id, $inscripcion_id) {
+        $this->reporte_excel($convocatoria_id, $inscripcion_id, 'enviado', 'EXPENDIENTES_SIN_EVALUAR');
+    }
+
+    public function reporte_excel_preliminar_total($convocatoria_id) {
+        $this->reporte_excel_2($convocatoria_id, -1 , 'revisado', 'FICHA_PRELIMINAR');
+    }
+
+    public function reporte_excel_final_total($convocatoria_id) {
+        $this->reporte_excel_2($convocatoria_id, -1 , 'finalizado', 'FICHA_FINAL');
+    }
+
     public function reporte_excel($convocatoria_id, $inscripcion_id, $estado, $ficha) {
-        $response = $this->evaluacion_model->report($convocatoria_id, $inscripcion_id, $estado);
+        $response = $this->evaluacion_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado, true);
         if (!$response['success']) {
             echo $response['message'];
         }
-        $records = $response['data']['records'];
+        // $records = $response['data']['records'];
+        $this->generar_reporte_excel($response['data'], $ficha);
+    }
 
-        //reporte total aqui
-        //$datos = $this->evaluacion_expediente->reporte_pdf_general();
-        $datos = [];
+    public function reporte_excel_2($convocatoria_id, $inscripcion_id, $estado, $ficha) {
+        $response = $this->evaluacion_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado, true);
+        if (!$response['success']) {
+            echo $response['message'];
+        }
+        // $records = $response['data']['records'];
+        $this->generar_reporte_excel_2($response['data'], $ficha);
+    }
+
+    public function reporte_excel_general($convocatoria_id) {
+        $estado  = $this->input->post("estado", true);
+        $inscripcion_id  = $this->input->post("inscripcion_id", true);
+        $response = $this->evaluacion_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado);
+        if (!$response['success']) {
+            echo $response['message'];
+        }
+        // $records = $response['data']['records'];
+        $this->generar_reporte_excel($response['data']);
+    }
+
+    public function generar_reporte_excel($data, $ficha = null) {
+        $records = $data['records'];
+        $convocatoria = $data['convocatoria'];
+        $ficha = $ficha ? $ficha : 'REPORTE_DE_EVALUACIÓN';
+
         /* A partir de ahora cualquier salida al navegador se guardarÃ¡ en un buffer */
         /* Obtenemos el listado de locales disponibles en el sistema */
         file_put_contents('log.txt', shell_exec('locale -a'), FILE_APPEND);
@@ -323,15 +381,15 @@ class Evaluacion extends CI_Controller {
             //activate worksheet number 1
         $this->excel->setActiveSheetIndex(0);
             //name the worksheet
-        $hoja->setTitle('Reporte Anex.10 - EVAL. DE EXP.');
+        $hoja->setTitle('Reporte.');
         //set cell A1 content with some text
-        $hoja->setCellValue('A1', 'REPORTE GENERAL EVAL. DE EXPEDIENTES - ANEXO 10 ' . $fecha);
+        $hoja->setCellValue('A1', 'REPORTE GENERAL ' . $fecha);
         //change the font size
         $hoja->getStyle('A1')->getFont()->setSize(24);
         //make the font become bold
         $hoja->getStyle('A1')->getFont()->setBold(true);
         //merge cell A1 until D1
-        $hoja->mergeCells('A1:L1');
+        $hoja->mergeCells('A1:M1');
         //set aligment to center for that merged cell (A1 to D1)
 
         $hoja->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -347,24 +405,28 @@ class Evaluacion extends CI_Controller {
         $hoja->getStyle('J2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $hoja->getStyle('K2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $hoja->getStyle('L2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        if ($convocatoria->con_tipo == 2) {
+            $hoja->getStyle('M2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        }
+        $hoja->setCellValue('A2', 'NÚMERO DE EXPEDIENTE')->getStyle('A2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('B2', 'INSCRIPCIÓN')->getStyle('B2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('C2', 'DNI')->getStyle('C2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('D2', 'NOMBRES')->getStyle('D2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('E2', 'APELLIDOS')->getStyle('E2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('F2', 'ESPECIALISTA')->getStyle('F2')->getFont()->setSize(15)->setBold(true);
+        if ($convocatoria->con_tipo == 2) {
+            $hoja->setCellValue('G2', 'PRELACIÓN')->getStyle('G2')->getFont()->setSize(15)->setBold(true);
+        }
+        $hoja->setCellValue('H2', 'NÚMERO TRAMITE')->getStyle('H2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('I2', 'ESTADO')->getStyle('I2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('J2', ($convocatoria->con_tipo == 2 ? "" : "ORDEN DE MERITO"))->getStyle('J2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('K2', 'PUNTAJE')->getStyle('K2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('L2', 'OBSERVACIÓN')->getStyle('L2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('M2', 'ESPECIALIDAD DEL DOCENTE (ETP)')->getStyle('M2')->getFont()->setSize(15)->setBold(true);
 
-        $hoja->setCellValue('A2', 'ESPECIALIDAD')->getStyle('A2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('B2', 'DNI')->getStyle('B2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('C2', 'NOMBRE COMPLETO')->getStyle('C2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('D2', 'FORMACION ACAD. Y PROF.')->getStyle('D2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('E2', 'FORMACION CONTINUA')->getStyle('E2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('F2', 'EXPERIENCIA LABORAL')->getStyle('F2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('G2', 'MERITO')->getStyle('G2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('H2', 'BONIFICACION')->getStyle('H2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('I2', 'PUNTAJE FINAL')->getStyle('I2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('J2', 'OBSERVACIONES')->getStyle('J2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('K2', 'NUM. EXP')->getStyle('K2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('L2', 'ESPECIALISTA')->getStyle('L2')->getFont()->setSize(15)->setBold(true);
 
-        // $hoja->setCellValue('H2', 'HORAS EFECTIVOS')->getStyle('H2')->getFont()->setSize(15)->setBold(true);
-
-        $hoja->setAutoFilter('A2:L2');
-        $hoja->getStyle('A2:L2')->getFill()->getStartColor()->setRGB('FF0000');
+     // $hoja->setAutoFilter('A:L');
+        $hoja->getStyle('A2:M2')->getFill()->getStartColor()->setRGB('FF0000');
 
         $hoja->getColumnDimension('A')->setAutoSize(true);
         $hoja->getColumnDimension('B')->setAutoSize(true);
@@ -378,43 +440,57 @@ class Evaluacion extends CI_Controller {
         $hoja->getColumnDimension('J')->setAutoSize(true);
         $hoja->getColumnDimension('K')->setAutoSize(true);
         $hoja->getColumnDimension('L')->setAutoSize(true);
-
+        if ($convocatoria->con_tipo == 2) {
+            $hoja->getColumnDimension('M')->setAutoSize(true);
+        }
         $cont = 3;
 
         foreach ($records as $fila) {
-            $nombres_completos = $fila->nombre . ' ' . $fila->apellido_paterno . ' ' . $fila->apellido_materno;
+            $apellidos = $fila->apellido_paterno . ' ' . $fila->apellido_materno;
             $especialista = $fila->usu_nombre . ' ' . $fila->usu_apellidos;
+            $inscripcion = $fila->modalidad_abreviatura . " " . $fila->nivel_descripcion . ($fila->especialidad_descripcion != "-" ? " " . $fila->especialidad_descripcion : "") ;
+            $cpe_orden = $convocatoria->con_tipo == 2 ? "" : $fila->cpe_orden;
+
             $hoja->getStyle('A' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('A' . $cont, $fila->especialidad_descripcion, PHPExcel_Cell_DataType::TYPE_STRING);
+            $hoja->setCellValue('A' . $cont, $fila->numero_expediente, PHPExcel_Cell_DataType::TYPE_STRING);
+            
             $hoja->getStyle('B' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-
-            $hoja->setCellValue('B' . $cont, utf8_encode(" ".$fila->numero_documento) );
-
-            // $hoja->setCellValue('B' . $cont, $fila['dni'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $hoja->setCellValue('B' . $cont, $inscripcion, PHPExcel_Cell_DataType::TYPE_STRING);
 
             $hoja->getStyle('C' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('C' . $cont, $nombres_completos);
+            $hoja->setCellValue('C' . $cont, $fila->numero_documento);
+
             $hoja->getStyle('D' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('D' . $cont, $fila->formacion_academica_universidad);
+            $hoja->setCellValue('D' . $cont, $fila->nombre);
+
             $hoja->getStyle('E' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('E' . $cont, $fila->especializacion_tema, PHPExcel_Cell_DataType::TYPE_STRING);
+            $hoja->setCellValue('E' . $cont, $apellidos);
+
             $hoja->getStyle('F' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('F' . $cont, $fila->experiencia_laboral_institucion_educativa, PHPExcel_Cell_DataType::TYPE_STRING);
-            
-            $hoja->getStyle('G' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('G' . $cont, $fila->sumd, PHPExcel_Cell_DataType::TYPE_STRING);
-            
+            $hoja->setCellValue('F' . $cont, $especialista, PHPExcel_Cell_DataType::TYPE_STRING);
+           
+            if ($convocatoria->con_tipo == 2) {
+                $hoja->getStyle('G' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $hoja->setCellValue('G' . $cont, $fila->prelacion, PHPExcel_Cell_DataType::TYPE_STRING);    
+            }
+ 
             $hoja->getStyle('H' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('H' . $cont, $fila->bonif);
-            
+            $hoja->setCellValue('H' . $cont, $fila->uid, PHPExcel_Cell_DataType::TYPE_STRING);
+
             $hoja->getStyle('I' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('I' . $cont, $fila->puntaje);
+            $hoja->setCellValue('I' . $cont, $fila->prerequisito_estado_texto, PHPExcel_Cell_DataType::TYPE_STRING);
+
             $hoja->getStyle('J' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('J' . $cont, $fila->obs, PHPExcel_Cell_DataType::TYPE_STRING);
+            $hoja->setCellValue('J' . $cont, $cpe_orden);
+
             $hoja->getStyle('K' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('K' . $cont, $fila->uid, PHPExcel_Cell_DataType::TYPE_STRING);
+            $hoja->setCellValue('K' . $cont, $fila->puntaje);
+
             $hoja->getStyle('L' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->setCellValue('L' . $cont, $especialista, PHPExcel_Cell_DataType::TYPE_STRING);
+            $hoja->setCellValue('L' . $cont, $fila->prerequisito_observacion, PHPExcel_Cell_DataType::TYPE_STRING);
+
+            $hoja->getStyle('M' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('M' . $cont, $fila->prerequisito_especialidad, PHPExcel_Cell_DataType::TYPE_STRING);
 
             $cont++;
         }
@@ -436,6 +512,291 @@ class Evaluacion extends CI_Controller {
         ob_end_clean();
 
         $objWriter->save('php://output');
-       
-  }
+    }
+
+    public function generar_reporte_excel_2($data, $ficha = null) {
+        $records = $data['records'];
+        $convocatoria = $data['convocatoria'];
+        $ficha = $ficha ? $ficha : 'REPORTE_DE_EVALUACIÓN';
+        // echo json_encode($records); exit;
+        // echo json_encode($records[0]->anexo_plantilla->sections); exit;
+        /* A partir de ahora cualquier salida al navegador se guardarÃ¡ en un buffer */
+        /* Obtenemos el listado de locales disponibles en el sistema */
+        file_put_contents('log.txt', shell_exec('locale -a'), FILE_APPEND);
+        set_time_limit(0);
+        setlocale(LC_ALL, 'es_ES');
+        $fecha = date('d/m/Y H:i:s');
+        ini_set('memory_limit', '-1');
+        // $datos = null;
+        // $datos = $this->gestion->listar_reporte_horas();
+    
+        $this->load->library('excel');
+
+        $hoja = $this->excel->getActiveSheet();
+
+            //activate worksheet number 1
+        $this->excel->setActiveSheetIndex(0);
+            //name the worksheet
+        $hoja->setTitle('Reporte.');
+        //set cell A1 content with some text
+        $hoja->setCellValue('A1', 'REPORTE GENERAL ' . $fecha);
+        //change the font size
+        $hoja->getStyle('A1')->getFont()->setSize(24);
+        //make the font become bold
+        $hoja->getStyle('A1')->getFont()->setBold(true);
+        //merge cell A1 until D1
+        $hoja->mergeCells('A1:T1');
+        //set aligment to center for that merged cell (A1 to D1)
+
+        $hoja->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('B2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('C2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('D2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('E2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('F2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        if ($convocatoria->con_tipo == 2) {
+        $hoja->getStyle('G2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+      } 
+      
+        $hoja->getStyle('H2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('I2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('J2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('K2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('L2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->getStyle('M2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+      
+
+        $hoja->getStyle('N2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('O2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('P2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('Q2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+        $hoja->getStyle('R2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('S2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('T2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('U2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+        $hoja->setCellValue('A2', 'NÚMERO DE EXPEDIENTE')->getStyle('A2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('B2', 'INSCRIPCIÓN')->getStyle('B2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('C2', 'DNI')->getStyle('C2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('D2', 'NOMBRES')->getStyle('D2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('E2', 'APELLIDOS')->getStyle('E2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('F2', 'ESPECIALISTA')->getStyle('F2')->getFont()->setSize(15)->setBold(true);
+        if ($convocatoria->con_tipo == 2) {
+            $hoja->setCellValue('G2', 'PRELACIÓN')->getStyle('G2')->getFont()->setSize(15)->setBold(true);
+        
+        $hoja->setCellValue('H2', 'NÚMERO TRAMITE')->getStyle('H2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('I2', 'ESTADO')->getStyle('I2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('J2', ($convocatoria->con_tipo == 2 ? "" : "ORDEN DE MERITO"))->getStyle('J2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('K2', 'PUNTAJE')->getStyle('K2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('L2', 'OBSERVACIÓN')->getStyle('L2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('M2', 'ESPECIALIDAD DEL DOCENTE (ETP)')->getStyle('M2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('N2', 'FORMACIÓN ACADEMICA Y PROFESIONAL')->getStyle('N2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('O2', 'FORMACIÓN CONTINUA')->getStyle('O2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('P2', 'EXPERIENCIA LABORAL')->getStyle('P2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('Q2', 'MERITOS')->getStyle('Q2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('R2', 'BONIFICACION')->getStyle('R2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('S2', 'ORDEN DE MÉRITO LOCAL')->getStyle('S2')->getFont()->setSize(15)->setBold(true);
+        if ($convocatoria->con_tipo == 2) {
+            $hoja->setCellValue('T2', 'ABSOLUCION DE RECLAMO')->getStyle('T2')->getFont()->setSize(15)->setBold(true);
+        }
+        $hoja->setCellValue('U2', 'PUNTAJE PARCIAL')->getStyle('U2')->getFont()->setSize(15)->setBold(true);        
+     // $hoja->setAutoFilter('A:L');
+        $hoja->getStyle('A2:U2')->getFill()->getStartColor()->setRGB('FF0000');
+
+        $hoja->getColumnDimension('A')->setAutoSize(true);
+        $hoja->getColumnDimension('B')->setAutoSize(true);
+        $hoja->getColumnDimension('C')->setAutoSize(true);
+        $hoja->getColumnDimension('D')->setAutoSize(true);
+        $hoja->getColumnDimension('E')->setAutoSize(true);
+        $hoja->getColumnDimension('F')->setAutoSize(true);
+        if ($convocatoria->con_tipo == 2) {
+            $hoja->getColumnDimension('G')->setAutoSize(true);
+        }
+        
+        $hoja->getColumnDimension('H')->setAutoSize(true);
+        $hoja->getColumnDimension('I')->setAutoSize(true);
+        $hoja->getColumnDimension('J')->setAutoSize(true);
+        $hoja->getColumnDimension('K')->setAutoSize(true);
+        $hoja->getColumnDimension('L')->setAutoSize(true);
+        $hoja->getColumnDimension('M')->setAutoSize(true);
+    
+        $hoja->getColumnDimension('N')->setAutoSize(true);
+        $hoja->getColumnDimension('O')->setAutoSize(true);
+        $hoja->getColumnDimension('P')->setAutoSize(true);
+        $hoja->getColumnDimension('Q')->setAutoSize(true);
+        $hoja->getColumnDimension('R')->setAutoSize(true);
+        $hoja->getColumnDimension('S')->setAutoSize(true);
+     
+        if ($convocatoria->con_tipo == 2) {
+        $hoja->getColumnDimension('T')->setAutoSize(true);
+        }
+        $hoja->getColumnDimension('U')->setAutoSize(true);
+        $cont = 3;
+
+        foreach ($records as $fila) {
+            $apellidos = $fila->apellido_paterno . ' ' . $fila->apellido_materno;
+            $especialista = $fila->usu_nombre . ' ' . $fila->usu_apellidos;
+            $inscripcion = $fila->modalidad_abreviatura . " " . $fila->nivel_descripcion . ($fila->especialidad_descripcion != "-" ? " " . $fila->especialidad_descripcion : "") ;
+            $cpe_orden = $convocatoria->con_tipo == 2 ? "" : $fila->cpe_orden;
+
+                        
+            $hoja->getStyle('A' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('A' . $cont, $fila->numero_expediente, PHPExcel_Cell_DataType::TYPE_STRING);
+            
+
+            $hoja->getStyle('B' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('B' . $cont, $inscripcion, PHPExcel_Cell_DataType::TYPE_STRING);
+
+            $hoja->getStyle('C' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('C' . $cont, $fila->numero_documento);
+
+            $hoja->getStyle('D' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('D' . $cont, $fila->nombre);
+
+            $hoja->getStyle('E' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('E' . $cont, $apellidos);
+ 
+            $hoja->getStyle('F' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('F' . $cont, $especialista, PHPExcel_Cell_DataType::TYPE_STRING);
+
+            
+            if ($convocatoria->con_tipo == 2) {
+                $hoja->getStyle('G' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $hoja->setCellValue('G' . $cont, $fila->prelacion, PHPExcel_Cell_DataType::TYPE_STRING);    
+            }
+
+            $hoja->getStyle('H' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('H' . $cont, $fila->uid, PHPExcel_Cell_DataType::TYPE_STRING);
+
+            $hoja->getStyle('I' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('I' . $cont, $fila->prerequisito_estado_texto, PHPExcel_Cell_DataType::TYPE_STRING);
+
+            $hoja->getStyle('J' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('J' . $cont, $cpe_orden);
+
+            $hoja->getStyle('K' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('K' . $cont, $fila->puntaje);
+
+            $hoja->getStyle('L' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('L' . $cont, $fila->prerequisito_observacion, PHPExcel_Cell_DataType::TYPE_STRING);
+
+            $hoja->getStyle('M' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('M' . $cont, $fila->prerequisito_especialidad, PHPExcel_Cell_DataType::TYPE_STRING);
+
+      
+
+            $anexo_plantilla = $fila->anexo_plantilla;
+            // formacion academica
+
+            $puntaje_1 = 0;
+            $puntaje_2 = 0;
+            $puntaje_3 = 0;
+            $puntaje_4 = 0;
+
+            if ($anexo_plantilla) {
+                if ($anexo_plantilla->sections) {
+                    $sections = $anexo_plantilla->sections;
+                    if (isset($sections[0])) {
+                        $groups = $sections[0]->groups;
+                        if ($groups) {
+                            foreach ($groups as $key => $group) {
+                                $questions = $group->questions;
+                                foreach ($questions as $key => $question) {
+                                    $puntaje_1 += floatval($question->value);
+                                }
+                            }
+                        }
+                    }
+                    if (isset($sections[1])) {
+                        $groups = $sections[1]->groups;
+                        if ($groups) {
+                            foreach ($groups as $key => $group) {
+                                $questions = $group->questions;
+                                foreach ($questions as $key => $question) {
+                                    $puntaje_2 += floatval($question->value);
+                                }
+                            }
+                        }
+                    }
+                    if (isset($sections[2])) {
+                        $groups = $sections[2]->groups;
+                        if ($groups) {
+                            foreach ($groups as $key => $group) {
+                                $questions = $group->questions;
+                                foreach ($questions as $key => $question) {
+                                    $puntaje_3 += floatval($question->value);
+                                }
+                            }
+                        }
+                    }
+                    if (isset($sections[3])) {
+                        $groups = $sections[3]->groups;
+                        if ($groups) {
+                            foreach ($groups as $key => $group) {
+                                $questions = $group->questions;
+                                foreach ($questions as $key => $question) {
+                                    $puntaje_4 += floatval($question->value);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            $hoja->getStyle('N' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('N' . $cont, $puntaje_1);
+
+            // formacion continua
+
+            $hoja->getStyle('O' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('O' . $cont, $puntaje_2);
+
+            // experiencia
+
+            $hoja->getStyle('P' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('P' . $cont, $puntaje_3);
+
+            // meritos
+            $hoja->getStyle('Q' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('Q' . $cont, $puntaje_4);
+
+            
+            // meritos
+            $hoja->getStyle('R' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('R' . $cont, $fila->bonificacion != '' ? $fila->bonificacion . '%' :'');
+
+            $hoja->getStyle('S' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('S' . $cont, $fila->cuadro_control);
+
+            if ($convocatoria->con_tipo == 2) {
+                $hoja->getStyle('T' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $hoja->setCellValue('T' . $cont, $fila->prerequisito_absolucion, PHPExcel_Cell_DataType::TYPE_STRING);    
+            }
+
+            $hoja->getStyle('U' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+           $hoja->setCellValue('U' . $cont, $fila->puntaje_parcial);
+            $cont++;
+        }
+
+        $filename = $ficha . '.xls'; //save our workbook as this file name
+
+        header('Content-Type: application/vnd.ms-excel'); //mime type
+        header('Content-Disposition: attachment;filename="' . $filename . '"'); //tell browser what's the file name
+        header('Cache-Control: max-age=0'); //no cache
+        //save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+        //if you want to save it as .XLSX Excel 2007 format
+        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+        //force user to download the Excel file without writing it to server's HD
+        //force user to download the Excel file without writing it to server's HD
+        /* Obtenemos los caracteres adicionales o mensajes de advertencia y los
+            guardamos en el archivo "depuracion.txt" si tenemos permisos */
+        file_put_contents('depuracion.txt', ob_get_contents());
+        /* Limpiamos el búfer */
+        ob_end_clean();
+
+        $objWriter->save('php://output');
+    }
+}
 }

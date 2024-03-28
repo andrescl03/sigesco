@@ -54,28 +54,28 @@
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Nombres</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <input type="text" name="nombre" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100" required readonly>
+                                                                <input type="text" name="nombre" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100" readonly>
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                             </div>
                                                         </div>
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Apellido Paterno</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <input type="text" name="apellido_paterno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100" required readonly>
+                                                                <input type="text" name="apellido_paterno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100" readonly>
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                             </div>
                                                         </div>
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Apellido Materno</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <input type="text" name="apellido_materno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100" required readonly>
+                                                                <input type="text" name="apellido_materno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100" readonly>
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                             </div>
                                                         </div>
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Género</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <select class="form-control form-control-solid form-input-validate" name="genero" required>
+                                                                <select class="form-control form-control-solid form-input-validate" name="genero">
                                                                     <option value="" hidden>[SELECCIONE]</option>
                                                                     <option value="M">Masculino</option>
                                                                     <option value="F">Femenino</option>
@@ -86,7 +86,7 @@
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Estado Civil</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <select class="form-control form-control-solid form-input-validate" name="estado_civil" required>
+                                                                <select class="form-control form-control-solid form-input-validate" name="estado_civil">
                                                                     <option value="" hidden>[SELECCIONE]</option>
                                                                     <option value="soltero">Soltero(a)</option>
                                                                     <option value="casado">Casado(a)</option>
@@ -100,7 +100,7 @@
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Nacionalidad</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <select class="form-control form-control-solid form-input-validate" name="nacionalidad" required>
+                                                                <select class="form-control form-control-solid form-input-validate" name="nacionalidad">
                                                                     <option value="" hidden>[SELECCIONE]</option>
                                                                     <option value="Peruana">Peruana</option>
                                                                     <option value="Extranjera">Extranjera</option>
@@ -111,14 +111,14 @@
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Fecha de Nacimiento</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <input type="date" name="fecha_nacimiento" class="form-control form-control-solid form-control-validate form-input-age form-input-validate" max="2020-10-10" required>
+                                                                <input type="date" name="fecha_nacimiento" class="form-control form-control-solid form-control-validate form-input-age form-input-validate" max="2020-10-10">
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                             </div>
                                                         </div>
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Correo Electrónico</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <input type="email" name="correo" class="form-control form-control-solid form-input-validate form-input-email" maxlength="100" required>
+                                                                <input type="email" name="correo" class="form-control form-control-solid form-input-validate form-input-email" maxlength="100">
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                                 <small>Se enviarán todas las notificaciones del proceso de contratación docente.</small>
                                                             </div>
@@ -126,7 +126,7 @@
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Confirmar Correo Electrónico</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <input type="email" name="confirma_correo" class="form-control form-control-solid form-input-validate form-input-confirm-email" maxlength="100" pattern="" required>
+                                                                <input type="email" name="confirma_correo" class="form-control form-control-solid form-input-validate form-input-confirm-email" maxlength="100" pattern="">
                                                                 <div class="invalid-feedback">
                                                                     Por favor confirme el correo electrónico ingresado válido.
                                                                 </div>
@@ -135,21 +135,21 @@
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Número de Celular</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <input type="text" name="numero_celular" class="form-control form-control-solid form-control-validate input-number form-input-validate" maxlength="9" required>
+                                                                <input type="text" name="numero_celular" class="form-control form-control-solid form-control-validate input-number form-input-validate" maxlength="9">
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                             </div>
                                                         </div>
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Número de Teléfono</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <input type="text" name="numero_telefono" class="form-control form-control-solid form-control-validate  input-number form-input-validate" maxlength="7" required>
+                                                                <input type="text" name="numero_telefono" class="form-control form-control-solid form-control-validate  input-number form-input-validate" maxlength="7">
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                             </div>
                                                         </div>
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Afiliación</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <select class="form-control form-control-solid form-input-validate" name="afiliacion" required>
+                                                                <select class="form-control form-control-solid form-input-validate" name="afiliacion">
                                                                     <option value="" hidden>[SELECCIONE]</option>
                                                                     <option value="AFP">AFP</option>
                                                                     <option value="ONP">ONP</option>
@@ -157,9 +157,9 @@
                                                             </div>
                                                         </div>
                                                         <div class="mb-3 row">
-                                                            <label class="col-xl-4 col-lg-4 col-form-label">CUSS</label>
+                                                            <label class="col-xl-4 col-lg-4 col-form-label">CUSPP</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <input type="text" name="cuss" class="form-control form-control-solid form-control-validate  input-number form-input-validate" maxlength="50" required>
+                                                                <input type="text" name="cuss" class="form-control form-control-solid form-control-validate  input-number form-input-validate" maxlength="50">
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                             </div>
                                                         </div>
@@ -173,7 +173,7 @@
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Departamento</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <select class="form-control form-control-solid select-department form-input-validate" name="departamento_id" required>
+                                                                <select class="form-control form-control-solid select-department form-input-validate" name="departamento_id">
                                                                     <option value="" hidden>[SELECCIONE]</option>
                                                                 </select>
                                                             </div>
@@ -181,7 +181,7 @@
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Provincia</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <select class="form-control form-control-solid select-province form-input-validate" name="provincia_id" required>
+                                                                <select class="form-control form-control-solid select-province form-input-validate" name="provincia_id">
                                                                     <option value="" hidden>[SELECCIONE]</option>
                                                                 </select>
                                                             </div>
@@ -189,7 +189,7 @@
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Distrito</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <select class="form-control form-control-solid select-district form-input-validate" name="distrito_id" required>
+                                                                <select class="form-control form-control-solid select-district form-input-validate" name="distrito_id">
                                                                     <option value="" hidden>[SELECCIONE]</option>
                                                                 </select>
                                                             </div>
@@ -197,8 +197,7 @@
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Vía</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <!-- <input type="text" name="via" class="form-control form-control-solid form-input-validate" minlength="3" maxlength="100" required> -->
-                                                                <select class="form-control form-control-solid select-via form-input-validate" name="via_id" required>
+                                                                <select class="form-control form-control-solid select-via form-input-validate" name="via_id">
                                                                     <option value="" hidden>[SELECCIONE]</option>
                                                                 </select>
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
@@ -207,14 +206,14 @@
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Vía</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <input type="text" name="nombre_via" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100" required>
+                                                                <input type="text" name="nombre_via" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100">
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                             </div>
                                                         </div>
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Zona</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <select class="form-control form-control-solid select-zona form-input-validate" name="zona_id" required>
+                                                                <select class="form-control form-control-solid select-zona form-input-validate" name="zona_id">
                                                                     <option value="" hidden>[SELECCIONE]</option>
                                                                 </select>
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
@@ -223,14 +222,14 @@
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Zona</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <input type="text" name="nombre_zona" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100" required>
+                                                                <input type="text" name="nombre_zona" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100">
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                             </div>
                                                         </div>
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Dirección</label>
                                                             <div class="col-xl-8 col-lg-8">
-                                                                <input type="text" name="direccion" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100" required>
+                                                                <input type="text" name="direccion" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100">
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                             </div>
                                                         </div>
@@ -462,13 +461,6 @@
                                                                     <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                                 </div>
                                                             </div>
-                                                            <!-- <div class="mb-3 row">
-                                                                <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la entidad</label>
-                                                                <div class="col-xl-8 col-lg-8">
-                                                                    <input type="text" id="nombreEntidad" name="nombre_entidad" class="form-control form-control-solid" minlength="3" maxlength="100" required>
-                                                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                                                                </div>
-                                                            </div>  -->
                                                             <div class="mb-3 row">
                                                                 <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la entidad</label>
                                                                 <div class="col-xl-8 col-lg-8">
@@ -651,7 +643,7 @@
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header bg-danger text-white">
-                                                        <h5 class="modal-title" id="exampleModalLabel">RESUMEN</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">RESUMEN DE MI POSTULACIÓN</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body p-4" id="previewPostulant">

@@ -6,6 +6,8 @@ class Evaluacion_model extends CI_Model {
     }
 
     public function listarGruposInscripcionxConvocatoria($idCon){
+      $sigesco_tus_iduser = $this->session->userdata('sigesco_tus_iduser');
+      $sigesco_dni = $this->session->userdata('sigesco_dni');
       $sql=$this->db
       ->select("con.con_id, gin.gin_id, mod.mod_abreviatura, niv.niv_descripcion, esp.esp_descripcion, pro.pro_descripcion, con.con_numero, con.con_anio")          
         ->from("modalidades mod")
@@ -19,7 +21,7 @@ class Evaluacion_model extends CI_Model {
         ->order_by("mod.mod_id asc, niv.niv_id asc, esp.esp_id asc") 
         ->get();
         $items = $sql->result_array();
-
+      if (in_array($sigesco_tus_iduser, [1,2])) {
         $sql = "SELECT
                   POS.*,
                   EPE.epe_id AS epe_id
@@ -28,6 +30,18 @@ class Evaluacion_model extends CI_Model {
                 WHERE POS.deleted_at IS NULL 
                 AND POS.convocatoria_id = $idCon
                 GROUP BY POS.id";
+      } else {
+        $sql = "SELECT
+                  POS.*,
+                  EPE.epe_id AS epe_id
+                FROM postulaciones AS POS
+                INNER JOIN evaluacion_pun_exp AS EPE ON POS.id = EPE.postulacion_id
+                WHERE POS.deleted_at IS NULL 
+                AND POS.convocatoria_id = $idCon
+                AND EPE.epe_especialistaAsignado = $sigesco_dni
+                GROUP BY POS.id";
+      }
+
         $postulaciones = $this->db->query($sql)->result_array();
         $keys_postulaciones = [];
         $keys_postulaciones_total = [];
@@ -47,10 +61,13 @@ class Evaluacion_model extends CI_Model {
           $items[$k]['total_asignados'] = 0;
           if (isset($keys_postulaciones[$o['gin_id']])) {
             if (isset($keys_postulaciones[$o['gin_id']]['enviado'])) {
-              $items[$k]['cantidad_sin_evaluar'] = count($keys_postulaciones[$o['gin_id']]['enviado']);
+              $items[$k]['cantidad_sin_evaluar'] += count($keys_postulaciones[$o['gin_id']]['enviado']);
+            }
+            if (isset($keys_postulaciones[$o['gin_id']]['rechazado'])) {
+              $items[$k]['cantidad_preliminar'] += count($keys_postulaciones[$o['gin_id']]['rechazado']);
             }
             if (isset($keys_postulaciones[$o['gin_id']]['revisado'])) {
-              $items[$k]['cantidad_preliminar'] = count($keys_postulaciones[$o['gin_id']]['revisado']);
+              $items[$k]['cantidad_preliminar'] += count($keys_postulaciones[$o['gin_id']]['revisado']);
             }
             if (isset($keys_postulaciones[$o['gin_id']]['finalizado'])) {
               $items[$k]['cantidad_final'] = count($keys_postulaciones[$o['gin_id']]['finalizado']);
@@ -162,11 +179,11 @@ class Evaluacion_model extends CI_Model {
                 usu.usu_apellidos, 
                 usu.usu_dni 
               FROM postulaciones pos
-              INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id AND cdt.grupo_inscripcion_gin_id = pos.inscripcion_id
-              LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id  AND cpp.cpe_documento = pos.numero_documento
               LEFT JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
               LEFT JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
+              LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
               WHERE pos.deleted_at IS NULL 
+              AND pos.estado = 'enviado'
               AND pos.convocatoria_id = $convId
               AND pos.inscripcion_id = $insId";
       $postulaciones = $this->db->query($sql)->result_array();
@@ -204,14 +221,12 @@ class Evaluacion_model extends CI_Model {
             usu.usu_apellidos, 
             usu.usu_dni 
           FROM postulaciones pos
-          INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id AND cdt.grupo_inscripcion_gin_id = pos.inscripcion_id
-          INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id  AND cpp.cpe_documento = pos.numero_documento
-          INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
+          INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id AND epe.epe_especialistaAsignado = $usuario
           INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
+          LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
           WHERE pos.deleted_at IS NULL 
           AND pos.convocatoria_id = $convId
-          AND pos.inscripcion_id = $insId
-          AND epe.epe_especialistaAsignado = $usuario";
+          AND pos.inscripcion_id = $insId AND pos.estado = 'enviado'";
       $postulaciones = $this->db->query($sql)->result_array();
       $postulaciones = $this->getPostulacionArchivos($postulaciones);
       return $postulaciones; 
@@ -316,6 +331,7 @@ class Evaluacion_model extends CI_Model {
         return $sql->result_array();  
     }
 
+
     public function pagination() {
       $res = $this->tools->responseDefault();
       try {
@@ -333,31 +349,50 @@ class Evaluacion_model extends CI_Model {
           if ($search) {
               $value = $search['value'];
               if (strlen($value) > 0) {
-                  /*$filterText = " AND AC.name LIKE('%{$value}%') 
-                                  OR TC.name LIKE('%{$value}%')";*/
+                  $filterText = " AND (
+                                       pos.nombre LIKE('%{$value}%') 
+                                    OR pos.apellido_paterno LIKE('%{$value}%')
+                                    OR pos.apellido_materno LIKE('%{$value}%')
+                                    OR pos.uid LIKE('%{$value}%')
+                                    OR pos.numero_expediente LIKE('%{$value}%')
+                                    OR pos.numero_documento LIKE('%{$value}%')
+                                    OR cpp.cpe_orden LIKE('%{$value}%')
+                                  ) ";
               }
           }
-          $estado = $any == 'final' ? 'finalizado' : 'revisado';
+          $sigesco_tus_iduser = $this->session->userdata('sigesco_tus_iduser');
+          $sigesco_dni = $this->session->userdata('sigesco_dni');
+          $whereEstado = $any == 'final' ? " AND pos.estado = 'finalizado' " : " AND (pos.estado = 'revisado' OR pos.estado = 'rechazado') ";
+          $filterByUser = in_array($sigesco_tus_iduser, [1, 2]) ? '' : ' AND epe.epe_especialistaAsignado = ' . $sigesco_dni;
           $sql = "SELECT 
                     pos.*,
                     cpp.cpe_orden,
                     epe.epe_id, 
                     usu.usu_nombre, 
                     usu.usu_apellidos, 
-                    usu.usu_dni 
+                    usu.usu_dni,
+                    pe.estado as estado_evaluacion,
+                    pe.estado as prerequisito_estado,
+                    con.con_tipo as convocatoria_tipo_id
                   FROM postulaciones pos
-                  INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id
-                  INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id
-                  INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
-                  INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
+                  INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id $filterByUser
+                  INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
+                  INNER JOIN convocatorias con ON con.con_id = pos.convocatoria_id
+                  /**TEMPORAL 09022024 */
+                  INNER JOIN postulacion_evaluaciones pe ON pos.id = pe.postulacion_id AND pe.promedio = 0
+                  LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
                   WHERE pos.deleted_at IS NULL 
                   AND pos.convocatoria_id = $convocatoria_id
                   AND pos.inscripcion_id = $inscripcion_id
-                  AND pos.estado = '$estado'
+                  /*TEMPORAL*/
+                  -- AND pe.ficha_id = 3
+                  $whereEstado
                   $filterText
-                  GROUP BY pos.id
-                  ORDER BY pos.id DESC";
+                  ORDER BY cpp.cpe_orden DESC";
+
+
           $items = $this->db->query($sql)->result_object();
+
           $recordsTotal = count($items);
 
           $sql .= " LIMIT {$start}, {$length}";
@@ -375,14 +410,188 @@ class Evaluacion_model extends CI_Model {
           $res['message'] = $e->getMessage();
       }
       return $res;
-  }
+    }
+
+    public function f_report_postulant($convocatoria_id, $inscripcion_id, $estado, $modulo = null) {
+      $res = $this->tools->responseDefault();
+      try {
+
+          $sql = "SELECT 
+                  P.*
+              FROM convocatorias AS P 
+              WHERE P.con_id = ?";
+          $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
+
+          if (!$convocatoria) {
+            throw new Exception("No se encontro la convocatoria");
+          }
+
+          $where = $inscripcion_id == -1 ? "" : " AND pos.inscripcion_id = $inscripcion_id";
+          if ($modulo) {
+            $sigesco_tus_iduser = $this->session->userdata('sigesco_tus_iduser');
+            $sigesco_dni = $this->session->userdata('sigesco_dni');
+            $where .= $estado == 'revisado' ? " AND (pos.estado = 'revisado' OR pos.estado = 'rechazado') " : " AND pos.estado = '$estado' ";
+            $where .= in_array($sigesco_tus_iduser, [1, 2]) ? '' : ' AND epe.epe_especialistaAsignado = ' . $sigesco_dni;
+          } else {
+            $where .= $estado == -1 ? "" : " AND pos.estado = '$estado'";
+          }
+
+          $order = "mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC,  epre.prelacion ASC, pev.puntaje DESC, cpp.cpe_orden ASC;";
+          if ($convocatoria->con_tipo == 2) { // expediente
+            $order = "mdd.mod_id ASC, niv.niv_id ASC, esp.esp_id ASC, prerequisito_estado_orden DESC, epre.prelacion ASC, pev.puntaje DESC;";
+          }
+
+          $sql = "SELECT 
+                    pos.*,
+                    cpp.cpe_orden,
+                    pev.puntaje,
+                    epe.epe_id, 
+                    usu.usu_nombre, 
+                    usu.usu_apellidos, 
+                    usu.usu_dni,
+                    esp.esp_id AS especialidad_id,
+                    esp.esp_descripcion AS especialidad_descripcion,
+                    niv.niv_id AS nivel_id,
+                    niv.niv_descripcion AS nivel_descripcion,
+                    mdd.mod_id AS modalidad_id,
+                    mdd.mod_nombre AS modalidad_descripcion,
+                    mdd.mod_abreviatura AS modalidad_abreviatura,
+                    pep.plantilla AS prerequisito_plantilla,
+                    pep.estado as prerequisito_estado,
+                    epre.prelacion,
+                    pev.plantilla AS anexo_plantilla,
+                    bon.puntaje as bonificacion,
+                    CASE pep.estado
+                      WHEN 0 THEN 0
+                      WHEN 1 THEN 1
+                      WHEN 2 THEN 1
+                    END AS prerequisito_estado_orden
+                  FROM postulaciones pos
+                  INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
+                  INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado                  
+                  INNER JOIN grupo_inscripcion AS gin ON pos.inscripcion_id = gin.gin_id
+                  INNER JOIN especialidades AS esp ON esp.esp_id = gin.especialidades_esp_id
+                  INNER JOIN niveles AS niv ON niv.niv_id = esp.niveles_niv_id
+                  INNER JOIN modalidades AS mdd ON mdd.mod_id = niv.modalidad_mod_id 
+                  LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
+                  LEFT JOIN postulacion_evaluaciones pev ON pev.postulacion_id = pos.id AND pev.promedio = 1
+                  LEFT JOIN postulacion_evaluaciones pep ON pep.postulacion_id = pos.id AND pep.promedio = 0  
+                  LEFT JOIN especialidad_prelaciones epre ON epre.id = pev.prelacion_id
+                  LEFT JOIN bonificaciones bon ON bon.id = pev.bonificacion_id
+                  WHERE pos.deleted_at IS NULL 
+                  AND pos.convocatoria_id = $convocatoria_id
+                  $where
+                  ORDER BY $order";
+          $items = $this->db->query($sql)->result_object();
+
+          $groups_keys_especialidad = [];
+          foreach ($items as $k => $o) {
+            $prerequisito_estado_texto = "pendiente";
+            $prerequisito_observacion = "";
+            $prerequisito_especialidad = "";
+            $prerequisito_absolucion = "";
+            if ($o->prerequisito_plantilla) {
+              $prerequisito_plantilla = json_decode($o->prerequisito_plantilla);
+              $sections = $prerequisito_plantilla->sections;
+              foreach ($sections as $k2 => $o2) {
+                $groups = $o2->groups;
+                $countgroups = count($groups);
+                foreach ($groups as $k3 => $o3) {
+                  if ($k3 == ($countgroups - 2)) { // penultimo
+                    $questions = $o3->questions;
+                    foreach ($questions as $k4 => $o4) {
+                      if ($o4->observation_status == 1) {
+                        $prerequisito_observacion = $o4->observation;
+                      }
+                    }
+                  }
+                  if ($k3 == ($countgroups - 1)) { // absolucion
+                    $questions = $o3->questions;
+                    foreach ($questions as $k4 => $o4) {
+                      if ($o4->observation_status == 1) {
+                        $prerequisito_absolucion = $o4->observation;
+                      }
+                    }
+                  }
+
+                  if (in_array($o->especialidad_id, [19,25])) { // especialidad especifica
+                    if ($k3 == ($countgroups - 1)) { // ultimo
+                      $questions = $o3->questions;
+                      foreach ($questions as $k4 => $o4) {
+                        if ($o4->observation_status == 1) {
+                          $prerequisito_especialidad = $o4->observation;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            switch (intval($o->prerequisito_estado)) {
+              case 0:
+                $prerequisito_estado_texto = "no cumple";
+              break;
+              case 1:
+                $prerequisito_estado_texto = "cumple";
+              break;
+              case 2:
+                $prerequisito_estado_texto = "observado";
+              break;
+            }
+            $items[$k]->prerequisito_observacion = $prerequisito_observacion;
+            $items[$k]->prerequisito_especialidad = $prerequisito_especialidad;
+            $items[$k]->prerequisito_absolucion = $prerequisito_absolucion;
+
+            $items[$k]->prerequisito_estado_texto = $prerequisito_estado_texto;
+            $items[$k]->anexo_plantilla = json_decode($o->anexo_plantilla);
+
+            $puntaje_parcial = 0;
+            if ($items[$k]->anexo_plantilla) {
+              $sections = $items[$k]->anexo_plantilla->sections;
+              foreach ($sections as $k2 => $o2) {
+                $groups = $o2->groups;
+                foreach ($groups as $k3 => $o3) {
+                  $questions = $o3->questions;
+                  foreach ($questions as $k4 => $o4) {
+                    $puntaje_parcial = $puntaje_parcial + $o4->value;
+                  }
+                }
+              }
+            }
+            
+            $items[$k]->puntaje_parcial = number_format($puntaje_parcial, 2);
+            $groups_keys_especialidad[$items[$k]->especialidad_id][] = $k;
+          }
+
+          foreach ($groups_keys_especialidad as $key => $keys) {
+            $contador = 1;
+            foreach ($keys as $k => $o) {
+              $items[$o]->cuadro_control = $contador;
+              $contador ++;
+            }
+          }
+
+          // echo json_encode($items); exit;
+          $sql = "SELECT * FROM convocatorias WHERE con_id = ?";
+          $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
+
+          $res['success'] = $convocatoria;
+          $res['data'] = ['records' => $items, 'convocatoria' => $convocatoria];
+          $res['message'] = 'successfully';
+      } catch (\Exception $e) {
+          $res['message'] = $e->getMessage();
+      }
+      return $res;
+    }
 
   public function attachedfiles($id) {
     $response = $this->tools->responseDefault();
     try {
       $sql = "SELECT 
-                par.*
+                par.*,
+                tar.nombre AS tipo_nombre
               FROM postulacion_archivos par
+              INNER JOIN tipo_archivos tar ON tar.id = par.tipo_id
               WHERE par.deleted_at IS NULL 
               AND par.postulacion_id = ?";
       $archivos = $this->db->query($sql, ['postulacion_id' => $id])->result_object();
@@ -396,58 +605,85 @@ class Evaluacion_model extends CI_Model {
     }
     return $response; 
   }
-  
-  
-  public function report($convocatoria_id, $inscripcion_id, $estado) {
-    $res = $this->tools->responseDefault();
+
+  public function status() {
+    $response = $this->tools->responseDefault();
     try {
 
-        // $estado = $any == 'final' ? 'finalizado' : 'revisado';
-        $sql = "SELECT 
-                  pos.*,
-                  cpp.cpe_orden,
-                  epe.epe_id, 
-                  usu.usu_nombre, 
-                  usu.usu_apellidos, 
-                  usu.usu_dni,
-                  esp.esp_id AS especialidad_id,
-                  esp.esp_descripcion AS especialidad_descripcion,
-                  niv.niv_id AS nivel_id,
-                  niv.niv_descripcion AS nivel_descripcion,
-                  mdd.mod_id AS modalidad_id,
-                  mdd.mod_nombre AS modalidad_descripcion,
-                  pfa.universidad AS formacion_academica_universidad,
-                  pel.institucion_educativa AS experiencia_laboral_institucion_educativa,
-                  pe.tema_especializacion AS especializacion_tema,
-                  pev.puntaje AS puntaje 
-                FROM postulaciones pos
-                INNER JOIN convocatorias_detalle cdt ON pos.convocatoria_id = cdt.convocatorias_con_id
-                INNER JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = cdt.grupo_inscripcion_gin_id  AND cpp.cpe_documento = pos.numero_documento
-                INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
-                INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
-                INNER JOIN grupo_inscripcion AS gin ON cpp.grupo_inscripcion_gin_id = gin.gin_id
-                INNER JOIN especialidades AS esp ON esp.esp_id = gin.especialidades_esp_id
-                INNER JOIN niveles AS niv ON niv.niv_id = esp.niveles_niv_id
-                INNER JOIN modalidades AS mdd ON mdd.mod_id = niv.modalidad_mod_id 
-                LEFT JOIN postulacion_formaciones_academicas AS pfa ON pfa.postulacion_id = pos.id
-                LEFT JOIN postulacion_experiencias_laborales AS pel ON pel.postulacion_id = pos.id
-                LEFT JOIN postulacion_especializaciones AS pe ON pe.postulacion_id = pos.id
-                LEFT JOIN postulacion_evaluaciones AS pev ON pev.postulacion_id = pos.id AND pev.promedio = 1
-                WHERE pos.deleted_at IS NULL 
-                AND pos.convocatoria_id = $convocatoria_id
-                AND pos.inscripcion_id = $inscripcion_id
-                AND pos.estado = '$estado'
-                ORDER BY pos.id DESC";
-        $items = $this->db->query($sql)->result_object();
-        $recordsTotal = count($items);
+      $ids   = $this->input->post("ids", true);
+      $estado = $this->input->post("estado", true);
 
-        $res['success'] = true;
-        $res['data'] = ['records' => $items, 'recordsTotal' => $recordsTotal];
-        $res['message'] = 'successfully';
+      $ids =  json_decode($ids);
+
+      if (count($ids) == 0) {
+        throw new Exception("Es necesario los registros de los docentes");
+      }
+
+      foreach ($ids as $k => $id) {
+        $this->db->update('postulaciones', ['estado' => $estado], ['id' => $id]);
+      }
+
+      $response['success'] = true;
+      $response['status']  = 200;
+      $response['message'] = 'Se proceso correctamente';
+
     } catch (\Exception $e) {
-        $res['message'] = $e->getMessage();
+        $response['message'] = $e->getMessage();
     }
-    return $res;
+    return $response; 
+  }
+
+  public function procesarExpedientesPreliminarCumpleFinal($convocatoria_id, $inscripcion_id)
+  {
+
+    $response = $this->tools->responseDefault();
+
+    try {
+      $dni_especialista = $this->session->userdata("sigesco_dni");
+
+      $sql = "SELECT 
+      pos.*,
+      epe.epe_id, 
+      usu.usu_nombre, 
+      usu.usu_apellidos, 
+      usu.usu_dni,
+      pep.plantilla AS prerequisito_plantilla,
+      pep.estado as prerequisito_estado
+    FROM postulaciones pos
+    INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
+    INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
+    INNER JOIN postulacion_evaluaciones pep ON pep.postulacion_id = pos.id AND pep.promedio = 0  
+    WHERE pos.deleted_at IS NULL 
+    AND pos.convocatoria_id = $convocatoria_id
+    AND pos.inscripcion_id = $inscripcion_id
+    AND pep.estado = 1
+    AND pos.estado = 'revisado'
+    AND epe.epe_especialistaAsignado  = $dni_especialista ";
+
+      $items = $this->db->query($sql)->result_object();
+
+      if(!$items){
+        throw new Exception("No sé encontraron más expedientes con estado CUMPLE en la etapa PRELIMINAR");
+      }
+      $id_postulantes = [];
+      foreach ($items as $item) {
+        $id_postulantes[] = $item->id;
+      }
+      $data = [
+        'estado' => 'finalizado',
+      ];
+
+      $this->db->where_in('id', $id_postulantes);
+      $sql = $this->db->update('postulaciones', $data);
+      $num_rows_affected = $this->db->affected_rows();
+
+      $response['success'] = true;
+      $response['status']  = 200;
+      $response['message'] = 'se proceso correctamente ' . $num_rows_affected . ' registros';
+    } catch (\Exception $e) {
+      $response['message'] = $e->getMessage();
+    }
+    return $response;
   }
 
 

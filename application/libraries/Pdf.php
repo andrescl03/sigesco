@@ -40,17 +40,20 @@ class Pdf extends FPDF {
 
     var $exp;
     var $cod_verificacion;
-
+    var $header = 1;
     public function __construct() {
         parent::__construct();
     }
 
     // El encabezado del PDF
-    public function Header() {
+    public function Header()
+    {
 
-        $this->Image('public/images/logo_ugel05.png', 9, 10, 189, 15);
-        $this->Ln(17);
-        $this->SetFont('Arial', 'BU', 13);
+        if ($this->header) {
+            $this->Image('public/images/logo_ugel05.png', 9, 10, 189, 15);
+            $this->Ln(17);
+            $this->SetFont('Arial', 'BU', 13);
+        }
     }
 
     function setExpediente($numero) {

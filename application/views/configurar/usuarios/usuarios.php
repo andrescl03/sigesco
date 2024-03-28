@@ -43,12 +43,12 @@
 					<label for="file_firma" class="col-sm-3 col-form-label"><b>Firma:</b></label>
 					<div class="col-sm-8">
 						<div class="input-group">
-							<input type="file" class="form-control" id="archivo" name="archivo" accept="image/png">
+							<input type="file" class="form-control" id="archivo" name="archivo" accept="image/jpeg">
 							<div class="input-group-append">
 								<button class="btn btn-outline-primary btn_cargarFirma" type="button" id="btn_cargarFirma">Cargar Firma</button>
 							</div>
 						</div>
-						<small class="form-text text-muted">Seleccione un archivo de imagen en formato PNG.</small>
+						<small class="form-text text-muted">Seleccione un archivo de imagen en formato JPG.</small>
 					</div>
 				</div>
 

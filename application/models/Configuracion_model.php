@@ -232,6 +232,40 @@ class Configuracion_model extends CI_Model
           $orden  = $this->input->post("orden", true);
           $ids  = $this->input->post("ids", true);
 
+          $total_ids = count(@$ids);
+          if ($total_ids == 0) {
+            throw new Exception("Deber seleccionar al menos una especialidad");
+          }
+
+          $sql = "SELECT
+                    e1.*,
+                    e2.*,
+                    e3.esp_descripcion AS especialidad_nombre,
+                    e4.niv_descripcion AS nivel_nombre,
+                    e5.mod_nombre AS modalidad_nombre
+                  FROM periodo_fichas e1
+                  LEFT JOIN periodo_ficha_especialidades e2 ON e1.id = e2.periodo_ficha_id
+                  LEFT JOIN especialidades e3 ON e3.esp_id = e2.especialidad_id
+                  LEFT JOIN niveles e4 ON e4.niv_id = e3.niveles_niv_id
+                  LEFT JOIN modalidades e5 ON e5.mod_id = e4.modalidad_mod_id
+                  WHERE e1.deleted_at IS NULL
+                  AND e1.periodo_id = {$id}
+                  AND e1.tipo_id = {$tipo_id}";
+          $periodo_ficha_especialidades = $this->db->query($sql)->result_object();
+          foreach ($ids as $k2 => $o2) {
+            $brand = 0;
+            $especialidad_nombre = "";
+            foreach ($periodo_ficha_especialidades as $k3 => $o3) {
+              if ($o2 == $o3->especialidad_id) {
+                $especialidad_nombre = $o3->modalidad_nombre . " " . $o3->nivel_nombre . " " . $o3->especialidad_nombre;
+                $brand++;
+              }
+            }
+            if ($brand >= 2) {
+              throw new Exception("La especialidad {$especialidad_nombre} ya se encuentra registrado en dos fichas del mismo tipo de evaluación");
+            }
+          }
+
           $data = [
             'nombre' => $nombre,
             'tipo_id' => $tipo_id,
@@ -243,7 +277,7 @@ class Configuracion_model extends CI_Model
           $this->db->insert('periodo_fichas', $data);
           $ficha_id = $this->db->insert_id(); // para saber el id ingresado
           $this->db->delete('periodo_ficha_especialidades', array('periodo_ficha_id' => $ficha_id));
-          if (count(@$ids)) {
+          if ($total_ids) {
             $inserts = [];
             foreach ($ids as $key => $value) {
               $inserts[] = [
@@ -264,6 +298,41 @@ class Configuracion_model extends CI_Model
           $descripcion  = $this->input->post("descripcion", true);
           $orden  = $this->input->post("orden", true);
           $ids  = $this->input->post("ids", true);
+
+          $total_ids = count(@$ids);
+          if ($total_ids == 0) {
+            throw new Exception("Deber seleccionar al menos una especialidad");
+          }
+
+          $sql = "SELECT
+                    e1.*,
+                    e2.*,
+                    e3.esp_descripcion AS especialidad_nombre,
+                    e4.niv_descripcion AS nivel_nombre,
+                    e5.mod_nombre AS modalidad_nombre
+                  FROM periodo_fichas e1
+                  LEFT JOIN periodo_ficha_especialidades e2 ON e1.id = e2.periodo_ficha_id
+                  LEFT JOIN especialidades e3 ON e3.esp_id = e2.especialidad_id
+                  LEFT JOIN niveles e4 ON e4.niv_id = e3.niveles_niv_id
+                  LEFT JOIN modalidades e5 ON e5.mod_id = e4.modalidad_mod_id
+                  WHERE e1.deleted_at IS NULL
+                  AND e1.periodo_id = {$id}
+                  AND e1.tipo_id = {$tipo_id}
+                  AND e2.periodo_ficha_id != {$ficha_id}";
+          $periodo_ficha_especialidades = $this->db->query($sql)->result_object();
+          foreach ($ids as $k2 => $o2) {
+            $brand = 0;
+            $especialidad_nombre = "";
+            foreach ($periodo_ficha_especialidades as $k3 => $o3) {
+              if ($o2 == $o3->especialidad_id) {
+                $especialidad_nombre = $o3->modalidad_nombre . " " . $o3->nivel_nombre . " " . $o3->especialidad_nombre;
+                $brand++;
+              }
+            }
+            if ($brand >= 2) {
+              throw new Exception("La especialidad {$especialidad_nombre} ya se encuentra registrado en dos fichas del mismo tipo de evaluación");
+            }
+          }
 
           $data = [
             'nombre' => $nombre,

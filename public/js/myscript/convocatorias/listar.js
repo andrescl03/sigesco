@@ -53,6 +53,7 @@ var rangoFecha = function (inicio = "", fin= "") {
 			firstDayOfWeek: 1, // Lunes como primer día de la semana
 		},
 		time_24hr: true, // Formato de 24 horas
+		minuteIncrement: 1
 	});
 
 	flatpickr("#fecha_fin", {
@@ -64,6 +65,7 @@ var rangoFecha = function (inicio = "", fin= "") {
 			firstDayOfWeek: 1, // Lunes como primer día de la semana
 		},
 		time_24hr: true, // Formato de 24 horas
+		minuteIncrement: 1
 	});
 
 }

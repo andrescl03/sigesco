@@ -23,7 +23,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 fichas: [],
                 ficha: {},
                 items: [],
-                options: ['selectiva', 'marcado', 'texto', 'numerico'],
+                options: ['selectiva', 'marcado', 'texto', 'numerico', 'tabla'],
                 especialidades: [],
                 tipo_convocatorias: []
             }
@@ -302,7 +302,9 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     })
                     .done(function ({success, data, message}) {
                         sweet2.show({type: success ? 'success' : 'error', html: message});
-                        resolve(data);
+                        if (success) {
+                            resolve({success, data, message});
+                        }
                     })
                     .fail(function (xhr, status, error) {
                         sweet2.show({type:'error', text:error});
@@ -383,6 +385,8 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 // Crear un elemento de título de tarjeta (card-title)
                 var titleElement = document.createElement('h5');
                 titleElement.classList.add('card-title');
+                titleElement.style.height = '60px';
+                titleElement.style.overflowY = 'hidden';
                 titleElement.textContent = ficha.nombre;
 
                 // Crear un elemento de subtítulo de tarjeta (card-subtitle)
@@ -391,7 +395,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 subtitleElement.textContent = ficha.promedio == 1 ? 'Evaluado' : 'Ficha';
 
                 // Crear un elemento de texto de tarjeta (card-text)
-                var textElement = document.createElement('p');
+                var textElement = document.createElement('div');
                 textElement.classList.add('card-text', 'mb-3');
                 textElement.style.height = '75px';
                 textElement.style.overflowY = 'hidden';
@@ -854,7 +858,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                     question.type = e.target.value;
                     question.options = [];
                     row4.innerHTML = ``;
-                    if (question.type == 'selectiva') {
+                    if (question.type == 'selectiva' || question.type == 'tabla') {
                         row4.appendChild(self.viewPanelOption(question));                    
                     }
                 });
@@ -890,7 +894,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 panel.appendChild(row1);
                 
                 const row4 = document.createElement('div');
-                if (question.type == 'selectiva') {
+                if (question.type == 'selectiva' || question.type == 'tabla') {
                     row4.appendChild(self.viewPanelOption(question));                    
                 }
                 panel.appendChild(row4);
@@ -924,7 +928,8 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                         name: '',
                         position: 0,
                         score: 0,
-                        type: 0
+                        type: 0,
+                        value: 0
                     };
                     question.options.push(option);
                     row2.appendChild(self.viewOption(option, ()=>{
@@ -955,10 +960,11 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 });
                 col1.appendChild(input);
 
-                if (self.ficha && self.ficha.promedio == 1) {
+                // if (self.ficha && self.ficha.promedio == 1) {
+                if (self.ficha) {
                     const input2 = document.createElement('input');
                     input2.placeholder = 'Puntaje';
-                    input2.type = 'number';
+                    input2.type = 'text';
                     input2.classList.add('form-control', 'ms-3');
                     input2.value = option.score;
                     input2.style.maxWidth = '100px';
@@ -1124,6 +1130,23 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
 
                 } else if (question.type == 'numerico') {
                     html += `<input type="number" class="form-control  text-center" value="">`;
+                } else if (question.type == 'tabla') {
+
+                    html += `<table style="min-width: 200px;">
+                                <tbody>`;
+                            question.options.forEach(option => {
+                            html += `<tr>
+                                        <td style="min-width: 90px; padding: 5px;">
+                                            ${option.name}
+                                        </td>
+                                        <td style="padding: 5px;">
+                                            ${option.score}
+                                        </td>
+                                    </tr>`;
+                            });
+                    html += `
+                                </tbody>
+                            </table>`;
                 }
 
                 return html;

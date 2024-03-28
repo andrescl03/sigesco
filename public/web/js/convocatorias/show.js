@@ -8,6 +8,12 @@ const AppConvovatoriaWeb = () => {
             dom.removeAttribute('data-inscripcion-id');
             self.convocatoriaType = dom.getAttribute('data-type');
             dom.removeAttribute('data-type');
+            self.modalidadDescripcion = dom.getAttribute('data-nombre-modalidad');
+            dom.removeAttribute('data-nombre-modalidad');
+            self.nivelDescripcion = dom.getAttribute('data-nombre-nivel');
+            dom.removeAttribute('data-nombre-nivel');
+            self.especialidadDescripcion = dom.getAttribute('data-nombre-especialidad');
+            dom.removeAttribute('data-nombre-especialidad');
             self.modalWorkExperience = self.modal('modalWorkExperience');
             self.modalSpecialization = self.modal('modalSpecialization');
             self.modalAcademicTraining = self.modal('modalAcademicTraining');
@@ -217,11 +223,14 @@ const AppConvovatoriaWeb = () => {
 
                         form.classList.add('was-validated');
                         if (form.checkValidity()) {
+
                             self.formData = new FormData(e.target);
                             self.postulant = helper.formSerialize(e.target);
-                            self.postulant.modalidad = self.formPostulant.modalidad_descripcion;
-                            self.postulant.nivel = self.formPostulant.nivel_descripcion;
-                            self.postulant.especialidad = self.formPostulant.especialidad_descripcion;
+
+                            self.postulant.modalidad = self.isPUN() ? self.formPostulant.modalidad_descripcion : self.modalidadDescripcion;
+                            self.postulant.nivel = self.isPUN() ? self.formPostulant.nivel_descripcion : self.nivelDescripcion;
+                            self.postulant.especialidad = self.isPUN() ? self.formPostulant.especialidad_descripcion : self.especialidadDescripcion;
+
 
                             const via_id = self.formData.get('via_id');
                             console.log('via_id',via_id);
@@ -1067,7 +1076,7 @@ const AppConvovatoriaWeb = () => {
                                                     <div class="col-lg-7">${item.fechatermino_rd}</div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-lg-5">Fecha de termino</div>
+                                                    <div class="col-lg-5">Cantidad de meses</div>
                                                     <div class="col-lg-7">${item.cantidad_mesesrd}</div>
                                                 </div>
                                             </div>`;

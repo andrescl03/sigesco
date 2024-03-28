@@ -18,12 +18,90 @@ const AppAdjudicacionAdmin = () => {
                 self.initialize();
             },
             methods: {
+                
                 initialize: () => {
                     self.clicks();
                     self.pagination(self.onActionRows);
                 },
                 clicks: () => {
-           
+                    const btn = dom.querySelector('#btnBuscador');
+
+                    if (btn) {
+                        btn.addEventListener('click', (e) => {
+                            const input = dom.querySelector('#txtBuscador');
+                            if (input) {
+                                sweet2.loading({ text: 'Buscando...' });
+                                self.table.search(input.value.trim()).draw();
+                            }
+                        });
+                    }
+
+                    const btn_expediente_preliminar_a_final = dom.querySelector('#btn-procesar-expedientes-preliminar-final');
+
+                    if (btn_expediente_preliminar_a_final) {
+                        btn_expediente_preliminar_a_final.addEventListener('click', (e) => {
+                            sweet2.show({
+                                type: 'question',
+                                html: '¿Estás seguro que deseas enviar los expedientes con estado CUMPLE a ETAPA FINAL?',
+                                showCancelButton: true,
+                                onOk: () => {
+                                    self.processFilesToFinal();
+                                }
+                            });
+                        });
+                    }
+                    const btnAlls = document.querySelectorAll('.pagination-btn-all');
+                    btnAlls.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            let ids = [];
+                            const checks = document.querySelectorAll('.pagination-check-item');
+                            checks.forEach(check => {
+                                if (check.checked) {
+                                    ids.push(check.value);
+                                }
+                            });
+                            if (ids.length == 0) {
+                                sweet2.show({
+                                    type: 'info',
+                                    text: 'Tiene que seleccionar al menos un registro de la lista'
+                                });
+                                return;
+                            }
+                            sweet2.show({
+                                type: 'question',
+                                title: '¿Estás seguro de procesar estos registros?',
+                                text: `Los registros se mostrarán en la lista preliminar, se procesará ${ids.length} registro(s)`,
+                                showCancelButton: true,
+                                onOk: () => {
+                                    sweet2.loading();
+                                    const stringids = JSON.stringify(ids);
+                                    const formData = new FormData();
+                                    formData.append('ids', stringids);
+                                    formData.append('estado', 'revisado');
+                                    self.sendPostulants(formData)
+                                    .then(({success, data, message}) => {
+                                        if (!success) {
+                                            throw message;
+                                        }
+                                        sweet2.show({
+                                            type: 'success',
+                                            text: message,
+                                            onOk: () => {
+                                                sweet2.loading({text: 'Actualizando información...'});
+                                                self.table.ajax.reload();
+                                            }
+                                        });
+                                    })
+                                    .catch((error) => {
+                                        sweet2.show({
+                                            type: 'error',
+                                            html: message
+                                        });
+                                    })
+                                }
+                            });
+                        });
+                    });
                 },
                 pagination: (_callback = ()=>{}) => {
                     self.table = $('#tableIndex').DataTable({
@@ -70,6 +148,7 @@ const AppAdjudicacionAdmin = () => {
                            }
                         },
                         "fnDrawCallback": function(oSettings, json) {
+                            sweet2.loading(false);
                             const response = oSettings.json;
                             if (response.success) {
                                 _callback();
@@ -80,7 +159,7 @@ const AppAdjudicacionAdmin = () => {
                                 "targets": 0,
                                 "data": "id",
                                 "render": function ( data, type, row, meta ) {
-                                    return row.id;
+                                    return meta.row + 1;
                                 }
                             },
                             {
@@ -101,7 +180,7 @@ const AppAdjudicacionAdmin = () => {
                                 "targets": 3,
                                 "data": "apellido_paterno",
                                 "render": function ( data, type, row, meta ) {
-                                    return row.apellido_paterno;
+                                    return row.apellido_paterno + ' ' + row.apellido_materno;
                                 }
                             },
                             {
@@ -112,11 +191,12 @@ const AppAdjudicacionAdmin = () => {
                                 }
                             },
                             {
+                                "title": "ORDEN",
                                 "targets": 5,
-                                "data": "uid",
+                                "data": "cpe_orden",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return '1';
+                                    return row.convocatoria_tipo_id == 2 ? `` : row.cpe_orden;
                                 }
                             },
                             {
@@ -124,11 +204,38 @@ const AppAdjudicacionAdmin = () => {
                                 "data": "id",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return `<span class="badge bg-success" style="font-size: 0.9em;">${row.uid}</span>`;
+                                    return `<span class="badge bg-secondary" style="font-size: 0.9em;">${row.uid}</span>`;
                                 }
                             },
                             {
                                 "targets": 7,
+                                "data": "id",
+                                "className": "text-center",
+                                "render": function ( data, type, row, meta ) {
+                                    return `<span class="badge bg-primary" style="font-size: 0.9em;">${row.numero_expediente}</span>`;
+                                }
+                            },
+                            {
+                                "targets": 8,
+                                "data": "estado",
+                                "render": function ( data, type, row, meta ) {
+                                    let estado = '';
+                                    switch (Number(row.prerequisito_estado)) {
+                                        case 0:
+                                            estado = `<span class="badge bg-danger" style="font-size: 0.9em;">NO CUMPLE</span>`;
+                                        break;
+                                        case 1:
+                                            estado = `<span class="badge bg-success" style="font-size: 0.9em;">CUMPLE</span>`;
+                                        break;
+                                        case 2:                                            
+                                            estado = `<span class="badge bg-info" style="font-size: 0.9em;">OBSERVADO</span>`;
+                                        break;
+                                    }
+                                    return estado;
+                                }
+                            },
+                            {
+                                "targets": 9,
                                 "data": "id",
                                 "render": function ( data, type, row, meta ) {
                                     return `<div class="d-flex justify-content-center gap-2">                  
@@ -137,11 +244,12 @@ const AppAdjudicacionAdmin = () => {
                                 }
                             },
                             {
-                                "targets": 8,
+                                "targets": 10,
                                 "data": "created_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return  any == 'preliminar' ? `<button type="button" class="btn btn-sm btn-light btn-active-light me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    return  any == 'preliminar' ? `
+                                            <button type="button" class="btn btn-sm btn-light btn-active-light me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Acción
                                             </button>
                                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-2 dropdown-menu dropdown-menu-start">
@@ -151,11 +259,22 @@ const AppAdjudicacionAdmin = () => {
                                                 <div class="menu-item px-3 py-2">
                                                     <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/editar" class="menu-link text-danger px-3">Editar</a>
                                                 </div>
-                                            </div>` : '-';
+                                            </div>` : `
+                                            <input type="checkbox" value="${row.id}" class="pagination-check-item">
+                                            <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/revaluar">
+                                                <i class="fa fa-file-text ms-3 fa-xl text-dark" aria-hidden="true" title="Visualizar Evaluación"></i>
+                                            </a>`;
                                 }
                             }
-                        ]
+                        ],
+                        "createdRow": function(row, data, dataIndex) {
+                            if (data.prerequisito_estado == 2 || data.prerequisito_estado == 0)  {
+                                $(row).addClass('bg-warning bg-gradient');
+                            }
+                        }
+
                     });
+                    sweet2.loading();
                 },
                 attachedfiles: (id) => {
                     return new Promise((resolve, reject)=>{
@@ -165,6 +284,66 @@ const AppAdjudicacionAdmin = () => {
                             method: 'POST',
                             dataType: 'json',
                             data: {},
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function (response) {
+
+                            /*PENDIENTE*/
+                        /*     if(response.status == 500){
+                                alert("aea");
+                                sweet2.show({type:'error'});
+
+
+                            } */
+
+                            
+                            resolve(response);
+
+
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
+                        });
+                    });
+                }, 
+                processFilesToFinal: (id) => {
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + `evaluacion/convocatoria/${convocatoria_id}/inscripcion/${inscripcion_id}/procesar/expedientes`,
+                            method: 'POST',
+                            dataType: 'json',
+                            data: {},
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function (response) {
+                            
+                            sweet2.loading(false);
+                            sweet2.show({
+                                type: 'success',
+                                text: response.message,
+                                onOk: () => {
+                                    self.table.ajax.reload();
+                                }
+                            });
+
+                            resolve(response);
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
+                        });
+                    });
+                }, 
+                sendPostulants: (formData) => {
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + `evaluacion/convocatoria/inscripcion/postulantes/status`,
+                            method: 'POST',
+                            dataType: 'json',
+                            data: formData,
                             processData: false,
                             contentType: false,
                         })
@@ -225,7 +404,7 @@ const AppAdjudicacionAdmin = () => {
                             const url = window.AppMain.url + 'public' + file.url;
                             html += `
                             <tr class="">
-                                <td scope="row">${file.id}</td>
+                                <td>${file.tipo_nombre}</td>
                                 <td>${file.nombre}</td>
                                 <td class="text-center">
                                     <a href="${url}" class="text-danger" target="_blank" donwload>

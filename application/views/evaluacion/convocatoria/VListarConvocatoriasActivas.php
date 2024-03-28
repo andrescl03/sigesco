@@ -6,7 +6,7 @@
                 <th class="text-center">NÚMERO</th>
                 <th class="text-center">FECHA DE INICIO</th>
                 <th class="text-center">FECHA DE FIN</th>
-                <th class="text-center">GRUPOS DE INSCRIPCIÓN</th>               
+                <th class="text-center">GRUPOS DE INSCRIPCIÓN DE LA CONVOCATORIA</th>               
                 <th class="text-center">ACCIONES</th>
 			</tr>
 		</thead>
