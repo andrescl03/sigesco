@@ -272,13 +272,13 @@
                                             <th>Jordana</th>
                                             <th>Tipo vacante</th>
                                             <th>Motivo vacante</th>
-                                            <th></th>
+                                            <th>Tipo de convocatoria</th>
+                                            <th>Opciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     </tbody>
                                 </table>
-                         
                         </div>
                     </div>
 

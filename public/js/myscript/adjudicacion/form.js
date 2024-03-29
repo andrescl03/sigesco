@@ -562,6 +562,7 @@ const AppAdjudicacionAdmin = () => {
                                 return;
                             }
                             const formData = new FormData(e.target);
+                            formData.append('tipo_convocatoria', self.plaza.tipo_convocatoria);
                             formData.append('plaza_id', self.plaza.plz_id);
                             formData.append('postulacion_id', self.postulacion.id);
                             formData.append('firmas', JSON.stringify(self.firmas));
@@ -720,6 +721,15 @@ const AppAdjudicacionAdmin = () => {
                                 },
                                 {
                                     "targets": 7,
+                                    "data": "descripcion",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.descripcion;
+                                        // return `<span class="badge bg-secondary" style="font-size: 0.9em;">${row.uid}</span>`;
+                                    }
+                                },
+                                {
+                                    "targets": 8,
                                     "data": "deleted_at",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
@@ -1189,6 +1199,7 @@ const AppAdjudicacionAdmin = () => {
                 plazaRender: () => {
                     let html = `No hay registro para mostrar`;
                     if (Object.keys(self.plaza).length > 0) {
+                        console.log(self.plaza);
                         html = `
                         <p><strong>Código plaza</strong> ${self.plaza.codigo_plaza}</p>
                         <p><strong>I.E</strong> ${self.plaza.ie}</p>
@@ -1196,11 +1207,39 @@ const AppAdjudicacionAdmin = () => {
                         <p><strong>Especialidad</strong> ${self.plaza.especialidad}</p>
                         <p><strong>Jornada</strong> ${self.plaza.jornada}</p>
                         <p><strong>Tipo vacante</strong> ${self.plaza.tipo_vacante}</p>
-                        <p><strong>Motivo vacante</strong> ${self.plaza.motivo_vacante}</p>`;
+                        <p><strong>Motivo vacante</strong> ${self.plaza.motivo_vacante}</p>
+                        <p><strong>Tipo de convocatoria</strong>
+                        <input type="radio" name="tipoConvocatoria" value="1" ${self.plaza.tipo_convocatoria === "1" ? "checked" : ""}> PUN (Prueba Única Nacional)
+                        <input type="radio" name="tipoConvocatoria" value="2" ${self.plaza.tipo_convocatoria === "2" ? "checked" : ""}> Evaluación de Expediente</p>`;
                     }
                     const divs = dom.querySelectorAll('.list-plaza');
                     divs.forEach(div => {
                         div.innerHTML = html;
+                    });
+
+                    const btnUpdateTipoConvocatoria = document.querySelectorAll('input[name="tipoConvocatoria"]');
+
+                    btnUpdateTipoConvocatoria.forEach(radioButton => {
+
+                        radioButton.addEventListener('click', function (event) {
+                            event.preventDefault();
+
+                            if (self.plaza.tipo_convocatoria != event.target.value) {
+
+                                swal.fire({
+                                    text: '¿Estás seguro que desea actualizar el tipo de convocatoria de la plaza?',
+                                    icon: 'question',
+                                    confirmButtonText: 'Sí',
+                                    showCancelButton: true,
+                                    cancelButtonText: 'No'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        self.plaza.tipo_convocatoria = event.target.value;
+                                        event.target.checked = true;
+                                    }
+                                });
+                            }
+                        });
                     });
                 }
             },

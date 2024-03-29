@@ -233,6 +233,7 @@ class Adjudicaciones_model extends CI_Model
       $fecha_inicio  = $this->input->post("fecha_inicio", true);
       $fecha_final  = $this->input->post("fecha_final", true);
       $fecha_registro  = $this->input->post("fecha_registro", true);
+      $tipo_convocatoria  = $this->input->post("tipo_convocatoria", true);
 
       $this->db->insert('adjudicaciones', [
         'postulacion_id' => $postulacion_id,
@@ -243,7 +244,6 @@ class Adjudicaciones_model extends CI_Model
         'estado'  => 1
       ]);
 
-      
       $id =  $this->db->insert_id(); // para saber el id ingresado
       
       if (count($firmas) > 0) {
@@ -257,7 +257,7 @@ class Adjudicaciones_model extends CI_Model
         $this->db->insert_batch('adjudicacion_firmas', $inserts);
       }
 
-      $this->db->update('plazas', ['estado'=>0], array('plz_id' => $plaza_id));
+      $this->db->update('plazas', ['estado'=>0 , 'tipo_convocatoria' => $tipo_convocatoria], array('plz_id' => $plaza_id));
       
       $responseponse['success'] = true;
       $responseponse['status']  = 200;
@@ -558,9 +558,10 @@ class Adjudicaciones_model extends CI_Model
         }
 
         $sql = "SELECT 
-                  plz.*
+                  plz.* , tc.*
                 FROM plazas plz
-                LEFT JOIN adjudicaciones adj ON adj.plaza_id = plz.plz_id 
+                LEFT JOIN adjudicaciones adj ON adj.plaza_id = plz.plz_id
+                INNER JOIN tipo_convocatoria tc ON plz.tipo_convocatoria = tc.tipo_id
                 WHERE plz.deleted_at IS NULL 
                 AND (adj.id IS NULL OR adj.estado = 0)
                 $filterText
