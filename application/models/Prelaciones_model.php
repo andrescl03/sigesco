@@ -38,15 +38,21 @@ class Prelaciones_model extends CI_Model {
                                     OR e1.prelacion LIKE('%{$value}%') 
                                     OR e1.especialidad_id LIKE('%{$value}%')
                                     OR e2.esp_descripcion LIKE('%{$value}%')
+                                    OR niv.niv_descripcion LIKE('%{$value}%')
+                                    OR moda.mod_abreviatura LIKE('%{$value}%')
                                   ) ";
               }
           }
 
           $sql = "SELECT 
                     e1.*,
-                    e2.esp_descripcion AS especialidad_nombre
+                    e2.esp_descripcion AS especialidad_nombre,
+                    niv.niv_descripcion AS nivel_nombre,
+                    moda.mod_abreviatura AS modalidad_nombre
                   FROM especialidad_prelaciones e1
                   LEFT JOIN especialidades e2 ON e2.esp_id = e1.especialidad_id
+                  INNER JOIN niveles niv ON e2.niveles_niv_id = niv.niv_id
+                  INNER JOIN modalidades moda ON niv.modalidad_mod_id = moda.mod_id
                   WHERE e1.deleted_at IS NULL 
                   $filterText
                   ORDER BY e1.id DESC";

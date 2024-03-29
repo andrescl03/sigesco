@@ -154,6 +154,22 @@ const AppPrelacionIndex = () => {
                         
                             {
                                 "targets": 2,
+                                "data": "modalidad_nombre",
+                                "className": "text-center",
+                                "render": function ( data, type, row, meta ) {
+                                    return row.modalidad_nombre;
+                                }
+                            },
+                            {
+                                "targets": 3,
+                                "data": "nivel_nombre",
+                                "className": "text-center",
+                                "render": function ( data, type, row, meta ) {
+                                    return row.nivel_nombre;
+                                }
+                            },
+                            {
+                                "targets": 4,
                                 "data": "especialidad_nombre",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
@@ -162,7 +178,7 @@ const AppPrelacionIndex = () => {
                             },
                            
                             {
-                                "targets": 3,
+                                "targets": 5,
                                 "data": "deleted_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {

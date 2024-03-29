@@ -17,20 +17,6 @@
                                             <div class="row">
                                                 <div class="col-sm-12 ">
                                                     <div class="d-flex align-content-start flex-wrap gap-3">
-                                                        <!-- <div class="d-grid gap-2 col-sm-2">
-                                                            <div class="row">
-                                                                <div class="col-sm-6 mt-1"><b>Periodo:</b></div>
-                                                                <div class="col-sm-6">
-                                                                    <select class="form-select form-select-sm" name="opt_periodo" id="opt_periodo">
-                                                                        <option value="0">Elegir...</option>
-                                                                        <?php foreach ($periodos as $periodo) { ?>
-                                                                            <option value="<?= $periodo->per_id ?>" <?= $periodo->per_default == 1 ? "Selected" : "" ?>><?= $periodo->per_anio ?></option>
-                                                                        <?php } ?>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vr"></div> -->
                                                         <div class="d-grid gap-2 col-sm-2">
                                                             <button type="button" class="btn btn-outline-primary btn-sm btn-create"><b><i class="fa-solid fa-circle-plus fa-lg"></i> Agregar</b></button>
                                                         </div>
@@ -54,6 +40,8 @@
                                                 <tr class="cabecera_tabla_2">
                                                     <th class="text-center">#</th>
                                                     <th class="text-center">PRELACIÓN</th>
+                                                    <th class="text-center">MODALIDAD</th>
+                                                    <th class="text-center">NIVEL</th>
                                                     <th class="text-center">ESPECIALIDAD</th>
                                                     <th class="text-center">ACCIONES</th>
                                                 </tr>
