@@ -34,7 +34,9 @@ const AppPrelacionIndex = () => {
                                 if (!success) { 
                                     throw message;
                                 }
-                                self.renderEspecialidades(data.especialidades);
+                                self.renderModalidades(data.modalidades, data.niveles,data.especialidades);
+                                //self.renderNiveles(data.niveles);
+                                //self.renderEspecialidades(data.especialidades);
                                 sweet2.loading(false);
                                 self.modalPrelacion.show();
                             })
@@ -290,7 +292,8 @@ const AppPrelacionIndex = () => {
                                 }
                                 sweet2.loading(false);
                                 self.any = id;
-                                console.log(data);
+                                self.renderModalidades(data.modalidades,data.niveles, data.especialidades);
+                                self.renderNiveles(data.niveles,data.especialidades);
                                 self.renderEspecialidades(data.especialidades);
                                 self.setEspecialidadPrelacion(data.especialidad_prelacion);
                                 self.modalPrelacion.show();             
@@ -335,11 +338,59 @@ const AppPrelacionIndex = () => {
                     });
                 },
                 setEspecialidadPrelacion: (item) => {
+                    dom.querySelector('select[name="modalidad_id"]').value = item.mod_id;
+                    dom.querySelector('select[name="nivel_id"]').value = item.niv_id;
                     dom.querySelector('select[name="especialidad_id"]').value = item.especialidad_id;
                     dom.querySelector('input[name="prelacion"]').value = item.prelacion;
                 }
             },
             renders: {
+                renderModalidades: (items, itemsNiveles, itemsEspecialidades) => {
+                    const selects = dom.querySelectorAll('.select-modalidades');
+                    selects.forEach(select => {
+                        let html = `<option value="" hidden selected>Elegir...</option>`;
+                        if (items.length > 0) {
+                            items.forEach(n => {
+                                html += `<option value="${n.mod_id}">${n.mod_abreviatura}</option>`;
+                            });
+                        }
+                        select.innerHTML = html;
+
+                        select.addEventListener('change', function(){
+
+                            const selectEspecialidades = dom.querySelectorAll('.select-especialidades');
+                            selectEspecialidades.forEach(select => {
+                                select.innerHTML = '';
+                            });
+
+                            const selectModalidad = this.value;
+                            const nivelesFiltrados = itemsNiveles.filter(item => item.modalidad_mod_id == selectModalidad);
+                            self.renderNiveles(nivelesFiltrados,itemsEspecialidades);
+
+                        });
+                    });
+                },
+                renderNiveles: (items,itemsEspecialidades) => {
+                    const selects = dom.querySelectorAll('.select-niveles');
+                    selects.forEach(select => {
+                        let html = `<option value="" hidden selected>Elegir...</option>`;
+                        if (items.length > 0) {
+                            items.forEach(n => {
+                                html += `<option value="${n.niv_id}">${n.niv_descripcion}</option>`;
+                            });
+                        }
+                        select.innerHTML = html;
+
+                        select.addEventListener('change', function(){
+                            const selectNivel = this.value;
+                            const especialidadesFiltrados = itemsEspecialidades.filter(item => item.niveles_niv_id == selectNivel);
+                            
+                            self.renderEspecialidades(especialidadesFiltrados);
+
+                        });
+                    });
+                },
+
                 renderEspecialidades: (items) => {
                     const selects = dom.querySelectorAll('.select-especialidades');
                     selects.forEach(select => {

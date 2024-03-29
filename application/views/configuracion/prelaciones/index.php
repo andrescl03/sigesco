@@ -70,6 +70,16 @@
                         <form class="form-create-update" id="formCreateUpdate">
                             <div class="row">
 
+                            <div class="col-md-2 mb-2 mt-1"><b>modalidad:</b></div>
+                                <div class="col-md-10 mb-2">
+                                    <select class="form-select form-select-sm select-modalidades" name="modalidad_id" required>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 mb-2 mt-1"><b>nivel:</b></div>
+                                <div class="col-md-10 mb-2">
+                                    <select class="form-select form-select-sm select-niveles" name="nivel_id" required>
+                                    </select>
+                                </div>
                                 <div class="col-md-2 mb-2 mt-1"><b>Especialidad:</b></div>
                                 <div class="col-md-10 mb-2">
                                     <select class="form-select form-select-sm select-especialidades" name="especialidad_id" required>
@@ -77,7 +87,7 @@
                                 </div>
                                 <div class="col-md-2 mb-2 mt-1"><b>Prelación:</b></div>
                                 <div class="col-md-10 mb-2">
-                                    <input class="form-control form-control-sm" name="prelacion" type="text" required />
+                                    <input class="form-control form-control-sm" name="prelacion" maxlength="1"  type="text" required />
                                 </div>
                             </div>
                         </form>

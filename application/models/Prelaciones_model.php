@@ -169,15 +169,25 @@ class Prelaciones_model extends CI_Model {
 
           $id = isset($request['id']) ? $request['id'] : 0;
 
+          $sqlModalidades = "SELECT * FROM modalidades WHERE mod_estado = 1";
+          $modalidades = $this->db->query($sqlModalidades)->result_object();
+          
+          $sqlNiveles = "SELECT * FROM niveles WHERE niv_estado = 1";
+          $niveles = $this->db->query($sqlNiveles)->result_object();
+
           $sql = "SELECT * FROM especialidades WHERE esp_estado = 1";
           $especialidades = $this->db->query($sql)->result_object();
 
-          $sql = "SELECT * FROM especialidad_prelaciones WHERE deleted_at IS NULL AND id = ?";
+          $sql = "SELECT * FROM especialidad_prelaciones esppre
+          INNER JOIN especialidades esp ON esppre.especialidad_id = esp.esp_id
+          INNER JOIN niveles niv ON esp.niveles_niv_id = niv.niv_id
+          INNER JOIN modalidades moda ON niv.modalidad_mod_id  = moda.mod_id 
+          WHERE esppre.deleted_at IS NULL AND esppre.id = ?";
           $especialidad_prelacion = $this->db->query($sql, compact('id'))->row();
 
           $response['success'] = true;
           $response['status']  = 200;
-          $response['data']    = compact('especialidad_prelacion', 'especialidades');
+          $response['data']    = compact('especialidad_prelacion', 'modalidades', 'niveles', 'especialidades');
           $response['message'] = 'Se proceso correctamente';
       } catch (\Exception $e) {
           $response['message'] = $e->getMessage();
@@ -185,16 +195,22 @@ class Prelaciones_model extends CI_Model {
       return $response;
   }
 
-  public function create(                                    )
+  public function create()
   {
       $response = $this->tools->responseDefault();
       try {
 
-          $sql = "SELECT * FROM especialidades WHERE esp_estado = 1";
-          $especialidades = $this->db->query($sql)->result_object();
+          $sqlModalidades = "SELECT * FROM modalidades WHERE mod_estado = 1";
+          $modalidades = $this->db->query($sqlModalidades)->result_object();
+          
+          $sqlNiveles = "SELECT * FROM niveles WHERE niv_estado = 1";
+          $niveles = $this->db->query($sqlNiveles)->result_object();
+          
+          $sqlEspecialidades = "SELECT * FROM especialidades WHERE esp_estado = 1";
+          $especialidades = $this->db->query($sqlEspecialidades)->result_object();
           
           $response['success'] = true;
-          $response['data']    = compact('especialidades');
+          $response['data']    = compact('modalidades','niveles','especialidades');
           $response['status']  = 200;
           $response['message'] = 'Se proceso correctamente';
       } catch (\Exception $e) {
