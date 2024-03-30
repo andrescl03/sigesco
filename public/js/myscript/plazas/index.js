@@ -22,6 +22,9 @@ const AppPlazaIndex = () => {
                 initialize: () => {
                     self.clicks();
                     self.pagination(self.onActionRows);
+
+                    new Choices(document.querySelector(".choices-single"));
+
                 },
                 clicks: () => {
                     

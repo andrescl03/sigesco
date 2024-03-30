@@ -1,3 +1,8 @@
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
+
 <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Plazas</b></h4>
 <ol class="breadcrumb mb-2">
     <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
@@ -145,7 +150,7 @@ $colegios = $data['colegios'];
 
                                 <div class="col-md-2 mb-2 mt-1"><b>Institución Educativa:</b></div>
                                 <div class="col-md-10 mb-2">
-                                    <select class="form-select form-select-sm select-colegio" name="colegio_id" required>
+                                    <select class="form-select choices-single form-select-sm select-colegio" id="colegio" data-live-search="true" name="colegio_id" required>
                                         <option value="" hidden>Elegir...</option>
                                         <?php foreach ($colegios as $colegio) { ?>
                                             <option value="<?= $colegio->loc_id ?>"><?= $colegio->mod_nombre ?></option>
