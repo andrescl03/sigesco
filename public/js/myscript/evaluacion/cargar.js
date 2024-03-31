@@ -54,7 +54,10 @@ var chk_expedientetotal = function () {
 			if (chkAsignarTodosEval1.checked) {
 				btn_modalAsignarExpedientes(chkAsignarTodosEval1);
 			} else {
-				
+				var checkboxesSecundarios = document.querySelectorAll(".chk_asignarEval input");
+				checkboxesSecundarios.forEach(function (checkbox) {
+					checkbox.checked = chkAsignarTodosEval1.checked;
+				});
 			}
 		});
 	}
@@ -239,26 +242,26 @@ var VListarEspecialistas = function(parametros){
 var btn_asignarReasignar= function(cadena){	
 	$('body').off('click', '#btn_asignarReasignar');
     $('body').on('click', '#btn_asignarReasignar', function (e) {
-    	usuario=0;
+    	usuarios= [];
 		var convId = $('#txt_idConv').val();
-     	$(".opt_usuario input:radio:checked").each(function () {
-            usuario = $(this).val();
-        });     	
-     	if(usuario!=0){
+     	$(".opt_usuario input:checkbox:checked").each(function () {
+            usuarios.push($(this).val());
+        });
+     	if(usuarios!=0){
             SwalConfirmacionCenter.fire({				
 				html: "¿Seguro(a) que desea <b class='text-primary h4'>Asignar o Reasignar</b> la evaluación?"				
 			}).then((result) => {
 				if (result.isConfirmed) {
 					parametros = {
-						cadena 	: cadena,
-						usuario	: usuario,
-						convId  : convId
+						cadena 	 : cadena,
+						usuarios : usuarios,
+						convId   : convId
 					};
 					CAsignarReasignar(parametros);
 				}
 			})
      	}else{
-            ToastError.fire({title: "Seleccionar un especialista."});	
+            ToastError.fire({title: "Seleccionar al menos un especialista."});	
      	}		
     });
 }

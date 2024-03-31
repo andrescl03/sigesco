@@ -13,7 +13,8 @@
 		      		              
 				<td class="text-center">
 		    		<div class="custom-control custom-radio opt_usuario">
-		               	<input type="radio" class="custom-control-input" id="opt_usuario_<?= $dato['usu_id'];?>" name="radio-stacked" value="<?= $dato['usu_dni'];?>">
+						<!--<input type="radio" class="custom-control-input" id="opt_usuario_<?= $dato['usu_id'];?>" name="radio-stacked" value="<?= $dato['usu_dni'];?>">-->
+						<input type="checkbox" class="custom-control-input" id="opt_usuario_<?= $dato['usu_id'];?>" name="checkbox-stacked[]" value="<?= $dato['usu_dni'];?>">
 						<label class="custom-control-label" for="opt_usuario_<?= $dato['usu_id'];?>"></label>
 		            </div>
 		        </td>

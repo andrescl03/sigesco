@@ -176,18 +176,29 @@ class Evaluacion extends CI_Controller {
 
     public function CAsignarReasignar(){
         $cadena     = $this->input->post("cadena",true);
-        $usuario    = $this->input->post("usuario",true);
+        $usuarios    = $this->input->post("usuarios",true);
         $convId     = $this->input->post("convId",true);
         $ar_insert = [];
         $ar_update = [];
+
+        // Obtener la cantidad de usuarios y calcular la asignación equitativa
+        $numUsuarios = count($usuarios);
+
+        // Distribuir las asignaciones entre los usuarios de manera alternada
+        $usuarioIndex = 0;
+
         for ($i=0; $i <count($cadena) ; $i++) { 
             $arreglo    = explode("||",$cadena[$i]);     
             $idCpu      = $arreglo[0];
             $idEpu      = $arreglo[1];           
+
+        // Obtener el usuario actual para la asignación
+        $usuarioActual = $usuarios[$usuarioIndex];
+
             if($idEpu == 0){ // no tiene asignacion              
                 $arr_1 = array(                       
                     "epe_tipoevaluacion"        => 1, // 1: PRELIMINAR
-                    "epe_especialistaAsignado"  => $usuario,                    
+                    "epe_especialistaAsignado"  => $usuarioActual,                    
                     "epe_fechaAsignacion"       => date("Y-m-d H:i:s"),
                     "epe_fechaApertura"         => date("Y-m-d H:i:s"),                
                     "epe_estadoEvaluacion"      => 1, // 1: abierto, 2: cerrado
@@ -201,12 +212,15 @@ class Evaluacion extends CI_Controller {
 
                 $arr_2 = array(  
                     "epe_id"                    => $idEpu,
-                    "epe_especialistaAsignado"  => $usuario,
+                    "epe_especialistaAsignado"  => $usuarioActual,
                     "epe_fechaAsignacion"       => date("Y-m-d H:i:s"),
                     "epe_fechaModificacion"     => date("Y-m-d H:i:s")
                 );
                 array_push($ar_update, $arr_2);
             }
+
+            $usuarioIndex = ($usuarioIndex + 1) % $numUsuarios;
+
         }
 
         if(!empty($ar_insert)){
