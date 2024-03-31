@@ -245,18 +245,19 @@ const AppPlazaIndex = () => {
                                     return row.niv_descripcion;                                    
                                 }
                             },
+                          
                             {
-                                "targets": 5, //FALTA MODIFICAR Y COLOCAR LA ESPECIALIDAD PADRE QUE SE CARGA
-                                "data": "ie",
+                                "targets": 5,
+                                "data": "especialidad",
                                 "render": function ( data, type, row, meta ) {
-                                    return '';                                    
+                                    return row.especialidad;
                                 }
                             },
                             {
                                 "targets": 6,
-                                "data": "especialidad",
+                                "data": "especialidad_general",
                                 "render": function ( data, type, row, meta ) {
-                                    return row.especialidad;
+                                    return row.especialidad_general;                                    
                                 }
                             },
                             {
@@ -570,6 +571,7 @@ const AppPlazaIndex = () => {
                     dom.querySelector('select[name="tipo_convocatoria"]').value = plaza.tipo_convocatoria;
                     dom.querySelector('select[name="colegio_id"]').value = plaza.colegio_id;
                     dom.querySelector('input[name="especialidad"]').value = plaza.especialidad;
+                    dom.querySelector('input[name="especialidad_general"]').value = plaza.especialidad_general;
                     dom.querySelector('input[name="jornada"]').value = plaza.jornada;
                     dom.querySelector('select[name="tipo_vacante"]').value = plaza.tipo_vacante;
                     dom.querySelector('input[name="motivo_vacante"]').value = plaza.motivo_vacante;
@@ -599,6 +601,7 @@ const AppPlazaIndex = () => {
                                     <td class="text-center">${item.codigo_plaza}</td>
                                     <td>${item.ie}</td>
                                     <td class="text-center">${item.especialidad}</td>
+                                    <td class="text-center">${item.especialidad_general}</td>
                                     <td class="text-center">${item.jornada}</td>
                                     <td class="text-center">${item.tipo_vacante}</td>
                                     <td class="text-center">${item.motivo_vacante}</td>

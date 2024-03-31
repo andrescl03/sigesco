@@ -87,6 +87,7 @@ class Plazas_model extends CI_Model {
                                     OR plz.ie LIKE('%{$value}%') 
                                     OR plz.codigo_plaza LIKE('%{$value}%')
                                     OR plz.especialidad LIKE('%{$value}%')
+                                    OR plz.especialidad_general LIKE('%{$value}%')
                                     OR plz.jornada LIKE('%{$value}%')
                                     OR plz.nivel LIKE('%{$value}%')
                                     OR plz.tipo_vacante LIKE('%{$value}%')
@@ -141,6 +142,7 @@ class Plazas_model extends CI_Model {
       $tipo_convocatoria  = $this->input->post("tipo_convocatoria", true);
       $colegio_id = $this->input->post("colegio_id", true);
       $especialidad = $this->input->post("especialidad", true);
+      $especialidad_general = $this->input->post("especialidad_general", true);
       $jornada  = $this->input->post("jornada", true);
       $tipo_vacante = $this->input->post("tipo_vacante", true);
       $motivo_vacante  = $this->input->post("motivo_vacante", true);
@@ -177,6 +179,7 @@ class Plazas_model extends CI_Model {
         'codigo_plaza' => $codigo_plaza,
         'colegio_id' => $colegio_id,
         'especialidad' => $especialidad,
+        'especialidad_general' => $especialidad_general,
         'tipo_convocatoria' => $tipo_convocatoria,
         'jornada' => $jornada,
         'tipo_vacante' => $tipo_vacante,
@@ -223,6 +226,7 @@ class Plazas_model extends CI_Model {
       $tipo_convocatoria  = $this->input->post("tipo_convocatoria", true);
       $ie = $this->input->post("ie", true);
       $especialidad = $this->input->post("especialidad", true);
+      $especialidad_general = $this->input->post("especialidad_general", true);
       $jornada  = $this->input->post("jornada", true);
       $tipo_vacante = $this->input->post("tipo_vacante", true);
       $motivo_vacante  = $this->input->post("motivo_vacante", true);
@@ -262,6 +266,7 @@ class Plazas_model extends CI_Model {
         'colegio_id' => $colegio_id,
         'ie'=>@$colegio->mod_nombre,
         'especialidad' => $especialidad,
+        'especialidad_general' => $especialidad_general,
         'tipo_convocatoria' => $tipo_convocatoria,
         'jornada' => $jornada,
         'tipo_vacante' => $tipo_vacante,

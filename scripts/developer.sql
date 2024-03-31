@@ -487,3 +487,8 @@ INSERT INTO `bonificaciones` (`id`, `nombre`, `puntaje`, `descripcion`, `created
 /********************* 22-03-2024 ***************/
 
 ALTER TABLE plazas ADD COLUMN codigo_modular VARCHAR(255) NULL DEFAULT NULL;
+
+
+/********************* 31-03-2024 ***************/
+
+ALTER TABLE plazas ADD COLUMN especialidad_general VARCHAR(255) NULL DEFAULT NULL;

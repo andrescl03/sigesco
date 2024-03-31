@@ -79,8 +79,9 @@ $colegios = $data['colegios'];
                                                     <th class="text-center">Modalidad</th>
 
                                                     <th class="text-center">Nivel</th>
-                                                    <th class="text-center">Especialidad padre</th>
                                                     <th class="text-center">Especialidad</th>
+                                                    <th class="text-center">Especialidad general</th>
+
                                                     <th class="text-center">Jornada</th>
                                                     <th class="text-center">Tipo Vacante</th>
                                                     <th class="text-center">Motivo Vacante</th>
@@ -176,6 +177,12 @@ $colegios = $data['colegios'];
                                 <div class="col-md-10 mb-2">
                                     <input class="form-control form-control-sm" name="especialidad" type="text" required />
                                 </div>
+
+                                <div class="col-md-2 mb-2 mt-1"><b>Especialidad general:</b></div>
+                                <div class="col-md-10 mb-2">
+                                    <input class="form-control form-control-sm" name="especialidad_general" type="text" required />
+                                </div>
+
                                 <div class="col-md-2 mb-2 mt-1"><b>Jornada :</b></div>
                                 <div class="col-md-10 mb-2">
                                     <input class="form-control form-control-sm" name="jornada" type="number" required />
@@ -356,6 +363,8 @@ $colegios = $data['colegios'];
                                         <th class="text-center">Código de plaza</th>
                                         <th>I.E</th>
                                         <th class="text-center">Especialidad</th>
+                                        <th class="text-center">Especialidad General</th>
+
                                         <th class="text-center">Jornada</th>
                                         <th class="text-center">Tipo Vacante</th>
                                         <th class="text-center">Motivo Vacante</th>
