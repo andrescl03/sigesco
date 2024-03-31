@@ -47,6 +47,19 @@ var chk_especialistasTodos = function () {
     });
 }
 
+var chk_expedientetotal = function () {
+	var chkAsignarTodosEval1 = document.getElementById("chk_asignarTodosEval_1");
+	if (chkAsignarTodosEval1) {
+		chkAsignarTodosEval1.addEventListener("click", function (e) {
+			if (chkAsignarTodosEval1.checked) {
+				btn_modalAsignarExpedientes(chkAsignarTodosEval1);
+			} else {
+				
+			}
+		});
+	}
+}
+
 var VListarCargarExpedientePunEvaluar = function(parametros){	
 	$.ajax({
 		url: '../VListarCargarExpedientePunEvaluar',
@@ -86,6 +99,8 @@ var VListarCargarExpedientePunEvaluar = function(parametros){
 					tabla.search($(this).val()).draw();     
 				});	
                 btn_modalAsignarReasignar();
+				chk_expedientetotal();
+
 				//chk_asignarEval();	
 			}			
 		},
@@ -95,6 +110,60 @@ var VListarCargarExpedientePunEvaluar = function(parametros){
 		}
 	});	
 }
+
+
+
+var btn_modalAsignarExpedientes = function (chkAsignarTodosEval1) {
+
+	$('#modal-show-asignacion').modal('show');
+
+	const radioIngresarValor = document.getElementById('ingresarValor');
+	const radioTodos = document.getElementById('todos');
+
+	const inputValor = document.getElementById('inputValor');
+
+
+	radioIngresarValor.addEventListener('change', function () {
+		inputValor.disabled = !this.checked;
+		if (this.checked) {
+			inputValor.focus();
+		}
+	});
+
+	radioTodos.addEventListener('change', function () {
+		inputValor.disabled = this.checked;
+		if (this.checked) {
+			inputValor.value = '';
+		}
+	});
+ 
+
+	$('body').off('click', '.btn-seleccionar-asignacion-expedientes');
+	$('body').on('click', '.btn-seleccionar-asignacion-expedientes', function (e) {
+
+		var checkboxesSecundarios = document.querySelectorAll(".chk_asignarEval input");
+
+		if (radioIngresarValor.checked) {
+			let cantidad = parseInt(inputValor.value, 10); // Obtener la cantidad ingresada
+
+			checkboxesSecundarios.forEach(function (checkbox,index) {
+				console.log(checkbox);
+				checkbox.checked = chkAsignarTodosEval1.checked && index < cantidad;
+			});
+		}
+		if (radioTodos.checked) {
+			// Actualiza el estado de cada checkbox secundario según el estado del checkbox principal
+			checkboxesSecundarios.forEach(function (checkbox) {
+				console.log(checkbox);
+				checkbox.checked = chkAsignarTodosEval1.checked;
+			});
+		}
+
+		$('#modal-show-asignacion').modal('hide');
+
+	});
+}
+
 
 var modal_asignarReasignar = function(){ // nueva forma en bootstrap 5.0
 	$('#modal_asignarReasignar').modal('show');
