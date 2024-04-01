@@ -492,3 +492,22 @@ ALTER TABLE plazas ADD COLUMN codigo_modular VARCHAR(255) NULL DEFAULT NULL;
 /********************* 31-03-2024 ***************/
 
 ALTER TABLE plazas ADD COLUMN especialidad_general VARCHAR(255) NULL DEFAULT NULL;
+
+
+/********************* 01-02-2024 ***************/
+/********************* Actualización de la columna colegio_id de la tabla plaza ***************/
+
+
+UPDATE plazas
+SET colegio_id = (
+    SELECT localie_loc_id
+    FROM modularie
+    WHERE plazas.ie = modularie.mod_nombre 
+    AND plazas.nivel_id = modularie.mod_flagnivel 
+)
+WHERE EXISTS (
+    SELECT 1
+    FROM modularie
+    WHERE plazas.ie = modularie.mod_nombre 
+     AND plazas.nivel_id = modularie.mod_flagnivel 
+)

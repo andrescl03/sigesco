@@ -180,7 +180,7 @@ $colegios = $data['colegios'];
 
                                 <div class="col-md-2 mb-2 mt-1"><b>Especialidad general:</b></div>
                                 <div class="col-md-10 mb-2">
-                                    <input class="form-control form-control-sm" name="especialidad_general" type="text" required />
+                                    <input class="form-control form-control-sm" name="especialidad_general" type="text"  />
                                 </div>
 
                                 <div class="col-md-2 mb-2 mt-1"><b>Jornada :</b></div>

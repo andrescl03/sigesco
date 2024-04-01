@@ -1,6 +1,7 @@
 const AppPlazaIndex = () => {
     const index = (container) => {
         const dom = document.getElementById(container);
+        var choiceCboxColegio = 0;
         const object = {
             data() {
                 return {
@@ -23,7 +24,7 @@ const AppPlazaIndex = () => {
                     self.clicks();
                     self.pagination(self.onActionRows);
 
-                    new Choices(document.querySelector(".choices-single"));
+                    choiceCboxColegio = new Choices(document.querySelector(".choices-single"));
 
                 },
                 clicks: () => {
@@ -518,6 +519,7 @@ const AppPlazaIndex = () => {
                                     throw message;
                                 }
                                 sweet2.loading(false);
+                                console.log(data);
                                 self.any = id;
                                 self.modalidades = data.modalidades;
                                 self.niveles = data.niveles;
@@ -565,11 +567,14 @@ const AppPlazaIndex = () => {
                     });
                 },
                 setPlaza: (plaza) => {
+                    console.log(plaza.colegio_id);
                     dom.querySelector('select[name="periodo_id"]').value = plaza.periodo_id;
                     dom.querySelector('select[name="tipo_proceso"]').value = plaza.tipo_proceso;
                     dom.querySelector('input[name="codigo_plaza"]').value = plaza.codigo_plaza;
                     dom.querySelector('select[name="tipo_convocatoria"]').value = plaza.tipo_convocatoria;
-                    dom.querySelector('select[name="colegio_id"]').value = plaza.colegio_id;
+                    choiceCboxColegio.setChoiceByValue(plaza.colegio_id);
+
+   
                     dom.querySelector('input[name="especialidad"]').value = plaza.especialidad;
                     dom.querySelector('input[name="especialidad_general"]').value = plaza.especialidad_general;
                     dom.querySelector('input[name="jornada"]').value = plaza.jornada;
