@@ -53,7 +53,7 @@ var createPeriodo = function () {
 						text: message,
 						onOk: () => {
 							sweet2.loading({text: 'Redireccionando...'});
-							window.location.href = window.AppMain.url + `/configuracion/periodos/${data.id}`;
+							window.location.href = window.AppMain.url + `configuracion/periodos/${data.id}`;
 						}
 					});
 				})

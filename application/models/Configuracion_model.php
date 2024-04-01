@@ -379,16 +379,29 @@ class Configuracion_model extends CI_Model
       $name = $this->input->post("name", true);
       $anio  = $this->input->post("anio", true);
 
+      // Obtener el último registro de la tabla periodos
+      $lastPeriod = $this->db->select('per_id')
+      ->from('periodos')
+      ->order_by('per_id', 'DESC')
+      ->limit(1)
+      ->get()
+      ->row();
+    
+      $lastId = $lastPeriod ? $lastPeriod->per_id : 0;
+      $newId = $lastId + 1;
+
       $this->db->insert('periodos', [
+        'per_id' => $newId,
         'per_anio' => $anio,
         'per_nombre' => $name,
         'per_estado' => 1
       ]);
+      
       $id =  $this->db->insert_id(); // para saber el id ingresado
       
       $response['success'] = true;
       $response['status']  = 200;
-      $response['data']    = compact('id');
+      $response['data']    = ['id'=> $newId];
       $response['message'] = 'Se registro correctamente';
     } catch (\Exception $e) {
       $response['message'] = $e->getMessage();
