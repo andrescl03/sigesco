@@ -567,14 +567,11 @@ const AppPlazaIndex = () => {
                     });
                 },
                 setPlaza: (plaza) => {
-                    console.log(plaza.colegio_id);
                     dom.querySelector('select[name="periodo_id"]').value = plaza.periodo_id;
                     dom.querySelector('select[name="tipo_proceso"]').value = plaza.tipo_proceso;
                     dom.querySelector('input[name="codigo_plaza"]').value = plaza.codigo_plaza;
                     dom.querySelector('select[name="tipo_convocatoria"]').value = plaza.tipo_convocatoria;
                     choiceCboxColegio.setChoiceByValue(plaza.colegio_id);
-
-   
                     dom.querySelector('input[name="especialidad"]').value = plaza.especialidad;
                     dom.querySelector('input[name="especialidad_general"]').value = plaza.especialidad_general;
                     dom.querySelector('input[name="jornada"]').value = plaza.jornada;

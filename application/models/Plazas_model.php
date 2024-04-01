@@ -497,9 +497,10 @@ class Plazas_model extends CI_Model {
             $errors = [];
             $id                 = trim($objPHPExcel->getActiveSheet()->getCell('A' . $fila)->getCalculatedValue());
             $codigo_plaza       = trim($objPHPExcel->getActiveSheet()->getCell('B' . $fila)->getCalculatedValue());
-            $codigo_modular     = trim($objPHPExcel->getActiveSheet()->getCell('C' . $fila)->getCalculatedValue());
-            $ie                 = trim($objPHPExcel->getActiveSheet()->getCell('D' . $fila)->getCalculatedValue());
-            $especialidad       = trim($objPHPExcel->getActiveSheet()->getCell('E' . $fila)->getCalculatedValue());
+          //  $codigo_modular     = trim($objPHPExcel->getActiveSheet()->getCell('C' . $fila)->getCalculatedValue());
+            $ie                 = trim($objPHPExcel->getActiveSheet()->getCell('C' . $fila)->getCalculatedValue());
+            $especialidad       = trim($objPHPExcel->getActiveSheet()->getCell('D' . $fila)->getCalculatedValue());
+            $especialidad_general  = trim($objPHPExcel->getActiveSheet()->getCell('E' . $fila)->getCalculatedValue());
             $cargo              = trim($objPHPExcel->getActiveSheet()->getCell('F' . $fila)->getCalculatedValue());
             $caracteristica     = trim($objPHPExcel->getActiveSheet()->getCell('G' . $fila)->getCalculatedValue());
             $tipo               = trim($objPHPExcel->getActiveSheet()->getCell('H' . $fila)->getCalculatedValue());
@@ -515,9 +516,10 @@ class Plazas_model extends CI_Model {
             $data = [
               'codigo_plaza'      => $codigo_plaza,
               'codigoPlaza'       => $codigo_plaza,
-              'codigo_modular'    => $codigo_modular,
+             // 'codigo_modular'    => $codigo_modular,
               'ie'                => $ie,
               'especialidad'      => $especialidad,
+              'especialidad_general' => $especialidad_general,
               'cargo'             => $cargo,
               'caracteristica'    => $caracteristica,
               'tipo'              => $tipo,
