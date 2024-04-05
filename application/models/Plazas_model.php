@@ -102,7 +102,7 @@ class Plazas_model extends CI_Model {
         }
 
         if ($inputtipocontrato) {
-            $filterText .= " AND tc.descripcion LIKE('%{$inputtipocontrato}%')";
+            $filterText .= " AND tc.tipo_id LIKE('%{$inputtipocontrato}%')";
         }
 
           $sql = "SELECT 
