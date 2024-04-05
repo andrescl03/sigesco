@@ -537,9 +537,9 @@ class Plazas_model extends CI_Model {
             if (empty($codigo_plaza)) {
               $errors[] = 'El codigo de plaza es un campo obligatiorio';
             }
-            if (empty($codigo_modular)) {
+           /* if (empty($codigo_modular)) {
               $errors[] = 'El codigo modular es un campo obligatiorio';
-            }
+            }*/
 
             if (count($errors) > 0) {
               throw new Exception(implode(",", $errors));
@@ -555,6 +555,7 @@ class Plazas_model extends CI_Model {
               $this->db->update('plazas', $data, ['plz_id' => $id]);
               $message = "Se actualizo correctamente";
             } else {
+              $data['estado'] = '1';
               $this->db->insert('plazas', $data);
               $id = $this->db->insert_id();
               $message = "Se registro correctamente";
