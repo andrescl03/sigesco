@@ -71,6 +71,9 @@
         </div>
 
         <div class="row">
+            <div class="col-md-12 mb-2 mt-1"><b>Fecha de convocatoria:</b></div>
+        </div>
+        <div class="row">
             <div class="col-md-12">
                 <div class="input-daterange" id="dp_fechasBusqueda">
                     <div class="row">
@@ -90,6 +93,36 @@
                                     <span class="input-group-text" id="inputGroupPrepend" style="color: Dodgerblue; background-color: #ffff;"><i class="far fa-calendar-alt fa-lg"></i></span>
                                 </div>
                                 <input type="text" class="form-control form-control-sm" id="fecha_fin" name="fecha_fin" placeholder="Hasta" value="" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 mb-2 mt-1"><b>Fecha de reclamo (no disponible):</b></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-daterange" id="dp_fechasBusqueda">
+                    <div class="row">
+                        <div class="col-md-2 mb-2 mt-1"><b>Fecha Desde:</b></div>
+                        <div class="col-md-4 mb-2">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend" style="color: Dodgerblue; background-color: #ffff;"><i class="far fa-calendar-alt fa-lg"></i></span>
+                                </div>
+                                <input type="text" class="form-control form-control-sm" id="fecha_inicio_reclamo" name="fecha_inicio_reclamo" placeholder="Desde" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-2 mb-2 mt-1"><b>Fecha Hasta:</b></div>
+                        <div class="col-md-4 mb-2">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend" style="color: Dodgerblue; background-color: #ffff;"><i class="far fa-calendar-alt fa-lg"></i></span>
+                                </div>
+                                <input type="text" class="form-control form-control-sm" id="fecha_fin_reclamo" name="fecha_fin_reclamo" placeholder="Hasta" value="" readonly>
                             </div>
                         </div>
                     </div>
