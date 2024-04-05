@@ -76,29 +76,34 @@ class Plazas_model extends CI_Model {
           $draw   = $this->input->post("draw", true);
           $length = $this->input->post("length", true);
           $start  = $this->input->post("start", true);
-          $search = $this->input->post("search", true);
-
+ 
           $filterText = '';
-          if ($search) {
-              $value = $search['value'];
-              if (strlen($value) > 0) {
-                  $filterText = " AND (
-                                       plz.plz_id LIKE('%{$value}%') 
-                                    OR plz.ie LIKE('%{$value}%') 
-                                    OR plz.codigo_plaza LIKE('%{$value}%')
-                                    OR plz.especialidad LIKE('%{$value}%')
-                                    OR plz.especialidad_general LIKE('%{$value}%')
-                                    OR plz.jornada LIKE('%{$value}%')
-                                    OR plz.nivel LIKE('%{$value}%')
-                                    OR plz.tipo_vacante LIKE('%{$value}%')
-                                    OR tc.descripcion LIKE('%{$value}%')
-                                    OR plz.motivo_vacante LIKE('%{$value}%')
-                                    OR niv.niv_descripcion LIKE('%{$value}%')
-                                    OR moda.mod_abreviatura LIKE('%{$value}%')
 
-                                  ) ";
-              }
-          }
+          $inputie = $this->input->post("columns[0][search][value]", true);
+          $inputcodigoplaza = $this->input->post("columns[1][search][value]", true);
+          $inputmotivovacante = $this->input->post("columns[2][search][value]", true);
+          $inputespecialidad = $this->input->post("columns[3][search][value]", true);
+          $inputtipocontrato = $this->input->post("columns[4][search][value]", true);
+        
+        if ($inputie) {
+            $filterText .= " AND plz.ie LIKE('%{$inputie}%')";
+        }
+
+        if ($inputcodigoplaza) {
+            $filterText .= " AND plz.codigo_plaza LIKE('%{$inputcodigoplaza}%')";
+        }
+
+        if ($inputmotivovacante) {
+            $filterText .= " AND plz.motivo_vacante LIKE('%{$inputmotivovacante}%')";
+        }
+
+        if ($inputespecialidad) {
+            $filterText .= " AND plz.especialidad LIKE('%{$inputespecialidad}%')";
+        }
+
+        if ($inputtipocontrato) {
+            $filterText .= " AND tc.descripcion LIKE('%{$inputtipocontrato}%')";
+        }
 
           $sql = "SELECT 
                     plz.* , tc.*, niv.*, moda.*
@@ -109,8 +114,7 @@ class Plazas_model extends CI_Model {
                   WHERE plz.deleted_at IS NULL 
                   $filterText
                   ORDER BY plz.plz_id DESC";
-
-
+                  
           $items = $this->db->query($sql)->result_object();
 
           $recordsTotal = count($items);

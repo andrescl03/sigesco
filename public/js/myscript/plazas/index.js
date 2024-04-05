@@ -59,11 +59,38 @@ const AppPlazaIndex = () => {
                     const btnSearchs = dom.querySelectorAll('.btn-search');
                     btnSearchs.forEach(btn => {
                         btn.addEventListener('click', (e) => {
-                            const input = dom.querySelector('#txtBuscador');
-                            if (input) {
-                                sweet2.loading({text:'Buscando...'});
-                                self.table.search(input.value.trim()).draw();
+                            const inputie = dom.querySelector('#ietxtBuscador').value.trim();
+                            const inputcodigoplaza = dom.querySelector('#codigoPlazatxtBuscador').value.trim();
+                            const inputmotivovacante = dom.querySelector('#motivoVacantetxtBuscador').value.trim();
+                            const inputespecialidad = dom.querySelector('#especialidadtxtBuscador').value.trim();
+                            const inputtipocontrato = dom.querySelector('#tipoContratotxtBuscador').value.trim();
+                            
+                            if (inputie) {
+                                sweet2.loading({ text: 'Buscando...' });
+                                self.table.column(0).search(inputie).draw();
                             }
+                            
+                            if (inputcodigoplaza) {
+                                sweet2.loading({ text: 'Buscando...' });
+                                self.table.column(1).search(inputcodigoplaza).draw();
+                            }
+                    
+                            if (inputmotivovacante) {
+                                sweet2.loading({ text: 'Buscando...' });
+                                self.table.column(2).search(inputmotivovacante).draw();
+                            }
+                    
+                            if (inputespecialidad) {
+                                sweet2.loading({ text: 'Buscando...' });
+                                self.table.column(3).search(inputespecialidad).draw();
+                            }
+                    
+                            if (inputtipocontrato) {
+                                sweet2.loading({ text: 'Buscando...' });
+                                self.table.column(4).search(inputtipocontrato).draw();
+                            }
+                            
+                             
                         });                        
                     });
 

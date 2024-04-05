@@ -49,12 +49,7 @@ $colegios = $data['colegios'];
                                                             <button type="button" class="btn btn-outline-primary btn-sm btn-create"><b><i class="fa-solid fa-circle-plus fa-lg"></i> Agregar</b></button>
                                                         </div>
                                                         <div class="vr"></div>
-                                                        <div class="col-sm-4">
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control form-control-sm shadow-none" placeholder="Escribe aquí..." id="txtBuscador">
-                                                                <button type="button" class="input-group-text btn btn-sm btn-primary shadow-none btn-search">Buscar</button>
-                                                            </div>
-                                                        </div>
+                                                        
 
                                                         <div class="col-sm-2">
                                                             <button type="button" class="btn-reporte-plazas btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalExcelReportPlazas">
@@ -65,6 +60,42 @@ $colegios = $data['colegios'];
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="row pt-3">
+                                                <div class="col-sm-3">
+                                                    <label for="">Institución educativa</label>
+                                                    <input type="text" class="form-control form-control-sm shadow-none" placeholder="IE" id="ietxtBuscador">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label for="">Código de plaza</label>
+                                                    <input type="text" class="form-control form-control-sm shadow-none" placeholder="Codigo de Plaza" id="codigoPlazatxtBuscador">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label for="">Mótivo de vacante</label>
+                                                    <input type="text" class="form-control form-control-sm shadow-none" placeholder="Mótivo de vacante" id="motivoVacantetxtBuscador">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label for="">Especialidad</label>
+                                                    <input type="text" class="form-control form-control-sm shadow-none" placeholder="Especialidad" id="especialidadtxtBuscador">
+                                                 </div>
+                                            </div>
+                                            <div class="row pt-1">
+                                                <div class="col-sm-3">
+                                                    <label for="">Tipo de contrato</label>
+                                                    <select class="form-control" name="" id="tipoContratotxtBuscador">
+                                                        <option value="">[Seleccione]</option>
+                                                        <option value="1">PUN</option>
+                                                        <option value="2">Evaluación de expedientes</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-1">
+                                            <div class="col-sm-5 offset-7">
+                                            <button type="button" class="btn btn-sm  btn-block btn-primary shadow-none btn-search">Buscar</button>
+                                            </div>         
+                                        </div>
+
                                         </div>
                                     </div>
                                 </div>
