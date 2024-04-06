@@ -105,7 +105,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="input-daterange" id="dp_fechasBusqueda">
+                <div class="input-daterange" id="dp_fechasBusquedaReclamo">
                     <div class="row">
                         <div class="col-md-2 mb-2 mt-1"><b>Fecha Desde:</b></div>
                         <div class="col-md-4 mb-2">

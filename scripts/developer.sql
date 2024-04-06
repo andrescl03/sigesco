@@ -511,3 +511,10 @@ WHERE EXISTS (
     WHERE plazas.ie = modularie.mod_nombre 
      AND plazas.nivel_id = modularie.mod_flagnivel 
 )
+
+/********************* 06-04-2024 ***************/
+
+ALTER TABLE convocatorias ADD COLUMN con_fechainicio_reclamo date DEFAULT NULL;
+ALTER TABLE convocatorias ADD COLUMN con_fechafin_reclamo date DEFAULT NULL;
+ALTER TABLE convocatorias ADD COLUMN con_horainicio_reclamo time DEFAULT NULL;
+ALTER TABLE convocatorias ADD COLUMN con_horafin_reclamo time DEFAULT NULL; 

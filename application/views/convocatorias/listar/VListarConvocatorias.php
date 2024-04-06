@@ -7,6 +7,8 @@
                 <th class="text-center">NÚMERO</th>
                 <th class="text-center">FECHA DE INICIO</th>
                 <th class="text-center">FECHA DE FIN</th>
+				<th class="text-center">FECHA DE INICIO DE RECLAMO</th>
+				<th class="text-center">FECHA DE FIN DE RECLAMO</th>
                 <th class="text-center">GRUPOS DE INSCRIPCIÓN</th>
                 <th class="text-center">ESTADO</th>
                 <th class="text-center">ACCIONES</th>
@@ -25,6 +27,9 @@
                 <td class="text-center"><b><?= "CONV-".sprintf('%04d', $dato['con_numero'])."-".$dato['con_anio'] ?></b></td>
                 <td class="text-center"><?= format_date($dato['con_fechainicio'], "d/m/Y") ?></td>              
                 <td class="text-center"><?= format_date($dato['con_fechafin'], "d/m/Y") ?></td>
+				<td class="text-center"><?= format_date($dato['con_fechainicio_reclamo'], "d/m/Y") ?></td>
+				<td class="text-center"><?= format_date($dato['con_fechafin_reclamo'], "d/m/Y") ?></td>
+				
                 <td>
 					<ul class="list-group list-group-flush">
 					<?php

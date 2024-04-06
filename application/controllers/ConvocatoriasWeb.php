@@ -40,6 +40,19 @@ class ConvocatoriasWeb extends CI_Controller
         show_404();
     }
 
+    public function reclamo($convocatoria_id, $inscripcion_id)
+    {
+        if (is_numeric($convocatoria_id) && is_numeric($inscripcion_id)) {
+            $this->layout->js(array(base_url() . "public/web/js/convocatorias/show.js"));
+            $response = $this->convocatorias_web_model->show(compact('convocatoria_id', 'inscripcion_id'));
+            if ($response['success']) {
+                return $this->layout->view("/web/convocatoria/reclamo", $response);
+            }
+        }
+        show_404();
+    }
+
+
     public function detail()
     {
         $this->output

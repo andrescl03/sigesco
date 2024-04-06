@@ -62,6 +62,8 @@ $route['web/convocatorias/detail'] = 'convocatoriasWeb/detail';
 $route['web/convocatorias/detailConvocatoriaGrupoInscripcion'] = 'convocatoriasWeb/detailConvocatoriaGrupoInscripcion';
 // $route['web/convocatorias/(:any)'] = 'ConvocatoriasWeb/show/$1';
 $route['web/convocatorias/(:num)/inscripciones/(:num)'] = 'convocatoriasWeb/show/$1/$2';
+$route['web/convocatorias/(:num)/reclamo/(:num)'] = 'convocatoriasWeb/reclamo/$1/$2';
+
 $route['web/postulantes/(:any)'] = 'convocatoriasWeb/postulant/$1';
 $route['web/postulaciones/store'] = 'postulacionesWeb/store';
 $route['web/postulaciones/find'] = 'postulacionesWeb/find';

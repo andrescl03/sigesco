@@ -68,6 +68,28 @@ var rangoFecha = function (inicio = "", fin= "") {
 		minuteIncrement: 1
 	});
 
+	flatpickr("#fecha_inicio_reclamo", {
+		enableTime: true,
+		dateFormat: "d-m-Y H:i:S", // Formato de fecha y hora
+		clear: true,
+		defaultDate: fin.length > 0 ? new Date(fin) : new Date(),
+		locale: {
+			firstDayOfWeek: 1, // Lunes como primer día de la semana
+		},
+		time_24hr: true, // Formato de 24 horas
+		minuteIncrement: 1
+	});
+	flatpickr("#fecha_fin_reclamo", {
+		enableTime: true,
+		dateFormat: "d-m-Y H:i:S", // Formato de fecha y hora
+		clear: true,
+		defaultDate: fin.length > 0 ? new Date(fin) : new Date(),
+		locale: {
+			firstDayOfWeek: 1, // Lunes como primer día de la semana
+		},
+		time_24hr: true, // Formato de 24 horas
+		minuteIncrement: 1
+	});
 }
 
 var VListarConvocatorias = function (parametros) {
