@@ -5,8 +5,8 @@
 			<tr class="cabecera_tabla_2">
 				<th class="text-center">#</th>
                 <th class="text-center">NÚMERO</th>
-                <th class="text-center">FECHA DE INICIO</th>
-                <th class="text-center">FECHA DE FIN</th>
+                <th class="text-center">FECHA DE INICIO DE LA CONVOCATORIA</th>
+                <th class="text-center">FECHA DE FIN DE LA CONVOCATORIA</th>
 				<th class="text-center">FECHA DE INICIO DE RECLAMO</th>
 				<th class="text-center">FECHA DE FIN DE RECLAMO</th>
                 <th class="text-center">GRUPOS DE INSCRIPCIÓN</th>

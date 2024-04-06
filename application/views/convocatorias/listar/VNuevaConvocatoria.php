@@ -12,6 +12,10 @@
             'fechaFin' => $oldConvocatoria['con_fechafin'],
             'horaInicio' => $oldConvocatoria['con_horainicio'],
             'horaFin' => $oldConvocatoria['con_horafin'],
+            'fechaInicioReclamo' => $oldConvocatoria['con_fechainicio_reclamo'],
+            'fechaFinReclamo' => $oldConvocatoria['con_fechafin_reclamo'],
+            'horaInicioReclamo' => $oldConvocatoria['con_horainicio_reclamo'],
+            'horaFinReclamo' => $oldConvocatoria['con_horafin_reclamo'],
             'tipo' => $oldConvocatoria['con_tipo']
         ];
         $datos = $convocatoria_grupos;
@@ -25,8 +29,17 @@
         
     }
 ?>
-<div class="container" id="convocatoriaModalContainer" data-grupoArr="<?= count($items) > 0 ? implode(',',$items) : '' ?>" data-fecha-inicio="<?= $isEdit ? $oldConvocatoria['unix_inicio'] : '' ?>" data-fecha-fin="<?= $isEdit ? $oldConvocatoria['unix_fin'] : '' ?>">
-    <form id="frmMantenimientoConvocatoria" data-id="<?= $isEdit ? $oldConvocatoria['con_id'] : 0 ?>">
+<div class="container" 
+     id="convocatoriaModalContainer" 
+     data-grupoArr="<?= count($items) > 0 ? implode(',',$items) : '' ?>" 
+     data-fecha-inicio="<?= $isEdit ? $oldConvocatoria['unix_inicio'] : '' ?>" 
+     data-fecha-fin="<?= $isEdit ? $oldConvocatoria['unix_fin'] : '' ?>"
+     data-fecha-inicio-reclamo="<?= $isEdit ? $oldConvocatoria['unix_inicio_reclamo'] : '' ?>" 
+     data-fecha-fin-reclamo="<?= $isEdit ? $oldConvocatoria['unix_fin_reclamo'] : '' ?>" 
+
+ >
+
+<form id="frmMantenimientoConvocatoria" data-id="<?= $isEdit ? $oldConvocatoria['con_id'] : 0 ?>">
         <div class="row">
             <div class="col-md-2 mb-2 mt-1"><b>Periodo:</b></div>
             <div class="col-md-4 mb-2">

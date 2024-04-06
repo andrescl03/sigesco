@@ -106,6 +106,10 @@ class Convocatorias extends CI_Controller {
             $oldConvocatoria = $this->convocatorias_model-> listarConvocatoriaxId($idConv);
             $oldConvocatoria['unix_inicio'] = $oldConvocatoria['con_fechainicio'] . ' ' . $oldConvocatoria['con_horainicio'];
             $oldConvocatoria['unix_fin'] = $oldConvocatoria['con_fechafin'] . ' ' . $oldConvocatoria['con_horafin'];
+            
+            $oldConvocatoria['unix_inicio_reclamo'] = $oldConvocatoria['con_fechainicio_reclamo'] . ' ' . $oldConvocatoria['con_horainicio_reclamo'];
+            $oldConvocatoria['unix_fin_reclamo'] = $oldConvocatoria['con_fechafin_reclamo'] . ' ' . $oldConvocatoria['con_horafin_reclamo'];
+
             $convocatoria_grupos = $this->convocatorias_model->listarGruposInscripcionxConvocatoria($idConv);
  
          }  
@@ -141,6 +145,8 @@ class Convocatorias extends CI_Controller {
         $estado         = $this->input->post("estado",true);
         $fechaDesde     = $this->input->post("fechaDesde",true);
         $fechaHasta     = $this->input->post("fechaHasta",true);
+        $fechaDesdeReclamo     = $this->input->post("fechaDesdeReclamo",true);
+        $fechaHastaReclamo     = $this->input->post("fechaHastaReclamo",true);
         $grupoArr       = $this->input->post("grupoArr",true);
         $idTipo         = $this->input->post("idTipo",true);
 
@@ -151,6 +157,15 @@ class Convocatorias extends CI_Controller {
         $dateFin        = new DateTime( $fechaHasta );
         $fechaFin       = $dateFin->format( "Y-m-d"); 
         $horaFin  = $dateFin->format( "H:i");
+
+
+        $dateInicioReclamo    = new DateTime( $fechaDesdeReclamo );
+        $fechaInicioReclamo    = $dateInicioReclamo->format("Y-m-d");
+        $horaInicioReclamo = $dateInicioReclamo->format( "H:i");
+
+        $dateFinReclamo        = new DateTime( $fechaHastaReclamo );
+        $fechaFinReclamo       = $dateFinReclamo->format( "Y-m-d"); 
+        $horaFinReclamo  = $dateFinReclamo->format( "H:i");
 
         $buscar = $this->convocatorias_model->buscarUltimoNumero($anio);
         if(!empty($buscar)){
@@ -166,6 +181,10 @@ class Convocatorias extends CI_Controller {
             "con_fechafin"      => $fechaFin,
             "con_horainicio"    => $horaInicio,
             "con_horafin"       => $horaFin,
+            "con_fechainicio_reclamo" => $fechaInicioReclamo,
+            "con_fechafin_reclamo" => $fechaFinReclamo,
+            "con_horainicio_reclamo"    => $horaInicioReclamo,
+            "con_horafin_reclamo"    => $horaFinReclamo,
             "con_estado"        => $estado,
             "con_tipo"          => $idTipo
         );

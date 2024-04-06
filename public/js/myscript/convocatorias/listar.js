@@ -31,20 +31,8 @@ $(document).ready(function () {
 });
 
 var rangoFecha = function (inicio = "", fin= "") {
-	/* $('#vvv').flatpickr({
-		format: "dd-mm-yyyy mm:ss",
-		clearBtn: true,
-		language: "es",
-		orientation: "bottom auto",
-		daysOfWeekHighlighted: "0,6",
-		todayHighlight: true,
-		showYearNavigation:false			
-	   // startDate: $inicio,
-		//endDate: $fin		
-	});
- */
-
-	flatpickr("#fecha_inicio", {
+	 
+ 	flatpickr("#fecha_inicio", {
 		enableTime: true,
 		dateFormat: "d-m-Y H:i:S", // Formato de fecha y hora
 		clear: true,
@@ -55,7 +43,6 @@ var rangoFecha = function (inicio = "", fin= "") {
 		time_24hr: true, // Formato de 24 horas
 		minuteIncrement: 1
 	});
-
 	flatpickr("#fecha_fin", {
 		enableTime: true,
 		dateFormat: "d-m-Y H:i:S", // Formato de fecha y hora
@@ -67,29 +54,33 @@ var rangoFecha = function (inicio = "", fin= "") {
 		time_24hr: true, // Formato de 24 horas
 		minuteIncrement: 1
 	});
+}
 
+
+var rangoFechaReclamo = function (inicioReclamo = "", finReclamo= "") {
+ 
 	flatpickr("#fecha_inicio_reclamo", {
 		enableTime: true,
 		dateFormat: "d-m-Y H:i:S", // Formato de fecha y hora
 		clear: true,
-		defaultDate: fin.length > 0 ? new Date(fin) : new Date(),
+		defaultDate: inicioReclamo.length > 0 ? new Date(inicioReclamo) : new Date(),
 		locale: {
 			firstDayOfWeek: 1, // Lunes como primer día de la semana
 		},
 		time_24hr: true, // Formato de 24 horas
 		minuteIncrement: 1
 	});
-	flatpickr("#fecha_fin_reclamo", {
-		enableTime: true,
-		dateFormat: "d-m-Y H:i:S", // Formato de fecha y hora
-		clear: true,
-		defaultDate: fin.length > 0 ? new Date(fin) : new Date(),
-		locale: {
-			firstDayOfWeek: 1, // Lunes como primer día de la semana
-		},
-		time_24hr: true, // Formato de 24 horas
-		minuteIncrement: 1
-	});
+   flatpickr("#fecha_fin_reclamo", {
+	   enableTime: true,
+	   dateFormat: "d-m-Y H:i:S", // Formato de fecha y hora
+	   clear: true,
+	   defaultDate: finReclamo.length > 0 ? new Date(finReclamo) : new Date(),
+	   locale: {
+		   firstDayOfWeek: 1, // Lunes como primer día de la semana
+	   },
+	   time_24hr: true, // Formato de 24 horas
+	   minuteIncrement: 1
+   });
 }
 
 var VListarConvocatorias = function (parametros) {
@@ -241,9 +232,14 @@ var VNuevaConvocatoria = function (parametros) {
 				const items = container.attr('data-grupoArr');
 				const unix_inicio = container.attr('data-fecha-inicio');
 				const unix_fin = container.attr('data-fecha-fin');
+				const unix_inicio_reclamo = container.attr('data-fecha-inicio-reclamo');
+				const unix_fin_reclamo = container.attr('data-fecha-fin-reclamo');
+				
 				opt_periodoModal();
 				opt_tipoProcesoModal();
 				rangoFecha(unix_inicio, unix_fin);
+				rangoFechaReclamo(unix_inicio_reclamo, unix_fin_reclamo);
+
 				btn_asignarGrupoInscripcion();
 				grupoArr = [];
 				if (items.length > 0) {
@@ -456,17 +452,23 @@ var btn_agregarNuevaConvocatoria = function () {
 			idPro = $("#opt_tipoProcesoModal").val();
 			fechaDesde = $("#fecha_inicio").val();
 			fechaHasta = $("#fecha_fin").val();
+			fechaDesdeReclamo = $("#fecha_inicio_reclamo").val();
+			fechaHastaReclamo = $("#fecha_fin_reclamo").val();
+
 			idTipo = $("#opt_tipoConvocatoriaModal").val();
-			console.log(fechaDesde);
-			console.log(fechaHasta);
 			var fechaDesdeMoment = moment(fechaDesde, "DD-MM-YYYY HH:mm:ss");
 			var fechaHastaMoment = moment(fechaHasta, "DD-MM-YYYY HH:mm:ss");
+			var fechaDesdeReclamoMoment = moment(fechaDesdeReclamo, "DD-MM-YYYY HH:mm:ss");
+			var fechaHastaReclamoMoment = moment(fechaHastaReclamo, "DD-MM-YYYY HH:mm:ss");
 
 			if (grupoArr.length == 0) {
 				ToastError.fire({ title: 'Agregar al menos un grupo de inscripción.' });
 			}
 			else if (fechaDesdeMoment.isAfter(fechaHastaMoment)) {
-				ToastError.fire({ title: 'La fecha fin debe ser mayor que la fecha de inicio.' });
+				ToastError.fire({ title: 'La fecha fin de la convocatoria debe ser mayor que la fecha de inicio.' });
+			}
+			else if (fechaDesdeReclamoMoment.isAfter(fechaHastaReclamoMoment)){
+				ToastError.fire({ title: 'La fecha fin de la etapa reclamo debe ser mayor que la fecha de inicio.'})
 			}
 			else {
 				parametros = {
@@ -477,6 +479,8 @@ var btn_agregarNuevaConvocatoria = function () {
 					idPro: idPro,
 					fechaDesde: fechaDesde,
 					fechaHasta: fechaHasta,
+					fechaDesdeReclamo: fechaDesdeReclamo,
+					fechaHastaReclamo: fechaHastaReclamo,
 					grupoArr: grupoArr,
 					idTipo: idTipo
 				}
