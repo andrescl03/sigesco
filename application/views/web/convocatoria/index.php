@@ -18,8 +18,10 @@
                                 <!-- <th class="text-center">#</th>-->
                                 <th class="text-center">NÚMERO</th>
                                 <th class="text-center">TIPO</th>
-                                <th class="text-center">FECHA DE INICIO</th>
-                                <th class="text-center">FECHA DE FIN</th>
+                                <th class="text-center">FECHA INICIO DE POSTULACION</th>
+                                <th class="text-center">FECHA FIN DE POSTULACION</th>
+                                <th class="text-center">FECHA INICIO DE RECLAMO</th>
+                                <th class="text-center">FECHA FIN DE RECLAMO</th>
                                 <th class="text-center">GRUPOS DE INSCRIPCIÓN</th>
                                 <th class="text-center">ESTADO</th>
                                 <th class="text-center">ACCIONES</th>
@@ -40,6 +42,8 @@
                                         <td class="text-center"><?= $dato['descripcion'] ?></td>
                                         <td class="text-center"><?= format_date($dato['con_fechainicio'], "d/m/Y") . " " . substr($dato['con_horainicio'], 0, 5) ?> </td>
                                         <td class="text-center"><?= format_date($dato['con_fechafin'], "d/m/Y") . " " . substr($dato['con_horafin'], 0, 5) ?></td>
+                                        <td class="text-center"><?= $dato['con_fechainicio_reclamo'] ? (format_date($dato['con_fechainicio_reclamo'], "d/m/Y") . " " . substr($dato['con_horainicio_reclamo'],0,5 )) : ('')?></td>
+                                        <td class="text-center"><?= $dato['con_fechafin_reclamo'] ? (format_date($dato['con_fechafin_reclamo'], "d/m/Y") . " " . substr($dato['con_horafin_reclamo'],0,5 )) : ('')?></td>
                                         <td>
                                             <ul class="list-group list-group-flush">
                                                 <?php
@@ -51,13 +55,20 @@
                                                 ?>
                                             </ul>
                                         </td>
+                                        <?php
+                                            $validateFechaInicio =  $now_unix >= strtotime($dato['con_fechainicio'] . ' ' . substr($dato['con_horainicio'], 0, 5));
+                                            $validateFechaFin = ($dato['con_fechafin_reclamo']) ? $now_unix <= (strtotime($dato['con_fechafin_reclamo'] . ' ' . substr($dato['con_horafin_reclamo'], 0, 5))) : $now_unix <=   (strtotime($dato['con_fechafin'] . ' ' . substr($dato['con_horafin'], 0, 5))); 
+                                            $isButtonActive = $validateFechaInicio && $validateFechaFin ;
+                                            $buttonClass = $isButtonActive ? "btn btn-sm btn-danger" : "btn btn-sm btn-danger disabled";
+                                        ?>
                                         <td class="text-center">
-                                            <span class=""><?php echo $now_unix >=  strtotime($dato['con_fechainicio'] . ' ' . substr($dato['con_horainicio'], 0, 5)) &&  $now_unix  <=  strtotime($dato['con_fechafin'] . ' ' .  substr($dato['con_horafin'], 0, 5))   ? 'ABIERTO' : 'CERRADO' ?> </span>
+                                            <span class=""><?php echo $isButtonActive  ? 'ABIERTO' : 'CERRADO' ?> </span>
                                         </td>
+                                       
                                         <td class="text-center">
                                             <div class="d-flex justify-content-center gap-2">
                                                 <?php if ($dato['con_tipo'] == 2  || $dato['con_tipo'] == 1) { ?>
-                                                    <a type="button" class="btn btn-sm btn-danger <?= $now_unix >=  strtotime($dato['con_fechainicio'] . ' ' . substr($dato['con_horainicio'], 0, 5)) &&  $now_unix  <=  strtotime($dato['con_fechafin']  . ' ' .  substr($dato['con_horafin'], 0, 5)  )  ? '' : 'disabled' ?>" title="Ingresar a postular" data-bs-toggle="modal" data-bs-target="#postularModal" data-conid="<?= $dato['con_id'] ?>" data-contitle="<?= "CONV-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio']  ?>" <b><i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i>POSTULAR</b>
+                                                    <a type="button" class="<?= $buttonClass ?>"  title="Ingresar a postular" data-bs-toggle="modal" data-bs-target="#postularModal" data-conid="<?= $dato['con_id'] ?>" data-contitle="<?= "CONV-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio']  ?>" <b> <i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i>POSTULAR</b>
                                                     </a>
                                                 <?php } ?>
 

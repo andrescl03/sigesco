@@ -5,7 +5,7 @@
         </a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03" style="display: initial !important; text-align: right;">
             <!-- <ul class="navbar-nav mr-auto mt-2 mt-lg-0"></ul> -->
-            <a href="<?php echo base_url() ?>" role="button">
+            <a href="<?php echo base_url() ?>web/convocatorias" role="button">
                 <img src="<?php echo base_url() ?>assets/image/logo-ugel05.jpg" style="height: 60px;">
             </a>
         </div>

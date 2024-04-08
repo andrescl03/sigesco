@@ -63,10 +63,11 @@ class ConvocatoriasWeb extends CI_Controller
     public function detailConvocatoriaGrupoInscripcion()
     {
         $idConvocatoria = $this->input->post("idConv", true);
+        $now_unix = strtotime($this->tools->getDateHour());
 
         $this->output
             ->set_content_type('application/json')
-            ->set_output(json_encode($this->convocatorias_web_model->detailConvocatoriaGrupoInscripcion($idConvocatoria)));
+            ->set_output(json_encode(array($this->convocatorias_web_model->detailConvocatoriaGrupoInscripcion($idConvocatoria), $now_unix)));
             
     }
 }

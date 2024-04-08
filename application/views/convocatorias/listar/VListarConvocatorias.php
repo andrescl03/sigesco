@@ -25,11 +25,10 @@
 			<tr>
 				<td class="text-center"><b><?= $i+1;?></b></td>
                 <td class="text-center"><b><?= "CONV-".sprintf('%04d', $dato['con_numero'])."-".$dato['con_anio'] ?></b></td>
-                <td class="text-center"><?= format_date($dato['con_fechainicio'], "d/m/Y") ?></td>              
-                <td class="text-center"><?= format_date($dato['con_fechafin'], "d/m/Y") ?></td>
-				<td class="text-center"><?= format_date($dato['con_fechainicio_reclamo'], "d/m/Y") ?></td>
-				<td class="text-center"><?= format_date($dato['con_fechafin_reclamo'], "d/m/Y") ?></td>
-				
+                <td class="text-center"><?= format_date($dato['con_fechainicio'], "d/m/Y") . " " . $dato['con_horainicio'] ?></td>        
+                <td class="text-center"><?= format_date($dato['con_fechafin'], "d/m/Y") . " " . $dato['con_horafin'] ?></td>
+				<td class="text-center"><?= $dato['con_fechainicio_reclamo'] ? (format_date($dato['con_fechainicio_reclamo'], "d/m/Y") . " " . $dato['con_horainicio_reclamo']) : ('')?></td>
+				<td class="text-center"><?= $dato['con_fechafin_reclamo'] ? (format_date($dato['con_fechafin_reclamo'], "d/m/Y") . " " . $dato['con_horafin_reclamo']) : ('')?></td>
                 <td>
 					<ul class="list-group list-group-flush">
 					<?php

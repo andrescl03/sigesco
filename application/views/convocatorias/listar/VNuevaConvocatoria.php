@@ -84,7 +84,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12 mb-2 mt-1"><b>Fecha de convocatoria:</b></div>
+            <div class="col-md-12 mb-2 mt-1"><b>Fecha de la convocatoria:</b></div>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -114,7 +114,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12 mb-2 mt-1"><b>Fecha de reclamo (no disponible):</b></div>
+            <div class="col-md-12 mb-2 mt-1"><b>Fecha de reclamo:</b></div>
         </div>
         <div class="row">
             <div class="col-md-12">
