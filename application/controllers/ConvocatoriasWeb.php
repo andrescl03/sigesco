@@ -43,8 +43,8 @@ class ConvocatoriasWeb extends CI_Controller
     public function reclamo($convocatoria_id, $inscripcion_id)
     {
         if (is_numeric($convocatoria_id) && is_numeric($inscripcion_id)) {
-            $this->layout->js(array(base_url() . "public/web/js/convocatorias/show.js"));
-            $response = $this->convocatorias_web_model->show(compact('convocatoria_id', 'inscripcion_id'));
+            $this->layout->js(array(base_url() . "public/web/js/convocatorias/show-reclamo.js"));
+            $response = $this->convocatorias_web_model->showReclamo(compact('convocatoria_id', 'inscripcion_id'));
             if ($response['success']) {
                 return $this->layout->view("/web/convocatoria/reclamo", $response);
             }
@@ -60,6 +60,12 @@ class ConvocatoriasWeb extends CI_Controller
             ->set_output(json_encode($this->convocatorias_web_model->detail()));
     }
 
+    public function detailReclamo()
+    {
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($this->convocatorias_web_model->detailReclamo()));
+    }
     public function detailConvocatoriaGrupoInscripcion()
     {
         $idConvocatoria = $this->input->post("idConv", true);

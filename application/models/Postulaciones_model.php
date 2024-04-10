@@ -466,6 +466,80 @@ class Postulaciones_model extends CI_Model
         return $response;
     }
 
+
+
+    public function findReclamo($request)
+    {
+        $response = $this->tools->responseDefault();
+        try {
+
+            $documento       = isset($request['documento'])       ? $request['documento']       : 0;
+            $convocatoria_id = isset($request['convocatoria_id']) ? $request['convocatoria_id'] : 0;
+            $inscripcion_id  = isset($request['inscripcion_id'])  ? $request['inscripcion_id']  : 0;
+            $correo  = isset($request['correo'])  ? $request['correo']  : 0;
+            $fecha_nacimiento  = isset($request['fechaNacimiento'])  ? $request['fechaNacimiento']  : 0;
+
+            if (!$documento) {
+                throw new Exception("El campo documento es requerido");
+            }
+            
+            if (!$correo) {
+                throw new Exception("El campo correo es requerido");
+            }
+
+            
+            if (!$fecha_nacimiento) {
+                throw new Exception("El campo fecha de nacimiento es requerido");
+            }
+
+
+            $result = $this->convocatorias_web_model->showReclamo(compact('convocatoria_id', 'inscripcion_id'));
+            if (!$result['success']) {
+                throw new Exception($result['message']);
+            }
+
+            $convocatoria = $result['data']['convocatoria'];    
+ 
+            $sql = "SELECT 
+                  P.*
+                FROM postulaciones AS P 
+                WHERE P.deleted_at IS NULL 
+                AND P.numero_documento = ?
+                AND P.convocatoria_id = ? 
+                AND P.inscripcion_id = ?";
+               $postulante = $this->db->query($sql, compact('documento', 'convocatoria_id', 'inscripcion_id'))->row();
+            
+            if (!$postulante) {
+                throw new Exception("Usted no puede presentar su reclamo porque no ha participado en esta convocatoria");
+            }
+
+
+            $sqlReclamo = "SELECT 
+            P.*
+                FROM postulacion_archivos AS PA
+                INNER JOIN postulaciones AS P 
+                ON PA.postulacion_id = P.id
+                WHERE PA.deleted_at IS NULL
+                AND PA.tipo_id = 10 
+                AND P.numero_documento = ?
+                AND P.convocatoria_id = ? 
+                AND P.inscripcion_id = ?";
+            $postulacionReclamo = $this->db->query($sqlReclamo, compact('documento', 'convocatoria_id', 'inscripcion_id'))->row();
+
+            if($postulacionReclamo){
+                throw new Exception("Usted ya ha presentado un reclamo anteriormente");
+            }
+
+            $response['success'] = true;
+            $response['data']  = compact('postulante');
+            $response['status']  = 200;
+            $response['message'] = 'showPostulant';
+        } catch (\Exception $e) {
+            $response['message'] = $e->getMessage();
+        }
+        return $response;
+    }
+
     public function edit($args)
     {
         $response = $this->tools->responseDefault();

@@ -59,6 +59,8 @@ $route['api/mpv/distritos'] = 'Mesaparteapi/distritos';
 $route['api/mpv/procesar'] = 'Mesaparteapi/procesarexpedientes';
 $route['web/convocatorias'] = 'convocatoriasWeb/index';
 $route['web/convocatorias/detail'] = 'convocatoriasWeb/detail';
+$route['web/convocatorias/reclamo/detail'] = 'convocatoriasWeb/detailReclamo';
+
 $route['web/convocatorias/detailConvocatoriaGrupoInscripcion'] = 'convocatoriasWeb/detailConvocatoriaGrupoInscripcion';
 // $route['web/convocatorias/(:any)'] = 'ConvocatoriasWeb/show/$1';
 $route['web/convocatorias/(:num)/inscripciones/(:num)'] = 'convocatoriasWeb/show/$1/$2';
@@ -67,6 +69,8 @@ $route['web/convocatorias/(:num)/reclamo/(:num)'] = 'convocatoriasWeb/reclamo/$1
 $route['web/postulantes/(:any)'] = 'convocatoriasWeb/postulant/$1';
 $route['web/postulaciones/store'] = 'postulacionesWeb/store';
 $route['web/postulaciones/find'] = 'postulacionesWeb/find';
+$route['web/postulaciones/reclamo/find'] = 'postulacionesWeb/findReclamo';
+
 $route['web/postulaciones/(:any)/update'] = 'postulacionesWeb/update/$1';
 $route['web/postulaciones/(:any)'] = 'postulacionesWeb/edit/$1';
 

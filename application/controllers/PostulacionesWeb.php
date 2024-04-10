@@ -35,6 +35,20 @@ class PostulacionesWeb extends CI_Controller {
         }    
     }
 
+    
+    public function findReclamo() {
+        log_message_ci("Ingresa a busqueda" . json_encode($this->input->post()));
+
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->postulaciones_model->findReclamo($_POST)));
+        } else {
+            show_404();
+        }    
+    }
+
+    
     public function update($uid) {
         if ($this->input->post()) {
             $this->output

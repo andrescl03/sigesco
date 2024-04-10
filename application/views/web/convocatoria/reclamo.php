@@ -8,7 +8,7 @@ $convocatoria = $data['convocatoria'];
                 <div class="row my-3">
                     <div class="col-md-12 text-center">
                         <h4 class="mx-auto mb-1 text-uppercase">
-                            CONVOCATORIA REGISTRO DE DOCENTE <?php echo $convocatoria->con_anio ?> - RECLAMO
+                            CONTRATO DOCENTE <?php echo $convocatoria->con_anio ?> - ETAPA DE RECLAMO
                         </h4>
                     </div>
                     <div class="col-md-12 text-center">
@@ -23,8 +23,9 @@ $convocatoria = $data['convocatoria'];
                     </div>
                     <div class="col-md-12 text-center">
                         <p class="m-0 text-secondary">
-                            Inicio <strong><?php echo $convocatoria->con_fechainicio ?></strong>
-                            Fin <strong><?php echo $convocatoria->con_fechafin ?></strong>
+                            Inicio: <strong><?php echo $convocatoria->con_fechainicio_reclamo ?></strong>
+                            Fin: <strong><?php echo $convocatoria->con_fechafin_reclamo ?></strong>
+                            <br>
                             <strong class="ms-2"><?php echo $convocatoria->con_diasrestantes ?> <?php echo $convocatoria->con_diasrestantes > 1 ? 'días restantes' : 'día restante' ?></strong>
                         </p>
                     </div>
@@ -69,20 +70,13 @@ $convocatoria = $data['convocatoria'];
                             <label class="col-xl-4 col-lg-4 col-form-label">Número de Documento</label>
                             <div class="col-xl-8 col-lg-8">
                                 <?php if ($convocatoria->con_tipo == 1) { ?>
-                                    <div class="input-group mb-3">
+                                    <div class=" mb-3">
                                         <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document form-input-document" placeholder="Ingrese su número de documento" required>
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary btn-documento" type="button">Validar</button>
-                                            <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
-                                        </div>
+                                         
                                     </div>
                                 <?php } else { ?>
-                                    <div class="input-group mb-3">
+                                    <div class=" mb-3">
                                         <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document" placeholder="Ingrese su número de documento" required>
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary btn-documento" type="button">Validar</button>
-                                            <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
-                                        </div>
                                     </div>
                                 <?php } ?>
                                 <div class="alert-postulant">
@@ -92,54 +86,66 @@ $convocatoria = $data['convocatoria'];
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Correo Electrónico</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="email" name="correo" class="form-control form-control-solid form-input-validate form-input-email" maxlength="100" required>
+                                <input type="email" id="correo" name="correo" class="form-control form-control-solid  form-input-email form-input-document" maxlength="100" required>
                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                                <small>Se enviarán todas las notificaciones del proceso de contratación docente.</small>
-                            </div>
-                        </div>
-                     
-                        <div class="form-group row mt-5 section" data-scrolled="1">
-                            <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label">
-                                <h5>Datos personales del postulante:</h5>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Nombres</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="nombre" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100" required readonly>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Apellido Paterno</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="apellido_paterno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100" required readonly>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Apellido Materno</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="apellido_materno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100" required readonly>
-                                <div class="invalid-feedback">Por favor este campo es requerido, si usted no cuenta con un apellido, por favor colocar guiones.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Fecha de Nacimiento</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <input type="date" name="fecha_nacimiento" class="form-control form-control-solid form-control-validate form-input-age form-input-validate" max="2020-10-10" required>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
+                                 <div class="alert alert-primary d-flex align-items-center mb-0" role="alert">
+                                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                                    <div>El correo electrónico nos permite validar la identidad del solicitante al presentar un reclamo</div>
+                                </div>
                             </div>
                         </div>
  
+                        <div class="form-group row">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Fecha de Nacimiento</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <input type="date" id="fechanacimiento"  name="fecha_nacimiento" class="form-control form-control-solid form-control-validate form-input-age form-input-document " max="2020-10-10" required>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
+                            
+                                <div class="alert alert-primary d-flex align-items-center mb-0" role="alert">
+                                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                                    <div>La fecha de nacimiento nos permite validar la identidad del solicitante al presentar un reclamo.</div>
+                                </div>
+
+                            </div>
+                            
+                        </div>
+
+
+                        <div class="form-group row">
+                                            <button class="btn btn-primary btn-documento" type="button">Validar Postulación</button>
+                                            <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
+                                        </div>
+
+
+ 
+                        <div class="form-group row mt-5 section" data-scrolled="1">
+                            <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label">
+                                <h5>Información encontrada del postulante:</h5>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Nombres y Apellidos</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <input type="text" name="nombre" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100"  readonly>
+                            </div>
+                        </div>
                          
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Número de Celular</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="numero_celular" class="form-control form-control-solid form-control-validate input-number form-input-validate" maxlength="9" required>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
+                                <input type="text" name="numero_celular" class="form-control form-control-solid form-control-validate input-number form-input-validate" maxlength="9" readonly>
                             </div>
-                        </div>                          
+                        </div>      
+                        
+                        
+                        <div class="form-group row">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Fecha de postulación</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <input type="text" name="fecha_postulacion" class="form-control form-control-solid form-control-validate input-number form-input-validate" maxlength="9" readonly>
+                            </div>
+                        </div>
+
+
                           <div class="form-group row mt-5 section" data-scrolled="6">
                             <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label d-flex justify-content-between">
                                 <h5 class="my-auto">Archivos adjuntos:</h5>
@@ -160,7 +166,7 @@ $convocatoria = $data['convocatoria'];
                                     <!-- Las filas se agregarán dinámicamente aquí -->
                                 </tbody>
                             </table>
-                            <small><b>Recuerda: </b> Los tipos que tienen (*) son documentos obligatorios.</small>
+                            <small><b>Recuerda: </b> Solo se podrá ingresar un reclamo por postulación.</small>
                         </div>
                     </form>
                 </div>
