@@ -145,20 +145,22 @@ var btn_modalAsignarExpedientes = function (chkAsignarTodosEval1) {
 	$('body').on('click', '.btn-seleccionar-asignacion-expedientes', function (e) {
 
 		var checkboxesSecundarios = document.querySelectorAll(".chk_asignarEval input");
-
 		if (radioIngresarValor.checked) {
-			let cantidad = parseInt(inputValor.value, 10); // Obtener la cantidad ingresada
+ 			let cantidad = parseInt(inputValor.value, 10); // Obtener la cantidad ingresada
 
 			checkboxesSecundarios.forEach(function (checkbox,index) {
-				console.log(checkbox);
-				checkbox.checked = chkAsignarTodosEval1.checked && index < cantidad;
+				if (checkbox.value.split("||")[1] == 0) {
+					checkbox.checked = chkAsignarTodosEval1.checked && index < cantidad;
+				}
 			});
 		}
 		if (radioTodos.checked) {
 			// Actualiza el estado de cada checkbox secundario según el estado del checkbox principal
 			checkboxesSecundarios.forEach(function (checkbox) {
-				console.log(checkbox);
-				checkbox.checked = chkAsignarTodosEval1.checked;
+				if (checkbox.value.split("||")[1] == 0)  {
+					checkbox.checked = chkAsignarTodosEval1.checked;
+				}
+
 			});
 		}
 

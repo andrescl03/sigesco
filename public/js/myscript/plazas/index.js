@@ -11,6 +11,8 @@ const AppPlazaIndex = () => {
                     modalConfirmAdjudicacion: new bootstrap.Modal(dom.querySelector('#modalConfirmAdjudicacion')),
                     modalUploadPlaza: new bootstrap.Modal(dom.querySelector('#modalUploadPlaza')),
                     modalResponsePlazas: new bootstrap.Modal(dom.querySelector('#modalResponsePlazas')),
+                    dataModalidades: JSON.parse($('#AppIndexPlaza').attr('data-modalidades')),
+                    dataNiveles: JSON.parse($('#AppIndexPlaza').attr('data-niveles')),
                     any: 0,
                     niveles: [],
                     modalidades: []
@@ -18,14 +20,49 @@ const AppPlazaIndex = () => {
             },
             mounted: function () {
                 self.initialize();
+
             },
             methods: {
                 initialize: () => {
                     self.clicks();
                     self.pagination(self.onActionRows);
-
+                    self.listaModalidades(),
                     choiceCboxColegio = new Choices(document.querySelector(".choices-single"));
-
+                 },
+                listaModalidades: () => {
+                    const selects = dom.querySelectorAll('#modalidadtxtBuscador');
+                    selects.forEach(select => {
+                        let html = `<option value="0" hidden selected>Elegir...</option>`;
+                        if (self.dataModalidades.length > 0) {
+                            self.dataModalidades.forEach(n => {
+                                html += `<option value="${n.mod_id}">${n.mod_nombre} (${n.mod_abreviatura})</option>`;
+                            });
+                        }
+                        select.innerHTML = html;
+                        select.addEventListener('change', (e) => {
+                            self.listatNiveles(e.target.value);
+                        });
+                    });
+                },
+                listatNiveles: (mod_id = 0) => {
+                    const niveles = [];
+                    if (Number(mod_id) > 0) {
+                        self.dataNiveles.forEach(n => {
+                            if (mod_id == n.modalidad_mod_id) {
+                                niveles.push(n);
+                            }
+                        });
+                    }
+                    const selects = dom.querySelectorAll('#niveltxtBuscador');
+                    selects.forEach(select => {
+                        let html = `<option value="0"  selected>[TODOS]</option>`;
+                        if (niveles.length > 0) {
+                            niveles.forEach(n => {
+                                html += `<option value="${n.niv_id}">${n.niv_descripcion}</option>`;
+                            });
+                        }
+                        select.innerHTML = html;
+                    });
                 },
                 clicks: () => {
                     
@@ -64,33 +101,37 @@ const AppPlazaIndex = () => {
                             const inputmotivovacante = dom.querySelector('#motivoVacantetxtBuscador').value.trim();
                             const inputespecialidad = dom.querySelector('#especialidadtxtBuscador').value.trim();
                             const inputtipocontrato = dom.querySelector('#tipoContratotxtBuscador').value.trim();
-                            
-                            if (inputie) {
+                            const inputmodalidad = dom.querySelector('#modalidadtxtBuscador').value.trim();
+                            const inputnivel = dom.querySelector('#niveltxtBuscador').value.trim();
+
+                            if (inputie != null) {
                                 sweet2.loading({ text: 'Buscando...' });
                                 self.table.column(0).search(inputie).draw();
                             }
-                            
-                            if (inputcodigoplaza) {
+                            if (inputcodigoplaza != null) {
                                 sweet2.loading({ text: 'Buscando...' });
                                 self.table.column(1).search(inputcodigoplaza).draw();
                             }
-                    
-                            if (inputmotivovacante) {
+                            if (inputmotivovacante != null) {
                                 sweet2.loading({ text: 'Buscando...' });
                                 self.table.column(2).search(inputmotivovacante).draw();
                             }
-                    
-                            if (inputespecialidad) {
+                            if (inputespecialidad != null ) {
                                 sweet2.loading({ text: 'Buscando...' });
                                 self.table.column(3).search(inputespecialidad).draw();
                             }
-                    
-                            if (inputtipocontrato) {
+                            if (inputtipocontrato != null) {
                                 sweet2.loading({ text: 'Buscando...' });
                                 self.table.column(4).search(inputtipocontrato).draw();
                             }
-                            
-                             
+                            if (inputmodalidad != null) {
+                                sweet2.loading({ text: 'Buscando...' });
+                                self.table.column(5).search(inputmodalidad).draw();
+                            }
+                            if (inputnivel != null) {
+                                sweet2.loading({ text: 'Buscando...' });
+                                self.table.column(6).search(inputnivel).draw();
+                            }
                         });                        
                     });
 

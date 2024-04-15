@@ -31,14 +31,23 @@ class Plazas_model extends CI_Model {
               ORDER BY e2.mod_nombre ASC";
         $colegios = $this->db->query($sql)->result_object();
 
-        /*$sql = "SELECT 
-                e2.*
-                FROM modularie e2
-                ORDER BY e2.mod_nombre ASC";
-        $niveles = $this->db->query($sql)->result_object();*/
-  
+
+      $sql = "SELECT 
+         * FROM modalidades where mod_estado = 1";
+      $modalidades = $this->db->query($sql)->result_object();
+
+      $sql = "SELECT 
+              * FROM niveles where niv_estado = 1";
+      $niveles = $this->db->query($sql)->result_object();
+
+
+      /*$sql = "SELECT 
+              e2.*
+              FROM modularie e2
+              ORDER BY e2.mod_nombre ASC";
+      $niveles = $this->db->query($sql)->result_object();*/
         $response['success'] = true;
-        $response['data']  = compact('periodos', 'procesos', 'colegios');
+        $response['data']  = compact('periodos', 'procesos', 'colegios','modalidades','niveles');
         $response['status']  = 200;
         $response['message'] = 'Se proceso correctamente';
   
@@ -84,7 +93,9 @@ class Plazas_model extends CI_Model {
           $inputmotivovacante = $this->input->post("columns[2][search][value]", true);
           $inputespecialidad = $this->input->post("columns[3][search][value]", true);
           $inputtipocontrato = $this->input->post("columns[4][search][value]", true);
-        
+          $inputmodalidad = $this->input->post("columns[5][search][value]", true);
+          $inputnivel = $this->input->post("columns[6][search][value]", true);
+
         if ($inputie) {
             $filterText .= " AND plz.ie LIKE('%{$inputie}%')";
         }
@@ -104,6 +115,15 @@ class Plazas_model extends CI_Model {
         if ($inputtipocontrato) {
             $filterText .= " AND tc.tipo_id LIKE('%{$inputtipocontrato}%')";
         }
+
+        if ($inputmodalidad) {
+          $filterText .= " AND plz.mod_id LIKE('%{$inputmodalidad}%')";
+        }
+
+        if ($inputnivel) {
+          $filterText .= " AND plz.nivel_id LIKE('%{$inputnivel}%')";
+        }
+
 
           $sql = "SELECT 
                     plz.* , tc.*, niv.*, moda.*
