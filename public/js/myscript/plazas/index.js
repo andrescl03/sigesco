@@ -92,7 +92,6 @@ const AppPlazaIndex = () => {
 
                         });
                     });
-
                     const btnSearchs = dom.querySelectorAll('.btn-search');
                     btnSearchs.forEach(btn => {
                         btn.addEventListener('click', (e) => {
@@ -134,7 +133,6 @@ const AppPlazaIndex = () => {
                             }
                         });                        
                     });
-
                     const formPlazas = dom.querySelectorAll('.form-plaza');
                     formPlazas.forEach(form => {
                         form.addEventListener('submit', (e) => {

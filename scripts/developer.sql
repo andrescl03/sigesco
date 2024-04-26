@@ -518,3 +518,8 @@ ALTER TABLE convocatorias ADD COLUMN con_fechainicio_reclamo date DEFAULT NULL;
 ALTER TABLE convocatorias ADD COLUMN con_fechafin_reclamo date DEFAULT NULL;
 ALTER TABLE convocatorias ADD COLUMN con_horainicio_reclamo time DEFAULT NULL;
 ALTER TABLE convocatorias ADD COLUMN con_horafin_reclamo time DEFAULT NULL; 
+/********************* 17-04-2024 ***************/
+
+
+CREATE INDEX idx_pos_postulacion_evaluaciones ON postulacion_evaluaciones(postulacion_id);
+

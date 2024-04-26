@@ -85,7 +85,8 @@ var validarLogin_ajax=function(parametros){
 				})*/
 			}else{
 				if(data.link === undefined){
-					ToastError.fire({title: data.error});
+					//ToastError.fire({title: data.error});
+                    alert(data.error);
 				}else{
 					SwalErrorCenter.fire({ 
 						html: "<b class='h4'>"+data.error+"</b>"
