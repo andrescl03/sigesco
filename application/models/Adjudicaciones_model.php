@@ -93,6 +93,7 @@ class Adjudicaciones_model extends CI_Model
         $sql = "SELECT 
           AD.*,
           POS.numero_documento,
+          POS.id as 'postulante_id',
           POS.nombre,
           POS.apellido_paterno,
           POS.apellido_materno,

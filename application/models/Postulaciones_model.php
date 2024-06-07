@@ -1396,7 +1396,7 @@ class Postulaciones_model extends CI_Model
             ->select("p.uid, p.id, p.numero_expediente")
             ->from("postulaciones p")
             ->join("convocatorias c", "p.convocatoria_id =  c.con_id", "inner")
-            ->where(array("c.con_numero" => $convocatoria_id, "p.numero_expediente" => null))
+            ->where(array("c.con_id" => $convocatoria_id, "p.numero_expediente" => null))
             ->get();
         //echo $this->db->last_query(); exit(); 
         return $sql->result_object();

@@ -39,8 +39,7 @@ var procesarExpedientes = function () {
 	$('body').off('click', '.btn-procesar-expedientes');
 	$('body').on('click', '.btn-procesar-expedientes', function (e) {
 
-		let con_numero = e.target.getAttribute('data-id');
-
+		let con_id = e.target.getAttribute('data-id');
 		sweet2.show({
 			type: 'question',
 			html: '¿Estás seguro que desea procesar los expedientes para esta convocatoria?',
@@ -48,7 +47,7 @@ var procesarExpedientes = function () {
 			onOk: () => {
 				sweet2.loading();
 				const formData = new FormData();
-				formData.append('con_numero', con_numero);
+				formData.append('con_id', con_id);
 
 				submitProcesarExpediente(formData);
 			}

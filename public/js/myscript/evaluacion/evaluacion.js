@@ -288,19 +288,11 @@ const AppAdjudicacionAdmin = () => {
                             contentType: false,
                         })
                         .done(function (response) {
-
                             /*PENDIENTE*/
                         /*     if(response.status == 500){
-                                alert("aea");
                                 sweet2.show({type:'error'});
-
-
                             } */
-
-                            
                             resolve(response);
-
-
                         })
                         .fail(function (xhr, status, error) {
                             sweet2.show({type:'error', text:error});

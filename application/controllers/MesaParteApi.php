@@ -350,11 +350,11 @@ class Mesaparteapi extends CI_Controller {
 
         log_message_ci("Ingresa a procesarexpedientes");
 
-        $con_numero  = $this->input->post("con_numero", true);
+        $con_id  = $this->input->post("con_id", true);
         $actualizacionesCounter = 0;
         $actualizacionesNoCounter = 0;
 
-        $postulantes = $this->postulaciones_model->buscarDocentesXConvocatoria($con_numero);
+        $postulantes = $this->postulaciones_model->buscarDocentesXConvocatoria($con_id);
 
         foreach ($postulantes as $postulante) {
 

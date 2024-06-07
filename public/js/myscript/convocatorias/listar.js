@@ -460,8 +460,11 @@ var btn_agregarNuevaConvocatoria = function () {
 			var fechaHastaMoment = moment(fechaHasta, "DD-MM-YYYY HH:mm:ss");
 			var fechaDesdeReclamoMoment = moment(fechaDesdeReclamo, "DD-MM-YYYY HH:mm:ss");
 			var fechaHastaReclamoMoment = moment(fechaHastaReclamo, "DD-MM-YYYY HH:mm:ss");
-
-			if (grupoArr.length == 0) {
+			console.log(idPer.length == 0);
+			if(idPer.length == 0){
+				ToastError.fire({ title: 'Seleccione un periodo válido.' });
+			}
+			else if (grupoArr.length == 0) {
 				ToastError.fire({ title: 'Agregar al menos un grupo de inscripción.' });
 			}
 			else if (fechaDesdeMoment.isAfter(fechaHastaMoment)) {
