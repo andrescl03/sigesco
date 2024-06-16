@@ -285,6 +285,9 @@ const AppAdjudicacionAdmin = () => {
                                             <div class="menu-item px-3 py-2">
                                                 <a href="${window.AppMain.url}adjudicaciones/${row.id}/edit" class="menu-link text-danger px-3">Editar</a>
                                             </div>
+                                            <div class="menu-item px-3 py-2">
+                                                <a href="javascript:void(0);" class="menu-link text-danger px-3 btn-add-acta-firmada" data-id="${row.id}">Cargar acta firmada</a>
+                                            </div>
                                             <!--div class="menu-item px-3 py-2">
                                                 <a href="javascript:void(0);" class="menu-link text-danger px-3 btn-remove" data-id="${row.id}">Liberar</a>
                                             </div-->
@@ -339,6 +342,25 @@ const AppAdjudicacionAdmin = () => {
                         });
                     });
                 },
+                uploadActaFirmada: (formData,id) => {
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + `admin/adjudicaciones/${id}/actafirmada`,
+                            method: 'POST',
+                            dataType: 'json',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function (response) {
+                            resolve(response);
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
+                        });
+                    });
+                },
                 remove: (id) => {
                     return new Promise((resolve, reject)=>{
                         sweet2.loading();
@@ -361,6 +383,8 @@ const AppAdjudicacionAdmin = () => {
                 onActionRows: () => {
                     const btnEdits = document.querySelector('#' + container).querySelectorAll('.btn-edit'),
                       btnRemoves = document.querySelector('#' + container).querySelectorAll('.btn-remove');
+                      btnAddActaFirmada = document.querySelector('#' + container).querySelectorAll('.btn-add-acta-firmada');
+
                     const btnFiles = document.querySelector('#' + container).querySelectorAll('.btn-files');
 
                     /*btnEdits.forEach(btn => {
@@ -391,6 +415,48 @@ const AppAdjudicacionAdmin = () => {
                                     formData.append('id', id);
                                     // self.remove(id)
                                     self.liberar(formData)
+                                    .then(({success, data, message}) => {
+                                        if (!success) {
+                                            throw message;
+                                        }
+                                        self.table.ajax.reload( null, false );
+                                        sweet2.show({type:'success', text:message});
+                                    })
+                                    .catch(error => {
+                                        sweet2.show({type:'error', text:error});
+                                    });
+                                }
+                            });
+                        });
+                    });
+                    btnAddActaFirmada.forEach(btn => {
+                        btn.addEventListener('click', function (e) {
+                            swal.fire({
+                                html: '<input type="file" id="actaFirmadaFile" class="swal-input">',
+                                title: 'Ingrese el documento firmado',
+                                showCancelButton: true,
+                                preConfirm: () => {
+                                    const fileInput = document.getElementById('actaFirmadaFile');
+                                    if (fileInput.files.length === 0) {
+                                        swal.showValidationMessage('Debe seleccionar un archivo');
+                                        return false;
+                                    }
+                                    return fileInput.files[0];
+                                }
+                            }).then(result => {
+                                if (result.isConfirmed) {
+                                    swal.fire({
+                                        title: 'Cargando...',
+                                        allowOutsideClick: false,
+                                        didOpen: () => {
+                                            swal.showLoading();
+                                        }
+                                    });
+                                    const id = e.target.getAttribute('data-id');
+                                    const formData = new FormData();
+                                    formData.append('id', id);
+                                    formData.append('actaFirmada', result.value);
+                                    self.uploadActaFirmada(formData,id)
                                     .then(({success, data, message}) => {
                                         if (!success) {
                                             throw message;

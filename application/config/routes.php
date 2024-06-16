@@ -70,6 +70,8 @@ $route['web/postulantes/(:any)'] = 'convocatoriasWeb/postulant/$1';
 $route['web/postulaciones/store'] = 'postulacionesWeb/store';
 $route['web/postulaciones/find'] = 'postulacionesWeb/find';
 $route['web/postulaciones/reclamo/find'] = 'postulacionesWeb/findReclamo';
+$route['web/reclamo/store'] = 'postulacionesWeb/reclamo_store';
+
 
 $route['web/postulaciones/(:any)/update'] = 'postulacionesWeb/update/$1';
 $route['web/postulaciones/(:any)'] = 'postulacionesWeb/edit/$1';
@@ -111,6 +113,7 @@ $route['admin/adjudicaciones/(:num)/remove'] = 'adjudicaciones/remove/$1';
 $route['admin/adjudicaciones/(:num)/update'] = 'adjudicaciones/update/$1';
 $route['admin/adjudicaciones/datedefault'] = 'adjudicaciones/datedefault';
 $route['admin/adjudicaciones/reporte'] = 'adjudicaciones/generar_reporte_adjudicados';
+$route['admin/adjudicaciones/(:num)/actafirmada'] = 'adjudicaciones/uploadactafirmada/$1';
 
 $route['configuracion/periodos/store'] = 'configuracion/registraPeriodo';
 $route['configuracion/periodos/(:num)'] = 'configuracion/editarPeriodo/$1';

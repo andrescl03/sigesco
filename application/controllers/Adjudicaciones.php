@@ -77,6 +77,16 @@ class Adjudicaciones extends CI_Controller {
         }    
     }
 
+    public function uploadactafirmada(){
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->adjudicaciones_model->uploadActaFirmada()));
+        } else {
+            show_404();
+        }    
+    }
+
     public function update($id) {
         if ($this->input->post()) {
             $this->output

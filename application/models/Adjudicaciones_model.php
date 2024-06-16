@@ -11,7 +11,75 @@ class Adjudicaciones_model extends CI_Model
   public function index() {
     return [];
   }
- 
+
+  public function uploadActaFirmada()
+  { 
+    $actaFirmada = isset($_FILES['actaFirmada']) ? $_FILES['actaFirmada'] : [];
+
+      if (count($actaFirmada) == 0) {
+        throw new Exception('Debe de adjuntar al menos un documento');
+      }
+     
+      if (isset($_FILES['actaFirmada'])) {
+        $total  = count($_FILES['archivos']['name']);
+        $files  = array();
+
+        if ($total) {
+            $path = __DIR__ . "/../../public/uploads/";
+            if (!is_dir($path)) {
+                mkdir($path, 0777, true);
+            }
+            $fields = ["name", "type", "tmp_name", "error", "size"];
+            $uploads = $_FILES['archivos'];
+            $result = array();
+            for ($index = 0; $index < $total; $index++) {
+                array_push($files, $this->tools->getFieldArray($uploads, $fields, $index));
+            }
+            foreach ($files as $key => $item) {
+
+                if ($item['error'] == UPLOAD_ERR_OK) {
+                    $filename = uniqid(time()) . "-" . $item['name'];
+                    $fullpath = $path . $filename;
+                    $filepath = "/uploads/" . $filename;
+                    $extension = strtolower(pathinfo($item['name'], PATHINFO_EXTENSION));
+                    move_uploaded_file($item['tmp_name'], $fullpath);
+                    $insert_archivos[] = [
+                        'nombre'  => $item['name'],
+                        'url'     => $filepath,
+                        'formato' => $extension,
+                        'peso'    => $item['size'],
+                    ];
+                }
+            }
+        }
+
+        if (count($insert_archivos) > 0) {
+            // Create a temporary directory to store the uploaded files
+            $tempDir = __DIR__ . "/../../public/uploads/";
+            if (!is_dir($tempDir)) {
+                mkdir($tempDir, 0777, true);
+            }
+            // Create a unique ZIP file name
+            $zipFilename = uniqid(time()) . "-uploaded-files.zip";
+            $zipPath = $tempDir . $zipFilename;
+        }
+        // Create a ZipArchive object
+        $zip = new ZipArchive();
+        if ($zip->open($zipPath, ZipArchive::CREATE) !== true) {
+            throw new Exception('Failed to create ZIP file');
+        }
+
+        // Add each uploaded file to the ZIP archive
+        foreach ($insert_archivos as $file) {
+            $filePath = __DIR__ . "/../../public" . $file['url']; // Assuming the files are in the "uploads" directory
+            $zip->addFile($filePath, uniqid(time()) . "-" . $file['nombre']);
+        }
+
+        $zip->close();
+        $zipData = file_get_contents($zipPath);
+    }
+
+  }
 
   public function f_details_adjudicados($POST)
   {

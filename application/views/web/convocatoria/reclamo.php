@@ -90,7 +90,7 @@ $convocatoria = $data['convocatoria'];
                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                  <div class="alert alert-primary d-flex align-items-center mb-0" role="alert">
                                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
-                                    <div>El correo electrónico nos permite validar la identidad del solicitante al presentar un reclamo</div>
+                                    <div>El correo electrónico nos permite validar la identidad del postulante al presentar un reclamo</div>
                                 </div>
                             </div>
                         </div>
@@ -103,21 +103,16 @@ $convocatoria = $data['convocatoria'];
                             
                                 <div class="alert alert-primary d-flex align-items-center mb-0" role="alert">
                                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
-                                    <div>La fecha de nacimiento nos permite validar la identidad del solicitante al presentar un reclamo.</div>
+                                    <div>La fecha de nacimiento nos permite validar la identidad del postulante al presentar un reclamo.</div>
                                 </div>
 
                             </div>
                             
                         </div>
-
-
                         <div class="form-group row">
                                             <button class="btn btn-primary btn-documento" type="button">Validar Postulación</button>
                                             <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
                                         </div>
-
-
- 
                         <div class="form-group row mt-5 section" data-scrolled="1">
                             <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label">
                                 <h5>Información encontrada del postulante:</h5>
@@ -166,7 +161,7 @@ $convocatoria = $data['convocatoria'];
                                     <!-- Las filas se agregarán dinámicamente aquí -->
                                 </tbody>
                             </table>
-                            <small><b>Recuerda: </b> Solo se podrá ingresar un reclamo por postulación.</small>
+                            <small><b>Recuerda: </b> Solo se podrá ingresar un archivo (PDF) de reclamo por postulación.</small>
                         </div>
                     </form>
                 </div>
@@ -478,7 +473,7 @@ $convocatoria = $data['convocatoria'];
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title" id="exampleModalLabel">RESUMEN DE MI POSTULACIÓN</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">RESUMEN DE MI REGISTRO DE RECLAMO</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-4" id="previewPostulant">
@@ -486,7 +481,7 @@ $convocatoria = $data['convocatoria'];
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
-                        <button type="button" class="btn btn-primary btn-save">REGISTRAR MI POSTULACIÓN</button>
+                        <button type="button" class="btn btn-primary btn-save">REGISTRAR MI RECLAMO</button>
                     </div>
                 </div>
             </div>
