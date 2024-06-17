@@ -9,6 +9,7 @@ const AppAdjudicacionAdmin = () => {
                     postulacion: {},
                     valueBuscador: '',
                     id_tipo_perfil,
+                    formAttachedFiles: []
                 }
             },
             mounted: function () {
@@ -286,7 +287,7 @@ const AppAdjudicacionAdmin = () => {
                                                 <a href="${window.AppMain.url}adjudicaciones/${row.id}/edit" class="menu-link text-danger px-3">Editar</a>
                                             </div>
                                             <div class="menu-item px-3 py-2">
-                                                <a href="javascript:void(0);" class="menu-link text-danger px-3 btn-add-acta-firmada" data-id="${row.id}">Cargar acta firmada</a>
+                                                <a href="javascript:void(0);" class="menu-link text-danger px-3 btn-add-acta-firmada" data-id="${row.postulante_id}">Cargar acta firmada</a>
                                             </div>
                                             <!--div class="menu-item px-3 py-2">
                                                 <a href="javascript:void(0);" class="menu-link text-danger px-3 btn-remove" data-id="${row.id}">Liberar</a>
@@ -342,25 +343,6 @@ const AppAdjudicacionAdmin = () => {
                         });
                     });
                 },
-                uploadActaFirmada: (formData,id) => {
-                    return new Promise((resolve, reject)=>{
-                        sweet2.loading();
-                        $.ajax({
-                            url: window.AppMain.url + `admin/adjudicaciones/${id}/actafirmada`,
-                            method: 'POST',
-                            dataType: 'json',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                        })
-                        .done(function (response) {
-                            resolve(response);
-                        })
-                        .fail(function (xhr, status, error) {
-                            sweet2.show({type:'error', text:error});
-                        });
-                    });
-                },
                 remove: (id) => {
                     return new Promise((resolve, reject)=>{
                         sweet2.loading();
@@ -381,10 +363,9 @@ const AppAdjudicacionAdmin = () => {
                     });
                 }, 
                 onActionRows: () => {
-                    const btnEdits = document.querySelector('#' + container).querySelectorAll('.btn-edit'),
-                      btnRemoves = document.querySelector('#' + container).querySelectorAll('.btn-remove');
-                      btnAddActaFirmada = document.querySelector('#' + container).querySelectorAll('.btn-add-acta-firmada');
-
+                    const btnEdits = document.querySelector('#' + container).querySelectorAll('.btn-edit');
+                    const btnRemoves = document.querySelector('#' + container).querySelectorAll('.btn-remove');
+                    const btnAddActaFirmada = document.querySelector('#' + container).querySelectorAll('.btn-add-acta-firmada');
                     const btnFiles = document.querySelector('#' + container).querySelectorAll('.btn-files');
 
                     /*btnEdits.forEach(btn => {
@@ -432,16 +413,16 @@ const AppAdjudicacionAdmin = () => {
                     btnAddActaFirmada.forEach(btn => {
                         btn.addEventListener('click', function (e) {
                             swal.fire({
-                                html: '<input type="file" id="actaFirmadaFile" class="swal-input">',
+                                html: '<input type="file" id="actaFirmadaFile" class="actaFirmadaFile swal-input" multiple>',
                                 title: 'Ingrese el documento firmado',
                                 showCancelButton: true,
                                 preConfirm: () => {
-                                    const fileInput = document.getElementById('actaFirmadaFile');
+                                    const fileInput = document.querySelector('.actaFirmadaFile');
                                     if (fileInput.files.length === 0) {
                                         swal.showValidationMessage('Debe seleccionar un archivo');
                                         return false;
                                     }
-                                    return fileInput.files[0];
+                                    return fileInput.files;
                                 }
                             }).then(result => {
                                 if (result.isConfirmed) {
@@ -452,20 +433,33 @@ const AppAdjudicacionAdmin = () => {
                                             swal.showLoading();
                                         }
                                     });
+                    
                                     const id = e.target.getAttribute('data-id');
+                                    const files = result.value;
                                     const formData = new FormData();
+                    
                                     formData.append('id', id);
-                                    formData.append('actaFirmada', result.value);
-                                    self.uploadActaFirmada(formData,id)
-                                    .then(({success, data, message}) => {
-                                        if (!success) {
-                                            throw message;
+                                    Array.from(files).forEach(file => {
+                                        formData.append('archivos[]', file);
+                                    });
+                    
+                                    $.ajax({
+                                        url: window.AppMain.url + `admin/adjudicaciones/${id}/actafirmada`,
+                                        method: 'POST',
+                                        data: formData,
+                                        processData: false,
+                                        contentType: false,
+                                        success: function (response) {
+                                            if (response.success) {
+                                                self.table.ajax.reload(null, false);
+                                                swal.fire({ type: 'success', text: response.message });
+                                            } else {
+                                                swal.fire({ type: 'error', text: response.message });
+                                            }
+                                        },
+                                        error: function (xhr, status, error) {
+                                            swal.fire({ type: 'error', text: error });
                                         }
-                                        self.table.ajax.reload( null, false );
-                                        sweet2.show({type:'success', text:message});
-                                    })
-                                    .catch(error => {
-                                        sweet2.show({type:'error', text:error});
                                     });
                                 }
                             });

@@ -599,7 +599,6 @@ class Evaluacion_model extends CI_Model {
       $response['data']  = compact('archivos');
       $response['status']  = 200;
       $response['message'] = 'Files of postulant';
-
     } catch (\Exception $e) {
         $response['message'] = $e->getMessage();
     }

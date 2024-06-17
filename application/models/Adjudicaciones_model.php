@@ -13,70 +13,70 @@ class Adjudicaciones_model extends CI_Model
   }
 
   public function uploadActaFirmada()
-  { 
-    $actaFirmada = isset($_FILES['actaFirmada']) ? $_FILES['actaFirmada'] : [];
+  {
+    $actaFirmada = isset($_FILES['archivos']) ? $_FILES['archivos'] : [];
 
-      if (count($actaFirmada) == 0) {
-        throw new Exception('Debe de adjuntar al menos un documento');
+    if (!isset($_FILES['archivos']) || empty($_FILES['archivos']['name'][0])) {
+      throw new Exception('Debe adjuntar al menos un documento');
+    }
+    $id =  $this->input->post("id", true);
+
+    $actaFirmada = $_FILES['archivos'];
+    $total = count($actaFirmada['name']);
+    $files = [];
+    $insert_archivos = [];
+
+
+    if ($total > 0) {
+      $path = __DIR__ . "/../../public/uploads/";
+      if (!is_dir($path)) {
+        mkdir($path, 0777, true);
       }
-     
-      if (isset($_FILES['actaFirmada'])) {
-        $total  = count($_FILES['archivos']['name']);
-        $files  = array();
 
-        if ($total) {
-            $path = __DIR__ . "/../../public/uploads/";
-            if (!is_dir($path)) {
-                mkdir($path, 0777, true);
-            }
-            $fields = ["name", "type", "tmp_name", "error", "size"];
-            $uploads = $_FILES['archivos'];
-            $result = array();
-            for ($index = 0; $index < $total; $index++) {
-                array_push($files, $this->tools->getFieldArray($uploads, $fields, $index));
-            }
-            foreach ($files as $key => $item) {
+      $fields = ["name", "type", "tmp_name", "error", "size"];
+      $uploads = $_FILES['archivos'];
 
-                if ($item['error'] == UPLOAD_ERR_OK) {
-                    $filename = uniqid(time()) . "-" . $item['name'];
-                    $fullpath = $path . $filename;
-                    $filepath = "/uploads/" . $filename;
-                    $extension = strtolower(pathinfo($item['name'], PATHINFO_EXTENSION));
-                    move_uploaded_file($item['tmp_name'], $fullpath);
-                    $insert_archivos[] = [
-                        'nombre'  => $item['name'],
-                        'url'     => $filepath,
-                        'formato' => $extension,
-                        'peso'    => $item['size'],
-                    ];
-                }
-            }
+      for ($index = 0; $index < $total; $index++) {
+        $file = [];
+        foreach ($fields as $field) {
+          $file[$field] = $uploads[$field][$index];
         }
+        $files[] = $file;
+      }
 
-        if (count($insert_archivos) > 0) {
-            // Create a temporary directory to store the uploaded files
-            $tempDir = __DIR__ . "/../../public/uploads/";
-            if (!is_dir($tempDir)) {
-                mkdir($tempDir, 0777, true);
-            }
-            // Create a unique ZIP file name
-            $zipFilename = uniqid(time()) . "-uploaded-files.zip";
-            $zipPath = $tempDir . $zipFilename;
-        }
-        // Create a ZipArchive object
-        $zip = new ZipArchive();
-        if ($zip->open($zipPath, ZipArchive::CREATE) !== true) {
-            throw new Exception('Failed to create ZIP file');
-        }
+      foreach ($files as $file) {
+        if ($file['error'] == UPLOAD_ERR_OK) {
+          $filename = uniqid(time()) . "-" . basename($file['name']);
+          $fullpath = $path . $filename;
+          $filepath = "/uploads/" . $filename;
+          $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
-        // Add each uploaded file to the ZIP archive
-        foreach ($insert_archivos as $file) {
-            $filePath = __DIR__ . "/../../public" . $file['url']; // Assuming the files are in the "uploads" directory
-            $zip->addFile($filePath, uniqid(time()) . "-" . $file['nombre']);
-        }
+          if (move_uploaded_file($file['tmp_name'], $fullpath)) {
+            $insert_archivos = [
+              'nombre' => $file['name'],
+              'url' => $filepath,
+              'formato' => $extension,
+              'peso' => $file['size'],
+              'postulacion_id' => $id,
+              'tipo_id' => 11
+            ];
 
-        $zip->close();
-        $zipData = file_get_contents($zipPath);
+            $this->db->insert('postulacion_archivos', $insert_archivos);
+
+
+          }
+        }
+      }
+      if (count($insert_archivos) > 0) {
+
+        return [
+          'status' => 'success',
+          'message' =>  'Se cargó correctamente el documento'
+
+        ];
+      }
+    } else {
+      throw new Exception('No se encontraron archivos para subir');
     }
 
   }
