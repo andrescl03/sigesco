@@ -10,12 +10,17 @@ const AppAdjudicacionAdmin = () => {
                 return {
                     modalFirmas: {},
                     modalDocentes: {},
+                    modalFiltroBusqueda: {},
+
                     modalPlazas: {},
                     modalUsuarioFirmas: {},
 
                     plazas: [],
                     tplazas: [],
                     postulaciones: [],
+                    modalidades: [],
+                    tmodalidades: [],
+                    
                     tpostulaciones: [],
                     usuarios: [],
 
@@ -25,12 +30,14 @@ const AppAdjudicacionAdmin = () => {
                     edit: adjudicacion_id > 0,
                     adjudicacion: {},
                     usuarioFirmas: [],
+                    dataTableModalidades: {},
                     dataTablePlazas: {},
                     dataTablePostulantes: {}
-                }
+                 }
             },
             mounted: function () {
                 self.modalDocentes = self.modal('modalDocentes');
+                self.modalFiltroBusqueda = self.modal('modalFiltroBusqueda');
                 self.modalPlazas = self.modal('modalPlazas');
                 self.modalFirmas = self.modal('modalFirmas');
                 self.modalUsuarioFirmas = self.modal('modalUsuarioFirmas');
@@ -44,6 +51,9 @@ const AppAdjudicacionAdmin = () => {
                         self.tpostulaciones = response.postulaciones;
                         self.plazas = response.plazas;
                         self.tplazas = response.plazas;
+                        self.modalidades = response.modalidades;
+                        self.tmodalidades = response.modalidades;
+
                         self.usuarios = response.usuarios;
                         self.usuarioFirmas = response.usuario_firmas;
                         self.firmasReload();
@@ -93,6 +103,17 @@ const AppAdjudicacionAdmin = () => {
                             if (input) {
                                 sweet2.loading({text:'Buscando...'});
                                 self.dataTablePostulantes.search(input.value.trim()).draw();
+                            }
+                        });                        
+                    });
+
+                    const btnSearchs2 = dom.querySelectorAll('.btn-search-2');
+                    btnSearchs2.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const input = dom.querySelector('#txtBuscador2');
+                            if (input) {
+                                sweet2.loading({text:'Buscando...'});
+                                self.dataTableModalidades.search(input.value.trim()).draw();
                             }
                         });                        
                     });
@@ -283,6 +304,17 @@ const AppAdjudicacionAdmin = () => {
                         });
                     });
 
+                    const btnFiltro = document.querySelectorAll('.btn-filtro-busqueda');
+                    btnFiltro.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            self.modalFiltroBusqueda.show();
+                            setTimeout(() => {
+                                self.listModalidades();                                
+                            }, 250);
+                            return;
+                        });
+                    });
+
 
                     const btnDocente = document.querySelectorAll('.btn-docente');
                     btnDocente.forEach(btn => {
@@ -322,6 +354,7 @@ const AppAdjudicacionAdmin = () => {
                             }
                         });
                     });
+
 
                     const btnPlaza = document.querySelectorAll('.btn-plaza');
                     btnPlaza.forEach(btn => {
@@ -422,6 +455,32 @@ const AppAdjudicacionAdmin = () => {
                                     self.plaza = self.plazas.find((o) => { return o.plz_id === isvalid });
                                     self.plazaRender();
                                     self.modalPlazas.hide();
+                                }
+                            } else {
+                                sweet2.show({type:'error', text:'Debe de seleccionar una plaza'});
+                            }
+                        });
+                    });
+
+
+                    const btnModalidadAdd = document.querySelectorAll('.btn-modalidad-add');
+                    btnModalidadAdd.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            let isvalid = false;
+                            const radios = document.querySelectorAll("input[name='check_modalidad']");
+                            if (radios) {
+                                radios.forEach(radio => {
+                                    if (radio.checked) {
+                                        isvalid = radio.value;
+                                        return;
+                                    }                      
+                                });
+                            }
+                            if (isvalid) {
+                                if (isvalid > 0) {
+                                    self.modalidades = self.modalidades.find((o) => { return o.esp_id === isvalid });
+                                    self.modalidadRender();
+                                    self.modalFiltroBusqueda.hide();
                                 }
                             } else {
                                 sweet2.show({type:'error', text:'Debe de seleccionar una plaza'});
@@ -616,6 +675,7 @@ const AppAdjudicacionAdmin = () => {
                     });
                 },
                 listPlazas: (_callback = ()=>{}) => {
+
                     if (Object.keys(self.dataTablePlazas).length == 0) {
                         self.dataTablePlazas = $('#tablePlazas').DataTable({
                             language: {
@@ -743,8 +803,118 @@ const AppAdjudicacionAdmin = () => {
                     }
                     sweet2.loading();
                 },
+
+                listModalidades: (_callback = ()=>{}) => {
+
+                    if (Object.keys(self.dataTableModalidades).length == 0) {
+
+                        self.dataTableModalidades = $('#tableModalidades').DataTable({
+                            language: {
+                                "sProcessing": "Procesando...",
+                                "sLengthMenu": "Mostrar _MENU_ registros",
+                                "sZeroRecords": "No se encontraron resultados",
+                                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                "sInfoPostFix": "",
+                                "sSearch": "Buscar:",
+                                "sUrl": "",
+                                "sInfoThousands": ",",
+                                "sLoadingRecords": "Cargando...",
+                                "oPaginate": {
+                                "sFirst": "Primero",
+                                "sLast": "Último",
+                                "sNext": "Siguiente",
+                                "sPrevious": "Anterior"
+                                },
+                                "oAria": {
+                                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                }
+                            },
+                            searching: true,
+                            ordering: false,  
+                            responsive: true,
+                            "processing" : true,
+                            "serverSide" : true,
+                            "order" : [],
+                            "retrieve": true,
+                            "dom": '<l<t>ip>',	
+                            "ajax": {
+                            "url": window.AppMain.url + 'adjudicaciones/listarGruposInscripcion',
+                            "method": "POST",
+                            "dataType": "json",
+                            "data": {
+                            }
+                            },
+                            "fnDrawCallback": function(oSettings, json) {
+                                sweet2.loading(false);
+                                const response = oSettings.json;
+                                if (response.success) {
+                                    self.modalidades = response.data;
+                                    _callback();
+                                }
+                            },
+                            "columnDefs": [
+                                {
+                                    "targets": 0,
+                                    "data": "mod_abreviatura",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return '#';
+                                    }
+                                },
+                                {
+                                    "targets": 1,
+                                    "data": "mod_abreviatura",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.mod_abreviatura;
+                                    }
+                                },
+                                {
+                                    "targets": 2,
+                                    "data": "niv_descripcion",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.niv_descripcion;
+                                    }
+                                },
+                                {
+                                    "targets": 3,
+                                    "data": "esp_descripcion",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.esp_descripcion;
+                                    }
+                                },
+                                {
+                                    "targets": 4,
+                                    "data": "esp_id",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return ` <input class="form-check-input" name="check_modalidad" type="radio" value="${row.esp_id}">`;
+                                    }
+                                }
+                            ]
+                        });
+                    } else {
+                        self.dataTableModalidades.ajax.reload();
+                    }
+                // sweet2.loading();
+                },
+
                 listPostulantes: (_callback = ()=>{}) => {
                     if (Object.keys(self.dataTablePostulantes).length == 0) {
+
+                        let esp_id;
+                        if(self.modalidades){
+                            esp_id =  self.modalidades.esp_id;
+                        }
+                        else{
+                            esp_id = 0;
+                        }
                         self.dataTablePostulantes = $('#tablePostulantes').DataTable({
                             language: {
                                 "sProcessing": "Procesando...",
@@ -783,7 +953,8 @@ const AppAdjudicacionAdmin = () => {
                             "method": "POST",
                             "dataType": "json",
                             "data": {
-                            }
+                                esp_id: esp_id 
+                           }
                             },
                             "fnDrawCallback": function(oSettings, json) {
                                 sweet2.loading(false);
@@ -913,6 +1084,7 @@ const AppAdjudicacionAdmin = () => {
                     }
                     sweet2.loading();
                 },
+                
                 onActionRowsPostulantes: () => {
                     const unlinks = document.querySelectorAll(".btn-unlink-postulante");
                     if (unlinks.length > 0) {
@@ -1196,10 +1368,16 @@ const AppAdjudicacionAdmin = () => {
                         div.innerHTML = html;
                     });
                 },
+                
                 plazaRender: () => {
                     let html = `No hay registro para mostrar`;
                     if (Object.keys(self.plaza).length > 0) {
-                        console.log(self.plaza);
+                        
+
+                    
+                        dom.querySelector('input[name="fecha_inicio"]').value = '2024-06-20';
+                        dom.querySelector('input[name="fecha_final"]').value = '2024-10-20';
+
                         html = `
                         <p><strong>Código plaza</strong> ${self.plaza.codigo_plaza}</p>
                         <p><strong>I.E</strong> ${self.plaza.ie}</p>
@@ -1240,6 +1418,21 @@ const AppAdjudicacionAdmin = () => {
                                 });
                             }
                         });
+                    });
+                },
+                modalidadRender: () => {
+                    let html = `No hay registro para mostrar`;
+                    if (Object.keys(self.modalidades).length > 0) {
+                        console.log(self.modalidades);
+                        html = `
+                        <p><strong>Modalidad</strong> ${self.modalidades.mod_abreviatura}</p>
+                         <p><strong>Nivel</strong> ${self.modalidades.niv_descripcion}</p>
+                          <p><strong>Especialidad</strong> ${self.modalidades.esp_descripcion}</p>
+                       `;
+                    }
+                    const divs = dom.querySelectorAll('.list-modalidades');
+                    divs.forEach(div => {
+                        div.innerHTML = html;
                     });
                 }
             },

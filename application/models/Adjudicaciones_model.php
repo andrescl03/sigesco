@@ -669,7 +669,16 @@ class Adjudicaciones_model extends CI_Model
         $search = $this->input->post("search", true);
 
         $filterText = '';
-        if ($search) {
+        $esp_id = $this->input->post("esp_id", true);
+        $sqlEspecialidad = '';
+        if ($esp_id) {
+           $esp_id = $this->input->post("esp_id", true);
+           $sqlEspecialidad = " AND esp_id = $esp_id ";
+        }else{
+          $esp_id  = '';
+        }
+
+      if ($search) {
             $value = $search['value'];
             if (strlen($value) > 0) {
                 $filterText = " AND (
@@ -711,6 +720,7 @@ class Adjudicaciones_model extends CI_Model
                 AND P.estado_adjudicacion IN (0,2, 3) 
                 AND intentos_adjudicacion <  2
                 AND (AD.id IS NULL OR AD.estado = 0)
+                $sqlEspecialidad
                 $filterText
                 ORDER BY P.id DESC";
 

@@ -22,6 +22,8 @@ class Adjudicaciones extends CI_Controller {
          date_default_timezone_set('America/Lima');
         $this->layout->setLayout("template");
         $this->load->model("adjudicaciones_model");
+        $this->load->model("configuracion_model");
+        
     }
 
     public function index() {
@@ -140,6 +142,18 @@ class Adjudicaciones extends CI_Controller {
             show_404();
         }    
     }
+
+
+    public function listarGruposInscripcion() {
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->configuracion_model->listarGruposInscripcionDataTable(true,true)));
+        } else {
+            show_404();
+        }    
+    }
+
 
     public function generar_reporte_adjudicados()
     {

@@ -14,12 +14,15 @@ const AppPlazaIndex = () => {
                     dataModalidades: JSON.parse($('#AppIndexPlaza').attr('data-modalidades')),
                     dataNiveles: JSON.parse($('#AppIndexPlaza').attr('data-niveles')),
                     any: 0,
+                    id_tipo_perfil: '',
                     niveles: [],
                     modalidades: []
                 }
             },
             mounted: function () {
                 self.initialize();
+                self.id_tipo_perfil = dom.getAttribute('id-data-tipo-perfil');
+
 
             },
             methods: {
@@ -369,23 +372,56 @@ const AppPlazaIndex = () => {
                             },
                             {
                                 "targets": 12,
+                                "data": "fecha_inicio",
+                                "className": "text-center",
+                                "render": function ( data, type, row, meta ) {
+                                    return row.fecha_inicio;
+                                }
+                            },
+                            {
+                                "targets": 13,
+                                "data": "fecha_fin",
+                                "className": "text-center",
+                                "render": function ( data, type, row, meta ) {
+                                    return row.fecha_fin;
+                                }
+                            },
+                            {
+                                "targets": 14,
                                 "data": "deleted_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return `<button type="button" class="btn btn-sm btn-light btn-active-light me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Acción
-                                            </button>
-                                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-2 dropdown-menu dropdown-menu-start">
-                                                <div class="menu-item px-3 py-2">
-                                                    <a href="#" class="menu-link text-danger px-3 btn-edit" data-id="${row.plz_id}">Editar</a>
-                                                </div>
-                                                <div class="menu-item px-3 py-2">
-                                                    <a href="#" class="menu-link text-danger px-3 btn-award" data-id="${row.plz_id}">Adjudicados</a>
-                                                </div>
-                                                <div class="menu-item px-3 py-2">
-                                                    <a href="#" class="menu-link text-danger px-3 btn-remove" data-id="${row.plz_id}">Eliminar</a>
-                                                </div>
-                                            </div>`;
+                                    if(self.id_tipo_perfil != 5){ // VALIDACION PARA QUE EL ID TIPO PERFIL 5 : ADM DE PERSONAL SOLO TENGA MODO LECTURA EN EL MODULO DE ADJUDICACION
+                                        return `<button type="button" class="btn btn-sm btn-light btn-active-light me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Acción
+                                    </button>
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-2 dropdown-menu dropdown-menu-start">
+                                        <div class="menu-item px-3 py-2">
+                                            <a href="#" class="menu-link text-danger px-3 btn-edit" data-id="${row.plz_id}">Editar</a>
+                                        </div>
+                                        <div class="menu-item px-3 py-2">
+                                            <a href="#" class="menu-link text-danger px-3 btn-award" data-id="${row.plz_id}">Adjudicados</a>
+                                        </div>
+                                        <div class="menu-item px-3 py-2">
+                                            <a href="#" class="menu-link text-danger px-3 btn-remove" data-id="${row.plz_id}">Eliminar</a>
+                                        </div>
+                                    </div>`;
+                                    }
+                                    else{
+                                        return `<button type="button" class="btn btn-sm btn-light btn-active-light me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Acción
+                                    </button>
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-2 dropdown-menu dropdown-menu-start">
+                                        <div class="menu-item px-3 py-2">
+                                            <a href="#" class="menu-link text-danger px-3 btn-award" data-id="${row.plz_id}">Adjudicados</a>
+                                        </div>
+                                    
+                                    </div>`;
+
+                                    }
+
+
+                                 
                                 }
                             }
                         ]
@@ -644,6 +680,9 @@ const AppPlazaIndex = () => {
                     dom.querySelector('select[name="tipo_vacante"]').value = plaza.tipo_vacante;
                     dom.querySelector('input[name="motivo_vacante"]').value = plaza.motivo_vacante;
                     dom.querySelector('input[name="cargo"]').value = plaza.cargo;
+                    dom.querySelector('input[name="fecha_inicio"]').value = plaza.fecha_inicio;
+                    dom.querySelector('input[name="fecha_fin"]').value = plaza.fecha_fin;
+                    
                     self.listModalidades(plaza.mod_id, plaza.nivel_id);
                 }
             },

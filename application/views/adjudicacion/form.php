@@ -48,6 +48,30 @@
                     <div class="card border-secondary">
                         <div class="card-body text-dark">
                             <div class="text-right mb-2">
+
+                             <div class="row">
+                                <div class="col-md-12 mb-3">
+                                <div class="card border border-primary">
+                                                    <div class="card-header bg-dark text-white">
+                                                        <div class="d-flex">
+                                                            <h5 class="col"><span class="badge rounded-pill bg-light text-primary me-1 fs-7">+</span>Asignación de busqueda</h5>
+                                                            <?php if (!$edit) { ?>
+                                                                <div class="col text-end">
+                                                                    <button type="button" class="btn btn-sm btn-outline-light btn-filtro-busqueda">
+                                                                        <i class="fa-solid fa-file-signature fa-lg me-1"></i> Buscar Modalidad/Nivel/Especialidad
+                                                                    </button>
+                                                                </div>
+                                                            <?php } ?>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="col-md-12 list-modalidades">
+                                                            No hay registro para mostrar
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                </div>
+                             </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="row">
@@ -238,6 +262,51 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="button" class="btn btn-primary btn-docente-add">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalFiltroBusqueda" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Asignación de busqueda</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-sm shadow-none" placeholder="Escribe aquí..." id="txtBuscador2">
+                                <button type="button" class="input-group-text btn btn-sm btn-primary shadow-none btn-search-2">Buscar</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-modalidades mb-0" id="tableModalidades"  width="100%">
+                                    <thead>
+                                        <tr class="cabecera_tabla_2">
+                                            <th>#</th>
+                                            <th>Modalidad</th>
+                                            <th>Nivel</th>
+                                            <th>Especialidad</th>
+                                            <th>Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary btn-modalidad-add">Agregar</button>
                 </div>
             </div>
         </div>

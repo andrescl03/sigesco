@@ -169,6 +169,59 @@ class Configuracion_model extends CI_Model
     return $sql->result_array();
   }
 
+
+  public function listarGruposInscripcionDataTable($idPer, $idPro)
+  {
+    try {
+
+      $draw = $this->input->post("draw", true);
+      $length = $this->input->post("length", true);
+      $start = $this->input->post("start", true);
+      $search = $this->input->post("search", true);
+      $filterText = '';
+      if ($search) {
+
+        $value = $search['value'];
+
+        if (strlen($value) > 0) {
+          $filterText = " ";
+        }
+      }
+
+      $sql = "SELECT * FROM `modalidades` `mod` 
+      INNER JOIN `niveles` `niv` ON `mod`.`mod_id` = `niv`.`modalidad_mod_id`
+      INNER JOIN `especialidades` `esp` ON `niv`.`niv_id` = `esp`.`niveles_niv_id`
+      INNER JOIN `grupo_inscripcion` `gin` ON `esp`.`esp_id` = `gin`.`especialidades_esp_id`
+      WHERE `gin`.`gin_estado` = 1
+      AND `gin`.`periodos_per_id` = '1'
+      AND `gin`.`procesos_pro_id` = '1'
+      ORDER BY `mod`.`mod_id` ASC, `niv`.`niv_id` ASC, `esp`.`esp_id` ASC " ;
+      
+
+      $items = $this->db->query($sql)->result_object();
+
+      $recordsTotal = count($items);
+
+      $sql .= " LIMIT {$start}, {$length}";
+
+      $items = $this->db->query($sql)->result_object();
+
+      $recordsFiltered = ($recordsTotal / $length) * $length;
+
+      $response['success'] = true;
+      $response['data'] = $items;
+      $response['recordsTotal'] = $recordsTotal;
+      $response['recordsFiltered'] = $recordsFiltered;
+      $response['message'] = 'successfully';
+
+    }
+      catch (\Exception $e) {
+        $response['message'] = $e->getMessage();
+      }
+
+    return $response;
+  }
+
   public function listarPeriodosActivos()
   {
     $sql = $this->db

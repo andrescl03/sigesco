@@ -3,7 +3,7 @@
         <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
         <li class="breadcrumb-item active">Plazas</li>
     </ol>
-    <?php  $CargoOficina = $this->session->userdata('CargoOficina'); ?>
+    <?php  $CargoOficina = $this->session->userdata('CargoOficina');  ?>
     <div class="app-row">
         <div class="col-md-12">
             <div class="tile">

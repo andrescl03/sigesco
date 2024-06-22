@@ -13,7 +13,7 @@ $colegios = $data['colegios'];
 $modalidades = $data['modalidades'];
 $niveles = $data['niveles'];
 ?>
-<div class="app-row" id="AppIndexPlaza" data-modalidades='<?php echo json_encode($modalidades) ?>'  data-niveles='<?php echo json_encode($niveles) ?>' >
+<div class="app-row" id="AppIndexPlaza"  id-data-tipo-perfil="<?php echo $this->session->userdata('sigesco_tus_iduser'); ?>"  data-modalidades='<?php echo json_encode($modalidades) ?>'  data-niveles='<?php echo json_encode($niveles) ?> '  >
     <div class="col-md-12">
         <div class="tile">
             <div class="tile-body">
@@ -146,6 +146,8 @@ $niveles = $data['niveles'];
                                                     <th class="text-center">Tipo Vacante</th>
                                                     <th class="text-center">Motivo Vacante</th>
                                                     <th class="text-center">Tipo de contrato</th>
+                                                    <th class="text-center">Fecha inicio</th>
+                                                    <th class="text-center">Fecha fin</th>
                                                     <th class="text-center">Estado</th>
                                                     <th class="text-center">Acciones</th>
                                                 </tr>
@@ -283,6 +285,14 @@ $niveles = $data['niveles'];
                                 <div class="col-md-2 mb-2 mt-1"><b>Cargo:</b></div>
                                 <div class="col-md-10 mb-2">
                                     <input class="form-control form-control-sm" name="cargo" type="text" required />
+                                </div>
+                                <div class="col-md-2 mb-2 mt-1"><b>Fecha de inicio:</b></div>
+                                <div class="col-md-10 mb-2">
+                                <input type="date" id="fechaInicio" name="fecha_inicio" class="form-control form-control-sm" required>
+                                </div>
+                                <div class="col-md-2 mb-2 mt-1"><b>Fecha de fin:</b></div>
+                                    <div class="col-md-10 mb-2">
+                                    <input type="date" id="fechafin" name="fecha_fin" class="form-control form-control-sm" required>
                                 </div>
                             </div>
                         </form>

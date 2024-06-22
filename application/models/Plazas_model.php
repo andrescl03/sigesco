@@ -174,6 +174,8 @@ class Plazas_model extends CI_Model {
       $mod_id  = $this->input->post("mod_id", true);
       $niv_id  = $this->input->post("niv_id", true);
       $cargo  = $this->input->post("cargo", true);
+      $fecha_inicio  = $this->input->post("fecha_inicio", true);
+      $fecha_fin  = $this->input->post("fecha_fin", true);
 
       if (is_numeric($codigo_plaza)) {
         $sql = "SELECT 
@@ -216,7 +218,9 @@ class Plazas_model extends CI_Model {
         'nivel_id' => $niv_id,
         'ie'=>@$colegio->mod_nombre,
         'nivel'=>@$colegio->mod_nivel,
-        'cargo'=>$cargo
+        'cargo'=>$cargo,
+        'fecha_inicio'=>$fecha_inicio,
+        'fecha_fin'=>$fecha_fin,
       ];
       
       $this->db->insert('plazas',$data);
@@ -259,6 +263,8 @@ class Plazas_model extends CI_Model {
       $niv_id  = $this->input->post("niv_id", true);
       $colegio_id = $this->input->post("colegio_id", true);
       $cargo  = $this->input->post("cargo", true);
+      $fecha_inicio  = $this->input->post("fecha_inicio", true);
+      $fecha_fin  = $this->input->post("fecha_fin", true);
 
       if (is_numeric($codigo_plaza)) {
         $sql = "SELECT 
@@ -301,7 +307,9 @@ class Plazas_model extends CI_Model {
         'mod_id' => $mod_id,
         'nivel_id' => $niv_id,
         'nivel'=>@$colegio->mod_nivel,
-        'cargo'=>$cargo
+        'cargo'=>$cargo,
+        'fecha_inicio'=>$fecha_inicio,
+        'fecha_fin'=>$fecha_fin
       ];
       
       $this->db->update('plazas', $data, ['plz_id' => $id]);
