@@ -378,12 +378,12 @@ class Postulaciones_model extends CI_Model
             ];
             log_message_ci("Ingresa a registrar expediente 2 " . json_encode($data));
 
-            $result = $this->mesaparteservice->request('POST', 'mpv/tramites/registrar', $data,  $this->mesaparteservice->token(), true);
+           /* $result = $this->mesaparteservice->request('POST', 'mpv/tramites/registrar', $data,  $this->mesaparteservice->token(), true);
             if ($result['status'] == 200) {
                 $this->db->update('postulaciones', ['uid' => $result['response']['CodigoTramite']], array('id' => $postulacion_id));
             }
 
-            log_message_ci("Ingresa a registrar expediente 3 " . json_encode($result));
+            log_message_ci("Ingresa a registrar expediente 3 " . json_encode($result)); */
 
             $response['success'] = true;
             $response['data'] = compact('postulante', 'archivos');
@@ -626,12 +626,12 @@ class Postulaciones_model extends CI_Model
             ];
             log_message_ci("Ingresa a reclamo expediente 2 " . json_encode($data));
             
-           $result = $this->mesaparteservice->request('POST', 'mpv/tramites/registrar', $data,  $this->mesaparteservice->token(), true);
+           /*$result = $this->mesaparteservice->request('POST', 'mpv/tramites/registrar', $data,  $this->mesaparteservice->token(), true);
             if ($result['status'] == 200) {
                 $this->db->update('postulaciones', ['uid' => $result['response']['CodigoTramite']], array('id' => $postulacion_id));
             }
 
-            log_message_ci("Ingresa a reclamo expediente 3 " . json_encode($result));
+            log_message_ci("Ingresa a reclamo expediente 3 " . json_encode($result));*/
 
             $response['success'] = true;
             $response['data'] = compact('postulante', 'archivos');

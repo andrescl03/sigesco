@@ -74,7 +74,7 @@ const AppAdjudicacionAdmin = () => {
                                             e.target.reset();
                                             self.modalNewAdjudicacion.hide();
                                             sweet2.show({type:'success', text: 'Se guardo correctamente'});
-                                            self.table.ajax.reload();
+                                            //self.table.ajax.reload();
                                         });
                                     });
                                 }

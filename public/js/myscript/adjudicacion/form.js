@@ -625,7 +625,7 @@ const AppAdjudicacionAdmin = () => {
                             formData.append('plaza_id', self.plaza.plz_id);
                             formData.append('postulacion_id', self.postulacion.id);
                             formData.append('firmas', JSON.stringify(self.firmas));
-                            const url = self.edit ? `admin/adjudicaciones/${adjudicacion_id}/update` : `admin/adjudicaciones/store`;
+                            const url = self.edit ?  `admin/adjudicaciones/${adjudicacion_id}/update` : `admin/adjudicaciones/store`;
                             self.createUpdate(url, formData)
                             .then((response) =>{
                                 e.target.reset();
@@ -637,7 +637,7 @@ const AppAdjudicacionAdmin = () => {
 
                                 setTimeout(() => {
                                     sweet2.loading();
-                                    window.location.href = '/adjudicaciones';                                
+                                    window.location.href = '';                                
                                 }, 2500);
                             
                             });
