@@ -82,9 +82,21 @@ class Plazas extends CI_Controller {
 
     {
 
-        $ficha = 'REPORTE DE PLAZAS DISPONIBLES';
+        $estado =  $this->input->post('estado');
 
-        $records = $this->plazas_model->f_details_plazas();
+        if($estado == 1){
+            $name_estado = 'DISPONIBLES';
+            $records = $this->plazas_model->f_details_plazas();
+
+        }
+        if($estado == 2){
+            $name_estado = 'LIBERADAS';
+            $records = $this->plazas_model->f_details_plazas_liberadas();
+
+        }
+
+        $ficha = 'REPORTE DE PLAZAS ' . $name_estado;
+
 
         file_put_contents('log.txt', shell_exec('locale -a'), FILE_APPEND);
         set_time_limit(0);
@@ -101,10 +113,10 @@ class Plazas extends CI_Controller {
         $hoja->setCellValue('A1', 'REPORTE GENERAL ' . $fecha);
         $hoja->getStyle('A1')->getFont()->setSize(24)->setBold(true);
 
-        $hoja->mergeCells('A1:K1');
+        $hoja->mergeCells('A1:L1');
         $hoja->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         // Encabezados y estilo
-        $headers = ['CÓDIGO DE PLAZA', 'NOMBRE DE LA I.E', 'CARGO', 'CARACTERÍSTICA', 'TIPO', 'JORNADA LABORAL', 'TIPO DE VACANTE', 'MOTIVO DE VACANTE', 'MODALIDAD', 'NIVEL', 'ESPECIALIDAD'];
+        $headers = ['CÓDIGO DE PLAZA', 'NOMBRE DE LA I.E', 'CARGO', 'CARACTERÍSTICA', 'TIPO', 'JORNADA LABORAL', 'TIPO DE VACANTE', 'MOTIVO DE VACANTE', 'MODALIDAD', 'NIVEL', 'ESPECIALIDAD', 'OBSERVACION'];
         foreach ($headers as $key => $header) {
             $hoja->setCellValueByColumnAndRow($key, 2, $header);
 
@@ -113,9 +125,9 @@ class Plazas extends CI_Controller {
             $hoja->getStyleByColumnAndRow($key, 2)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         }
 
-        $hoja->getStyle('A2:K2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('FF0000');
+        $hoja->getStyle('A2:L2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('FF0000');
 
-        $columnas = range('A', 'K');
+        $columnas = range('A', 'L');
         foreach ($columnas as $columna) {
             $hoja->getColumnDimension($columna)->setAutoSize(true);
         }
@@ -124,7 +136,7 @@ class Plazas extends CI_Controller {
 
         foreach ($records as $fila) {
 
-            foreach (range('A', 'K') as $columna) {
+            foreach (range('A', 'L') as $columna) {
                 $hoja->getStyle($columna . $cont)->getNumberFormat()->setFormatCode('@');
             }
 
@@ -160,6 +172,10 @@ class Plazas extends CI_Controller {
 
             $hoja->getStyle('K' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
             $hoja->setCellValue('K' . $cont, $fila->especialidad, PHPExcel_Cell_DataType::TYPE_STRING);
+
+            $hoja->getStyle('L' . $cont)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->setCellValue('L' . $cont, $fila->observacion_liberacion, PHPExcel_Cell_DataType::TYPE_STRING);
+
 
             $cont++;
         }

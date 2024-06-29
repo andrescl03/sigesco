@@ -328,6 +328,7 @@ $niveles = $data['niveles'];
                                         <option selected hidden value="">[SELECCIONE]</option>
                                         <!-----<option value="-1">TODOS</option>-->
                                         <option value="1">disponible</option>
+                                        <option value="2">liberadas</option>
                                         <!-----<option value="adjudicado">adjudicado</option>-->
                                     </select>
                                 </div>

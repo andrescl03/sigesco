@@ -355,11 +355,12 @@ class Evaluacion extends CI_Controller {
 
     public function reporte_excel_2($convocatoria_id, $inscripcion_id, $estado, $ficha) {
         $response = $this->evaluacion_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado, true);
+
         if (!$response['success']) {
             echo $response['message'];
         }
         // $records = $response['data']['records'];
-        $this->generar_reporte_excel_2($response['data'], $ficha);
+        $this->generar_reporte_excel_2($response['data'], $ficha, $estado);
     }
 
     public function reporte_excel_general($convocatoria_id) {
@@ -528,14 +529,11 @@ class Evaluacion extends CI_Controller {
         $objWriter->save('php://output');
     }
 
-    public function generar_reporte_excel_2($data, $ficha = null) {
+    public function generar_reporte_excel_2($data, $ficha = null, $estado) {
         $records = $data['records'];
         $convocatoria = $data['convocatoria'];
         $ficha = $ficha ? $ficha : 'REPORTE_DE_EVALUACIÓN';
-        // echo json_encode($records); exit;
-        // echo json_encode($records[0]->anexo_plantilla->sections); exit;
-        /* A partir de ahora cualquier salida al navegador se guardarÃ¡ en un buffer */
-        /* Obtenemos el listado de locales disponibles en el sistema */
+
         file_put_contents('log.txt', shell_exec('locale -a'), FILE_APPEND);
         set_time_limit(0);
         setlocale(LC_ALL, 'es_ES');
@@ -552,72 +550,117 @@ class Evaluacion extends CI_Controller {
         $this->excel->setActiveSheetIndex(0);
             //name the worksheet
         $hoja->setTitle('Reporte.');
-        //set cell A1 content with some text
-        $hoja->setCellValue('A1', 'REPORTE GENERAL ' . $fecha);
-        //change the font size
-        $hoja->getStyle('A1')->getFont()->setSize(24);
-        //make the font become bold
-        $hoja->getStyle('A1')->getFont()->setBold(true);
-        //merge cell A1 until D1
-        $hoja->mergeCells('A1:T1');
-        //set aligment to center for that merged cell (A1 to D1)
 
-        $hoja->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('B2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('C2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('D2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('E2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('F2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->mergeCells('A1:U1'); 
+
+        // Add image
+        $objDrawing = new PHPExcel_Worksheet_Drawing();
+        $objDrawing->setName('Logo');
+        $objDrawing->setDescription('Logo');
+        $objDrawing->setPath('./assets/image/logo_excel.png'); // Path to your logo file
+        $objDrawing->setHeight(50); // Set the height of the image
+        $objDrawing->setCoordinates('B1'); // Positioning
+
+        // Calculate the horizontal offset to center the image
+        $columnWidths = 0;
+        for ($col = 'A'; $col <= 'T'; $col++) {
+            $columnWidths += $hoja->getColumnDimension($col)->getWidth();
+        }
+        $offsetX = ($columnWidths * 0) / 2; // Estimate offset (6 pixels per column width unit)
+        $objDrawing->setOffsetX($offsetX); // Set horizontal offset
+        $objDrawing->setWorksheet($hoja);
+
+        // Adjust row height
+        $hoja->getRowDimension('1')->setRowHeight(70);
+        $hoja = $this->excel->getActiveSheet();
+
+        //activate worksheet number 1
+        if ($estado == 'revisado') {
+            $orden = 'PRELIMINAR';
+        }
+        if ($estado == 'finalizado') {
+            $orden = 'FINAL';
+        }
+
+        $this->excel->setActiveSheetIndex(0);
+           //name the worksheet
+       $hoja->setTitle('Reporte.');
+       //set cell A1 content with some text
+       $hoja->setCellValue('A2', 'CONTRATO DOCENTE PERIODO 2024  ' . ' - ' . ' ORDEN DE MÉRITO ' . $orden);
+       //change the font size
+       $hoja->getStyle('A2')->getFont()->setSize(24);
+       //make the font become bold
+       $hoja->getStyle('A2')->getFont()->setBold(true);
+       //merge cell A1 until D1
+       $hoja->mergeCells('A2:U2');
+       $hoja->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+
+        // Center align headers
+    $headerColumns = range('A', 'U');
+    foreach ($headerColumns as $column) {
+        $hoja->getStyle($column . '3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    }
+
+    
+       //set aligment to center for that merged cell (A1 to D1)
+
+        $hoja->getStyle('A3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('A3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('B3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('C3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('D3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('E3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('F3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         if ($convocatoria->con_tipo == 2) {
         $hoja->getStyle('G2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
       } 
       
-        $hoja->getStyle('H2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('I2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('J2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('K2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('L2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $hoja->getStyle('M2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('H3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('I3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('J3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('K3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('L3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $hoja->getStyle('M3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
       
 
-        $hoja->getStyle('N2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('O2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('P2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('Q2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('N3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('O3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('P3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('Q3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-        $hoja->getStyle('R2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('S2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('T2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $hoja->getStyle('U2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('R3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('S3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('T3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $hoja->getStyle('U3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-        $hoja->setCellValue('A2', 'NÚMERO DE EXPEDIENTE')->getStyle('A2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('B2', 'INSCRIPCIÓN')->getStyle('B2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('C2', 'DNI')->getStyle('C2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('D2', 'NOMBRES')->getStyle('D2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('E2', 'APELLIDOS')->getStyle('E2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('F2', 'ESPECIALISTA')->getStyle('F2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('A3', 'NÚMERO DE EXPEDIENTE')->getStyle('A3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('B3', 'INSCRIPCIÓN')->getStyle('B3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('C3', 'DNI')->getStyle('C3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('D3', 'NOMBRES')->getStyle('D3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('E3', 'APELLIDOS')->getStyle('E3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('F3', 'ESPECIALISTA')->getStyle('F3')->getFont()->setSize(15)->setBold(true);
         if ($convocatoria->con_tipo == 2) {
-            $hoja->setCellValue('G2', 'PRELACIÓN')->getStyle('G2')->getFont()->setSize(15)->setBold(true);
+            $hoja->setCellValue('G3', 'PRELACIÓN')->getStyle('G3')->getFont()->setSize(15)->setBold(true);
         
-        $hoja->setCellValue('H2', 'NÚMERO TRAMITE')->getStyle('H2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('I2', 'ESTADO')->getStyle('I2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('J2', ($convocatoria->con_tipo == 2 ? "" : "ORDEN DE MERITO"))->getStyle('J2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('K2', 'PUNTAJE')->getStyle('K2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('L2', 'OBSERVACIÓN')->getStyle('L2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('M2', 'ESPECIALIDAD DEL DOCENTE (ETP)')->getStyle('M2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('N2', 'FORMACIÓN ACADEMICA Y PROFESIONAL')->getStyle('N2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('O2', 'FORMACIÓN CONTINUA')->getStyle('O2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('P2', 'EXPERIENCIA LABORAL')->getStyle('P2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('Q2', 'MERITOS')->getStyle('Q2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('R2', 'BONIFICACION')->getStyle('R2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('S2', 'ORDEN DE MÉRITO LOCAL')->getStyle('S2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('H3', 'NÚMERO TRAMITE')->getStyle('H3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('I3', 'ESTADO')->getStyle('I3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('J3', ($convocatoria->con_tipo == 2 ? "" : "ORDEN DE MERITO"))->getStyle('J3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('K3', 'PUNTAJE')->getStyle('K3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('L3', 'OBSERVACIÓN')->getStyle('L3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('M3', 'ESPECIALIDAD DEL DOCENTE (ETP)')->getStyle('M3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('N3', 'FORMACIÓN ACADEMICA Y PROFESIONAL')->getStyle('N3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('O3', 'FORMACIÓN CONTINUA')->getStyle('O3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('P3', 'EXPERIENCIA LABORAL')->getStyle('P3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('Q3', 'MERITOS')->getStyle('Q3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('R3', 'BONIFICACION')->getStyle('R3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('S3', 'ORDEN DE MÉRITO LOCAL')->getStyle('S3')->getFont()->setSize(15)->setBold(true);
         if ($convocatoria->con_tipo == 2) {
-            $hoja->setCellValue('T2', 'ABSOLUCION DE RECLAMO')->getStyle('T2')->getFont()->setSize(15)->setBold(true);
+            $hoja->setCellValue('T3', 'ABSOLUCION DE RECLAMO')->getStyle('T3')->getFont()->setSize(15)->setBold(true);
         }
-        $hoja->setCellValue('U2', 'PUNTAJE PARCIAL')->getStyle('U2')->getFont()->setSize(15)->setBold(true);        
+        $hoja->setCellValue('U3', 'PUNTAJE PARCIAL')->getStyle('U3')->getFont()->setSize(15)->setBold(true);        
      // $hoja->setAutoFilter('A:L');
-        $hoja->getStyle('A2:U2')->getFill()->getStartColor()->setRGB('FF0000');
+        $hoja->getStyle('A3:U3')->getFill()->getStartColor()->setRGB('FF0000');
 
         $hoja->getColumnDimension('A')->setAutoSize(true);
         $hoja->getColumnDimension('B')->setAutoSize(true);
@@ -647,7 +690,7 @@ class Evaluacion extends CI_Controller {
         $hoja->getColumnDimension('T')->setAutoSize(true);
         }
         $hoja->getColumnDimension('U')->setAutoSize(true);
-        $cont = 3;
+        $cont = 4;
 
         foreach ($records as $fila) {
             $apellidos = $fila->apellido_paterno . ' ' . $fila->apellido_materno;

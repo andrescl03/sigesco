@@ -25,6 +25,7 @@ const AppAdjudicacionAdmin = () => {
                 },
                 clicks: () => {
                     const btn = dom.querySelector('#btnBuscador');
+                    const btnreclamo = dom.querySelector('#btnBuscadorReclamo');
 
                     if (btn) {
                         btn.addEventListener('click', (e) => {
@@ -32,6 +33,15 @@ const AppAdjudicacionAdmin = () => {
                             if (input) {
                                 sweet2.loading({ text: 'Buscando...' });
                                 self.table.search(input.value.trim()).draw();
+                            }
+                        });
+                    }
+                    if (btnreclamo) {
+                        btnreclamo.addEventListener('click', (e) => {
+                            const inputReclamo = dom.querySelector('#txtBuscadorReclamo');
+                            if ( inputReclamo) {
+                                sweet2.loading({ text: 'Buscando...' });
+                                self.table.search(inputReclamo.value.trim()).draw();
                             }
                         });
                     }
@@ -245,6 +255,15 @@ const AppAdjudicacionAdmin = () => {
                             },
                             {
                                 "targets": 10,
+                                "data": "fecha_reclamo",
+                                "className": "text-center",
+                                "render": function ( data, type, row, meta ) {
+
+                                    return row.fecha_reclamo != null ? `<span class="badge bg-primary" style="font-size: 0.9em;">${row.fecha_reclamo}</span>` : '';
+                                }
+                            },
+                            {
+                                "targets": 11,
                                 "data": "created_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {

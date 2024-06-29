@@ -35,6 +35,18 @@
                                                                     <button type="button" class="input-group-text btn btn-sm btn-primary shadow-none" id="btnBuscador">Buscar</button>
                                                                 </div>
                                                             </div>
+
+                                                            <div class="col-sm-2">
+                                                                <div class="input-group">
+                                                                     <select name="txtBuscadorReclamo" id="txtBuscadorReclamo" class="form-control form-control-sm">
+                                                                    <option value="0">[CON/SIN RECLAMO]</option> 
+                                                                    <option value="CON_RECLAMO">SI</option> 
+                                                                    <option value="SIN_RECLAMO">NO</option> 
+                                                                       
+                                                                </select>
+                                                                    <button type="button" class="input-group-text btn btn-sm btn-primary shadow-none" id="btnBuscadorReclamo">Buscar Reclamo</button>
+                                                                </div>
+                                                            </div>
                                                             <?php
                                                             if (in_array($this->session->userdata("sigesco_tus_iduser"), array('3')) && $any == 'preliminar') { ?>
                                                                 <button  data-id="<?= $datos[0]['con_numero'] ?>" type="button" id="btn-procesar-expedientes-preliminar-final" class="btn btn-sm btn-success btn-procesar-expedientes-preliminar-final mb-2">
@@ -71,6 +83,7 @@
                                                         <th class="text-center">NÚMERO DE EXPEDIENTE</th>
                                                         <th class="text-center">ESTADO</th>
                                                         <th class="text-center">ADJUNTOS</th>
+                                                        <th class="text-center">FECHA DE INGRESO DE RECLAMO</th>
                                                         <th class="text-center">ACCIONES</th>
                                                     </tr>
                                                 </thead>

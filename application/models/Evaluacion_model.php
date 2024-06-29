@@ -348,7 +348,7 @@ class Evaluacion_model extends CI_Model {
           $filterText = '';
           if ($search) {
               $value = $search['value'];
-              if (strlen($value) > 0) {
+              if (strlen($value) > 0 && $value != 'SIN_RECLAMO' && $search != 'CON_RECLAMO' ) {
                   $filterText = " AND (
                                        pos.nombre LIKE('%{$value}%') 
                                     OR pos.apellido_paterno LIKE('%{$value}%')
@@ -359,7 +359,15 @@ class Evaluacion_model extends CI_Model {
                                     OR cpp.cpe_orden LIKE('%{$value}%')
                                   ) ";
               }
-          }
+
+              if (strlen($value) > 0 && $value == 'CON_RECLAMO') {
+                  $filterText = " AND ( pos.fecha_reclamo IS NOT NULL) ";
+              }
+              if (strlen($value) > 0 && $value == 'SIN_RECLAMO') {
+                  $filterText = " AND ( pos.fecha_reclamo IS NULL) ";
+              }
+            }
+     
           $sigesco_tus_iduser = $this->session->userdata('sigesco_tus_iduser');
           $sigesco_dni = $this->session->userdata('sigesco_dni');
           $whereEstado = $any == 'final' ? " AND pos.estado = 'finalizado' " : " AND (pos.estado = 'revisado' OR pos.estado = 'rechazado') ";
@@ -553,7 +561,7 @@ class Evaluacion_model extends CI_Model {
                 foreach ($groups as $k3 => $o3) {
                   $questions = $o3->questions;
                   foreach ($questions as $k4 => $o4) {
-                    $puntaje_parcial = $puntaje_parcial + $o4->value;
+                    $puntaje_parcial = $puntaje_parcial + floatval($o4->value);
                   }
                 }
               }
