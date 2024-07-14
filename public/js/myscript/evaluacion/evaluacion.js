@@ -60,6 +60,20 @@ const AppAdjudicacionAdmin = () => {
                             });
                         });
                     }
+                    const btn_expediente_nocumplen_a_final = document.querySelectorAll('.pagination-no-cumple-btn-all');
+                    btn_expediente_nocumplen_a_final.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            sweet2.show({
+                                type: 'question',
+                                title: 'IMPORTANTE',
+                                text: `¿Estás seguro de procesar los registros en estado NO CUMPLEN a la etapa final?`,
+                                showCancelButton: true,
+                                onOk: () => {
+                                    self.sendPostulantsNoCumplen();
+                                 }
+                            });
+                        });
+                    });
                     const btnAlls = document.querySelectorAll('.pagination-btn-all');
                     btnAlls.forEach(btn => {
                         btn.addEventListener('click', (e) => {
@@ -330,7 +344,6 @@ const AppAdjudicacionAdmin = () => {
                             contentType: false,
                         })
                         .done(function (response) {
-                            
                             sweet2.loading(false);
                             sweet2.show({
                                 type: 'success',
@@ -340,6 +353,31 @@ const AppAdjudicacionAdmin = () => {
                                 }
                             });
 
+                            resolve(response);
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
+                        });
+                    });
+                }, 
+                sendPostulantsNoCumplen: () => {
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + `evaluacion/convocatoria/${convocatoria_id}/inscripcion/${inscripcion_id}/procesar/expedientes_nocumplen`,
+                            method: 'POST',
+                            dataType: 'json',
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function (response) {
+                            sweet2.show({
+                                type: 'success',
+                                text: response.message,
+                                onOk: () => {
+                                    self.table.ajax.reload();
+                                }
+                            });
                             resolve(response);
                         })
                         .fail(function (xhr, status, error) {
@@ -366,6 +404,7 @@ const AppAdjudicacionAdmin = () => {
                         });
                     });
                 }, 
+               
                 onActionRows: () => {
                     const btnEdits = document.querySelector('#' + container).querySelectorAll('.btn-edit'),
                         btnFiles = document.querySelector('#' + container).querySelectorAll('.btn-files');

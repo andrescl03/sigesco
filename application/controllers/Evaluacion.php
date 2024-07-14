@@ -304,6 +304,17 @@ class Evaluacion extends CI_Controller {
         }
     }
     
+    public function procesar_expedientes_nocumplen($convocatoria_id, $inscripcion_id){
+
+        if ($convocatoria_id > 0 && $inscripcion_id > 0) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->evaluacion_model->procesarExpedientesPreliminarNoCumpleFinal($convocatoria_id, $inscripcion_id)));
+        } else {
+            show_404();
+        }    
+    } 
+
     public function status() {
         if ($this->input->post()) {
             $this->output
@@ -313,6 +324,8 @@ class Evaluacion extends CI_Controller {
             show_404();
         }    
     }
+
+ 
 
     public function revaluarPreliFinal($id) {
         $datos = $this->postulaciones_model->show(['id' => $id]);

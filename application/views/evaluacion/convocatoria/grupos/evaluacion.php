@@ -61,6 +61,13 @@
                                                                 <button type="button" class="btn btn-sm btn-dark float-end pagination-btn-all">Procesar registros a Preliminar</button>
                                                             </div>
                                                             <?php } ?>
+                                                            <?php 
+                                                            if ($any == 'preliminar') { ?>
+                                                            <div class="vr"></div>
+                                                            <div class="col">
+                                                                <button type="button" class="btn btn-sm btn-dark float-end pagination-no-cumple-btn-all">Procesar registros que NO CUMPLEN a final</button>
+                                                            </div>
+                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                                 </div>
