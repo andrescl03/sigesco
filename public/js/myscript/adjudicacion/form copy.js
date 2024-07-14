@@ -315,17 +315,17 @@ const AppAdjudicacionAdmin = () => {
                         });
                     });
 
+
                     const btnDocente = document.querySelectorAll('.btn-docente');
                     btnDocente.forEach(btn => {
                         btn.addEventListener('click', (e) => {
-                            console.log(self.modalidades);
-                            if (!self.modalidades || self.modalidades.length === 0) {
-                                 sweet2.show({type:'info', text:'Debe de seleccionar la modalidad/nivel/especialidad'});
-                                return;
-                            }
+
+
+                        //self.modalDocentes.show();
                             setTimeout(() => {
-                                self.listPostulantes(self.onActionRowsPostulantes);
+                                self.listPostulantes(self.onActionRowsPostulantes);                                
                             }, 250);
+                            
                             return;
                             docenteRender();
                             self.modalDocentes.show();
@@ -365,7 +365,7 @@ const AppAdjudicacionAdmin = () => {
                                 sweet2.show({type:'info', text:'Debe de seleccionar un docente'});
                                 return;
                             }
-                           // self.modalPlazas.show();
+                            self.modalPlazas.show();
                             setTimeout(() => {
                                 self.listPlazas();                                
                             }, 250);
@@ -485,7 +485,7 @@ const AppAdjudicacionAdmin = () => {
                                     self.modalFiltroBusqueda.hide();
                                 }
                             } else {
-                                sweet2.show({type:'error', text:'Debe de seleccionar una modalidad'});
+                                sweet2.show({type:'error', text:'Debe de seleccionar una plaza'});
                             }
                         });
                     });
