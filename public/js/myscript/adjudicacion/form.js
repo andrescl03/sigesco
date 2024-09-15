@@ -23,7 +23,9 @@ const AppAdjudicacionAdmin = () => {
                     
                     tpostulaciones: [],
                     usuarios: [],
-
+                    tipo_postulacion: 0,
+                    tipo_postulacion_name: 0,
+                    
                     plaza: {},
                     postulacion: {},
                     firmas: [],
@@ -468,8 +470,14 @@ const AppAdjudicacionAdmin = () => {
                     const btnModalidadAdd = document.querySelectorAll('.btn-modalidad-add');
                     btnModalidadAdd.forEach(btn => {
                         btn.addEventListener('click', (e) => {
-                            let isvalid = false;
+                            let isvalid = false; 
                             const radios = document.querySelectorAll("input[name='check_modalidad']");
+                            const tipo_postulacion_convocatoria =  document.querySelector("select[name='tipo_postulacion_convocatoria']");
+
+                            if(tipo_postulacion_convocatoria.value == 0){
+                                sweet2.show({type:'error', text:'Debe de seleccionar un tipo de postulacion'});
+                                return;
+                            }
                             if (radios) {
                                 radios.forEach(radio => {
                                     if (radio.checked) {
@@ -481,6 +489,8 @@ const AppAdjudicacionAdmin = () => {
                             if (isvalid) {
                                 if (isvalid > 0) {
                                     self.modalidades = self.modalidades.find((o) => { return o.esp_id === isvalid });
+                                    self.tipo_postulacion = tipo_postulacion_convocatoria.value;
+                                    self.tipo_postulacion_name =  tipo_postulacion_convocatoria.options[tipo_postulacion_convocatoria.value].text;
                                     self.modalidadRender();
                                     self.modalFiltroBusqueda.hide();
                                 }
@@ -909,8 +919,6 @@ const AppAdjudicacionAdmin = () => {
 
                 listPostulantes: (_callback = ()=>{}) => {
 
-                    let esp_id = self.modalidades ? self.modalidades.esp_id : 0;
-                    console.log(esp_id);
 
                     if (Object.keys(self.dataTablePostulantes).length == 0) {
                      
@@ -953,6 +961,7 @@ const AppAdjudicacionAdmin = () => {
                             "dataType": "json",
                             data: function(d) {
                                 d.esp_id = self.modalidades ? self.modalidades.esp_id : 0;
+                                d.tipo_postulacion_id = self.tipo_postulacion ? self.tipo_postulacion : 0;
                             }
                             },
                             "fnDrawCallback": function(oSettings, json) {
@@ -968,7 +977,7 @@ const AppAdjudicacionAdmin = () => {
                                     "targets": 0,
                                     "data": "id",
                                     "render": function ( data, type, row, meta ) {
-                                        return row.id;
+                                        return meta.row + meta.settings._iDisplayStart + 1;
                                     }
                                 },
                                 {
@@ -1018,6 +1027,14 @@ const AppAdjudicacionAdmin = () => {
                                 },
                                 {
                                     "targets": 7,
+                                    "data": "prelacion",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return row.prelacion;
+                                    }
+                                },
+                                {
+                                    "targets": 8,
                                     "data": "fecha_registro",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
@@ -1025,7 +1042,7 @@ const AppAdjudicacionAdmin = () => {
                                     }
                                 },
                                 {
-                                    "targets": 8,
+                                    "targets": 9,
                                     "data": "estado_adjudicacion",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
@@ -1045,7 +1062,7 @@ const AppAdjudicacionAdmin = () => {
                                     }
                                 },
                                 {
-                                    "targets": 9,
+                                    "targets": 10,
                                     "data": "intentos_adjudicacion",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
@@ -1053,7 +1070,7 @@ const AppAdjudicacionAdmin = () => {
                                     }
                                 },
                                 {
-                                    "targets": 10,
+                                    "targets": 11,
                                     "data": "fecha_registro",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
@@ -1061,7 +1078,7 @@ const AppAdjudicacionAdmin = () => {
                                     }
                                 },
                                 {
-                                    "targets": 11,
+                                    "targets": 12,
                                     "data": "deleted_at",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
@@ -1424,9 +1441,11 @@ const AppAdjudicacionAdmin = () => {
                     if (Object.keys(self.modalidades).length > 0) {
                         console.log(self.modalidades);
                         html = `
-                        <p><strong>Modalidad</strong> ${self.modalidades.mod_abreviatura}</p>
-                         <p><strong>Nivel</strong> ${self.modalidades.niv_descripcion}</p>
-                          <p><strong>Especialidad</strong> ${self.modalidades.esp_descripcion}</p>
+                        <p><strong>Modalidad:</strong> ${self.modalidades.mod_abreviatura}</p>
+                         <p><strong>Nivel:</strong> ${self.modalidades.niv_descripcion}</p>
+                          <p><strong>Especialidad:</strong> ${self.modalidades.esp_descripcion}</p>
+                          <p><strong>Tipo de postulación:</strong> ${self.tipo_postulacion_name} </p>
+                          
                        `;
                     }
                     const divs = dom.querySelectorAll('.list-modalidades');

@@ -146,6 +146,7 @@ $niveles = $data['niveles'];
                                                     <th class="text-center">Tipo Vacante</th>
                                                     <th class="text-center">Motivo Vacante</th>
                                                     <th class="text-center">Tipo de contrato</th>
+                                                    <th class="text-center">¿Plaza nombrada?</th>
                                                     <th class="text-center">Estado</th>
                                                     <th class="text-center">Fecha inicio</th>
                                                     <th class="text-center">Fecha fin</th>

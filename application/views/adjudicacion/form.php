@@ -108,7 +108,7 @@
                                                                         class="form-control form-control-sm shadow-none"
                                                                         placeholder="Escribe aquí..." id="txtBuscador1">
                                                                     <button type="button"
-                                                                        class="input-group-text btn btn-sm btn-primary shadow-none btn-search-1">Buscar</button>
+                                                                        class="input-group-text btn btn-sm btn-primary shadow-none btn-search-1">Filtrar</button>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
@@ -118,13 +118,14 @@
                                                                         id="tablePostulantes">
                                                                         <thead>
                                                                             <tr class="cabecera_tabla_2 bg-primary">
-                                                                                <th>#</th>
+                                                                                <th>Orden de mérito</th>
                                                                                 <th>Docente</th>
                                                                                 <th>Número de Documento</th>
                                                                                 <th>Modalidad</th>
                                                                                 <th>Nivel</th>
                                                                                 <th>Especialidad</th>
                                                                                 <th>Puntaje</th>
+                                                                                <th>Prelación</th>
                                                                                 <th>Fecha de Registro</th>
                                                                                 <th class="text-center">Estado</th>
                                                                                 <th class="text-center">Nro de intentos
@@ -179,7 +180,7 @@
                                                                         class="form-control form-control-sm shadow-none"
                                                                         placeholder="Escribe aquí..." id="txtBuscador">
                                                                     <button type="button"
-                                                                        class="input-group-text btn btn-sm btn-success shadow-none btn-search">Buscar</button>
+                                                                        class="input-group-text btn btn-sm btn-success shadow-none btn-search">Filtrar</button>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
@@ -354,7 +355,7 @@
                                 <input type="text" class="form-control form-control-sm shadow-none"
                                     placeholder="Escribe aquí..." id="txtBuscador1">
                                 <button type="button"
-                                    class="input-group-text btn btn-sm btn-primary shadow-none btn-search-1">Buscar</button>
+                                    class="input-group-text btn btn-sm btn-primary shadow-none btn-search-1">Busqueda</button>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -431,8 +432,15 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
-
+                        <div class="col-sm-12 mt-2">
+                            <label class="form-label" for="">Seleccione el tipo de postulación</label>
+                            <select name="tipo_postulacion_convocatoria" id="tipo_postulacion_convocatoria" class="form-select form-control-sm">
+                                <option hidden value="0">[SELECCIONE]</option>
+                                <option value="1">PUN</option>
+                                <option value="2">EVALUACION DE EXPEDIENTE</option>
+                            </select>
+                        </div>
+                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

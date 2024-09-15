@@ -573,46 +573,7 @@
             </div>
         </div>
     </section>
-    <!-- Modal -->
-    <div class="modal fade" id="miModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-lg " role="document">
-            <div class="modal-content">
-                <div class="modal-header  text-white" style="background-color:#de1f29 !important">
-                    <h5 class="modal-title" id="exampleModalLongTitle">CONTRATO DOCENTE - 2023 | UGEL 05</h5>
-                    <button type="button " class="close" data-dismiss="modal" aria-label="Close">
-                        <span style="color:white" aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Estimado usuario, bienvenido al registro de datos para el proceso de contratación docente de la UGEL N.° 05.</p>
-                    <p>Recuerde verificar sus datos antes de finalizar su postulación</p>
-                    <p>A continuación se adjunta el procedimiento a seguir para llevar a cabo con éxito su postulación</p>
-                    <div id="carouselExample" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="https://i.ibb.co/6g0LzmC/Captura-de-pantalla-2023-10-04-101003.png" class="d-block w-100" alt="...">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://i.ibb.co/6g0LzmC/Captura-de-pantalla-2023-10-04-101003.png" class="d-block w-100" alt="...">
-                            </div>
-                            <!-- Agrega más elementos de carousel-item según sea necesario -->
-                        </div>
-                        <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR VENTANA DE AYUDA</button>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 
     <!-- <?php $this->load->view('registro/layouts/scrollTop'); ?>-->
     <?php $this->load->view('registro/layouts/footer'); ?>
@@ -631,8 +592,6 @@
     </script>
     <script>
         $(document).ready(function() {
-
-            $("#miModal").modal('show');
 
             $('#postulation_type').on('change', function() {
                 var selectedOption = $(this).val();

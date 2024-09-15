@@ -150,14 +150,68 @@ const AppConvovatoriaWeb = () => {
                                     return;
                                 }
                                 self.response = data;
-                                dom.querySelector('#formPostulant').reset();
-                                self.renderCompletedPostulant();
                                 sweet2.loading(false);
+                                let uid = self.response['postulante'].uid;
+                                dom.querySelector('#formPostulant').reset();
+                                $('.btn-print-reporte-ficha-postulacion').attr('href', window.AppMain.url + 'reportes/registro/' + uid + '/reclamo');
+                                $('#documentos_unificados').attr('href', window.AppMain.url + 'public' + self.response['archivos'][0]['url']);
+                                $('#uidExpediente').val(uid);
+                                $('#div-step-2').removeClass('d-none');
+                                $('#div-step-3').removeClass('d-none');
+                                var myModal = new bootstrap.Modal(document.getElementById('showInformacionPostulacion_paso_dos'), {
+                                    keyboard: false
+                                });
+                                myModal.show();
+                                self.renderCompletedPostulant();
                             })
                             .fail(function (xhr, status, error) {
                                 sweet2.show({type:'error', text:error});
                             });
                         }
+                    });
+                });
+
+                $('.btn-registrar-numero-expediente').on('click', function () {
+                    const numberExpediente = $('input[name="numeroExpediente"]').val();
+                    const uidExpediente = $('input[name="uidExpediente"]').val();
+
+                    if (!numberExpediente) {
+                        sweet2.show({ type: 'error', html: 'Por favor, completa todos los campos requeridos.' });
+                        return;
+                    }
+                    const formData = new FormData();
+                    formData.append('numberExpediente', numberExpediente);
+                    formData.append('uid', uidExpediente);
+                    sweet2.loading();
+
+                    $.ajax({
+                        url: window.AppMain.url + 'web/postulaciones/expediente_reclamo/store',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                    }).done(function ({ success, data, message }) {
+                        sweet2.loading(false);
+                        if (success) {
+                            sweet2.show({
+                                type: 'success',
+                                icon: 'success',
+                                html: message
+                            });
+
+                            $('.btn-showInformacionPostulacion-paso-dos').remove();
+
+                            setTimeout(() => {
+                                var myModal = bootstrap.Modal.getInstance(document.getElementById('showInformacionPostulacion_paso_dos'));
+                                myModal.hide();
+                            }, 2000);
+                            
+                        } else {
+                            sweet2.show({ type: 'error', html: message || 'Ocurrió un error inesperado.' });
+                        }
+                    }).fail(function (xhr, status, error) {
+                        sweet2.show({ type: 'error', html: error });
                     });
                 });
 
@@ -261,11 +315,12 @@ const AppConvovatoriaWeb = () => {
                             processData: false,
                             contentType: false,
                         })
-                        .done(function ({success, data, message}) {
+                        .done(function ({success, data, message,status}) {
+
                             if (success) {
                                 self.numberDocument = dom.querySelector('input[name="numero_documento"]').value;
                                 self.typeDocument = dom.querySelector('input[name="tipo_documento"]').value;
-                                self.formPostulant = data.postulante;
+                                self.formPostulant = data.postulacion;
                                 dom.querySelector('input[name="nombre"]').value = self.formPostulant.nombre + ' ' + self.formPostulant.apellido_paterno + ' ' +  self.formPostulant.apellido_materno;
                                 dom.querySelector('input[name="fecha_postulacion"]').value = self.formPostulant.fecha_registro;
                                 dom.querySelector('input[name="numero_celular"]').value = self.formPostulant.numero_celular;
@@ -291,9 +346,55 @@ const AppConvovatoriaWeb = () => {
                                 self.formInputEvent(!success);
                                 self.formInputDocument(!success);
                             } else {
+
+                                if (status == 500) {
+                                    sweet2.show({
+                                        type: 'error',
+                                        html: message
+                                    });
+                                    return;
+                                }
+
                                 self.numberDocument = 0;
-                                sweet2.show({type:'error', html: message});
+
+                                const { uid,  numero_expediente_reclamo } = data.postulacion;
+                                const { url } = data.postulacionReclamo;
+
+                                const ruta_imagen = numero_expediente_reclamo  ? 'assets/image/escala_paso_tres.png'  : 'assets/image/escala_paso_dos.png';
+
+                                Swal.fire({
+                                    title: 'POSTULACIÓN',
+                                    html: `<p style="font-size: 16px; color: #333;">${message}</p>`,
+                                    imageUrl: `${window.AppMain.url}${ruta_imagen}`,
+                                    imageWidth: 100,
+                                    imageHeight: 100,
+                                    confirmButtonText: 'Continuar', 
+                                    confirmButtonColor: '#3085d6', 
+                                    background: '#f9f9f9', 
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        $('#div-step-2').removeClass('d-none');
+                                        $('#div-step-3').removeClass('d-none');
+
+                                        if (numero_expediente_reclamo) {
+                                            $('#div-step-2').addClass('d-none');
+                                            $('#div-step-3').addClass('d-none');
+                                        }
+                                        else {
+                                            $('.btn-print-reporte-ficha-postulacion').attr('href', `${window.AppMain.url}reportes/registro/${uid}/reclamo`);
+                                            $('#documentos_unificados').attr('href',`${window.AppMain.url}public/${url}`);
+                                            $('#uidExpediente').val(uid);
+                                            const myModal = new bootstrap.Modal(document.getElementById('showInformacionPostulacion_paso_dos'), {
+                                                keyboard: false
+                                            });
+                                            myModal.show();
+                                        }
+                                    }
+                                });
                             }
+                               
                         })
                         .fail(function (xhr, status, error) {
                             sweet2.show({type:'error', html: error});
@@ -651,44 +752,23 @@ const AppConvovatoriaWeb = () => {
                                             <div class="alert alert-success d-flex align-items-center" role="alert">
                                                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                                                 <div>
-                                                    Estimado <b>${ self.postulant.nombre }</b>, se ha enviado un correo electrónico a <b>${ self.postulant.correo }</b>.
+                                                    Estimado <b>${self.postulant.nombre}</b>, no olvide descargar su <b>reporte de reclamo</b> y <b>consolidado de documentos cargados</b>.
                                                 </div>
                                             </div>
                                             ${ self.renderPreviewPostulant({postulant: self.postulant, toString: true}) }
                                         </div>
                                     </div>
                                     <div class="card-footer text-center">
-                                        <a href="${window.AppMain.url + 'web/convocatorias'}" type="button" class="btn btn-primary me-3">Inicio</a>
-                                        <button type="button" class="btn btn-dark btn-print">Imprimir</button>
+                                        <button type="button" class="btn btn-dark btn-showInformacionPostulacion-paso-dos">Click aquí para continuar con el paso 2 - registro en MINEDU EN LÍNEA</button>
                                     </div>
                                 </div>`;
-
-                self.eventTag('btn-print', () => {
-                    var html = self.renderPreviewPostulant({postulant: self.postulant, toString: true});
-                    var newWin = window.open('','Print-Window');
-                    newWin.document.open();
-                    newWin.document.write(`
-                        <html>
-                            <header>
-                                <link rel="stylesheet" type="text/css" href="${window.AppMain.url}/public/css/bootstrapv5.0.2/bootstrap.css">
-                                <style>
-                                    .col-lg-5 {
-                                        flex: 0 0 auto;
-                                        width: 41.66666667%;
-                                    }
-                                    .col-lg-7 {
-                                        flex: 0 0 auto;
-                                        width: 58.33333333%;
-                                    }
-                                </style>
-                            </header>
-                            <body onload="window.print()" style="padding: 60px;">
-                                ${html}
-                            </body>
-                        </html>`);
-                    newWin.document.close();
-                    setTimeout(function(){newWin.close();}, 5);
-                });
+            self.eventTag('btn-showInformacionPostulacion-paso-dos', () => {
+                                    sweet2.loading(false);
+                                   var myModal = new bootstrap.Modal(document.getElementById('showInformacionPostulacion_paso_dos'), {
+                                        keyboard: false
+                                    });
+                                    myModal.show();
+                                });
             },
             renderAlertPostulant: (valid = false) => {
                 const alerts = dom.querySelectorAll('.alert-postulant');

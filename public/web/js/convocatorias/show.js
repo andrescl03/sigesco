@@ -22,7 +22,7 @@ const AppConvovatoriaWeb = () => {
             self.dateAdult = self.onDateAdut();
             self.initialize();
         },
-        data: () => { 
+        data: () => {
             return {
                 formVias: [],
                 formZonas: [],
@@ -57,18 +57,6 @@ const AppConvovatoriaWeb = () => {
                 departments: [],
                 formAttachedFiles: [],
                 attachedFileTypes: [],
-                /*[
-                    { id: 1, nombre: 'Anexo 1' },
-                    { id: 2, nombre: 'Anexo 8' },
-                    { id: 3, nombre: 'Anexo 9' },
-                    { id: 4, nombre: 'Anexo 10' },
-                    { id: 5, nombre: 'Anexo 11' },
-                    { id: 6, nombre: 'Anexo 12' },
-                    { id: 7, nombre: 'Anexo 19' },
-                    { id: 8, nombre: 'CV documentado' },
-                    { id: 9, nombre: 'Titulo profesional' } 
-
-                ],*/
                 response: {},
                 dateAdult: ''
             }
@@ -76,15 +64,15 @@ const AppConvovatoriaWeb = () => {
         methods: {
             initialize: () => {
                 self.detail()
-                .then(data => {
-                    self.attachedFileTypes = data.tipo_archivos
-                    self.renders();
-                    self.events();
-                    self.externs();
-                })
-                .catch(error => {
-                    sweet2.show({type:'error', html: error});
-                });
+                    .then(data => {
+                        self.attachedFileTypes = data.tipo_archivos
+                        self.renders();
+                        self.events();
+                        self.externs();
+                    })
+                    .catch(error => {
+                        sweet2.show({ type: 'error', html: error });
+                    });
             },
             renders: () => {
                 self.renderModalities();
@@ -103,12 +91,12 @@ const AppConvovatoriaWeb = () => {
                         dataType: 'json',
                         cache: 'false'
                     })
-                    .done(function (response) {
-                        resolve(response);
-                    })
-                    .fail(function (xhr, status, error) {
-                        reject(error);
-                    });
+                        .done(function (response) {
+                            resolve(response);
+                        })
+                        .fail(function (xhr, status, error) {
+                            reject(error);
+                        });
 
                 });
             },
@@ -120,12 +108,12 @@ const AppConvovatoriaWeb = () => {
                         dataType: 'json',
                         cache: 'false'
                     })
-                    .done(function (response) {
-                        resolve(response);
-                    })
-                    .fail(function (xhr, status, error) {
-                        reject(error);
-                    });
+                        .done(function (response) {
+                            resolve(response);
+                        })
+                        .fail(function (xhr, status, error) {
+                            reject(error);
+                        });
 
                 });
             },
@@ -137,51 +125,48 @@ const AppConvovatoriaWeb = () => {
                         dataType: 'json',
                         cache: 'false'
                     })
-                    .done(function (response) {
-                        resolve(response);
-                    })
-                    .fail(function (xhr, status, error) {
-                        reject(error);
-                    });
+                        .done(function (response) {
+                            resolve(response);
+                        })
+                        .fail(function (xhr, status, error) {
+                            reject(error);
+                        });
 
                 });
             },
             externs: () => {
                 self.vias()
-                .then(({status, response, message}) => {
-                    if (status == 200) {
-                        self.formVias = response;
-                    }
-                    self.renderVias();
-                    console.log('formVias', self.formVias);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+                    .then(({ status, response, message }) => {
+                        if (status == 200) {
+                            self.formVias = response;
+                        }
+                        self.renderVias();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
 
                 self.zonas()
-                .then(({status, response, message}) => {
-                    if (status == 200) {
-                        self.formZonas = response;
-                    }
-                    self.renderZonas();
-                    console.log('formZonas', self.formZonas);
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
+                    .then(({ status, response, message }) => {
+                        if (status == 200) {
+                            self.formZonas = response;
+                        }
+                        self.renderZonas();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
 
                 self.departamentos()
-                .then(({status, response, message}) => {
-                    if (status == 200) {
-                        self.formDepartamentos = response;
-                    }
-                    self.renderDepartments();
-                    console.log('formDepartamentos', self.formDepartamentos);
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
+                    .then(({ status, response, message }) => {
+                        if (status == 200) {
+                            self.formDepartamentos = response;
+                        }
+                        self.renderDepartments();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
             },
             events: () => {
 
@@ -190,7 +175,7 @@ const AppConvovatoriaWeb = () => {
                     form.addEventListener('submit', (e) => {
                         e.preventDefault();
                         if (!form.checkValidity()) {
-                           
+
                             sweet2.show({
                                 type: 'error',
                                 title: 'IMPORTANTE',
@@ -202,7 +187,7 @@ const AppConvovatoriaWeb = () => {
 
                         const inputFiles = dom.querySelectorAll('.form-input-file');
                         let validFile = false;
-                        if(inputFiles.length == 0) {
+                        if (inputFiles.length == 0) {
                             validFile = true;
                         }
                         inputFiles.forEach((inputFile, index) => {
@@ -233,23 +218,20 @@ const AppConvovatoriaWeb = () => {
 
 
                             const via_id = self.formData.get('via_id');
-                            console.log('via_id',via_id);
-                            console.log('formVias',self.formVias);
-                            const viaObj = self.formVias.find((o) => {return o.TipoViaID == via_id});
-                            console.log('viaObj',viaObj);
+                            const viaObj = self.formVias.find((o) => { return o.TipoViaID == via_id });
                             self.postulant.via = viaObj.DesTipoVia;
                             self.formData.append('via', self.postulant.via);
 
                             const zona_id = self.formData.get('zona_id');
-                            const zonaObj = self.formZonas.find((o) => {return o.TipoZonaID == zona_id});
+                            const zonaObj = self.formZonas.find((o) => { return o.TipoZonaID == zona_id });
                             self.postulant.zona = zonaObj.DesTipoZona;
                             self.formData.append('zona', self.postulant.zona);
 
                             self.listAttachedFile();
-                            self.renderPreviewPostulant({el: 'previewPostulant', postulant: self.postulant, toString: false});
+                            self.renderPreviewPostulant({ el: 'previewPostulant', postulant: self.postulant, toString: false });
                             self.modalPreviewPostulant.show();
                         }
-                        
+
                     });
                 });
 
@@ -263,7 +245,7 @@ const AppConvovatoriaWeb = () => {
                     self.formData.append('especializaciones', JSON.stringify(self.specializations));
                     sweet2.show({
                         type: 'question',
-                        text: '¿Estás seguro de enviar sus datos?',
+                        text: '¿Estás seguro que desea registrar sus datos?',
                         showCancelButton: true,
                         onOk: () => {
                             sweet2.loading();
@@ -276,23 +258,76 @@ const AppConvovatoriaWeb = () => {
                                 processData: false,
                                 contentType: false,
                             })
-                            .done(function ({success, data, message}) {
-                                if (!success) {
-                                    sweet2.show({type:'error', html: message});
-                                    return;
-                                }
-                                self.response = data;
-                                dom.querySelector('#formPostulant').reset();
-                                self.renderCompletedPostulant();
-                                sweet2.loading(false);
-                            })
-                            .fail(function (xhr, status, error) {
-                                sweet2.show({type:'error', text:error});
-                            });
+                                .done(function ({ success, data, message }) {
+                                    if (!success) {
+                                        sweet2.show({ type: 'error', html: message });
+                                        return;
+                                    }
+
+                                    dom.querySelector('#formPostulant').reset();
+                                    sweet2.loading(false);
+                                    self.response = data;
+                                    let uid = self.response['postulante'].uid;
+                                    $('.btn-print-reporte-ficha-postulacion ').attr('href', window.AppMain.url + 'reportes/registro/' + uid + '/postulacion');
+                                    $('#documentos_unificados').attr('href', window.AppMain.url + 'public' + self.response['ruta_archivo_unificado']);
+                                    $('#uidExpediente').val(uid);
+                                    $('#div-step-2').removeClass('d-none');
+                                    $('#div-step-3').removeClass('d-none');
+                                    var myModal = new bootstrap.Modal(document.getElementById('showInformacionPostulacion_paso_dos'), {
+                                        keyboard: false
+                                    });
+                                    myModal.show();
+                                    self.renderCompletedPostulant();
+                                })
+                                .fail(function (xhr, status, error) {
+                                    sweet2.show({ type: 'error', text: error });
+                                });
                         }
                     });
                 });
+                $('.btn-registrar-numero-expediente').on('click', function () {
+                    const numberExpediente = $('input[name="numeroExpediente"]').val();
+                    const uidExpediente = $('input[name="uidExpediente"]').val();
 
+                    if (!numberExpediente) {
+                        sweet2.show({ type: 'error', html: 'Por favor, completa todos los campos requeridos.' });
+                        return;
+                    }
+                    const formData = new FormData();
+                    formData.append('numberExpediente', numberExpediente);
+                    formData.append('uid', uidExpediente);
+                    sweet2.loading();
+
+                    $.ajax({
+                        url: window.AppMain.url + 'web/postulaciones/expediente/store',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                    }).done(function ({ success, data, message }) {
+                        sweet2.loading(false);
+                        if (success) {
+                            sweet2.show({
+                                type: 'success',
+                                icon: 'success',
+                                html: message
+                            });
+
+                            $('.btn-showInformacionPostulacion-paso-dos').remove();
+
+                            setTimeout(() => {
+                                var myModal = bootstrap.Modal.getInstance(document.getElementById('showInformacionPostulacion_paso_dos'));
+                                myModal.hide();
+                            }, 2000);
+                            
+                        } else {
+                            sweet2.show({ type: 'error', html: message || 'Ocurrió un error inesperado.' });
+                        }
+                    }).fail(function (xhr, status, error) {
+                        sweet2.show({ type: 'error', html: error });
+                    });
+                });
                 self.eventTag('btn-documento-cancel', () => {
                     self.numberDocument = 0;
                     self.formInputDocument(true);
@@ -330,15 +365,15 @@ const AppConvovatoriaWeb = () => {
                     self.typeDocument = Number(e.target.value);
                 }, 'change');
 
-                self.eventTag('form-input-email', ({target}) => {
-                    const {valid} = target.validity;
+                self.eventTag('form-input-email', ({ target }) => {
+                    const { valid } = target.validity;
                     const value = target.value;
                     const inputs = dom.querySelectorAll('.form-input-confirm-email');
                     inputs.forEach(input => {
                         input.setAttribute('pattern', (valid ? value : ''));
                     });
                 }, 'keyup', false);
-                
+
                 self.eventTag('form-control-validate', (e) => {
                     const nextElementSibling = e.target.nextElementSibling;
                     if (nextElementSibling) {
@@ -382,47 +417,88 @@ const AppConvovatoriaWeb = () => {
                             processData: false,
                             contentType: false,
                         })
-                        .done(function ({success, data, message}) {
-                            if (success) {
-                                self.numberDocument = dom.querySelector('input[name="numero_documento"]').value;
-                                self.typeDocument = dom.querySelector('input[name="tipo_documento"]').value;
-                                self.formPostulant = data.postulante;
-                                if (self.isPUN()) {
-                                    dom.querySelector('input[name="nombre"]').value = self.formPostulant.cpe_nombres;
-                                    dom.querySelector('input[name="apellido_paterno"]').value = self.formPostulant.cpe_apaterno;
-                                    dom.querySelector('input[name="apellido_materno"]').value = self.formPostulant.cpe_amaterno;    
-                                    dom.querySelector('input[name="cuss"]').value = self.formPostulant.cuss ?? '';    
-                                    dom.querySelector('select[name="afiliacion"]').value = self.formPostulant.afiliacion ?? '';    
+                            .done(function ({ success, data, message,status }) {
+                                if (success) {
+                                    self.numberDocument = dom.querySelector('input[name="numero_documento"]').value;
+                                    self.typeDocument = dom.querySelector('input[name="tipo_documento"]').value;
+                                    self.formPostulant = data.postulacion;
+                                    if (self.isPUN()) {
+                                        dom.querySelector('input[name="nombre"]').value = self.formPostulant.cpe_nombres;
+                                        dom.querySelector('input[name="apellido_paterno"]').value = self.formPostulant.cpe_apaterno;
+                                        dom.querySelector('input[name="apellido_materno"]').value = self.formPostulant.cpe_amaterno;
+                                        dom.querySelector('input[name="cuss"]').value = self.formPostulant.cuss ?? '';
+                                        dom.querySelector('select[name="afiliacion"]').value = self.formPostulant.afiliacion ?? '';
 
-                                }
-                                formPostulants.forEach(form => {
-                                    form.classList.add('was-validated');
-                                });
+                                    }
+                                    formPostulants.forEach(form => {
+                                        form.classList.add('was-validated');
+                                    });
 
-                                if (self.isPUN()) {
-                                    sweet2.show({
-                                        type: 'info',
-                                        html: 'Bienvenido al proceso de Contratación por resultados de la Prueba Única Nacional (PUN). </br> <b>Por favor, ingrese todos los campos solicitados.'
+                                    if (self.isPUN()) {
+                                        sweet2.show({
+                                            type: 'info',
+                                            html: 'Bienvenido al proceso de Contratación por resultados de la Prueba Única Nacional (PUN). </br> <b>Por favor, ingrese todos los campos solicitados.'
+                                        });
+                                    }
+                                    else {
+                                        sweet2.show({
+                                            type: 'info',
+                                            html: 'Bienvenido al proceso de Contratación por Evaluación de Expediente. </br> <b>Por favor, ingrese todos los campos solicitados.'
+                                        });
+                                    }
+                                    //sweet2.loading(false);
+                                } else {
+
+                                    if (status == 500) {
+                                        sweet2.show({
+                                            type: 'error',
+                                            html: message
+                                        });
+                                        return;
+                                    }
+                                    self.numberDocument = 0;
+                                    const { uid, ruta_archivo, numero_expediente } = data.postulacion;
+                                    const ruta_imagen = numero_expediente  ? 'assets/image/escala_paso_tres.png'  : 'assets/image/escala_paso_dos.png';
+
+                                    Swal.fire({
+                                        title: 'POSTULACIÓN',
+                                        html: `<p style="font-size: 16px; color: #333;">${message}</p>`,
+                                        imageUrl: `${window.AppMain.url}${ruta_imagen}`,
+                                        imageWidth: 100,
+                                        imageHeight: 100,
+                                        confirmButtonText: 'Continuar', 
+                                        confirmButtonColor: '#3085d6', 
+                                        background: '#f9f9f9', 
+                                        allowOutsideClick: false,
+                                        allowEscapeKey: false
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            $('#div-step-2').removeClass('d-none');
+                                            $('#div-step-3').removeClass('d-none');
+
+                                            if (numero_expediente) {
+                                                $('#div-step-2').addClass('d-none');
+                                                $('#div-step-3').addClass('d-none');
+                                            }
+                                            else {
+                                                $('.btn-print-reporte-ficha-postulacion').attr('href', `${window.AppMain.url}reportes/registro/${uid}/postulacion`);
+                                                $('#documentos_unificados').attr('href', `${window.AppMain.url}public/${ruta_archivo}`);
+                                                $('#uidExpediente').val(uid);
+                                                const myModal = new bootstrap.Modal(document.getElementById('showInformacionPostulacion_paso_dos'), {
+                                                    keyboard: false
+                                                });
+                                                myModal.show();
+                                            }
+                                        }
                                     });
                                 }
-                                else{
-                                    sweet2.show({
-                                        type: 'info',
-                                        html: 'Bienvenido al proceso de Contratación por Evaluación de Expediente. </br> <b>Por favor, ingrese todos los campos solicitados.'
-                                    });
-                                }
-                                //sweet2.loading(false);
-                            } else {
-                                self.numberDocument = 0;
-                                sweet2.show({type:'error', html: message});
-                            }
-                            self.renderAlertPostulant(success);
-                            self.formInputEvent(!success);
-                            self.formInputDocument(!success);
-                        })
-                        .fail(function (xhr, status, error) {
-                            sweet2.show({type:'error', html: error});
-                        });
+                                self.renderAlertPostulant(success);
+                                self.formInputEvent(!success);
+                                self.formInputDocument(!success);
+                            })
+                            .fail(function (xhr, status, error) {
+                                sweet2.show({ type: 'error', html: error });
+                            });
                     }
                 });
 
@@ -451,32 +527,30 @@ const AppConvovatoriaWeb = () => {
                         method: 'POST',
                         dataType: 'json',
                         cache: 'false'
-                    })
-                    .done(function ({success, data, message}) {
-                        if (success) {
-                            self.formSpecialties = data.especialidades;
-                            self.formLevels = data.niveles;
-                            self.formModalities = data.modalidades;
-                            self.departments = data.departamentos;
-                            resolve(data);
-                        } else {
+                    }).done(function ({ success, data, message }) {
+                            if (success) {
+                                self.formSpecialties = data.especialidades;
+                                self.formLevels = data.niveles;
+                                self.formModalities = data.modalidades;
+                                self.departments = data.departamentos;
+                                resolve(data);
+                            } else {
+                                reject(error);
+                            }
+                        })
+                        .fail(function (xhr, status, error) {
                             reject(error);
-                        }
-                    })
-                    .fail(function (xhr, status, error) {
-                        reject(error);
-                    });
-
+                        });
                 });
             },
             formInputDocument: (valid) => {
                 const btns2 = dom.querySelectorAll('.btn-documento-cancel');
                 btns2.forEach(btn => {
-                    btn.style.display = valid == true ? 'none' :  'inline-block';
+                    btn.style.display = valid == true ? 'none' : 'inline-block';
                 });
                 const btns1 = dom.querySelectorAll('.btn-documento');
                 btns1.forEach(btn => {
-                    btn.style.display = valid == true ? 'inline-block' :  'none';
+                    btn.style.display = valid == true ? 'inline-block' : 'none';
                 });
                 const inputs = dom.querySelectorAll('.form-input-document');
                 inputs.forEach(input => {
@@ -523,13 +597,13 @@ const AppConvovatoriaWeb = () => {
                         console.log(f);
                         const reader = new FileReader();
                         reader.addEventListener(
-                          "load",
-                          () => {
-                            image.title = f.name;
-                            image.src = reader.result;
-                            console.log(reader.result);
-                          },
-                          false,
+                            "load",
+                            () => {
+                                image.title = f.name;
+                                image.src = reader.result;
+                                console.log(reader.result);
+                            },
+                            false,
                         );
                         reader.readAsDataURL(f);
                     }
@@ -542,10 +616,10 @@ const AppConvovatoriaWeb = () => {
                                 <td>
                                     <select class="form-control form-control-solid form-input-file-type" name="tipo_archivos[]" required="">
                                         <option value="" hidden="">[SELECCIONE]</option>`;
-                                    self.attachedFileTypes.forEach(item => {
-                                        html += `<option value="${item.id}">${item.nombre}${item.requerido == 1 ? '*' : ''}</option>`;
-                                    });             
-                          html += ` </select>
+                self.attachedFileTypes.forEach(item => {
+                    html += `<option value="${item.id}">${item.nombre}${item.requerido == 1 ? '*' : ''}</option>`;
+                });
+                html += ` </select>
                                 </td>
                                 <td>
                                     <div class="d-flex">
@@ -580,24 +654,24 @@ const AppConvovatoriaWeb = () => {
                     tr.querySelectorAll('.btn-viewer').forEach(btn => {
                         btn.addEventListener('click', (e) => {
                             e.preventDefault();
-                            const inputFile = dom.querySelector('#input-'+uniq);
+                            const inputFile = dom.querySelector('#input-' + uniq);
                             const files = inputFile.files;
                             if (files.length > 0) {
                                 const f = files[0];
                                 const reader = new FileReader();
                                 reader.addEventListener(
-                                "load",
-                                () => {
-                                    const base64 = reader.result;
-                                    self.pdf(base64);
-                                    self.modalViewerAttachedFile.show();
-                                },
-                                false,
+                                    "load",
+                                    () => {
+                                        const base64 = reader.result;
+                                        self.pdf(base64);
+                                        self.modalViewerAttachedFile.show();
+                                    },
+                                    false,
                                 );
                                 reader.readAsDataURL(f);
                             } else {
                                 dom.querySelector('#iframeAttachedFile').setAttribute('src', '');
-                                sweet2.show({type:'info', text: 'Debe cargar un archivo para poder visualizarlo'});
+                                sweet2.show({ type: 'info', text: 'Debe cargar un archivo para poder visualizarlo' });
                             }
                         });
                     });
@@ -610,12 +684,12 @@ const AppConvovatoriaWeb = () => {
                 https://github.com/mozilla/pdf.js/blob/master/examples/learning/helloworld64.html
                 */
                 var pdfData = atob(base64);
-            
+
                 //
                 // The workerSrc property shall be specified.
                 //
                 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.4.456/build/pdf.worker.min.js';
-            
+
                 // Opening PDF by passing its binary data as a string. It is still preferable
                 // to 
 
@@ -624,10 +698,10 @@ const AppConvovatoriaWeb = () => {
                 var loadingTask = pdfjsLib.getDocument({
                     data: pdfData,
                 });
-                loadingTask.promise.then(function(pdf) {
+                loadingTask.promise.then(function (pdf) {
                     // Fetch the first page.
-                    pdf.getPage(1).then(function(page) {
-                        
+                    pdf.getPage(1).then(function (page) {
+
                         var scale = 1;
                         var viewport = page.getViewport({
                             scale: scale,
@@ -645,7 +719,7 @@ const AppConvovatoriaWeb = () => {
                             viewport: viewport,
                         };
                         page.render(renderContext);
-                        
+
                     });
                 });
             },
@@ -712,7 +786,7 @@ const AppConvovatoriaWeb = () => {
                 selects.forEach(select => {
                     let html = `<option value="" hidden>[SELECCIONE]</option>`;
                     items.forEach(item => {
-                        html += `<option value="${ item.esp_id }"> ${ item.esp_descripcion }</option>`;
+                        html += `<option value="${item.esp_id}"> ${item.esp_descripcion}</option>`;
                     });
                     select.innerHTML = html;
                 });
@@ -723,7 +797,7 @@ const AppConvovatoriaWeb = () => {
                 selects.forEach(select => {
                     let html = `<option value="" hidden>[SELECCIONE]</option>`;
                     items.forEach(item => {
-                        html += `<option value="${ item.niv_id }"> ${ item.niv_descripcion }</option>`;
+                        html += `<option value="${item.niv_id}"> ${item.niv_descripcion}</option>`;
                     });
                     select.innerHTML = html;
                 });
@@ -733,7 +807,7 @@ const AppConvovatoriaWeb = () => {
                 selects.forEach(select => {
                     let html = `<option value="" hidden>[SELECCIONE]</option>`;
                     self.formVias.forEach(item => {
-                        html += `<option value="${ item.TipoViaID }"> ${ item.DesTipoVia }</option>`;
+                        html += `<option value="${item.TipoViaID}"> ${item.DesTipoVia}</option>`;
                     });
                     select.innerHTML = html;
                 });
@@ -743,7 +817,7 @@ const AppConvovatoriaWeb = () => {
                 selects.forEach(select => {
                     let html = `<option value="" hidden>[SELECCIONE]</option>`;
                     self.formZonas.forEach(item => {
-                        html += `<option value="${ item.TipoZonaID }"> ${ item.DesTipoZona }</option>`;
+                        html += `<option value="${item.TipoZonaID}"> ${item.DesTipoZona}</option>`;
                     });
                     select.innerHTML = html;
                 });
@@ -753,7 +827,7 @@ const AppConvovatoriaWeb = () => {
                 selects.forEach(select => {
                     let html = `<option value="" hidden>[SELECCIONE]</option>`;
                     self.formModalities.forEach(item => {
-                        html += `<option value="${ item.mod_id }"> ${ item.mod_nombre }</option>`;
+                        html += `<option value="${item.mod_id}"> ${item.mod_nombre}</option>`;
                     });
                     select.innerHTML = html;
                 });
@@ -763,7 +837,7 @@ const AppConvovatoriaWeb = () => {
                 selects.forEach(select => {
                     let html = `<option value="" hidden>[SELECCIONE]</option>`;
                     self.formDepartamentos.forEach(department => {
-                        html += `<option value="${ department.Departamento }"> ${ department.Departamento }</option>`;
+                        html += `<option value="${department.Departamento}"> ${department.Departamento}</option>`;
                     });
                     select.innerHTML = html;
                 });
@@ -773,7 +847,7 @@ const AppConvovatoriaWeb = () => {
                 selectDepartments.forEach(select => {
                     select.addEventListener('change', (e) => {
                         self.nameDepartamnt = select.options[e.target.selectedIndex].text;
-                        const departmentId = e.target.value;           
+                        const departmentId = e.target.value;
                         // Llamada AJAX para obtener provincias basadas en el ID del departamento
                         $.ajax({
                             url: window.AppMain.url + 'api/mpv/provincias',
@@ -784,26 +858,26 @@ const AppConvovatoriaWeb = () => {
                             },
                             cache: 'false'
                         })
-                        .done(function ({status, response, message}) {
-                            if (status == 200) {
-                                self.formProvincias = response;
-                                const selectProvinces = dom.querySelectorAll('.select-province'); 
-                                selectProvinces.forEach(select => {
-                                    let html = `<option value="" hidden>[SELECCIONE]</option>`;
-                                    self.formProvincias.forEach(provincia => {
-                                        html += `<option value="${ provincia.Provincia }"> ${ provincia.Provincia }</option>`;
+                            .done(function ({ status, response, message }) {
+                                if (status == 200) {
+                                    self.formProvincias = response;
+                                    const selectProvinces = dom.querySelectorAll('.select-province');
+                                    selectProvinces.forEach(select => {
+                                        let html = `<option value="" hidden>[SELECCIONE]</option>`;
+                                        self.formProvincias.forEach(provincia => {
+                                            html += `<option value="${provincia.Provincia}"> ${provincia.Provincia}</option>`;
+                                        });
+                                        select.innerHTML = html;
                                     });
-                                    select.innerHTML = html;
-                                });
-                                const selectDistricts = dom.querySelectorAll('.select-district');
-                                selectDistricts.forEach(select => {
-                                    select.innerHTML = `<option value="" hidden>[SELECCIONE]</option>`;
-                                });
-                            }
-                        })
-                        .fail(function (xhr, status, error) {
-                            swal2.show({type:'error', html: error});
-                        });
+                                    const selectDistricts = dom.querySelectorAll('.select-district');
+                                    selectDistricts.forEach(select => {
+                                        select.innerHTML = `<option value="" hidden>[SELECCIONE]</option>`;
+                                    });
+                                }
+                            })
+                            .fail(function (xhr, status, error) {
+                                swal2.show({ type: 'error', html: error });
+                            });
                     });
                 });
 
@@ -811,7 +885,7 @@ const AppConvovatoriaWeb = () => {
                 selectProvinces.forEach(select => {
                     select.addEventListener('change', (e) => {
                         self.nameProvince = select.options[e.target.selectedIndex].text;
-                        const provinceId = e.target.value;                       
+                        const provinceId = e.target.value;
                         // Llamada AJAX para obtener provincias basadas en el ID del departamento
                         $.ajax({
                             url: window.AppMain.url + 'api/mpv/distritos',
@@ -822,43 +896,41 @@ const AppConvovatoriaWeb = () => {
                             },
                             cache: 'false'
                         })
-                        .done(function ({status, response, message}) {
-                            if (status == 200) {
-                                self.formDistritos = response;
-                                const selectDistricts = dom.querySelectorAll('.select-district');
-                                selectDistricts.forEach(select => {
-                                    let html = `<option value="" hidden>[SELECCIONE]</option>`;
-                                    self.formDistritos.forEach(distrito => {
-                                        html += `<option value="${ distrito.Distrito }"> ${ distrito.Distrito }</option>`;
+                            .done(function ({ status, response, message }) {
+                                if (status == 200) {
+                                    self.formDistritos = response;
+                                    const selectDistricts = dom.querySelectorAll('.select-district');
+                                    selectDistricts.forEach(select => {
+                                        let html = `<option value="" hidden>[SELECCIONE]</option>`;
+                                        self.formDistritos.forEach(distrito => {
+                                            html += `<option value="${distrito.Distrito}"> ${distrito.Distrito}</option>`;
+                                        });
+                                        select.innerHTML = html;
                                     });
-                                    select.innerHTML = html;
-                                });
-                            }
-                        })
-                        .fail(function (xhr, status, error) {
-                            swal2.show({type:'error', html: error});
-                        });
+                                }
+                            })
+                            .fail(function (xhr, status, error) {
+                                swal2.show({ type: 'error', html: error });
+                            });
                     });
                 });
                 const selectDistricts = dom.querySelectorAll('.select-district');
                 selectDistricts.forEach(select => {
-                    select.addEventListener('change', (e) => {     
+                    select.addEventListener('change', (e) => {
                         self.nameDistrict = select.options[e.target.selectedIndex].text;
                     });
                 });
             },
-            renderPreviewPostulant: ({el, postulant, toString = false}) => {
-                let html = `${ 
-                    Object.keys(self.response).length > 0 ? 
-                                `<div class="text-center mb-3">
+            renderPreviewPostulant: ({ el, postulant, toString = false }) => {
+
+
+
+                let html = `${Object.keys(self.response).length > 0 ?
+                        `<div class="text-center mb-3">
                                     <img src="${window.AppMain.url + 'public/images/banner-ugel05.png'}" style="height: 90px;max-width: 100%;">
                                 </div>
                                 <div class="card mb-3">
                                     <div class="card-body">
-                                      /*   <div class="row mb-1">
-                                            <div class="col-lg-5"><label class="label">Código</label></div>
-                                            <div class="col-lg-7"><span>${self.response.postulante.uid}</span></div>
-                                        </div> */
                                         <div class="row mb-1">
                                             <div class="col-lg-5"><label class="label">Fecha de registro</label></div>
                                             <div class="col-lg-7"><span>${self.response.postulante.fecha_registro}</span></div>
@@ -866,21 +938,21 @@ const AppConvovatoriaWeb = () => {
                                         <!--div class="row mb-1">
                                             <div class="col-lg-5"><label class="label">URL </label></div>
                                             <div class="col-lg-7">
-                                                <a target="_blank" href="${ window.AppMain.url + 'web/postulaciones/' + self.response.postulante.uid}">${ window.AppMain.url + 'web/postulaciones/' + self.response.postulante.uid}</a>
+                                                <a target="_blank" href="${window.AppMain.url + 'web/postulaciones/' + self.response.postulante.uid}">${window.AppMain.url + 'web/postulaciones/' + self.response.postulante.uid}</a>
                                                 <small>Conserve esta URL si es necesario</small>
                                             </div>
                                         </div-->
                                     </div>
-                                </div>` 
-                                : `` 
-                            } <div class="card mb-3">
+                                </div>`
+                        : ``
+                    } <div class="card mb-3">
                                 <div class="card-header">
                                     <h5 class="m-0">Datos de postulación</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="row mb-1">
                                         <div class="col-lg-5"><label class="label">Tipo de Documento </label></div>
-                                        <div class="col-lg-7"><span>${ self.typeDocument == 2 ? 'Carnet de Extranjería': 'DNI' }</span></div>
+                                        <div class="col-lg-7"><span>${self.typeDocument == 2 ? 'Carnet de Extranjería' : 'DNI'}</span></div>
                                     </div>
                                     <div class="row mb-1">
                                         <div class="col-lg-5"><label class="label">Número de Documento </label></div>
@@ -995,13 +1067,13 @@ const AppConvovatoriaWeb = () => {
                                     <h5 class="m-0">Formación Académica</h5>
                                 </div>
                                 <div class="card-body">`;
-                                    if (self.academicTrainings.length == 0) {
-                                        html += `<div class="row">
+                if (self.academicTrainings.length == 0) {
+                    html += `<div class="row">
                                                     <div class="col-md-12"> No hay registros para mostrar</div>
                                                 </div>`;
-                                    } else {
-                                        self.academicTrainings.forEach(item => {
-                                            html += `<div class="mb-4">
+                } else {
+                    self.academicTrainings.forEach(item => {
+                        html += `<div class="mb-4">
                                                         <div class="row">
                                                             <div class="col-lg-5">Nivel Educativo</div>
                                                             <div class="col-lg-7">${item.nivel_educativo}</div>
@@ -1031,22 +1103,22 @@ const AppConvovatoriaWeb = () => {
                                                             <div class="col-lg-7">${item.obtencion_grado}</div>
                                                         </div>
                                                     </div>`;
-                                        });
-                                    } 
-                        html += `</div>
+                    });
+                }
+                html += `</div>
                             </div>
                             <div class="card mb-3">
                                 <div class="card-header">
                                     <h5 class="m-0">Experiencia laboral</h5>
                                 </div>
                                 <div class="card-body">`;
-                                    if (self.workExperiences.length == 0) {
-                                        html += `<div class="row">
+                if (self.workExperiences.length == 0) {
+                    html += `<div class="row">
                                                     <div class="col-md-12"> No hay registros para mostrar</div>
                                                 </div>`;
-                                    } else {
-                                        self.workExperiences.forEach(item => {
-                                            html += `<div class="mb-4">
+                } else {
+                    self.workExperiences.forEach(item => {
+                        html += `<div class="mb-4">
                                                 <div class="row">
                                                     <div class="col-lg-5">Institución educativa</div>
                                                     <div class="col-lg-7">${item.institucion_educativa}</div>
@@ -1080,22 +1152,22 @@ const AppConvovatoriaWeb = () => {
                                                     <div class="col-lg-7">${item.cantidad_mesesrd}</div>
                                                 </div>
                                             </div>`;
-                                        }); 
-                                    }
-                        html += `</div>
+                    });
+                }
+                html += `</div>
                             </div>
                             <div class="card mb-3">
                                 <div class="card-header">
                                     <h5 class="m-0">Especialización</h5>
                                 </div>
                                 <div class="card-body">`;
-                                    if (self.specializations.length == 0) {
-                                        html += `<div class="row">
+                if (self.specializations.length == 0) {
+                    html += `<div class="row">
                                                     <div class="col-md-12"> No hay registros para mostrar</div>
                                                 </div>`;
-                                    } else {
-                                        self.specializations.forEach(item => {
-                                            html += `<div class="mb-4">
+                } else {
+                    self.specializations.forEach(item => {
+                        html += `<div class="mb-4">
                                                         <div class="row">
                                                             <div class="col-lg-5">Tipo de especialización</div>
                                                             <div class="col-lg-7">${item.tipo_especializacion}</div>
@@ -1121,35 +1193,35 @@ const AppConvovatoriaWeb = () => {
                                                             <div class="col-lg-7">${item.numero_horas}</div>
                                                         </div>
                                                     </div>`;
-                                        });
-                                    }
-                        html += `</div>
+                    });
+                }
+                html += `</div>
                             </div>
                             <div class="card mb-3">
                                 <div class="card-header">
                                     <h5 class="m-0">Archivos Adjuntos</h5>
                                 </div>
                                 <div class="card-body">`;
-                                    if (self.formAttachedFiles.length == 0) {
-                                        html += `<div class="row">
+                if (self.formAttachedFiles.length == 0) {
+                    html += `<div class="row">
                                                     <div class="col-md-12"> No hay registros para mostrar</div>
                                                 </div>`;
-                                    } else {
-                                        Object.keys(self.response).length > 0 ? (
-                                            self.response.archivos.forEach(item => {
-                                            html += `<div class="mb-4">
+                } else {
+                    Object.keys(self.response).length > 0 ? (
+                        self.response.archivos.forEach(item => {
+                            html += `<div class="mb-4">
                                                         <div class="row">
                                                             <div class="col-lg-5">Nombre</div>
                                                             <div class="col-lg-7">${item.nombre}</div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-lg-5">Archivo</div>
-                                                            <div class="col-lg-7"><a href="${ window.AppMain.url + 'public'+ item.url}" download>${item.url}</a></div>
+                                                            <div class="col-lg-7"><a href="${window.AppMain.url + 'public' + item.url}" download>${item.url}</a></div>
                                                         </div>
                                                     </div>`;
-                                        })) : (
-                                            self.formAttachedFiles.forEach(item => {
-                                                html += `<div class="mb-4">
+                        })) : (
+                        self.formAttachedFiles.forEach(item => {
+                            html += `<div class="mb-4">
                                                             <div class="row">
                                                                 <div class="col-lg-5">Tipo</div>
                                                                 <div class="col-lg-7">${item.tipo}</div>
@@ -1159,10 +1231,10 @@ const AppConvovatoriaWeb = () => {
                                                                 <div class="col-lg-7">${item.archivo}</div>
                                                             </div>
                                                         </div>`;
-                                            }) 
-                                        )
-                                    }
-                        html += `</div>
+                        })
+                    )
+                }
+                html += `</div>
                             </div>`;
                 if (toString) {
                     return html;
@@ -1174,7 +1246,7 @@ const AppConvovatoriaWeb = () => {
                 dom.innerHTML = `<div class="card card-custom">
                                     <div class="card-header">
                                         <div class="card-title mx-auto">
-                                            <h3 class="card-label">SE REGISTRÓ CORRECTAMENTE PARA EL PROCESO DE CONTRATACIÓN DOCENTE</h3>
+                                            <h3 class="card-label">PASO 2: SE REGISTRÓ CORRECTAMENTE EN SIGESCO PARA EL PROCESO DE CONTRATACIÓN DOCENTE</h3>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -1182,43 +1254,23 @@ const AppConvovatoriaWeb = () => {
                                             <div class="alert alert-success d-flex align-items-center" role="alert">
                                                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                                                 <div>
-                                                    Estimado <b>${ self.postulant.nombre }</b>, se ha enviado un correo electrónico a <b>${ self.postulant.correo }</b>.
+                                                    Estimado <b>${self.postulant.nombre}</b>, no olvide descargar su <b>reporte de postulación</b> y <b>consolidado de documentos cargados</b>.
                                                 </div>
                                             </div>
-                                            ${ self.renderPreviewPostulant({postulant: self.postulant, toString: true}) }
+                                            ${self.renderPreviewPostulant({ postulant: self.postulant, toString: true })}
                                         </div>
                                     </div>
                                     <div class="card-footer text-center">
-                                        <a href="${window.AppMain.url + 'web/convocatorias'}" type="button" class="btn btn-primary me-3">Inicio</a>
-                                        <button type="button" class="btn btn-dark btn-print">Imprimir</button>
-                                    </div>
+                                        <button type="button" class="btn btn-dark btn-showInformacionPostulacion-paso-dos">Click aquí para continuar con el paso 2 - registro en MINEDU EN LÍNEA</button>
+                                      </div>
                                 </div>`;
+                self.eventTag('btn-showInformacionPostulacion-paso-dos', () => {
+                    sweet2.loading(false);
 
-                self.eventTag('btn-print', () => {
-                    var html = self.renderPreviewPostulant({postulant: self.postulant, toString: true});
-                    var newWin = window.open('','Print-Window');
-                    newWin.document.open();
-                    newWin.document.write(`
-                        <html>
-                            <header>
-                                <link rel="stylesheet" type="text/css" href="${window.AppMain.url}/public/css/bootstrapv5.0.2/bootstrap.css">
-                                <style>
-                                    .col-lg-5 {
-                                        flex: 0 0 auto;
-                                        width: 41.66666667%;
-                                    }
-                                    .col-lg-7 {
-                                        flex: 0 0 auto;
-                                        width: 58.33333333%;
-                                    }
-                                </style>
-                            </header>
-                            <body onload="window.print()" style="padding: 60px;">
-                                ${html}
-                            </body>
-                        </html>`);
-                    newWin.document.close();
-                    setTimeout(function(){newWin.close();}, 5);
+                   var myModal = new bootstrap.Modal(document.getElementById('showInformacionPostulacion_paso_dos'), {
+                        keyboard: false
+                    });
+                    myModal.show();
                 });
             },
             renderAlertPostulant: (valid = false) => {
@@ -1227,20 +1279,19 @@ const AppConvovatoriaWeb = () => {
                     let html = `<div class="alert alert-primary d-flex align-items-center mb-0" role="alert">
                                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
                                     <div>
-                                        ${
-                                            self.isPUN() ? 
-                                            'El número de su documento debe de estar registrado en el examen de la Prueba Única Nacional (PUN) y debe pertenecer a la misma modalidad/nivel/especialidad a la que postula' : 
-                                            'Ingresar su número de documento para continuar el registro.'
-                                        }
+                                        ${self.isPUN() ?
+                            'El número de su documento debe de estar registrado en el examen de la Prueba Única Nacional (PUN) y debe pertenecer a la misma modalidad/nivel/especialidad a la que postula' :
+                            'Ingresar su número de documento para continuar el registro.'
+                        }
                                     </div>
-                                </div>`; 
+                                </div>`;
                     if (valid) {
                         html = `<div class="alert alert-success d-flex align-items-center  mb-0" role="alert">
                             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="check-circle:"><use xlink:href="#check-circle-fill"/></svg>
                             <div>
                                 Bienvenido al proceso de registro de su postulación en está convocatoría
                             </div>
-                        </div>`; 
+                        </div>`;
                     }
                     alert.innerHTML = html;
                 });
@@ -1251,7 +1302,7 @@ const AppConvovatoriaWeb = () => {
                         if (e.target.value.length == 8) {
                             e.preventDefault();
                         }
-                    }        
+                    }
                 } else if (self.typeDocument == 2) {
                     if (e.target.value.length == 12) {
                         e.preventDefault();
@@ -1292,7 +1343,7 @@ const AppConvovatoriaWeb = () => {
                     });
                 });
             },
-            tableCrudRender: ({el, name, columns, actions = {}}) => {
+            tableCrudRender: ({ el, name, columns, actions = {} }) => {
                 const tables = dom.querySelectorAll('.' + el);
                 tables.forEach(table => {
                     const tbody = table.querySelector('tbody');
@@ -1302,7 +1353,7 @@ const AppConvovatoriaWeb = () => {
                             const tr = document.createElement("tr");
                             let html = ``;
                             columns.forEach(col => {
-                                html += `<td class="text-center">${item[col]}</td>`; 
+                                html += `<td class="text-center">${item[col]}</td>`;
                             });
                             html += `<td class="text-center">
                                         <button class="btn btn-sm btn-danger mb-1 btn-delete">Eliminar</button>
@@ -1334,7 +1385,7 @@ const AppConvovatoriaWeb = () => {
                                     }
                                 });
                             });
-                            tbody.appendChild(tr);                            
+                            tbody.appendChild(tr);
                         });
                     } else {
                         tbody.innerHTML = `<tr><td colspan="${columns.length + 2}" class="text-center">No hay registros para mostrar</td></tr>`;
@@ -1356,9 +1407,9 @@ const AppConvovatoriaWeb = () => {
                 evt = (evt) ? evt : window.event;
                 var charCode = (evt.which) ? evt.which : evt.keyCode;
                 if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
-                  evt.preventDefault();
+                    evt.preventDefault();
                 } else {
-                  return true;
+                    return true;
                 }
             },
             addZero: (num) => {

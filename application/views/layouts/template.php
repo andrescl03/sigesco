@@ -36,6 +36,8 @@
                 url: "<?php echo base_url() ?>"
             };
         </script>
+
+        
     </head>    
     <body class="sb-nav-fixed ">
         <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">

@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
     <script>
         window.AppMain = {
             url: "<?php echo base_url() ?>"
@@ -21,7 +20,7 @@
     </script>
     <style>
         .container-page::before {
-            background: url("<?php echo base_url() ?>assets/image/cover.png");
+          /*  background: url("<?php echo base_url() ?>assets/image/cover.png"); */
         }
     </style>
     <link rel="stylesheet" type='text/css' href="<?php echo base_url() ?>/assets/css/web/convenio.css">
@@ -29,15 +28,15 @@
         .note-editor.note-frame {
             border: 0px;
         }
-
         .note-editable,
         .note-statusbar {
             background-color: #f3f6f9 !important;
         }
     </style>
+    
 </head>
 
-<body>
+<body style="background-color:#de1f29;">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
@@ -55,46 +54,6 @@
             <?php echo $content_for_layout?>
         </div>
     </section>
-    <!-- Modal -->
-    <div class="modal fade" id="miModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-lg " role="document">
-            <div class="modal-content">
-                <div class="modal-header  text-white" style="background-color:#de1f29 !important">
-                    <h5 class="modal-title" id="exampleModalLongTitle">CONTRATO DOCENTE - 2023 | UGEL 05</h5>
-                    <button type="button " class="close" data-dismiss="modal" aria-label="Close">
-                        <span style="color:white" aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Estimado usuario, bienvenido al registro de datos para el proceso de contratación docente de la UGEL N.° 05.</p>
-                    <p>Recuerde verificar sus datos antes de finalizar su postulación</p>
-                    <p>A continuación se adjunta el procedimiento a seguir para llevar a cabo con éxito su postulación</p>
-                    <div id="carouselExample" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="https://i.ibb.co/6g0LzmC/Captura-de-pantalla-2023-10-04-101003.png" class="d-block w-100" alt="...">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://i.ibb.co/6g0LzmC/Captura-de-pantalla-2023-10-04-101003.png" class="d-block w-100" alt="...">
-                            </div>
-                            <!-- Agrega más elementos de carousel-item según sea necesario -->
-                        </div>
-                        <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR VENTANA DE AYUDA</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <?php $this->load->view('layouts/web/partials/footer'); ?>
     <script src="<?php echo base_url()?>public/js/jquery/jquery-3.6.0.min.js"></script>           
     <script src="<?php echo base_url()?>public/css/bootstrapv5.0.2/bootstrap.bundle.js" crossorigin="anonymous"></script>
@@ -108,6 +67,7 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.4.456/build/pdf.min.js"></script>
     <?php echo $this->layout->js ?>
-</body>
 
+    
+</body>
 </html>

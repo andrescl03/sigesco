@@ -23,6 +23,27 @@ class PostulacionesWeb extends CI_Controller {
 		}
     }  
 
+    public function expedienteStore() {
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->postulaciones_model->expedienteStore(($_POST))));
+        } else {
+			show_404();
+		}
+    } 
+
+    public function expedienteReclamoStore() {
+        if ($this->input->post()) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->postulaciones_model->expedienteReclamoStore(($_POST))));
+        } else {
+			show_404();
+		}
+    }  
+
+
     public function reclamo_store() {
         if ($this->input->post()) {
             $this->output

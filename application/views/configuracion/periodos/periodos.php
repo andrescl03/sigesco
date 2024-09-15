@@ -85,6 +85,23 @@
             </div>
         </div>
     </div>
+    
 
 
-  
+    
+    <div class="row justify-content-center mt-3">
+    <div class="col-md-10">
+        <div class="card ">
+
+        <div class="card-header bg-secondary text-white">
+    REPORTE
+  </div>
+            <div class="card-body text-center">
+
+
+
+                <iframe title="plazas_contador" width="100%" height="1012" src="https://app.powerbi.com/view?r=eyJrIjoiZWNiM2I1ZDYtMmQwOS00ZTZlLWJmYjAtM2JhOTFmNGY1Mjc5IiwidCI6IjVlM2FlZGI4LWE0OTYtNGJiOC04NzkyLTc1MWM4YWY1ZDQyZSIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>
+            </div>
+        </div>
+    </div>
+</div>

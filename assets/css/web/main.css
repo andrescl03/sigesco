@@ -21,7 +21,7 @@
 
 .container-page{
     position: relative;
-    background-color: #000;
+    background-color: #e2e1e1;
 }
 
 .container-page::before{

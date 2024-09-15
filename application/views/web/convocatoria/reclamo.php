@@ -70,14 +70,14 @@ $convocatoria = $data['convocatoria'];
                             <label class="col-xl-4 col-lg-4 col-form-label">Número de Documento</label>
                             <div class="col-xl-8 col-lg-8">
                                 <?php if ($convocatoria->con_tipo == 1) { ?>
-                                    <div class=" mb-3">
-                                        <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document form-input-document" placeholder="Ingrese su número de documento" required>
+                                            <div class=" mb-3">
+                                                <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document form-input-document" placeholder="Ingrese su número de documento" required>
                                          
-                                    </div>
+                                            </div>
                                 <?php } else { ?>
-                                    <div class=" mb-3">
-                                        <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document" placeholder="Ingrese su número de documento" required>
-                                    </div>
+                                            <div class=" mb-3">
+                                                <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document" placeholder="Ingrese su número de documento" required>
+                                            </div>
                                 <?php } ?>
                                 <div class="alert-postulant">
                                 </div>
@@ -504,87 +504,163 @@ $convocatoria = $data['convocatoria'];
             </div>
         </div>
     </div>
+    <div class="modal fade" id="showInformacionPostulacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Cómo llevar a cabo mi proceso de registro de reclamo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-center mx-auto" style="max-width: 80%;">Actualmente te encuentras en el PASO 1 del proceso de reclamo en SIGESCO. Este paso es crucial para iniciar correctamente tu proceso de reclamo.</p>
+                <div class="text-center">
+                    <img src="<?php echo base_url() ?>assets/image/escala-de-satisfaccion.png" alt="niveles de satisfacción" class="img-fluid" style="max-width: 110px;">
+                </div>
+                <div id="postulacionCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <!-- Indicators -->
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#postulacionCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Paso 1" style="background-color: red;"></button>
+                    </div>
+                    <!-- Slides -->
+                    <div class="carousel-inner">
+                        <!-- Paso 1 -->
+                        <div class="carousel-item active">
+                            <h6 class="fw-bold text-center">PASO ACTUAL: <br>Paso 1 - registro en SIGESCO</h6>
+                            <div class="text-center">
+                                <img src="<?php echo base_url() ?>assets/image/escala_paso_uno.png" alt="Paso 1" class="img-fluid" style="max-width: 60px;">
+                            </div>
+                            <p class="text-center mx-auto" style="max-width: 80%;">Accede al sistema SIGESCO y completa el formulario de reclamo. Asegúrate de adjuntar todos los documentos requeridos antes de enviar tu solicitud para avanzar al siguiente paso (paso 2).</p>
+                            <div class="mt-3 text-center">
+                                <span class="badge bg-primary">Paso 1 de 3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Controles del Carousel (Ocultar si solo hay un paso) -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="showInformacionPostulacion_paso_dos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">INSTRUCCIONES</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div id="div-step-2">
+                        <p class="text-center mx-auto" style="max-width: 80%;">
+                            <b>¡Estás en el PASO 2!</b> Para continuar con tu reclamo en SIGESCO, debes ahora completar el registro en el portal <b>MINEDU EN LÍNEA</b>.
+                        </p>
+                    <div class="text-center">
+                        <img src="<?php echo base_url() ?>assets/image/escala-de-satisfaccion.png" alt="niveles de satisfacción" class="img-fluid" style="max-width: 110px;">
+                    </div>
+                    <div id="postulacionCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#postulacionCarousel" data-bs-slide-to="0" aria-label="Paso 1" style="background-color: red;"></button>
+                            <button type="button" data-bs-target="#postulacionCarousel" data-bs-slide-to="1" class="active" aria-current="true" aria-label="Paso 2" style="background-color: yellow;"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <h6 class="fw-bold text-center">Paso Actual: <br> Registro en MINEDU EN LÍNEA</h6>
+                                <div class="text-center">
+                                    <img src="<?php echo base_url() ?>assets/image/escala_paso_dos.png" alt="Paso 2" class="img-fluid" style="max-width: 60px;">
+                                </div>
+                                <p class="text-center mx-auto" style="max-width: 80%;">
+                                    Para completar el Paso 2, asegurate de:
+                                    <ol>
+                                        <li>Ingresa al portal MINEDU EN LÍNEA.</li>
+                                        <li>Completa el formulario de registro.</li>
+                                        <li>Cargar y enviar la <b>Ficha de reclamo</b>.</li>
+                                        <li>Cargar y enviar el <b>Consolidado de Documentos</b>.</li>
+                                        <li>Adjunta los documentos necesarios.</li>
+                                    </ol>
+                                    Una vez completado, estarás listo para avanzar al paso final (Paso 3).
+                                </p>
+                                <div class="mt-3 text-center">
+                                    <span class="badge bg-primary">Paso 2 de 3</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a class="btn-print-reporte-ficha-postulacion btn btn-primary mx-2" target="_blank" >Descargar Ficha de reclamo</a>
+                    <a id="documentos_unificados"  class="btn btn-secondary mx-2" target="_blank">Descargar Consolidado de Documentos</a>
+                </div>
+                <div class="text-center mt-4">
+                     <a href="https://enlinea.minedu.gob.pe/login" target="_blank" class="btn btn-danger mx-2">IR A MINEDU EN LÍNEA</a>
+                </div>
+                <hr>
+                   
+                <div id="div-step-3">
+                        <p class="text-center mx-auto" style="max-width: 80%;">
+                            <b>PASO 3</b>
+                        </p>
+                    <div class="text-center">
+                        <img src="<?php echo base_url() ?>assets/image/escala-de-satisfaccion.png" alt="niveles de satisfacción" class="img-fluid" style="max-width: 110px;">
+                    </div>
+                    <div id="postulacionCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#postulacionCarousel" data-bs-slide-to="0" aria-label="Paso 1" style="background-color: red;"></button>
+                            <button type="button" data-bs-target="#postulacionCarousel" data-bs-slide-to="1"   aria-label="Paso 2" style="background-color: yellow;"></button>
+                            <button type="button" data-bs-target="#postulacionCarousel" data-bs-slide-to="2" class="active" aria-current="true" aria-label="Paso 3" style="background-color: green;"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <h6 class="fw-bold text-center">Paso siguiente: <br> Registra el número de expediente de MINEDU EN LINEA en SIGESCO</h6>
+                                <div class="text-center">
+                                    <img src="<?php echo base_url() ?>assets/image/escala_paso_tres.png" alt="Paso 2" class="img-fluid" style="max-width: 60px;">
+                                </div>
+                                <p class="text-center mx-auto" style="max-width: 80%;">
+                                    Para completar el Paso 3:
+                                    <ol>
+                                        <li>Completa el número de expediente que obtuviste de MINEDU EN LÍNEA y click en GUARDAR.</li>
+                                    </ol>
+                                </p>
+                                <div class="mt-3 text-center">
+                                    <span class="badge bg-primary">Paso 3 de 3</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="container mt-5 text-center mx-auto">
+                                <form id="form-number-expediente" novalidate>
+                                    <div class="mb-3">
+                                        <label for="numeroExpediente" class="form-label">Número de expediente de MINEDU EN LÍNEA:</label>
+                                        <input type="text" maxlength="20" id="numeroExpediente" name="numeroExpediente" class="form-control" placeholder="Número de expediente" required>
+                                        <input type="hidden" id="uidExpediente" name="uidExpediente">
+                                    </div>
+                                    <button type="button" class="btn btn-success btn-registrar-numero-expediente">Registrar expediente y terminar mi reclamo</button>
+                                </form>
+                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+
 <script>
-    document.getElementById('nivel_educativo').addEventListener('change', function() {
-        var nivelEducativo = this.value;
-        var gradoAcademicoSelect = document.getElementsByName('grado_academico')[0];
-        var subnivelSelect = document.getElementsByName('subnivel')[0];
-        var mencionAcademicoSelect = document.getElementsByName('mencion_academico')[0];
-        var mencionGradoInput = document.getElementById('mencion_grado_academico');
-         mencionGradoInput.value ="";
-        // Función para agregar opciones a un elemento select
-        function agregarOpciones(selectElement, opciones) {
-            selectElement.innerHTML = '<option value="" hidden>[SELECCIONE]</option>';
-            opciones.forEach(function(opcion) {
-                selectElement.innerHTML += '<option value="' + opcion + '">' + opcion + '</option>';
-            });
-        }
-
-        // Definir opciones según el nivel educativo
-        var opcionesGradoAcademico = [];
-        var opcionesSubnivel = [];
-        var opcionesMencionAcademico = [];
-
-        if (nivelEducativo === 'Superior no universitario') {
-            opcionesGradoAcademico = ['Títulado', 'Egresado', 'VI Ciclo'];
-            opcionesSubnivel = ['Profesor de educación', 'Profesor de educación inicial', 'Profesor de educación primaria', 'Profesor de educación secundaria', 'Profesor de educación e informática', 'Profesor de educación física'];
-            opcionesMencionAcademico = ['no disponible para el grado'];
-        } else if (nivelEducativo === 'Superior universitario') {
-            opcionesGradoAcademico = ['Egresado', 'Bachiller', 'Titulado', 'Maestría', 'Doctorado','2da especialidad'];
-            opcionesSubnivel = ['De educación', 'De educación inicial', 'De educación primaria', 'De educación secundaria', 'De educación física'];
-            opcionesMencionAcademico = ['Egresado', 'Licenciado', 'Bachiller', 'Maestro', 'Doctor'];
-        }
-
-        agregarOpciones(gradoAcademicoSelect, opcionesGradoAcademico);
-        agregarOpciones(subnivelSelect, opcionesSubnivel);
-        agregarOpciones(mencionAcademicoSelect, opcionesMencionAcademico);
-
-        function actualizarMencionGrado() {
-            if (document.getElementById('nivel_educativo').value == "Superior universitario") {
-                mencionGradoInput.value = mencionAcademicoSelect.value + ' ' + subnivelSelect.value;
-            }
-        }
-        subnivelSelect.addEventListener('change', actualizarMencionGrado);
-        mencionAcademicoSelect.addEventListener('change', actualizarMencionGrado);
-
-        actualizarMencionGrado();
-
+document.addEventListener('DOMContentLoaded', () => {
+const myModal = new bootstrap.Modal(document.getElementById('showInformacionPostulacion'), {
+        keyboard: false
     });
-
-
-    function calcularCantidadMeses() {
-        // Obtener las fechas ingresadas por el usuario
-        var fechaInicioInput = document.getElementById('fechainicio_rd');
-        var fechaTerminoInput = document.getElementById('fechatermino_rd');
-
-        var fechaInicio = moment(fechaInicioInput.value);
-        var fechaTermino = moment(fechaTerminoInput.value);
-
-        // Almacenar las fechas originales
-        var fechaInicioOriginal = moment(fechaInicio);
-        var fechaTerminoOriginal = moment(fechaTermino);
-
-
-        if (fechaInicio.isAfter(fechaTermino)) {
-
-            fechaInicioInput.value = fechaInicioOriginal.format('DD/MM/YYYY');
-            fechaTerminoInput.value = fechaTerminoOriginal.format('DD/MM/YYYY');
-            sweet2.show({
-                type: 'error',
-                text: 'La fecha ingresada es incorrecta'
-            });
-
-            return;
-        }
-
-        var cantidadMeses = fechaTermino.diff(fechaInicio, 'months');
-
-        if (cantidadMeses >= 0) {
-            document.getElementById('cantidad_mesesrd').value = cantidadMeses;
-        }
-    }
-    document.getElementById('fechainicio_rd').addEventListener('change', calcularCantidadMeses);
-    document.getElementById('fechatermino_rd').addEventListener('change', calcularCantidadMeses);
+    myModal.show();
+});
 </script>

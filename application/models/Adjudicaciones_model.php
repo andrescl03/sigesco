@@ -667,16 +667,13 @@ class Adjudicaciones_model extends CI_Model
         $length = $this->input->post("length", true);
         $start  = $this->input->post("start", true);
         $search = $this->input->post("search", true);
+        $esp_id = $this->input->post("esp_id", true);
+        $tipo_postulacion_id = $this->input->post("tipo_postulacion_id", true);
 
         $filterText = '';
-        $esp_id = $this->input->post("esp_id", true);
-        $sqlEspecialidad = '';
-        if ($esp_id) {
-           $esp_id = $this->input->post("esp_id", true);
-           $sqlEspecialidad = " AND esp_id = $esp_id ";
-        }else{
-          $esp_id  = '';
-        }
+
+       $sqlEspecialidad = $esp_id ? " AND esp_id = $esp_id " : '';
+       $sqlTipoPostulacion = $tipo_postulacion_id ? " AND con_tipo = $tipo_postulacion_id " : '';
 
       if ($search) {
             $value = $search['value'];
@@ -705,7 +702,8 @@ class Adjudicaciones_model extends CI_Model
                     E.esp_descripcion AS especialidad_nombre,
                     GI.gin_id AS inscripcion_id,
                     C.con_tipo as con_tipo,
-                    PE.puntaje
+                    PE.puntaje,
+                    EP.prelacion
                 FROM postulaciones P
                 LEFT JOIN postulacion_evaluaciones PE ON PE.postulacion_id = P.id AND PE.promedio = 1
                 INNER JOIN convocatorias C ON C.con_id = P.convocatoria_id
@@ -714,20 +712,20 @@ class Adjudicaciones_model extends CI_Model
                 INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
                 INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
                 INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
-                LEFT JOIN adjudicaciones AD ON AD.postulacion_id = P.id AND AD.deleted_at IS NULL               
+                LEFT JOIN adjudicaciones AD ON AD.postulacion_id = P.id AND AD.deleted_at IS NULL
+                LEFT JOIN especialidad_prelaciones EP ON EP.id = PE.prelacion_id             
                 WHERE P.deleted_at IS NULL
                 AND P.estado = 'finalizado'
                 AND P.estado_adjudicacion IN (0,2, 3) 
                 AND intentos_adjudicacion <  2
                 AND (AD.id IS NULL OR AD.estado = 0)
                 $sqlEspecialidad
+                $sqlTipoPostulacion
                 $filterText
-                ORDER BY P.id DESC";
-
+                ORDER BY EP.prelacion ASC, PE.puntaje DESC";
 
         $items = $this->db->query($sql)->result_object();
-
-        $recordsTotal = count($items);
+         $recordsTotal = count($items);
 
         $sql .= " LIMIT {$start}, {$length}";
 

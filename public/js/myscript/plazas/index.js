@@ -364,14 +364,22 @@ const AppPlazaIndex = () => {
                             },
                             {
                                 "targets": 11,
-                                "data": "estado",
+                                "data": "descripcion",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return row.estado == 0 ? `<span class="badge bg-danger">Cerrado</span>` : `<span class="badge bg-success">Abierto</span>`;
+                                    return row.descripcion;
                                 }
                             },
                             {
                                 "targets": 12,
+                                "data": "plaza_nombrada",
+                                "className": "text-center",
+                                "render": function ( data, type, row, meta ) {
+                                    return row.plaza_nombrada == 1 ? `<span class="badge bg-danger">PLAZA NOMBRADA</span>` : `<span class="badge bg-success">PLAZA NO NOMBRADA</span>`;
+                                }
+                            },
+                            {
+                                "targets": 13,
                                 "data": "fecha_inicio",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
@@ -379,7 +387,7 @@ const AppPlazaIndex = () => {
                                 }
                             },
                             {
-                                "targets": 13,
+                                "targets": 14,
                                 "data": "fecha_fin",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
@@ -387,7 +395,7 @@ const AppPlazaIndex = () => {
                                 }
                             },
                             {
-                                "targets": 14,
+                                "targets": 15,
                                 "data": "deleted_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
