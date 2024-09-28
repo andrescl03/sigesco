@@ -9,7 +9,7 @@ class Evaluacion_model extends CI_Model {
       $sigesco_tus_iduser = $this->session->userdata('sigesco_tus_iduser');
       $sigesco_dni = $this->session->userdata('sigesco_dni');
       $sql=$this->db
-      ->select("con.con_id, gin.gin_id, mod.mod_abreviatura, niv.niv_descripcion, esp.esp_descripcion, pro.pro_descripcion, con.con_numero, con.con_anio")          
+      ->select("con.con_id, con.con_tipo, gin.gin_id, mod.mod_abreviatura, niv.niv_descripcion, esp.esp_descripcion, pro.pro_descripcion, con.con_numero, con.con_anio")          
         ->from("modalidades mod")
         ->join("niveles niv", "mod.mod_id = niv.modalidad_mod_id", "inner")
         ->join("especialidades esp", "niv.niv_id = esp.niveles_niv_id", "inner")

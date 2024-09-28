@@ -7,6 +7,7 @@ class Mesaparteapi extends CI_Controller {
     public function __construct() {
         parent::__construct();
         date_default_timezone_set('America/Lima');
+        $this->load->model('Ubigeo_model');
         $this->load->library('mesaparteservice');
     }
 
@@ -129,219 +130,53 @@ class Mesaparteapi extends CI_Controller {
 
     public function departamentos() {
 
+
+        $departments = $this->Ubigeo_model->getDepartamentos();
+        $data = [
+            "message" => "OK",
+            "response" => $departments,
+            "status" => 200
+        ];
+
         return $this->output
         ->set_content_type('application/json')
-        ->set_output(json_encode(
-            json_decode('{
-                "message": "OK",
-                "response": [
-                    {
-                        "Departamento": "AMAZONAS"
-                    },
-                    {
-                        "Departamento": "ANCASH"
-                    },
-                    {
-                        "Departamento": "APURIMAC"
-                    },
-                    {
-                        "Departamento": "AREQUIPA"
-                    },
-                    {
-                        "Departamento": "AYACUCHO"
-                    },
-                    {
-                        "Departamento": "CAJAMARCA"
-                    },
-                    {
-                        "Departamento": "CUSCO"
-                    },
-                    {
-                        "Departamento": "HUANCAVELICA"
-                    },
-                    {
-                        "Departamento": "HUANUCO"
-                    },
-                    {
-                        "Departamento": "ICA"
-                    },
-                    {
-                        "Departamento": "JUNIN"
-                    },
-                    {
-                        "Departamento": "LA LIBERTAD"
-                    },
-                    {
-                        "Departamento": "LAMBAYEQUE"
-                    },
-                    {
-                        "Departamento": "LIMA"
-                    },
-                    {
-                        "Departamento": "LORETO"
-                    },
-                    {
-                        "Departamento": "MADRE DE DIOS"
-                    },
-                    {
-                        "Departamento": "MOQUEGUA"
-                    },
-                    {
-                        "Departamento": "PASCO"
-                    },
-                    {
-                        "Departamento": "PIURA"
-                    },
-                    {
-                        "Departamento": "PROV. CONST. DEL CALLAO"
-                    },
-                    {
-                        "Departamento": "PUNO"
-                    },
-                    {
-                        "Departamento": "SAN MARTIN"
-                    },
-                    {
-                        "Departamento": "TACNA"
-                    },
-                    {
-                        "Departamento": "TUMBES"
-                    },
-                    {
-                        "Departamento": "UCAYALI"
-                    }
-                ],
-                "status": 200
-            }')
-        ));
-        
-        return $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($this->mesaparteservice->request('GET', 'mpv/listar/departamentos', [], $this->mesaparteservice->token())));
+        ->set_output(json_encode($data));
     }
 
-    public function provincias() {
+    public function provincias()
+    {
+
+        $idDepartamento = $_POST['Departamento'];
+
+        $provinces = $this->Ubigeo_model->getProvincias($idDepartamento);
+
+        $data = [
+            "message" => "OK",
+            "response" => $provinces,
+            "status" => 200
+        ];
 
         return $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode(
-            json_decode('{
-                "message": "OK",
-                "response": [
-                    {
-                        "Provincia": "AIJA"
-                    },
-                    {
-                        "Provincia": "ANTONIO RAYMONDI"
-                    },
-                    {
-                        "Provincia": "ASUNCION"
-                    },
-                    {
-                        "Provincia": "BOLOGNESI"
-                    },
-                    {
-                        "Provincia": "CARHUAZ"
-                    },
-                    {
-                        "Provincia": "CARLOS FERMIN FITZCARRALD"
-                    },
-                    {
-                        "Provincia": "CASMA"
-                    },
-                    {
-                        "Provincia": "CORONGO"
-                    },
-                    {
-                        "Provincia": "HUARAZ"
-                    },
-                    {
-                        "Provincia": "HUARI"
-                    },
-                    {
-                        "Provincia": "HUARMEY"
-                    },
-                    {
-                        "Provincia": "HUAYLAS"
-                    },
-                    {
-                        "Provincia": "MARISCAL LUZURIAGA"
-                    },
-                    {
-                        "Provincia": "OCROS"
-                    },
-                    {
-                        "Provincia": "PALLASCA"
-                    },
-                    {
-                        "Provincia": "POMABAMBA"
-                    },
-                    {
-                        "Provincia": "RECUAY"
-                    },
-                    {
-                        "Provincia": "SANTA"
-                    },
-                    {
-                        "Provincia": "SIHUAS"
-                    },
-                    {
-                        "Provincia": "YUNGAY"
-                    }
-                ],
-                "status": 200
-            }')
-        ));
-        
-        return $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($this->mesaparteservice->request('POST', 'mpv/listar/provinciaspordepartamento', $_POST, $this->mesaparteservice->token())));
+            ->set_content_type('application/json')
+            ->set_output(json_encode($data));
     }
 
-    
+
     public function distritos() {
 
+        $idProvince = $_POST['Provincia'];
+       
+        $districts = $this->Ubigeo_model->getDistritos($idProvince);
+
+        $data = [
+            "message" => "OK",
+            "response" => $districts,
+            "status" => 200
+        ];
+
         return $this->output
         ->set_content_type('application/json')
-        ->set_output(json_encode(
-            json_decode('{
-                "message": "OK",
-                "response": [
-                    {
-                        "Distrito": "CACERES DEL PERU"
-                    },
-                    {
-                        "Distrito": "CHIMBOTE"
-                    },
-                    {
-                        "Distrito": "COISHCO"
-                    },
-                    {
-                        "Distrito": "MACATE"
-                    },
-                    {
-                        "Distrito": "MORO"
-                    },
-                    {
-                        "Distrito": "NEPEÑA"
-                    },
-                    {
-                        "Distrito": "NUEVO CHIMBOTE"
-                    },
-                    {
-                        "Distrito": "SAMANCO"
-                    },
-                    {
-                        "Distrito": "SANTA"
-                    }
-                ],
-                "status": 200
-            }')
-        ));
-        
-        return $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($this->mesaparteservice->request('POST', 'mpv/listar/distritosporprovincia', $_POST, $this->mesaparteservice->token())));
+        ->set_output(json_encode($data));
     }
 
     public function procesarexpedientes()

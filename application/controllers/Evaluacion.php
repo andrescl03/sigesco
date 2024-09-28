@@ -47,7 +47,6 @@ class Evaluacion extends CI_Controller {
             $this->layout->js(array(base_url()."public/js/myscript/evaluacion/convocatoria.js?t=".date("mdYHis")));
 		    $this->layout->view("convocatoria/convocatoria", compact('periodos', 'procesos')); 
         }
-
         if($idCon != '0' && $idGin == '0'){
             $datos   = $this->evaluacion_model->listarGruposInscripcionxConvocatoria($idCon);
             // $gruposInscripcion = $this->evaluacion_model->listarGruposAsignadosXConvocatoria($idConv);

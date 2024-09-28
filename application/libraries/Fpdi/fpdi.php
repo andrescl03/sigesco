@@ -567,17 +567,16 @@ class FPDI extends FPDF_TPL
             case pdf_parser::TYPE_DICTIONARY:
 
                 // A dictionary.
-                $this->_straightOut('<<');
+         // A dictionary.
+    $this->_straightOut('<<');
 
-                reset ($value[1]);
+    foreach ($value[1] as $k => $v) {
+        $this->_straightOut($k . ' ');
+        $this->_writeValue($v);
+    }
 
-                while (list($k, $v) = each($value[1])) {
-                    $this->_straightOut($k . ' ');
-                    $this->_writeValue($v);
-                }
-
-                $this->_straightOut('>>');
-                break;
+    $this->_straightOut('>>');
+    break;
 
             case pdf_parser::TYPE_OBJREF:
 

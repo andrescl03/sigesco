@@ -136,13 +136,13 @@ function createTableRow(grupo, fechaFormateada) {
     '<td>' + grupo.niv_descripcion + '</td>' +
     '<td>' + grupo.esp_descripcion + '</td>' +
     '<td>' +
-      '<a target="_blank" class="btn btn-sm btn-danger ' + (!validateFechaConvocatoria ? 'disabled' : '') + '" href="' + window.AppMain.url + 'web/convocatorias/' + grupo.con_id + '/inscripciones/' + grupo.grupo_inscripcion_gin_id + '">' +
+      '<a target="_blank" class="btn btn-sm btn-danger ' + (!validateFechaConvocatoria ? 'disabled' : '') + '" href="' + window.AppMain.url + 'web/convocatorias/' + grupo.con_id + '/inscripciones/auxiliares/' + grupo.grupo_inscripcion_gin_id + '">' +
         'POSTULAR' +
       '</a>' +
     '</td>' +
     '<td>' +
       '<a target="_blank" class="btn btn-sm btn-danger ' + (!validateFechaReclamo ? 'disabled' : '') + '" href="' + window.AppMain.url + 'web/convocatorias/' + grupo.con_id + '/reclamo/' + grupo.grupo_inscripcion_gin_id + '">' +
-        'RECLAMAR' +
+        'POSTULAR' +
       '</a>' +
     '</td>' +
   '</tr>';

@@ -82,7 +82,7 @@
                                                         <td><?php echo $archivo['tipo_nombre'] ?></td>
                                                         <td><?php echo $archivo['nombre'] ?></td>
                                                         <td>
-                                                            <a href="/sigesco/public<?php echo $archivo['url'] ?>"
+                                                            <a href="<?php echo base_url() . 'public' . $archivo['url'] ?>"
                                                                 target="_blank" donwload><i
                                                                     class="fa-solid fa-file-pdf fa-2xl"></i></a>
                                                         </td>

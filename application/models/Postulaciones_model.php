@@ -222,13 +222,56 @@ class Postulaciones_model extends CI_Model
                 // Crear una instancia de FPDI para combinar PDFs
                 $pdfi = new Fpdi();
                 foreach ($pdfFiles as $file) {
-                    if (!file_exists($file)) {
-                        die('El archivo PDF no existe: ' . $file);
+                                
+                if (!file_exists($file)) {
+                    die('El archivo PDF no existe: ' . $file);
+                }
+                    // Abrir el archivo PDF para obtener la versión
+                    $filepdf = fopen($file, "r");
+
+                    if ($filepdf) {
+                        $line_first = fgets($filepdf);
+                        fclose($filepdf);
+
+                        // Verificar si la línea contiene la versión del PDF
+                        if (preg_match('/PDF-(\d\.\d)/', $line_first, $matches)) {
+
+                            $pdfVersion = $matches[1];
+
+                            if ($pdfVersion > "1.4") {
+                                log_message_ci("Versión de PDF mayor (v{$pdfVersion}) en archivo: " . $numero_documento);
+                                $convertedFile = $path . "converted_" . uniqid() . ".pdf";
+
+                                // Normaliza las rutas para que todas las barras sean consistentes
+                                //$convertedFile = str_replace('/', '\\', rtrim($convertedFile, '\\'));
+                                //$file = str_replace('/', '\\', rtrim($file, '\\'));
+                                // Usar comillas dobles sin escaparlas innecesariamente
+                                //$gsPath = "C:\Program Files\gs\gs10.04.0\bin\gswin64c.exe";  // Cambia esto por la ruta real
+
+                               // $command = "gswin64c -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$convertedFile\" \"$file\"";
+                                $command = "gswin64cs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$convertedFile\" \"$file\"";
+                               //exec($command, $output, $return_var);
+                               exec($command . ' 2>&1', $output, $return_var);
+
+                                $pdfi->SetPDFVersion('1.4');
+                                if ($return_var !== 0) {
+                                    log_message_ci("Error al combinar el archivo: " . implode("\n", $output));
+                                    continue;
+                                } else {
+                                    $file = $convertedFile;  // Usa el archivo convertido
+                                }
+                            }
+                        } else {
+                            log_message_ci("No se pudo determinar la versión del PDF: " . $numero_documento);
+                        }
+                    } else {
+                        log_message_ci("Error al abrir el archivo: " . $numero_documento);
+                        continue; 
                     }
+
                     $pageCount = $pdfi->setSourceFile($file);
 
                     for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-
                         $templateId = $pdfi->importPage($pageNo);
                         $size = $pdfi->getTemplateSize($templateId);
                         $orientation = ($size['w'] > $size['h']) ? 'L' : 'P';
@@ -236,12 +279,11 @@ class Postulaciones_model extends CI_Model
                         $pdfi->useTemplate($templateId);
                     }
                 }
-
                 $nombre_pdf_unificado = "postulante_" . $numero_documento . uniqid(time()) . ".pdf";
                 $ruta_archivo_unificado = "/uploads/" . $nombre_pdf_unificado;
+                $pdfi->Output(__DIR__ . "/../../public" . $ruta_archivo_unificado, 'F');
 
-                $pdfi->Output(__DIR__ . "/../../public" .  $ruta_archivo_unificado, 'F');
-              }
+            }
 
             $data['nombre'] = $nombre;
             $data['apellido_paterno'] = $apellido_paterno;
@@ -733,7 +775,7 @@ class Postulaciones_model extends CI_Model
             }
 
             $sqlReclamo = "SELECT 
-            P.numero_expediente_reclamo , Pa.url
+            P.numero_expediente_reclamo , PA.url
                 FROM postulacion_archivos AS PA
                 INNER JOIN postulaciones AS P 
                 ON PA.postulacion_id = P.id

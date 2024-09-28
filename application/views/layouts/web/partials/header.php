@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <!-- Branding -->
         <a class="navbar-brand text-white d-flex align-items-center" href="#" style="font-size: 1.75rem; font-weight: bold; white-space: normal;">
-            SISTEMA DE GESTIÓN DE CONTRATACIÓN DOCENTE - SIGESCO
+            SISTEMA DE GESTIÓN DE CONTRATACIÓN - SIGESCO
         </a>
         <!-- Toggle button for smaller screens  
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">

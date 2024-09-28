@@ -493,7 +493,7 @@
                                                             <div class="mb-3 row">
                                                                 <label class="col-xl-4 col-lg-4 col-form-label">Número de horas</label>
                                                                 <div class="col-xl-8 col-lg-8">
-                                                                    <input type="number" id="numeroHoras" name="numero_horas" class="form-control form-control-solid" min="16" max="300" required>
+                                                                    <input type="number" id="numeroHoras" name="numero_horas" class="form-control form-control-solid" min="16" max="3000" required>
                                                                     <div class="invalid-feedback">Por favor este campo es requerido. (mínimo 16 horas)</div>
                                                                 </div>
                                                             </div>

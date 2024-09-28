@@ -216,25 +216,6 @@ const AppConvovatoriaWeb = () => {
                             self.postulant.nivel = self.isPUN() ? self.formPostulant.nivel_descripcion : self.nivelDescripcion;
                             self.postulant.especialidad = self.isPUN() ? self.formPostulant.especialidad_descripcion : self.especialidadDescripcion;
 
-                            const departamento_id = self.formData.get('departamento_id');
-                            const departamentoObj = self.formDepartamentos.find((o) => { return o.id == departamento_id });
-
-                            self.postulant.departamento_id = departamentoObj.name;
-                            self.formData.append('departamento_id', self.postulant.departamento_id);
-
-                            const provincia_id = self.formData.get('provincia_id');
-                            const provinciaObj = self.formProvincias.find((o) => { return o.id == provincia_id });
-
-                            self.postulant.provincia_id = provinciaObj.name;
-                            self.formData.append('provincia_id', self.postulant.provincia_id);
-
-
-                            const distrito_id = self.formData.get('distrito_id');
-                            const distritoObj = self.formDistritos.find((o) => { return o.id == distrito_id });
-
-                            self.postulant.distrito_id = distritoObj.name;
-                            self.formData.append('distrito_id', self.postulant.distrito_id);
-
 
                             const via_id = self.formData.get('via_id');
                             const viaObj = self.formVias.find((o) => { return o.TipoViaID == via_id });
@@ -456,13 +437,13 @@ const AppConvovatoriaWeb = () => {
                                     if (self.isPUN()) {
                                         sweet2.show({
                                             type: 'info',
-                                            html: 'Bienvenido al proceso de Contratación por resultados de la Prueba Única Nacional (PUN). </br> <b>Por favor, ingrese todos los campos solicitados.'
+                                            html: 'Bienvenido al proceso de Contrato Auxiliar. </br> <b>Por favor, ingrese todos los campos solicitados.'
                                         });
                                     }
                                     else {
                                         sweet2.show({
                                             type: 'info',
-                                            html: 'Bienvenido al proceso de Contratación por Evaluación de Expediente. </br> <b>Por favor, ingrese todos los campos solicitados.'
+                                            html: 'Bienvenido al proceso de Contrato Auxiliar. </br> <b>Por favor, ingrese todos los campos solicitados.'
                                         });
                                     }
                                     //sweet2.loading(false);
@@ -856,7 +837,7 @@ const AppConvovatoriaWeb = () => {
                 selects.forEach(select => {
                     let html = `<option value="" hidden>[SELECCIONE]</option>`;
                     self.formDepartamentos.forEach(department => {
-                        html += `<option value="${department.id}"> ${department.name}</option>`;
+                        html += `<option value="${department.Departamento}"> ${department.Departamento}</option>`;
                     });
                     select.innerHTML = html;
                 });
@@ -884,7 +865,7 @@ const AppConvovatoriaWeb = () => {
                                     selectProvinces.forEach(select => {
                                         let html = `<option value="" hidden>[SELECCIONE]</option>`;
                                         self.formProvincias.forEach(provincia => {
-                                            html += `<option value="${provincia.id}"> ${provincia.name}</option>`;
+                                            html += `<option value="${provincia.Provincia}"> ${provincia.Provincia}</option>`;
                                         });
                                         select.innerHTML = html;
                                     });
@@ -922,7 +903,7 @@ const AppConvovatoriaWeb = () => {
                                     selectDistricts.forEach(select => {
                                         let html = `<option value="" hidden>[SELECCIONE]</option>`;
                                         self.formDistritos.forEach(distrito => {
-                                            html += `<option value="${distrito.id}"> ${distrito.name}</option>`;
+                                            html += `<option value="${distrito.Distrito}"> ${distrito.Distrito}</option>`;
                                         });
                                         select.innerHTML = html;
                                     });

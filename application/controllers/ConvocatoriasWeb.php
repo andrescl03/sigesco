@@ -28,6 +28,22 @@ class ConvocatoriasWeb extends CI_Controller
         $this->layout->view("/web/convocatoria/index", compact('dato', 'datos', 'now_unix'));
     }
 
+
+
+    public function index_auxiliares()
+    {
+        $dato = 1;
+        $idPer  = true;
+        $idPro  = true;
+        $datos  = $this->convocatorias_web_model->index($idPer, $idPro);
+
+        $now_unix = strtotime($this->tools->getDateHour());
+
+        $this->layout->js(array(base_url() . "public/web/js/convocatorias/auxiliares/index.js"));
+        $this->layout->view("/web/convocatoria/auxiliares/index", compact('dato', 'datos', 'now_unix'));
+    }
+
+
     public function show($convocatoria_id, $inscripcion_id)
     {
         if (is_numeric($convocatoria_id) && is_numeric($inscripcion_id)) {
@@ -35,6 +51,19 @@ class ConvocatoriasWeb extends CI_Controller
             $response = $this->convocatorias_web_model->show(compact('convocatoria_id', 'inscripcion_id'));
             if ($response['success']) {
                 return $this->layout->view("/web/convocatoria/show", $response);
+            }
+        }
+        show_404();
+    }
+
+    
+    public function showAuxiliares($convocatoria_id, $inscripcion_id)
+    {
+        if (is_numeric($convocatoria_id) && is_numeric($inscripcion_id)) {
+            $this->layout->js(array(base_url() . "public/web/js/convocatorias/auxiliares/show.js"));
+            $response = $this->convocatorias_web_model->show(compact('convocatoria_id', 'inscripcion_id'));
+            if ($response['success']) {
+                return $this->layout->view("/web/convocatoria/auxiliares/show", $response);
             }
         }
         show_404();

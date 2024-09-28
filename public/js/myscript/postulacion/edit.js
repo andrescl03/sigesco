@@ -871,22 +871,23 @@ const AppConvovatoriaWeb = () => {
                     select.innerHTML = html;
                 });
             },
-            renderDepartments: (departamento_id) => {
+            renderDepartments: (departamento_id) => {   
                 const selects = dom.querySelectorAll('.select-department');
                 selects.forEach(select => {
                     let html = `<option value="" hidden>[SELECCIONE]</option>`;
                     self.formDepartamentos.forEach(department => {
-                        html += `<option value="${ department.Departamento }" ${departamento_id == department.Departamento ? 'selected' : ''}> ${ department.Departamento }</option>`;
+                        html += `<option value="${ department.id }" ${departamento_id == department.name ? 'selected' : ''}> ${ department.name }</option>`;
                     });
                     select.innerHTML = html;
                 });
             },
             renderProvinces: (provincia_id) => {
+
                 const selects = dom.querySelectorAll('.select-province');
                 selects.forEach(select => {
                     let html = `<option value="" hidden>[SELECCIONE]</option>`;
                     self.formProvincias.forEach(item => {
-                        html += `<option value="${ item.Provincia }" ${provincia_id == item.Provincia ? 'selected' : ''}> ${ item.Provincia }</option>`;
+                        html += `<option value="${ item.id }" ${provincia_id == item.name ? 'selected' : ''}> ${ item.name }</option>`;
                     });
                     select.innerHTML = html;
                 });
@@ -896,7 +897,7 @@ const AppConvovatoriaWeb = () => {
                 selects.forEach(select => {
                     let html = `<option value="" hidden>[SELECCIONE]</option>`;
                     self.formDistritos.forEach(item => {
-                        html += `<option value="${ item.Distrito }" ${distrito_id == item.Distrito ? 'selected' : ''}> ${ item.Distrito }</option>`;
+                        html += `<option value="${ item.id }" ${distrito_id == item.name ? 'selected' : ''}> ${ item.name }</option>`;
                     });
                     select.innerHTML = html;
                 });
@@ -924,7 +925,7 @@ const AppConvovatoriaWeb = () => {
                                 selectProvinces.forEach(select => {
                                     let html = `<option value="" hidden>[SELECCIONE]</option>`;
                                     self.formProvincias.forEach(provincia => {
-                                        html += `<option value="${ provincia.Provincia }"> ${ provincia.Provincia }</option>`;
+                                        html += `<option value="${ provincia.id }"> ${ provincia.name }</option>`;
                                     });
                                     select.innerHTML = html;
                                 });
@@ -962,7 +963,7 @@ const AppConvovatoriaWeb = () => {
                                 selectDistricts.forEach(select => {
                                     let html = `<option value="" hidden>[SELECCIONE]</option>`;
                                     self.formDistritos.forEach(distrito => {
-                                        html += `<option value="${ distrito.Distrito }"> ${ distrito.Distrito }</option>`;
+                                        html += `<option value="${ distrito.id }"> ${ distrito.name }</option>`;
                                     });
                                     select.innerHTML = html;
                                 });

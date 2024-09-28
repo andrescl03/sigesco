@@ -1,25 +1,22 @@
 <div class="container">
-
-
     <!-- PHP para obtener el año actual -->
     <?php
     $anioActual = date("Y");
     ?>
     <!-- Tarjeta con la lista de convocatorias -->
     <div class="card card-custom">
-        <div class="card-header">
+        <div class="card-header bg-warning ">
             <div class="card-title">
-                <h1 class="card-label text-dark"><b>LISTA DE CONVOCATORIAS PARA EL PROCESO DE CONTRATACIÓN DOCENTE - <?php echo $anioActual; ?></b></h1>
+                <h1 class="card-label text-white"><b>LISTA DE CONVOCATORIAS PARA EL PROCESO DE CONTRATACIÓN AUXILIAR - <?php echo $anioActual; ?></b></h1>
             </div>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="table-responsive">
                     <table class="table table-hover">
-                        <thead style="background-color:red" class="text-white">
+                        <thead  class="text-white bg-warning">
                             <tr>
                                 <th class="text-center">NÚMERO</th>
-                                <th class="text-center">TIPO</th>
                                 <th class="text-center">FECHA INICIO DE POSTULACIÓN</th>
                                 <th class="text-center">FECHA FIN DE POSTULACIÓN</th>
                                 <th class="text-center">FECHA INICIO DE RECLAMO</th>
@@ -45,33 +42,18 @@
                                             $groupsList .= '<li>' . $dat['mod_abreviatura'] . " " . $dat['niv_descripcion'] . ($dat['esp_descripcion'] != "-" ? " " . $dat['esp_descripcion'] : "") . '</li>';
                                         }
                                     }
-
                             ?>
                                     <tr>
                                         <td class="text-center"><b><?= "CONV-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio'] ?></b></td>
-                                        <td class="text-center"><?= $dato['descripcion'] ?></td>
                                         <td class="text-center"><?= format_date($dato['con_fechainicio'], "d/m/Y") . " " . substr($dato['con_horainicio'], 0, 5) ?></td>
                                         <td class="text-center"><?= format_date($dato['con_fechafin'], "d/m/Y") . " " . substr($dato['con_horafin'], 0, 5) ?></td>
                                         <td class="text-center"><?= $dato['con_fechainicio_reclamo'] ? (format_date($dato['con_fechainicio_reclamo'], "d/m/Y") . " " . substr($dato['con_horainicio_reclamo'], 0, 5)) : '' ?></td>
                                         <td class="text-center"><?= $dato['con_fechafin_reclamo'] ? (format_date($dato['con_fechafin_reclamo'], "d/m/Y") . " " . substr($dato['con_horafin_reclamo'], 0, 5)) : '' ?></td>
-                                        <!-- <td>
-                                            <ul class="list-group list-group-flush">
-                                                <?php
-                                                foreach ($datos as $dat) {
-                                                    if ($dato['con_id'] == $dat['con_id']) {
-                                                        echo '<li>' . $dat['mod_abreviatura'] . " " . $dat['niv_descripcion'] . ($dat['esp_descripcion'] != "-" ? " " . $dat['esp_descripcion'] : "") . '</li>';
-                                                    }
-                                                }
-                                                ?>
-                                            </ul>
-                                        </td> -->
-
                                         <td class="text-center">
                                             <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#groupsModal" data-groups="<?= htmlspecialchars($groupsList) ?>" data-title="<?= "CONV-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio'] ?>">
                                                 Ver Grupos
                                             </button>
                                         </td>
-
                                         <?php
                                         $validateFechaInicio = $now_unix >= strtotime($dato['con_fechainicio'] . ' ' . substr($dato['con_horainicio'], 0, 5));
                                         $validateFechaFin = ($dato['con_fechafin_reclamo']) ? $now_unix <= (strtotime($dato['con_fechafin_reclamo'] . ' ' . substr($dato['con_horafin_reclamo'], 0, 5))) : $now_unix <= (strtotime($dato['con_fechafin'] . ' ' . substr($dato['con_horafin'], 0, 5)));
@@ -90,8 +72,8 @@
                                                 <?php } ?>
                                             </div>
                                         </td>
-                                    </tr>
-                            <?php $i++;
+                                    </tr> <!--TEMPORAL -->
+                            <?php $i++; if ($i ==1) break;
                                 }
                             } ?>
                         </tbody>

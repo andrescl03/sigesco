@@ -55,7 +55,6 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-12" id="">
-
                                     <div class="table-responsive">
                                         <table id="tb_listarConvocatorias" class="table  table-hover table-sm" cellspacing="0" width="100%" style="font-size:13px; vertical-align: middle;">
                                             <thead>
@@ -75,7 +74,7 @@
                                                 $total_cantidad_preliminar = 0;
                                                 $total_cantidad_final = 0;
                                                 foreach ($datos as $dato) {
-                                                    $cadena = $dato['con_id'] . "||" . $dato['gin_id'];
+                                                    $cadena =  $dato['con_id'] . "||" . $dato['gin_id'] . "||" . $dato['con_tipo'];
                                                     $parte_1 = ($dato['tp_asigando'] > 0 ? $dato['tp_asigando'] : 0) + ($dato['te_asigando'] > 0 ? $dato['te_asigando'] : 0);
                                                     $parte_2 = $dato['tp_docentes'] + $dato['te_docentes'];
                                                 ?>
@@ -113,8 +112,8 @@
                                                                     }
                                                                 ?>
 
-                                                                <a type="button"  title="Ingresar a detalle" href="<?= base_url() ?>evaluacion/convocatoria/<?= encryption($cadena . "||2||1") ?>" >                                                                
-                                                                    <span class="<?= $color_1 ?>" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
+                                                                <a type="button" title="Ingresar a detalle" href="<?= base_url() ?>evaluacion/convocatoria/<?= encryption($cadena . "||2||1") ?>" >                                                                
+                                                                   <span class="badge bg-success" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
                                                                 </a>
                                                                 <?php } ?>
                                                             </div>

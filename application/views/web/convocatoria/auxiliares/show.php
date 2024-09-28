@@ -8,14 +8,10 @@ $convocatoria = $data['convocatoria'];
                 <div class="row my-3">
                     <div class="col-md-12 text-center">
                         <h4 class="mx-auto mb-1 text-uppercase">
-                            CONVOCATORIA REGISTRO DE DOCENTE <?php echo $convocatoria->con_anio ?>
+                        <b>CONVOCATORIA REGISTRO DE AUXILIARES <?php echo $convocatoria->con_anio ?></b> 
                         </h4>
                     </div>
-                    <div class="col-md-12 text-center">
-                        <h6 class="mb-2 text-secondary text-uppercase">
-                            <?php echo $convocatoria->con_tipo == 1 ? 'Evaluación PUN (Prueba Única Nacional)' : 'Evaluación de expedientes' ?>
-                        </h6>
-                    </div>
+                 
                     <div class="col-md-12 text-center">
                         <h6 class="mb-1 text-secondary text-uppercase">
                             <?php echo $convocatoria->modalidad_nombre ?> <?php echo $convocatoria->nivel_nombre ?> <?php echo $convocatoria->especialidad_nombre == '-' ? '' : $convocatoria->especialidad_nombre ?>

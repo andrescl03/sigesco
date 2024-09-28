@@ -10,6 +10,12 @@ $route['api/mpv/distritos'] = 'Mesaparteapi/distritos';
 /*Procesar expedientes*/
 $route['api/mpv/procesar'] = 'Mesaparteapi/procesarexpedientes';
 $route['web/convocatorias'] = 'convocatoriasWeb/index';
+
+
+$route['web/convocatorias/auxiliares'] = 'convocatoriasWeb/index_auxiliares';
+$route['web/convocatorias/(:num)/inscripciones/auxiliares/(:num)'] = 'convocatoriasWeb/showAuxiliares/$1/$2';
+
+
 $route['web/convocatorias/detail'] = 'convocatoriasWeb/detail';
 $route['web/convocatorias/reclamo/detail'] = 'convocatoriasWeb/detailReclamo';
 
