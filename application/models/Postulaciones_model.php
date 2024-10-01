@@ -249,7 +249,7 @@ class Postulaciones_model extends CI_Model
                                 //$gsPath = "C:\Program Files\gs\gs10.04.0\bin\gswin64c.exe";  // Cambia esto por la ruta real
 
                                // $command = "gswin64c -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$convertedFile\" \"$file\"";
-                                $command = "gswin64cs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$convertedFile\" \"$file\"";
+                                $command = "gswin64c -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$convertedFile\" \"$file\"";
                                //exec($command, $output, $return_var);
                                exec($command . ' 2>&1', $output, $return_var);
 
