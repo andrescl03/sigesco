@@ -424,7 +424,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body p-0">
-                                                    <iframe src="<?php base_url() ?>/sigesco/public<?php echo $archivo->url ?>" width="100%" height="700px"></iframe>
+                                                    <iframe src="<?php base_url() ?>/public<?php echo $archivo->url ?>" width="100%" height="700px"></iframe>
                                                 </div>
                                                 <!-- <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
