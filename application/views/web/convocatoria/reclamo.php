@@ -8,7 +8,7 @@ $convocatoria = $data['convocatoria'];
                 <div class="row my-3">
                     <div class="col-md-12 text-center">
                         <h4 class="mx-auto mb-1 text-uppercase">
-                            CONTRATO DOCENTE <?php echo $convocatoria->con_anio ?> - ETAPA DE RECLAMO
+                            CONTRATO AUXILIAR <?php echo $convocatoria->con_anio ?> - ETAPA DE RECLAMO
                         </h4>
                     </div>
                     <div class="col-md-12 text-center">
