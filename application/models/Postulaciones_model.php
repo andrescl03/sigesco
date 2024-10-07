@@ -1039,32 +1039,7 @@ class Postulaciones_model extends CI_Model
         try {
             $postulacion_id = $args['id'];
             $this->load->library('form_validation');
-            /*$this->form_validation->set_rules('nombre', 'nombre', 'trim|required|min_length[3]|max_length[100]');
-            $this->form_validation->set_rules('apellido_paterno', 'apellido_paterno', 'trim|required|min_length[3]|max_length[100]');
-            $this->form_validation->set_rules('apellido_materno', 'apellido_materno', 'trim|required|min_length[3]|max_length[100]');
-            $this->form_validation->set_rules('direccion', 'direccion', 'trim|required|min_length[3]|max_length[100]');
-            $this->form_validation->set_rules('correo', 'correo', 'trim|required|valid_email');
-            $this->form_validation->set_rules('confirma_correo', 'confirma_correo', 'trim|required|valid_email');
-            $this->form_validation->set_rules('distrito_id', 'distrito_id', 'trim|required');
-            $this->form_validation->set_rules('estado_civil', 'estado_civil', 'trim|required');
-            $this->form_validation->set_rules('fecha_nacimiento', 'fecha_nacimiento', 'trim|required');
-            $this->form_validation->set_rules('genero', 'genero', 'trim|required');
-            $this->form_validation->set_rules('nacionalidad', 'nacionalidad', 'trim|required');
-            $this->form_validation->set_rules('nombre_via', 'nombre_via', 'trim|required');
-            $this->form_validation->set_rules('numero_celular', 'numero_celular', 'trim|required');
-            $this->form_validation->set_rules('numero_telefono', 'numero_telefono', 'trim|required');
-            $this->form_validation->set_rules('via_id', 'via_id', 'trim|required');
-            $this->form_validation->set_rules('zona_id', 'zona_id', 'trim|required');
-            $this->form_validation->set_rules('cuss', 'cuss', 'trim');
-            $this->form_validation->set_rules('afiliacion', 'afiliacion', 'trim');
-
-            if ($this->form_validation->run() == FALSE) {
-                $response['errors'] = $this->form_validation->error_array();
-                log_message_ci("Ingresa a registrar expediente " . json_encode($this->form_validation->error_array()));
-
-                throw new Exception("No cumple con los datos requeridos          => " . json_encode($response['errors']));
-            }*/
-
+         
             $apellido_materno = $this->input->post("apellido_materno", true);
             $apellido_paterno = $this->input->post("apellido_paterno", true);
             $nombre = $this->input->post("nombre", true);
@@ -1091,6 +1066,10 @@ class Postulaciones_model extends CI_Model
             $nombre_zona = $this->input->post("nombre_zona", true);
             $via_id = $this->input->post("via_id", true);
             $zona_id = $this->input->post("zona_id", true);
+            $zona_id = $this->input->post("zona_id", true);
+
+            $numero_expediente = $this->input->post("numero_expediente", true);
+            $numero_expediente_reclamo = $this->input->post("numero_expediente_reclamo", true);
 
             $tipo_archivos = isset($_POST['tipo_archivos']) ? $_POST['tipo_archivos'] : [];
             $especializaciones = isset($_POST['especializaciones']) ? json_decode($_POST['especializaciones'], true) : [];
@@ -1218,9 +1197,17 @@ class Postulaciones_model extends CI_Model
             $data['direccion'] = $direccion;
             $data['afiliacion'] = $afiliacion;
             $data['cuss'] = $cuss;
-            $data['departamento'] = $departamento_id;
-            $data['provincia'] = $provincia_id;
-            $data['distrito'] = $distrito_id;
+            //$data['departamento'] = $departamento_id;
+            //$data['provincia'] = $provincia_id;
+           // $data['distrito'] = $distrito_id;
+            $data['numero_expediente'] = $numero_expediente;
+            $data['numero_expediente_reclamo'] = $numero_expediente_reclamo;
+
+            $postulanteObj = $this->db->get_where('postulaciones', ['id' => $postulacion_id])->row();
+            
+            if($postulanteObj->numero_expediente_reclamo != $numero_expediente_reclamo){
+                $this->db->update('postulaciones', ['fecha_reclamo' => $this->tools->getDateHour()], array('id' => $postulacion_id));
+            }
 
             $this->db->update('postulaciones', $data, ['id' => $postulacion_id]);
 

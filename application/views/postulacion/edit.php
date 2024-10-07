@@ -170,7 +170,7 @@
                                                                 <h5>Datos de Ubicación:</h5>
                                                             </div>
                                                         </div>
-                                                        <div class="mb-3 row">
+                                                        <!--   <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Departamento</label>
                                                             <div class="col-xl-8 col-lg-8">
                                                                 <select class="form-control form-control-solid select-department form-input-validate" name="departamento_id">
@@ -193,7 +193,7 @@
                                                                     <option value="" hidden>[SELECCIONE]</option>
                                                                 </select>
                                                             </div>
-                                                        </div>
+                                                        </div>--->
                                                         <div class="mb-3 row">
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Vía</label>
                                                             <div class="col-xl-8 col-lg-8">
@@ -230,6 +230,21 @@
                                                             <label class="col-xl-4 col-lg-4 col-form-label">Dirección</label>
                                                             <div class="col-xl-8 col-lg-8">
                                                                 <input type="text" name="direccion" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100">
+                                                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3 row">
+                                                            <label class="col-xl-4 col-lg-4 col-form-label">Número de expediente</label>
+                                                            <div class="col-xl-8 col-lg-8">
+                                                                <input type="text" name="numero_expediente" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="1" maxlength="100">
+                                                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                            <label class="col-xl-4 col-lg-4 col-form-label">Número de expediente de reclamo</label>
+                                                            <div class="col-xl-8 col-lg-8">
+                                                                <input type="text" name="numero_expediente_reclamo" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="1" maxlength="100">
                                                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                             </div>
                                                         </div>

@@ -91,16 +91,15 @@
                                                         <th class="text-center">ESTADO</th>
                                                         <th class="text-center">ADJUNTOS</th>
                                                         <th class="text-center">FECHA DE INGRESO DE RECLAMO</th>
+                                                        <th class="text-center">NÚMERO DE EXPEDIENTE DE RECLAMO</th>
                                                         <th class="text-center">ACCIONES</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

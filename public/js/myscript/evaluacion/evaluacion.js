@@ -236,12 +236,13 @@ const AppAdjudicacionAdmin = () => {
                                 "data": "id",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
-                                    return `<span class="badge bg-primary" style="font-size: 0.9em;">${row.numero_expediente}</span>`;
+                                    return `<span class="badge bg-primary" style="font-size: 0.9em;">${row.numero_expediente ? row.numero_expediente  : 'No registrado' }</span>`;
                                 }
                             },
                             {
                                 "targets": 8,
                                 "data": "estado",
+                                "className": "text-center",
                                 "render": function ( data, type, row, meta ) {
                                     let estado = '';
                                     switch (Number(row.prerequisito_estado)) {
@@ -278,6 +279,15 @@ const AppAdjudicacionAdmin = () => {
                             },
                             {
                                 "targets": 11,
+                                "data": "fecha_reclamo",
+                                "className": "text-center",
+                                "render": function ( data, type, row, meta ) {
+                                    return `<span class="badge bg-primary" style="font-size: 0.9em;">${row.numero_expediente_reclamo ? row.numero_expediente_reclamo  : 'No registrado' }</span>`;
+
+                                }
+                            },
+                            {
+                                "targets": 12,
                                 "data": "created_at",
                                 "className": "text-center",
                                 "render": function ( data, type, row, meta ) {

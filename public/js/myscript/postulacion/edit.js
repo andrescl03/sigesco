@@ -96,7 +96,8 @@ const AppConvovatoriaWeb = () => {
                 dom.querySelector('input[name="nombre_via"]').value = postulante.nombre_via;
                 dom.querySelector('input[name="nombre_zona"]').value = postulante.nombre_zona;
                 dom.querySelector('input[name="direccion"]').value = postulante.direccion;
-
+                dom.querySelector('input[name="numero_expediente"]').value = postulante.numero_expediente;
+                dom.querySelector('input[name="numero_expediente_reclamo"]').value = postulante.numero_expediente_reclamo;
             },
             renders: () => {
                 self.renderModalities();
