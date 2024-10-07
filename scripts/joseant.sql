@@ -193,3 +193,32 @@ INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegi
 INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (23, 2, '2022-07-04 08:57:16', '2022-07-04 08:59:12', 1, 1);
 INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (24, 2, '2022-07-04 08:57:16', '2022-07-04 08:59:12', 1, 1);
 INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (25, 2, '2022-07-04 08:57:16', '2022-07-04 08:59:12', 1, 1);
+
+
+/****** 06/10/2024 **********/
+
+
+CREATE TABLE `auxiliar_tipo_archivos` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`nombre` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`requerido` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`orden` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`edit` INT(11) NULL DEFAULT '0',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+);
+
+INSERT INTO `auxiliar_tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (1, 'Anexo 1', 1, 1, 0, '2024-01-30 16:41:06', '2024-01-30 16:42:12', NULL);
+INSERT INTO `auxiliar_tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (2, 'Anexo 8', 0, 2, 0, '2024-01-30 16:41:14', '2024-08-25 01:37:14', NULL);
+INSERT INTO `auxiliar_tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (3, 'Anexo 9', 0, 3, 0, '2024-01-30 16:41:22', '2024-08-25 01:37:15', NULL);
+INSERT INTO `auxiliar_tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (4, 'Anexo 10', 0, 4, 0, '2024-01-30 16:41:27', '2024-08-25 01:37:15', NULL);
+INSERT INTO `auxiliar_tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (5, 'Anexo 11', 0, 5, 0, '2024-01-30 16:41:30', '2024-08-25 01:37:16', NULL);
+INSERT INTO `auxiliar_tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (6, 'Anexo 12', 0, 6, 0, '2024-01-30 16:41:45', '2024-08-25 01:37:16', NULL);
+INSERT INTO `auxiliar_tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (7, 'Anexo 19', 0, 7, 0, '2024-01-30 16:41:52', '2024-01-30 16:42:15', NULL);
+INSERT INTO `auxiliar_tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (8, 'CV Documentado', 0, 9, 0, '2024-01-30 16:42:03', '2024-08-25 01:37:18', NULL);
+INSERT INTO `auxiliar_tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (9, 'Titulo Profesional', 0, 8, 0, '2024-01-30 16:42:03', '2024-08-25 01:37:19', NULL);
+INSERT INTO `auxiliar_tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (10, 'Reclamo', 0, 10, 1, '2024-02-08 16:42:03', '2024-02-08 16:42:03', NULL);
+INSERT INTO `auxiliar_tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (11, 'Acta firmada', 0, 11, 2, '2024-06-16 13:17:31', '2024-06-16 13:17:33', NULL);
+INSERT INTO `auxiliar_tipo_archivos` (`id`, `nombre`, `requerido`, `orden`, `edit`, `created_at`, `updated_at`, `deleted_at`) VALUES (12, 'Documentos consolidado', 0, 12, 2, '2024-08-25 12:39:21', '2024-08-25 12:39:30', NULL);

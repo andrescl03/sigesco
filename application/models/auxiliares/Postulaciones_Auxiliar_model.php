@@ -160,7 +160,7 @@ class Postulaciones_Auxiliar_model extends CI_Model
                 }
             }
 
-            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL AND edit in (0) ORDER BY orden ASC";
+            $sql = "SELECT * FROM auxiliar_tipo_archivos WHERE deleted_at IS NULL AND edit in (0) ORDER BY orden ASC";
             $my_tipo_archivos = $this->db->query($sql)->result_object();
 
             $keys_uploads_tipo_archivos = [];
@@ -535,7 +535,7 @@ class Postulaciones_Auxiliar_model extends CI_Model
 
             $convocatoria = $result['data']['convocatoria'];
 
-            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL AND edit in (1) ORDER BY orden ASC";
+            $sql = "SELECT * FROM auxiliar_tipo_archivos WHERE deleted_at IS NULL AND edit in (1) ORDER BY orden ASC";
             $my_tipo_archivos = $this->db->query($sql)->result_object();
 
             $keys_uploads_tipo_archivos = [];
@@ -688,7 +688,7 @@ class Postulaciones_Auxiliar_model extends CI_Model
 
             if ($postulacion) {
                 $postulacion_id = $postulacion->id;
-                $sql = "SELECT PA.*, TA.nombre AS tipo_nombre FROM auxiliar_postulacion_archivos PA INNER JOIN tipo_archivos TA ON PA.tipo_id = TA.id WHERE PA.deleted_at IS NULL AND PA.postulacion_id = ? AND tipo_id = 12";
+                $sql = "SELECT PA.*, TA.nombre AS tipo_nombre FROM auxiliar_postulacion_archivos PA INNER JOIN auxiliar_tipo_archivos TA ON PA.tipo_id = TA.id WHERE PA.deleted_at IS NULL AND PA.postulacion_id = ? AND tipo_id = 12";
                 $postulacion_archivos = $this->db->query($sql, compact('postulacion_id'))->result_object();
                 $postulacion->ruta_archivo = $postulacion_archivos ? $postulacion_archivos[0]->url : '';
             }
@@ -913,10 +913,10 @@ class Postulaciones_Auxiliar_model extends CI_Model
             $sql = "SELECT * FROM auxiliar_postulacion_experiencias_laborales WHERE deleted_at IS NULL AND postulacion_id = ?";
             $postulacion_experiencias_laborales = $this->db->query($sql, compact('postulacion_id'))->result_object();
 
-            $sql = "SELECT PA.*, TA.nombre AS tipo_nombre FROM auxiliar_postulacion_archivos PA INNER JOIN tipo_archivos TA ON PA.tipo_id = TA.id WHERE PA.deleted_at IS NULL AND PA.postulacion_id = ?";
+            $sql = "SELECT PA.*, TA.nombre AS tipo_nombre FROM auxiliar_postulacion_archivos PA INNER JOIN auxiliar_tipo_archivos TA ON PA.tipo_id = TA.id WHERE PA.deleted_at IS NULL AND PA.postulacion_id = ?";
             $postulacion_archivos = $this->db->query($sql, compact('postulacion_id'))->result_object();
 
-            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL AND edit in (0,1) ORDER BY orden ASC";
+            $sql = "SELECT * FROM auxiliar_tipo_archivos WHERE deleted_at IS NULL AND edit in (0,1) ORDER BY orden ASC";
             $tipo_archivos = $this->db->query($sql)->result_object();
 
             $response['success'] = true;
@@ -961,7 +961,7 @@ class Postulaciones_Auxiliar_model extends CI_Model
             $sql = "SELECT * FROM auxiliar_postulacion_experiencias_laborales WHERE deleted_at IS NULL AND postulacion_id = ?";
             $postulacion_experiencias_laborales = $this->db->query($sql, compact('postulacion_id'))->result_object();
 
-            $sql = "SELECT T1.* , T2.nombre as 'nombre_tipo_archivo' FROM auxiliar_postulacion_archivos T1 LEFT JOIN tipo_archivos T2  ON T1.tipo_id = T2.id WHERE T1.deleted_at IS NULL AND T1.postulacion_id = ?";
+            $sql = "SELECT T1.* , T2.nombre as 'nombre_tipo_archivo' FROM auxiliar_postulacion_archivos T1 LEFT JOIN auxiliar_tipo_archivos T2  ON T1.tipo_id = T2.id WHERE T1.deleted_at IS NULL AND T1.postulacion_id = ?";
             $postulacion_archivos = $this->db->query($sql, compact('postulacion_id'))->result_object();
 
             /*$now_unix = strtotime($this->tools->getDateHour());
@@ -1104,7 +1104,7 @@ class Postulaciones_Auxiliar_model extends CI_Model
                 }
             }
 
-            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL AND edit in (0,1) ORDER BY orden ASC";
+            $sql = "SELECT * FROM auxiliar_tipo_archivos WHERE deleted_at IS NULL AND edit in (0,1) ORDER BY orden ASC";
             $my_tipo_archivos = $this->db->query($sql)->result_object();
 
             $keys_uploads_tipo_archivos = [];
@@ -1776,10 +1776,10 @@ class Postulaciones_Auxiliar_model extends CI_Model
             $sql = "SELECT * FROM auxiliar_postulacion_experiencias_laborales WHERE deleted_at IS NULL AND postulacion_id = ?";
             $postulacion_experiencias_laborales = $this->db->query($sql, compact('postulacion_id'))->result_object();
 
-            $sql = "SELECT PA.*, TA.nombre AS tipo_nombre FROM auxiliar_postulacion_archivos PA INNER JOIN tipo_archivos TA ON PA.tipo_id = TA.id WHERE PA.deleted_at IS NULL AND PA.postulacion_id = ?";
+            $sql = "SELECT PA.*, TA.nombre AS tipo_nombre FROM auxiliar_postulacion_archivos PA INNER JOIN auxiliar_tipo_archivos TA ON PA.tipo_id = TA.id WHERE PA.deleted_at IS NULL AND PA.postulacion_id = ?";
             $postulacion_archivos = $this->db->query($sql, compact('postulacion_id'))->result_object();
 
-            $sql = "SELECT * FROM tipo_archivos WHERE deleted_at IS NULL AND edit in (0,1) ORDER BY orden ASC";
+            $sql = "SELECT * FROM auxiliar_tipo_archivos WHERE deleted_at IS NULL AND edit in (0,1) ORDER BY orden ASC";
             $tipo_archivos = $this->db->query($sql)->result_object();
 
             $response['success'] = true;

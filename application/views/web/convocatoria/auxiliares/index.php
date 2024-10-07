@@ -73,7 +73,7 @@
                                             </div>
                                         </td>
                                     </tr> <!--TEMPORAL -->
-                            <?php $i++; if ($i ==1) break;
+                            <?php $i++;
                                 }
                             } ?>
                         </tbody>
