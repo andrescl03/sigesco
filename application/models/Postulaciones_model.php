@@ -1203,12 +1203,6 @@ class Postulaciones_model extends CI_Model
             $data['numero_expediente'] = $numero_expediente;
             $data['numero_expediente_reclamo'] = $numero_expediente_reclamo;
 
-            $postulanteObj = $this->db->get_where('postulaciones', ['id' => $postulacion_id])->row();
-            
-            if($postulanteObj->numero_expediente_reclamo != $numero_expediente_reclamo){
-                $this->db->update('postulaciones', ['fecha_reclamo' => $this->tools->getDateHour()], array('id' => $postulacion_id));
-            }
-
             $this->db->update('postulaciones', $data, ['id' => $postulacion_id]);
 
             $this->db->delete('postulacion_especializaciones', array('postulacion_id' => $postulacion_id));
