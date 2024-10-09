@@ -36,7 +36,7 @@ class Configuracion_Auxiliar_model extends CI_Model
     $sql = $this->db
       ->select("*")
       ->from("procesos pro")
-      ->where(array("pro.pro_estado" => 1))
+      ->where(array("pro.pro_estado" => 1, "pro.pro_id"=>2))
       ->get();
     // echo $this->db->last_query(); exit(); 
     return $sql->result_array();

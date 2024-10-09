@@ -90,16 +90,16 @@ class ConfiguracionAuxiliar extends CI_Controller
 
     public function grupoinscripcion()
     {   // TIENE SOLO 2 SEGMENTOS    
-        if (!in_array($this->uri->slash_segment(1) . $this->uri->segment(2), $this->session->userdata("sigesco_rutas"))) {
+        /*if (!in_array($this->uri->slash_segment(1) . $this->uri->segment(2), $this->session->userdata("sigesco_rutas"))) {
             redirect(base_url() . "inicio/index", 'refresh');
         }
-        if (!empty($this->uri->segment(3))) redirect(base_url() . "configuracion/grupoinscripcion", 'refresh');
+        if (!empty($this->uri->segment(3))) redirect(base_url() . "configuracion/grupoinscripcion", 'refresh');*/
 
         $periodos = $this->configuracion_auxiliar_model->listarPeriodosActivos();
         $procesos = $this->configuracion_auxiliar_model->listarProcesosActivos();
 
-        $this->layout->js(array(base_url() . "public/js/myscript/configuracion/grupoinscripcion.js?t=" . date("mdYHis")));
-        $this->layout->view("grupoinscripcion/grupoinscripcion", compact('periodos', 'procesos', 'modalidades'));
+        $this->layout->js(array(base_url() . "public/admin/auxiliares/grupoinscripcion/grupoinscripcion.js?t=" . date("mdYHis")));
+        $this->layout->view("/admin/auxiliares/grupoinscripcion/grupoinscripcion", compact('periodos', 'procesos', 'modalidades'));
     }
 
     public function vlistargrupoinscripcion()
@@ -108,7 +108,7 @@ class ConfiguracionAuxiliar extends CI_Controller
 
         if ($tipoCarga == 0) { // carga default
             $idPer = $this->session->userdata("sigesco_default_periodo");
-            $idPro = $this->session->userdata("sigesco_default_proceso");
+            $idPro = 2; // $this->session->userdata("sigesco_default_proceso");
         } else {
             $idPer  = $this->input->post("idPer", true);
             $idPro  = $this->input->post("idPro", true);
@@ -117,7 +117,7 @@ class ConfiguracionAuxiliar extends CI_Controller
         $datos = $this->configuracion_auxiliar_model->listarGruposInscripcion($idPer, $idPro);
 
         $this->layout->setLayout("template_ajax");
-        $this->layout->view("grupoinscripcion/vlistargrupoinscripcion", compact('datos'));
+        $this->layout->view("/admin/auxiliares/grupoinscripcion/vlistargrupoinscripcion", compact('datos'));
     }
 
     public function pun()

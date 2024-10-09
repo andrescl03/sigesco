@@ -42,3 +42,7 @@ $route['admin/auxiliares/bonificaciones/pagination'] = 'auxiliares/bonificacione
 $route['admin/auxiliares/bonificaciones/(:num)/update'] = 'auxiliares/bonificacionesAuxiliar/update/$1';
 $route['admin/auxiliares/bonificaciones/(:num)/remove'] = 'auxiliares/bonificacionesAuxiliar/remove/$1';
 $route['admin/auxiliares/bonificaciones/(:num)/edit'] = 'auxiliares/bonificacionesAuxiliar/edit/$1';
+
+$route['admin/auxiliares/grupoinscripcion'] = 'auxiliares/configuracionAuxiliar/grupoinscripcion';
+$route['admin/auxiliares/grupoinscripcion/VListarGrupoInscripcion'] = 'auxiliares/configuracionAuxiliar/VListarGrupoInscripcion';
+
