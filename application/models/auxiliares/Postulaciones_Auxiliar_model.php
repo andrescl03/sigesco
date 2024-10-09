@@ -1,5 +1,5 @@
 <?php
-class Postulaciones_Auxiliar_model extends CI_Model
+class Postulaciones_auxiliar_model extends CI_Model
 {
 
     public function __construct()
