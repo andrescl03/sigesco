@@ -157,7 +157,7 @@ $convocatoria = $data['convocatoria'];
                             <div class="col-xl-8 col-lg-8">
                                 <input type="email" name="correo" class="form-control form-control-solid form-input-validate form-input-email" maxlength="100" required>
                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                                <small>Se enviarán todas las notificaciones del proceso de contratación docente.</small>
+                                <small>Se enviarán todas las notificaciones del proceso de contrato auxiliar.</small>
                             </div>
                         </div>
                         <div class="form-group row">
