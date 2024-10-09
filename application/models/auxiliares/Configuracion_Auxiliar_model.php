@@ -24,8 +24,8 @@ class Configuracion_Auxiliar_model extends CI_Model
     $sql = $this->db
       ->select("*")
       ->from("procesos pro")
-      //TEMPORALMENTE VALIDO PARA CONTRATO DOCENTE, ID CONTRATO DOCENTE = 1
-      ->where(array("pro.pro_id" => 1))
+      //TEMPORALMENTE VALIDO PARA CONTRATO AUXILIAR, ID CONTRATO AUXILIAR = 2
+      ->where(array("pro.pro_id" => 2))
       ->get();
     // echo $this->db->last_query(); exit(); 
     return $sql->result_array();
@@ -81,10 +81,10 @@ class Configuracion_Auxiliar_model extends CI_Model
     $response = $this->tools->responseDefault();
     try {
 
-      $sql = "SELECT * FROM tipo_convocatoria WHERE deleted_at IS NULL";
+      $sql = "SELECT * FROM auxiliar_tipo_convocatoria WHERE deleted_at IS NULL";
       $tipo_convocatorias = $this->db->query($sql)->result_object();
 
-      $sql = "SELECT * FROM periodo_fichas WHERE deleted_at IS NULL AND periodo_id  = ? ORDER BY orden ASC";
+      $sql = "SELECT * FROM auxiliar_periodo_fichas WHERE deleted_at IS NULL AND periodo_id  = ? ORDER BY orden ASC";
       $fichas = $this->db->query($sql, compact('id'))->result_object();
 
       foreach ($fichas as $k => $o) {
@@ -95,7 +95,7 @@ class Configuracion_Auxiliar_model extends CI_Model
       }
 
       $keys_especialidades = [];
-      $sql = "SELECT * FROM periodo_ficha_especialidades WHERE deleted_at IS NULL";
+      $sql = "SELECT * FROM auxiliar_periodo_ficha_especialidades WHERE deleted_at IS NULL";
       $periodo_ficha_especialidades = $this->db->query($sql)->result_object();
       foreach ($periodo_ficha_especialidades as $k => $o) {
         $keys_especialidades[$o->periodo_ficha_id][] = $o;
@@ -275,7 +275,7 @@ class Configuracion_Auxiliar_model extends CI_Model
             $plantilla['sections'] = $sections;
           }
           $plantilla = json_encode($plantilla);
-          $this->db->update('periodo_fichas', ['plantilla' => $plantilla], array('id' => $anexo_id));
+          $this->db->update('auxiliar_periodo_fichas', ['plantilla' => $plantilla], array('id' => $anexo_id));
           break;
         case 'nuevaficha':
           $nombre  = $this->input->post("nombre", true);
@@ -296,8 +296,8 @@ class Configuracion_Auxiliar_model extends CI_Model
                     e3.esp_descripcion AS especialidad_nombre,
                     e4.niv_descripcion AS nivel_nombre,
                     e5.mod_nombre AS modalidad_nombre
-                  FROM periodo_fichas e1
-                  LEFT JOIN periodo_ficha_especialidades e2 ON e1.id = e2.periodo_ficha_id
+                  FROM auxiliar_periodo_fichas e1
+                  LEFT JOIN auxiliar_periodo_ficha_especialidades e2 ON e1.id = e2.periodo_ficha_id
                   LEFT JOIN especialidades e3 ON e3.esp_id = e2.especialidad_id
                   LEFT JOIN niveles e4 ON e4.niv_id = e3.niveles_niv_id
                   LEFT JOIN modalidades e5 ON e5.mod_id = e4.modalidad_mod_id
@@ -327,9 +327,9 @@ class Configuracion_Auxiliar_model extends CI_Model
             'orden' => $orden,
             'periodo_id' => $id
           ];
-          $this->db->insert('periodo_fichas', $data);
+          $this->db->insert('auxiliar_periodo_fichas', $data);
           $ficha_id = $this->db->insert_id(); // para saber el id ingresado
-          $this->db->delete('periodo_ficha_especialidades', array('periodo_ficha_id' => $ficha_id));
+          $this->db->delete('auxiliar_periodo_ficha_especialidades', array('periodo_ficha_id' => $ficha_id));
           if ($total_ids) {
             $inserts = [];
             foreach ($ids as $key => $value) {
@@ -339,7 +339,7 @@ class Configuracion_Auxiliar_model extends CI_Model
               ];
             }
             if (count($inserts)) {
-              $this->db->insert_batch('periodo_ficha_especialidades', $inserts);
+              $this->db->insert_batch('auxiliar_periodo_ficha_especialidades', $inserts);
             }
           }
           break;
@@ -363,8 +363,8 @@ class Configuracion_Auxiliar_model extends CI_Model
                     e3.esp_descripcion AS especialidad_nombre,
                     e4.niv_descripcion AS nivel_nombre,
                     e5.mod_nombre AS modalidad_nombre
-                  FROM periodo_fichas e1
-                  LEFT JOIN periodo_ficha_especialidades e2 ON e1.id = e2.periodo_ficha_id
+                  FROM auxiliar_periodo_fichas e1
+                  LEFT JOIN auxiliar_periodo_ficha_especialidades e2 ON e1.id = e2.periodo_ficha_id
                   LEFT JOIN especialidades e3 ON e3.esp_id = e2.especialidad_id
                   LEFT JOIN niveles e4 ON e4.niv_id = e3.niveles_niv_id
                   LEFT JOIN modalidades e5 ON e5.mod_id = e4.modalidad_mod_id
@@ -394,8 +394,8 @@ class Configuracion_Auxiliar_model extends CI_Model
             'descripcion' => $descripcion,
             'orden' => $orden
           ];
-          $this->db->update('periodo_fichas', $data, array('id' => $ficha_id));
-          $this->db->delete('periodo_ficha_especialidades', array('periodo_ficha_id' => $ficha_id));
+          $this->db->update('auxiliar_periodo_fichas', $data, array('id' => $ficha_id));
+          $this->db->delete('auxiliar_periodo_ficha_especialidades', array('periodo_ficha_id' => $ficha_id));
           if (count(@$ids)) {
             $inserts = [];
             foreach ($ids as $key => $value) {
@@ -405,13 +405,13 @@ class Configuracion_Auxiliar_model extends CI_Model
               ];
             }
             if (count($inserts)) {
-              $this->db->insert_batch('periodo_ficha_especialidades', $inserts);
+              $this->db->insert_batch('auxiliar_periodo_ficha_especialidades', $inserts);
             }
           }
           break;
         case 'eliminaficha':
           $ficha_id  = $this->input->post("id", true);
-          $this->db->update('periodo_fichas', ['deleted_at' => $this->tools->getDateHour()], array('id' => $ficha_id));
+          $this->db->update('auxiliar_periodo_fichas', ['deleted_at' => $this->tools->getDateHour()], array('id' => $ficha_id));
           break;
       }
 

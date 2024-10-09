@@ -115,16 +115,15 @@
                                         }
                                         return false;
                                     }
-                                    function like($string, $pattern) {
+                                    function islike($string, $pattern) {
                                         // Reemplazamos los caracteres comodín con expresiones regulares
                                         $pattern = str_replace(['%', '_'], ['.*', '.'], preg_quote($pattern, '/'));
                                         
                                         // Comprobamos si hay coincidencia
                                         return preg_match("/^$pattern$/i", $string) === 1;
-                                    }                                    
-
+                                    }
                                     // Función para imprimir el menú como navegación colapsable en Bootstrap 5
-                                    function imprimirMenuNav($menu, $parentId = 0, $currentUrl) {
+                                    function imprimirMenuNav($menu, $parentId = 0, $rutas, $currentUrl) {
                                         // Dividimos el menú por niveles
                                         foreach ($menu as $item) {
                                             if ($item['mdl_hijode'] == $parentId) {
@@ -144,27 +143,29 @@
                                                     echo "<div id='{$collapseId}' class='collapse'>";
                                                     echo "<div class='nav flex-column ms-3'>"; // Flex column para los hijos
                                                     // Llamada recursiva para los hijos
-                                                    imprimirMenuNav($menu, $item['mdl_id'], $currentUrl);
+                                                    $result = imprimirMenuNav($menu, $item['mdl_id'], $rutas, $currentUrl);
+                                                    $rutas = $result["rutas"];
                                                     echo "</div>"; // Cierra flex-column
                                                     echo "</div>"; // Cierra collapse
                                                 } else {
                                                     // Determinar si el elemento es activo
-                                                    $isActive = like($currentUrl, $item['mdl_ruta']);
+                                                    $isActive = islike($currentUrl, $item['mdl_ruta']);
                                                     $ruta = base_url().$item["mdl_ruta"];
                                                     // Si no tiene hijos, mostramos el elemento como enlace
                                                     echo "<a class='nav-link' href='{$ruta}'>";
                                                     echo '<div class="sb-nav-link-icon"><i class="'.$item['mdl_icono'].'"></i></div>';
                                                     echo $item['mdl_nombre'];
                                                     echo "</a>";
+                                                    array_push($rutas, $item["mdl_ruta"]);
                                                 }
-
                                                 echo "</div>"; // Cierra nav-item
                                             }
                                         }
+                                        return compact("rutas");
                                     }
                                     // Imprimir el menú acordeón
-                                    imprimirMenuNav(json_decode(json_encode($data_modulo),true), 0, $currentUrl);
-
+                                    $result = imprimirMenuNav(json_decode(json_encode($data_modulo),true), 0, $rutas, $currentUrl);
+                                    $this->session->set_userdata("sigesco_rutas", $result["rutas"]);
                                     /*$i=1; 
                                        
                                     foreach ($data_modulo as $row){
@@ -187,8 +188,8 @@
                                            
                                       }
                                     $i++;}
-                                    echo $html;*/  
-                                    $this->session->set_userdata("sigesco_rutas",$rutas);  
+                                    echo $html;
+                                    $this->session->set_userdata("sigesco_rutas",$rutas);*/
                                   }                            
 
 

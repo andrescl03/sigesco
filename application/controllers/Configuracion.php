@@ -27,6 +27,8 @@ class Configuracion extends CI_Controller
     public function periodos()
     {   // TIENE SOLO 2 SEGMENTOS    
         if (!in_array($this->uri->slash_segment(1) . $this->uri->segment(2), $this->session->userdata("sigesco_rutas"))) {
+            var_dump($this->session->userdata("sigesco_rutas"));
+            var_dump($this->uri->slash_segment(1) . $this->uri->segment(2));exit;
             redirect(base_url() . "inicio/index", 'refresh');
         }
         if (!empty($this->uri->segment(3))) redirect(base_url() . "configuracion/periodos", 'refresh');

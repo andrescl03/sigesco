@@ -186,7 +186,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                                     text: message,
                                     onOk: () => {
                                         sweet2.loading({text: 'Redireccionando...'});
-                                        window.location.href = window.AppMain.url + `/configuracion/periodos`;
+                                        window.location.href = window.AppMain.url + `/admin/auxiliares/periodos`;
                                     }
                                 });
                             })
@@ -293,7 +293,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 return new Promise((resolve, reject)=>{
                     sweet2.loading();
                     $.ajax({
-                        url: window.AppMain.url + `configuracion/periodos/${self.periodo_id}/update`,
+                        url: window.AppMain.url + `admin/auxiliares/periodos/${self.periodo_id}/update`,
                         method: 'POST',
                         dataType: 'json',
                         data: formData,
@@ -315,7 +315,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
                 return new Promise((resolve, reject)=>{
                     sweet2.loading();
                     $.ajax({
-                        url: window.AppMain.url + `configuracion/periodos/${self.periodo_id}/remove`,
+                        url: window.AppMain.url + `admin/auxiliares/periodos/${self.periodo_id}/remove`,
                         method: 'POST',
                         dataType: 'json',
                         data: formData,
@@ -333,7 +333,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             getDetail: () => {
                 return new Promise(function (resolve, reject) {
                     $.ajax({
-                        url: window.AppMain.url + `configuracion/periodos/${self.periodo_id}/detail`,
+                        url: window.AppMain.url + `admin/auxiliares/periodos/${self.periodo_id}/detail`,
                         method: 'POST',
                         dataType: 'json',
                         cache: 'false'
