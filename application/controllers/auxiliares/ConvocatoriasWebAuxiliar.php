@@ -47,7 +47,7 @@ class ConvocatoriasWebAuxiliar extends CI_Controller
             $this->layout->js(array(base_url() . "public/web/js/convocatorias/auxiliares/show-reclamo.js"));
             $response = $this->convocatorias_web_auxiliar_model->showReclamo(compact('convocatoria_id', 'inscripcion_id'));
             if ($response['success']) {
-                return $this->layout->view("/web/convocatoria/reclamo", $response);
+                return $this->layout->view("/web/convocatoria/auxiliares/reclamo", $response);
             }
         }
         show_404();
