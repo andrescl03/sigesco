@@ -190,7 +190,7 @@ class Postulaciones_Auxiliar_model extends CI_Model
                 $files = array();
 
                 if ($total) {
-                    $path = __DIR__ . "/../../public/uploads/";
+                    $path = __DIR__ . "/../../../public/uploads/auxiliares/";
                     if (!is_dir($path)) {
                         mkdir($path, 0777, true);
                     }
@@ -205,7 +205,7 @@ class Postulaciones_Auxiliar_model extends CI_Model
                         if ($item['error'] == UPLOAD_ERR_OK) {
                             $filename = uniqid(time()) . "-" . $item['name'];
                             $fullpath = $path . $filename;
-                            $filepath = "/uploads/" . $filename;
+                            $filepath = "/uploads/auxiliares/" . $filename;
                             $extension = strtolower(pathinfo($item['name'], PATHINFO_EXTENSION));
                             move_uploaded_file($item['tmp_name'], $fullpath);
                             $insert_archivos[] = [
@@ -280,8 +280,8 @@ class Postulaciones_Auxiliar_model extends CI_Model
                     }
                 }
                 $nombre_pdf_unificado = "postulante_" . $numero_documento . uniqid(time()) . ".pdf";
-                $ruta_archivo_unificado = "/uploads/" . $nombre_pdf_unificado;
-                $pdfi->Output(__DIR__ . "/../../public" . $ruta_archivo_unificado, 'F');
+                $ruta_archivo_unificado = "/uploads/auxiliares/" . $nombre_pdf_unificado;
+                $pdfi->Output(__DIR__ . "/../../../public" . $ruta_archivo_unificado, 'F');
 
             }
 
@@ -320,7 +320,7 @@ class Postulaciones_Auxiliar_model extends CI_Model
                 'nombre' => $nombre_pdf_unificado,
                 'url' => $ruta_archivo_unificado,
                 'formato' => strtolower(pathinfo($nombre_pdf_unificado, PATHINFO_EXTENSION)),
-                'peso' =>  filesize(__DIR__ . "/../../public" .  $ruta_archivo_unificado),
+                'peso' =>  filesize(__DIR__ . "/../../../public" .  $ruta_archivo_unificado),
                 'tipo_id' => "12",
                 'postulacion_id' => $postulacion_id,
             ];
@@ -564,7 +564,7 @@ class Postulaciones_Auxiliar_model extends CI_Model
                 $files = array();
 
                 if ($total) {
-                    $path = __DIR__ . "/../../public/uploads/";
+                    $path = __DIR__ . "/../../../public/uploads/auxiliares/";
                     if (!is_dir($path)) {
                         mkdir($path, 0777, true);
                     }
@@ -579,7 +579,7 @@ class Postulaciones_Auxiliar_model extends CI_Model
                         if ($item['error'] == UPLOAD_ERR_OK) {
                             $filename = uniqid(time()) . "-" . $item['name'];
                             $fullpath = $path . $filename;
-                            $filepath = "/uploads/" . $filename;
+                            $filepath = "/uploads/auxiliares/" . $filename;
                             $extension = strtolower(pathinfo($item['name'], PATHINFO_EXTENSION));
                             move_uploaded_file($item['tmp_name'], $fullpath);
                             $insert_archivos[] = [
@@ -1122,7 +1122,7 @@ class Postulaciones_Auxiliar_model extends CI_Model
                 $total = count($_FILES['archivos']['name']);
                 $files = array();
                 if ($total) {
-                    $path = __DIR__ . "/../../public/uploads/";
+                    $path = __DIR__ . "/../../../public/uploads/auxiliares/";
                     if (!is_dir($path)) {
                         mkdir($path, 0777, true);
                     }
@@ -1137,7 +1137,7 @@ class Postulaciones_Auxiliar_model extends CI_Model
                         if ($item['error'] == UPLOAD_ERR_OK) {
                             $filename = uniqid(time()) . "-" . $item['name'];
                             $fullpath = $path . $filename;
-                            $filepath = "/uploads/" . $filename;
+                            $filepath = "/uploads/auxiliares/" . $filename;
                             $extension = strtolower(pathinfo($item['name'], PATHINFO_EXTENSION));
                             move_uploaded_file($item['tmp_name'], $fullpath);
                             $insert_archivos[] = [

@@ -90,7 +90,7 @@
                             <div class="sb-sidenav-menu-heading">MENÚ</div>
                             <a class="nav-link" href="<?php echo base_url()?>inicio/index">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-gear"></i></div>
-                                Inicio
+                                <strong>Inicio</strong>
                             </a>                       
                             
                             <?php 
@@ -101,7 +101,71 @@
                                   $html = ""; //init        
                                   $rutas=[];
                                   if(!(empty($data_modulo))){
-                                    $i=1; 
+
+                                    // Obtener el esquema (http o https)
+                                    $scheme = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http';
+                                    // Obtener la URL actual
+                                    $currentUrl = $scheme . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                                    // Función auxiliar para verificar si un elemento tiene hijos
+                                    function tieneHijos($menu, $parentId) {
+                                        foreach ($menu as $item) {
+                                            if ($item['mdl_hijode'] == $parentId) {
+                                                return true;
+                                            }
+                                        }
+                                        return false;
+                                    }
+                                    function like($string, $pattern) {
+                                        // Reemplazamos los caracteres comodín con expresiones regulares
+                                        $pattern = str_replace(['%', '_'], ['.*', '.'], preg_quote($pattern, '/'));
+                                        
+                                        // Comprobamos si hay coincidencia
+                                        return preg_match("/^$pattern$/i", $string) === 1;
+                                    }                                    
+
+                                    // Función para imprimir el menú como navegación colapsable en Bootstrap 5
+                                    function imprimirMenuNav($menu, $parentId = 0, $currentUrl) {
+                                        // Dividimos el menú por niveles
+                                        foreach ($menu as $item) {
+                                            if ($item['mdl_hijode'] == $parentId) {
+                                                $collapseId = "collapse_" . $item['mdl_id'];
+                                                $headingId = "heading_" . $item['mdl_id'];
+
+                                                // Cada item será parte de un contenedor nav
+                                                echo "<div class='nav-item'>";
+                                                // Cabecera del colapso (elemento visible)
+                                                if (tieneHijos($menu, $item['mdl_id'])) {
+                                                    // Botón para el colapso
+                                                    echo "<a class='nav-link collapsed' data-bs-toggle='collapse' href='#{$collapseId}' aria-expanded='false' aria-controls='{$collapseId}'>";
+                                                    echo '<div class="sb-nav-link-icon"><i class="'.$item['mdl_icono'].'"></i></div>';
+                                                    echo "<strong>{$item['mdl_nombre']}</strong>";  // En negrita si tiene hijos
+                                                    echo '<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>';
+                                                    echo "</a>";
+                                                    echo "<div id='{$collapseId}' class='collapse'>";
+                                                    echo "<div class='nav flex-column ms-3'>"; // Flex column para los hijos
+                                                    // Llamada recursiva para los hijos
+                                                    imprimirMenuNav($menu, $item['mdl_id'], $currentUrl);
+                                                    echo "</div>"; // Cierra flex-column
+                                                    echo "</div>"; // Cierra collapse
+                                                } else {
+                                                    // Determinar si el elemento es activo
+                                                    $isActive = like($currentUrl, $item['mdl_ruta']);
+                                                    $ruta = base_url().$item["mdl_ruta"];
+                                                    // Si no tiene hijos, mostramos el elemento como enlace
+                                                    echo "<a class='nav-link' href='{$ruta}'>";
+                                                    echo '<div class="sb-nav-link-icon"><i class="'.$item['mdl_icono'].'"></i></div>';
+                                                    echo $item['mdl_nombre'];
+                                                    echo "</a>";
+                                                }
+
+                                                echo "</div>"; // Cierra nav-item
+                                            }
+                                        }
+                                    }
+                                    // Imprimir el menú acordeón
+                                    imprimirMenuNav(json_decode(json_encode($data_modulo),true), 0, $currentUrl);
+
+                                    /*$i=1; 
                                        
                                     foreach ($data_modulo as $row){
                                       if ($row->mdl_hijode == '0'){
@@ -123,7 +187,7 @@
                                            
                                       }
                                     $i++;}
-                                    echo $html;  
+                                    echo $html;*/  
                                     $this->session->set_userdata("sigesco_rutas",$rutas);  
                                   }                            
 
