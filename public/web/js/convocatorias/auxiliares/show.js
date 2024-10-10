@@ -287,7 +287,7 @@ const AppConvovatoriaWeb = () => {
                                     sweet2.loading(false);
                                     self.response = data;
                                     let uid = self.response['postulante'].uid;
-                                    $('.btn-print-reporte-ficha-postulacion ').attr('href', window.AppMain.url + 'reportes/registro/' + uid + '/postulacion');
+                                    $('.btn-print-reporte-ficha-postulacion ').attr('href', window.AppMain.url + 'web/auxiliares/reportes/registro/' + uid + '/postulacion');
                                     $('#documentos_unificados').attr('href', window.AppMain.url + 'public' + self.response['ruta_archivo_unificado']);
                                     $('#uidExpediente').val(uid);
                                     $('#div-step-2').removeClass('d-none');
@@ -500,7 +500,7 @@ const AppConvovatoriaWeb = () => {
                                                 $('#div-step-3').addClass('d-none');
                                             }
                                             else {
-                                                $('.btn-print-reporte-ficha-postulacion').attr('href', `${window.AppMain.url}reportes/registro/${uid}/postulacion`);
+                                                $('.btn-print-reporte-ficha-postulacion').attr('href', `${window.AppMain.url}web/auxiliares/reportes/registro/${uid}/postulacion`);
                                                 $('#documentos_unificados').attr('href', `${window.AppMain.url}public/${ruta_archivo}`);
                                                 $('#uidExpediente').val(uid);
                                                 const myModal = new bootstrap.Modal(document.getElementById('showInformacionPostulacion_paso_dos'), {

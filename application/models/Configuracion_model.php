@@ -36,7 +36,7 @@ class Configuracion_model extends CI_Model
     $sql = $this->db
       ->select("*")
       ->from("procesos pro")
-      ->where(array("pro.pro_estado" => 1))
+      ->where(array("pro.pro_estado" => 1, "pro.pro_id"=>1))
       ->get();
     // echo $this->db->last_query(); exit(); 
     return $sql->result_array();

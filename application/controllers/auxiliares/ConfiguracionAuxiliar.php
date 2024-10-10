@@ -21,7 +21,6 @@ class ConfiguracionAuxiliar extends CI_Controller
         }
         $this->layout->setLayout("template");
         $this->load->model("auxiliares/configuracion_auxiliar_model");
-        $this->load->model("configuracion_model");
         date_default_timezone_set('America/Lima');
     }
 
@@ -33,40 +32,36 @@ class ConfiguracionAuxiliar extends CI_Controller
 
     public function VListarPeriodos()
     {
-        $datos = $this->configuracion_model->listarPeriodosTodos();
+        $datos = $this->configuracion_auxiliar_model->listarPeriodosTodos();
         $this->layout->setLayout("template_ajax");
         $this->layout->view('/admin/auxiliares/periodos/VListarPeriodos', compact('datos'));
     }
 
     public function editarPeriodo()
     {   // TIENE SOLO 2 SEGMENTOS    
-        /*if (!in_array($this->uri->slash_segment(1) . $this->uri->segment(2), $this->session->userdata("sigesco_rutas"))) {
-            redirect(base_url() . "inicio/index", 'refresh');
-        }*/
-        // var_dump($this->uri->segment(4));exit;
         $this->layout->js(array(base_url() . "public/admin/auxiliares/periodos/editar.js?t=" . date("mdYHis")));
-        $this->layout->view("/admin/auxiliares/periodos/editar", $this->configuracion_model->editarPeriodo($this->uri->segment(4)));        
+        $this->layout->view("/admin/auxiliares/periodos/editar", $this->configuracion_auxiliar_model->editarPeriodo($this->uri->segment(4)));        
     }
 
     public function detallePeriodo($id)
     {
         $this->output
             ->set_content_type('application/json')
-            ->set_output(json_encode($this->configuracion_model->detallePeriodo($id)));
+            ->set_output(json_encode($this->configuracion_auxiliar_model->detallePeriodo($id)));
     }
 
     public function guardarPeriodo($id)
     {
         $this->output
             ->set_content_type('application/json')
-            ->set_output(json_encode($this->configuracion_model->guardarPeriodo($id)));
+            ->set_output(json_encode($this->configuracion_auxiliar_model->guardarPeriodo($id)));
     }
 
     public function eliminarPeriodo($id)
     {
         $this->output
             ->set_content_type('application/json')
-            ->set_output(json_encode($this->configuracion_model->eliminarPeriodo($id)));
+            ->set_output(json_encode($this->configuracion_auxiliar_model->eliminarPeriodo($id)));
     }
 
     public function registraPeriodo()
@@ -74,7 +69,7 @@ class ConfiguracionAuxiliar extends CI_Controller
         if ($this->input->post()) {
             $this->output
                 ->set_content_type('application/json')
-                ->set_output(json_encode($this->configuracion_model->registraPeriodo()));
+                ->set_output(json_encode($this->configuracion_auxiliar_model->registraPeriodo()));
         } else {
             show_404();
         }
@@ -82,34 +77,29 @@ class ConfiguracionAuxiliar extends CI_Controller
 
     public function procesos()
     {   // TIENE SOLO 2 SEGMENTOS    
-        if (!in_array($this->uri->slash_segment(1) . $this->uri->segment(2), $this->session->userdata("sigesco_rutas"))) {
-            redirect(base_url() . "inicio/index", 'refresh');
-        }
-        if (!empty($this->uri->segment(3))) redirect(base_url() . "configuracion/procesos", 'refresh');
-
-        $this->layout->js(array(base_url() . "public/js/myscript/configuracion/procesos.js?t=" . date("mdYHis")));
-        $this->layout->view("procesos/procesos");
+        $this->layout->js(array(base_url() . "public/admin/auxiliares/procesos/procesos.js?t=" . date("mdYHis")));
+        $this->layout->view("/admin/auxiliares/procesos/procesos");
     }
 
     public function VListarProcesos()
     {
-        $datos = $this->configuracion_model->listarProcesosTodos();
+        $datos = $this->configuracion_auxiliar_model->listarProcesosTodos();
         $this->layout->setLayout("template_ajax");
-        $this->layout->view('procesos/VListarProcesos', compact('datos'));
+        $this->layout->view('/admin/auxiliares/procesos/VListarProcesos', compact('datos'));
     }
 
     public function grupoinscripcion()
     {   // TIENE SOLO 2 SEGMENTOS    
-        if (!in_array($this->uri->slash_segment(1) . $this->uri->segment(2), $this->session->userdata("sigesco_rutas"))) {
+        /*if (!in_array($this->uri->slash_segment(1) . $this->uri->segment(2), $this->session->userdata("sigesco_rutas"))) {
             redirect(base_url() . "inicio/index", 'refresh');
         }
-        if (!empty($this->uri->segment(3))) redirect(base_url() . "configuracion/grupoinscripcion", 'refresh');
+        if (!empty($this->uri->segment(3))) redirect(base_url() . "configuracion/grupoinscripcion", 'refresh');*/
 
-        $periodos = $this->configuracion_model->listarPeriodosActivos();
-        $procesos = $this->configuracion_model->listarProcesosActivos();
+        $periodos = $this->configuracion_auxiliar_model->listarPeriodosActivos();
+        $procesos = $this->configuracion_auxiliar_model->listarProcesosActivos();
 
-        $this->layout->js(array(base_url() . "public/js/myscript/configuracion/grupoinscripcion.js?t=" . date("mdYHis")));
-        $this->layout->view("grupoinscripcion/grupoinscripcion", compact('periodos', 'procesos', 'modalidades'));
+        $this->layout->js(array(base_url() . "public/admin/auxiliares/grupoinscripcion/grupoinscripcion.js?t=" . date("mdYHis")));
+        $this->layout->view("/admin/auxiliares/grupoinscripcion/grupoinscripcion", compact('periodos', 'procesos', 'modalidades'));
     }
 
     public function vlistargrupoinscripcion()
@@ -118,16 +108,16 @@ class ConfiguracionAuxiliar extends CI_Controller
 
         if ($tipoCarga == 0) { // carga default
             $idPer = $this->session->userdata("sigesco_default_periodo");
-            $idPro = $this->session->userdata("sigesco_default_proceso");
+            $idPro = 2; // $this->session->userdata("sigesco_default_proceso");
         } else {
             $idPer  = $this->input->post("idPer", true);
             $idPro  = $this->input->post("idPro", true);
         }
 
-        $datos = $this->configuracion_model->listarGruposInscripcion($idPer, $idPro);
+        $datos = $this->configuracion_auxiliar_model->listarGruposInscripcion($idPer, $idPro);
 
         $this->layout->setLayout("template_ajax");
-        $this->layout->view("grupoinscripcion/vlistargrupoinscripcion", compact('datos'));
+        $this->layout->view("/admin/auxiliares/grupoinscripcion/vlistargrupoinscripcion", compact('datos'));
     }
 
     public function pun()
@@ -137,8 +127,8 @@ class ConfiguracionAuxiliar extends CI_Controller
         }
         if (!empty($this->uri->segment(3))) redirect(base_url() . "configuracion/pun", 'refresh');
 
-        $periodos = $this->configuracion_model->listarPeriodosActivos();
-        $procesos = $this->configuracion_model->listarProcesosActivos();
+        $periodos = $this->configuracion_auxiliar_model->listarPeriodosActivos();
+        $procesos = $this->configuracion_auxiliar_model->listarProcesosActivos();
         $this->layout->js(array(base_url() . "public/js/myscript/configuracion/pun.js?t=" . date("mdYHis")));
         $this->layout->view("pun/pun", compact('periodos', 'procesos'));
     }
@@ -155,15 +145,15 @@ class ConfiguracionAuxiliar extends CI_Controller
             $idPro  = $this->input->post("idPro", true);
         }
 
-        $datos = $this->configuracion_model->listarPruebaPun($idPer, $idPro);
+        $datos = $this->configuracion_auxiliar_model->listarPruebaPun($idPer, $idPro);
         $this->layout->setLayout("template_ajax");
         $this->layout->view('pun/VListarPun', compact('datos'));
     }
 
     public function VCargarPun()
     {
-        $periodos = $this->configuracion_model->listarPeriodosActivos();
-        $procesos = $this->configuracion_model->listarProcesosActivos();
+        $periodos = $this->configuracion_auxiliar_model->listarPeriodosActivos();
+        $procesos = $this->configuracion_auxiliar_model->listarProcesosActivos();
         $this->layout->setLayout("template_ajax");
         $this->layout->view('pun/VCargarPun', compact('periodos', 'procesos'));
     }
@@ -335,7 +325,7 @@ class ConfiguracionAuxiliar extends CI_Controller
                 array_push($ar_insert, $arreglo);
             }
 
-            $buscar = $this->configuracion_model->buscarDocumentoExiste($ar_documentos, $anio);
+            $buscar = $this->configuracion_auxiliar_model->buscarDocumentoExiste($ar_documentos, $anio);
 
             if (!empty($buscar)) {
                 $ar_list = [];
@@ -348,7 +338,7 @@ class ConfiguracionAuxiliar extends CI_Controller
                 exit();
             }
 
-            $insert = $this->configuracion_model->insertBatchCuadroPun($ar_insert);
+            $insert = $this->configuracion_auxiliar_model->insertBatchCuadroPun($ar_insert);
 
             if ($insert >= 1) {
                 $mensaje["success"] = "Se cargó información correctamente.";
@@ -372,8 +362,8 @@ class ConfiguracionAuxiliar extends CI_Controller
         }
         if (!empty($this->uri->segment(3))) redirect(base_url() . "configuracion/colegios", 'refresh');
 
-        $periodos = $this->configuracion_model->listarPeriodosActivos();
-        $procesos = $this->configuracion_model->listarProcesosActivos();
+        $periodos = $this->configuracion_auxiliar_model->listarPeriodosActivos();
+        $procesos = $this->configuracion_auxiliar_model->listarProcesosActivos();
         $this->layout->js(array(base_url() . "public/js/myscript/configuracion/colegios.js?t=" . date("mdYHis")));
         $this->layout->view("colegios/colegios", compact('periodos', 'procesos'));
     }
@@ -381,7 +371,7 @@ class ConfiguracionAuxiliar extends CI_Controller
     public function VListarColegios()
     {
 
-        $datos = $this->configuracion_model->listarColegios();
+        $datos = $this->configuracion_auxiliar_model->listarColegios();
         $this->layout->setLayout("template_ajax");
         $this->layout->view('colegios/VListarColegios', compact('datos'));
     }
@@ -404,13 +394,13 @@ class ConfiguracionAuxiliar extends CI_Controller
 
     public function VNuevaPlaza()
     {
-        $periodos   = $this->configuracion_model->listarPeriodosActivos();
-        $procesos   = $this->configuracion_model->listarProcesosActivos();
-        $colegios   = $this->configuracion_model->listarColegiosActivos();
+        $periodos   = $this->configuracion_auxiliar_model->listarPeriodosActivos();
+        $procesos   = $this->configuracion_auxiliar_model->listarProcesosActivos();
+        $colegios   = $this->configuracion_auxiliar_model->listarColegiosActivos();
 
         $idPer = $this->session->userdata("sigesco_default_periodo");
         $idPro = $this->session->userdata("sigesco_default_proceso");
-        $grupos     = $this->configuracion_model->listarGruposInscripcion($idPer, $idPro);
+        $grupos     = $this->configuracion_auxiliar_model->listarGruposInscripcion($idPer, $idPro);
         $this->layout->setLayout("template_ajax");
         $this->layout->view('plazas/VNuevaPlaza', compact('periodos', 'procesos', 'grupos', 'colegios'));
     }
@@ -418,7 +408,7 @@ class ConfiguracionAuxiliar extends CI_Controller
 
     public function VListarPlazas()
     {
-        $datos = $this->configuracion_model->listarPlazas();
+        $datos = $this->configuracion_auxiliar_model->listarPlazas();
         $this->layout->setLayout("template_ajax");
         $this->layout->view('plazas/VListarPlazas', compact('datos'));
     }
@@ -426,16 +416,15 @@ class ConfiguracionAuxiliar extends CI_Controller
 
     public function VNuevoGrupoInscripcion()
     {
-        $periodos   = $this->configuracion_model->listarPeriodosActivos();
-        $procesos   = $this->configuracion_model->listarProcesosActivos();
-        $modalidades  = $this->configuracion_model->listarModalidades();
-        $niveles =   $this->configuracion_model->listarNiveles();
+        $periodos   = $this->configuracion_auxiliar_model->listarPeriodosActivos();
+        $procesos   = $this->configuracion_auxiliar_model->listarProcesosActivos();
+        $modalidades  = $this->configuracion_auxiliar_model->listarModalidades();
+        $niveles =   $this->configuracion_auxiliar_model->listarNiveles();
 
         $idPer = $this->session->userdata("sigesco_default_periodo");
-        $idPro = $this->session->userdata("sigesco_default_proceso");
-
+        $idPro = 2; // $this->session->userdata("sigesco_default_proceso");
         $this->layout->setLayout("template_ajax");
-        $this->layout->view('grupoinscripcion/listar/VNuevoGrupoInscripcion', compact('periodos', 'procesos', 'modalidades', 'niveles'));
+        $this->layout->view('/admin/auxiliares/grupoinscripcion/listar/VNuevoGrupoInscripcion', compact('periodos', 'procesos', 'modalidades', 'niveles'));
     }
 
 
@@ -453,7 +442,7 @@ class ConfiguracionAuxiliar extends CI_Controller
             "esp_estado"      => 1
         );
 
-        $idEspecialidad = $this->configuracion_model->insertarEspecialidad($arr_1);
+        $idEspecialidad = $this->configuracion_auxiliar_model->insertarEspecialidad($arr_1);
 
         if ($idEspecialidad < 0) {
             $mensaje["error"]   = "Error al agregar la especialidad.";
@@ -470,7 +459,7 @@ class ConfiguracionAuxiliar extends CI_Controller
 
         );
 
-        $insert = $this->configuracion_model->insertGrupoInscripcion($arr_2);
+        $insert = $this->configuracion_auxiliar_model->insertGrupoInscripcion($arr_2);
 
         if ($insert >= 1) {
             $mensaje["success"] = "Se registró información correctamente.";
@@ -490,7 +479,7 @@ class ConfiguracionAuxiliar extends CI_Controller
             "gin_id"  => $idGin
         );
 
-        $this->configuracion_model->eliminarGrupoInscripcion($arr_1);
+        $this->configuracion_auxiliar_model->eliminarGrupoInscripcion($arr_1);
 
         $mensaje["success"] = "Se eliminó la información correctamente.";
         $mensaje["estado"]  = true;
@@ -506,7 +495,7 @@ class ConfiguracionAuxiliar extends CI_Controller
             "inscripcion_id"  => $idGin
         );
 
-        $cantidad = $this->configuracion_model->validarGrupoInscripcion($arr_1);
+        $cantidad = $this->configuracion_auxiliar_model->validarGrupoInscripcion($arr_1);
 
         $response["estado"]  = true;
         $response["data"]  = $cantidad;

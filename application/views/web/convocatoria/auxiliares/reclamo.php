@@ -8,10 +8,14 @@ $convocatoria = $data['convocatoria'];
                 <div class="row my-3">
                     <div class="col-md-12 text-center">
                         <h4 class="mx-auto mb-1 text-uppercase">
-                        <b>CONVOCATORIA REGISTRO DE AUXILIARES <?php echo $convocatoria->con_anio ?></b> 
+                            CONTRATO AUXILIAR <?php echo $convocatoria->con_anio ?> - ETAPA DE RECLAMO
                         </h4>
                     </div>
-                 
+                    <div class="col-md-12 text-center">
+                        <h6 class="mb-2 text-secondary text-uppercase">
+                            <?php echo $convocatoria->con_tipo == 1 ? 'Evaluación PUN (Prueba Única Nacional)' : 'Evaluación de expedientes' ?>
+                        </h6>
+                    </div>
                     <div class="col-md-12 text-center">
                         <h6 class="mb-1 text-secondary text-uppercase">
                             <?php echo $convocatoria->modalidad_nombre ?> <?php echo $convocatoria->nivel_nombre ?> <?php echo $convocatoria->especialidad_nombre == '-' ? '' : $convocatoria->especialidad_nombre ?>
@@ -19,13 +23,20 @@ $convocatoria = $data['convocatoria'];
                     </div>
                     <div class="col-md-12 text-center">
                         <p class="m-0 text-secondary">
-                            Inicio <strong><?php echo $convocatoria->con_fechainicio ?></strong>
-                            Fin <strong><?php echo $convocatoria->con_fechafin ?></strong>
+                            Inicio: <strong><?php echo $convocatoria->con_fechainicio_reclamo ?></strong>
+                            Fin: <strong><?php echo $convocatoria->con_fechafin_reclamo ?></strong>
+                            <br>
                             <strong class="ms-2"><?php echo $convocatoria->con_diasrestantes ?> <?php echo $convocatoria->con_diasrestantes > 1 ? 'días restantes' : 'día restante' ?></strong>
                         </p>
                     </div>
                 </div>
             </div>
+            <!-- <div class="card-title mx-auto">
+                <h3 class="card-label text-center my-2">
+                    <p>CONVOCATORIA REGISTRO DE DOCENTE <?php echo $convocatoria->con_anio ?></p>
+                    DESDE <?php echo $convocatoria->con_fechainicio ?> AL <?php echo $convocatoria->con_fechafin ?>
+                </h3>
+            </div> -->
         </div>
         <div class="card-body">
             <div class="row justify-content-center py-4">
@@ -35,11 +46,7 @@ $convocatoria = $data['convocatoria'];
                             <ul>
                                 <li><a href="" data-scroll="0">Datos de postulación</a></li>
                                 <li><a href="" data-scroll="1">Datos personales del postulante</a></li>
-                                <li><a href="" data-scroll="2">Datos de ubicación</a></li>
-                                <li><a href="" data-scroll="3">Formación académica</a></li>
-                                <li><a href="" data-scroll="4">Formación Continua</a></li>
-                                <li><a href="" data-scroll="5">Experiencia laboral</a></li>
-                                <li><a href="" data-scroll="6">Archivos adjuntos</a></li>
+                                   <li><a href="" data-scroll="6">Archivos adjuntos</a></li>
                             </ul>
                         </div>
                     </div>
@@ -63,289 +70,78 @@ $convocatoria = $data['convocatoria'];
                             <label class="col-xl-4 col-lg-4 col-form-label">Número de Documento</label>
                             <div class="col-xl-8 col-lg-8">
                                 <?php if ($convocatoria->con_tipo == 1) { ?>
-                                        <div class="input-group mb-3">
-                                            <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document form-input-document" placeholder="Ingrese su número de documento" required>
-                                            <div class="input-group-append">
-                                                <button class="btn btn-primary btn-documento" type="button">Validar</button>
-                                                <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
+                                            <div class=" mb-3">
+                                                <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document form-input-document" placeholder="Ingrese su número de documento" required>
+                                         
                                             </div>
-                                        </div>
                                 <?php } else { ?>
-                                        <div class="input-group mb-3">
-                                            <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document" placeholder="Ingrese su número de documento" required>
-                                            <div class="input-group-append">
-                                                <button class="btn btn-primary btn-documento" type="button">Validar</button>
-                                                <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
+                                            <div class=" mb-3">
+                                                <input type="text" id="inputDocumento" name="numero_documento" class="form-control form-control-solid input-document" placeholder="Ingrese su número de documento" required>
                                             </div>
-                                        </div>
                                 <?php } ?>
                                 <div class="alert-postulant">
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row mt-5 section" data-scrolled="1">
-                            <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label">
-                                <h5>Datos personales del postulante:</h5>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Nombres</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="nombre" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100" required readonly>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Apellido Paterno</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="apellido_paterno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100" required readonly>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Apellido Materno</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="apellido_materno" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100" required readonly>
-                                <div class="invalid-feedback">Por favor este campo es requerido, si usted no cuenta con un apellido, por favor colocar guiones.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Género</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid form-input-validate" name="genero" required>
-                                    <option value="" hidden>[SELECCIONE]</option>
-                                    <option value="M">Masculino</option>
-                                    <option value="F">Femenino</option>
-                                </select>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Estado Civil</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid form-input-validate" name="estado_civil" required>
-                                    <option value="" hidden>[SELECCIONE]</option>
-                                    <option value="soltero">Soltero(a)</option>
-                                    <option value="casado">Casado(a)</option>
-                                    <option value="divorciado">Divorciado(a)</option>
-                                    <option value="viudo">Viudo(a)</option>
-                                    <option value="casado">Casado(a)</option>
-                                </select>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Nacionalidad</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid form-input-validate" name="nacionalidad" required>
-                                    <option value="" hidden>[SELECCIONE]</option>
-                                    <option value="Peruana">Peruana</option>
-                                    <option value="Extranjera">Extranjera</option>
-                                </select>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Fecha de Nacimiento</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <input type="date" name="fecha_nacimiento" class="form-control form-control-solid form-control-validate form-input-age form-input-validate" max="2020-10-10" required>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Correo Electrónico</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="email" name="correo" class="form-control form-control-solid form-input-validate form-input-email" maxlength="100" required>
+                                <input type="email" id="correo" name="correo" class="form-control form-control-solid  form-input-email form-input-document" maxlength="100" required>
                                 <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                                <small>Se enviarán todas las notificaciones del proceso de contrato auxiliar.</small>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Confirmar Correo Electrónico</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <input type="email" name="confirma_correo" class="form-control form-control-solid form-input-validate form-input-confirm-email" maxlength="100" pattern="" required>
-                                <div class="invalid-feedback">
-                                    Por favor confirme el correo electrónico ingresado válido.
+                                 <div class="alert alert-primary d-flex align-items-center mb-0" role="alert">
+                                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                                    <div>El correo electrónico nos permite validar la identidad del postulante al presentar un reclamo</div>
                                 </div>
                             </div>
                         </div>
+ 
+                        <div class="form-group row">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Fecha de Nacimiento</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <input type="date" id="fechanacimiento"  name="fecha_nacimiento" class="form-control form-control-solid form-control-validate form-input-age form-input-document " max="2020-10-10" required>
+                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
+                            
+                                <div class="alert alert-primary d-flex align-items-center mb-0" role="alert">
+                                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                                    <div>La fecha de nacimiento nos permite validar la identidad del postulante al presentar un reclamo.</div>
+                                </div>
+
+                            </div>
+                            
+                        </div>
+                        <div class="form-group row">
+                                            <button class="btn btn-primary btn-documento" type="button">Validar Postulación</button>
+                                            <button class="btn btn-danger btn-documento-cancel" type="button" style="display:none;">Cambiar</button>
+                                        </div>
+                        <div class="form-group row mt-5 section" data-scrolled="1">
+                            <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label">
+                                <h5>Información encontrada del postulante:</h5>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-xl-4 col-lg-4 col-form-label">Nombres y Apellidos</label>
+                            <div class="col-xl-8 col-lg-8">
+                                <input type="text" name="nombre" class="form-control form-control-solid form-control-validate form-input-validate" minlength="3" maxlength="100"  readonly>
+                            </div>
+                        </div>
+                         
                         <div class="form-group row">
                             <label class="col-xl-4 col-lg-4 col-form-label">Número de Celular</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="numero_celular" class="form-control form-control-solid form-control-validate input-number form-input-validate" maxlength="9" required>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
+                                <input type="text" name="numero_celular" class="form-control form-control-solid form-control-validate input-number form-input-validate" maxlength="9" readonly>
                             </div>
-                        </div>
+                        </div>      
+                        
+                        
                         <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Número de Teléfono</label>
+                            <label class="col-xl-4 col-lg-4 col-form-label">Fecha de postulación</label>
                             <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="numero_telefono" class="form-control form-control-solid form-control-validate  input-number form-input-validate" maxlength="7" required>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
+                                <input type="text" name="fecha_postulacion" class="form-control form-control-solid form-control-validate input-number form-input-validate" maxlength="9" readonly>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Afiliación</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid form-input-validate" name="afiliacion" required>
-                                    <option value="" hidden>[SELECCIONE]</option>
-                                    <option value="AFP">AFP</option>
-                                    <option value="ONP">ONP</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">CUSPP</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="cuss" class="form-control form-control-solid form-control-validate  input-number form-input-validate" maxlength="50" required>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row mt-5 section" data-scrolled="2">
-                            <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label">
-                                <h5>Datos de Ubicación:</h5>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Departamento</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid select-department form-input-validate" name="departamento_id" required>
-                                    <option value="" hidden>[SELECCIONE]</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Provincia</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid select-province form-input-validate" name="provincia_id" required>
-                                    <option value="" hidden>[SELECCIONE]</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Distrito</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid select-district form-input-validate" name="distrito_id" required>
-                                    <option value="" hidden>[SELECCIONE]</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Vía</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <!-- <input type="text" name="via" class="form-control form-control-solid form-input-validate" minlength="3" maxlength="100" required> -->
-                                <select class="form-control form-control-solid select-via form-input-validate" name="via_id" required>
-                                    <option value="" hidden>[SELECCIONE]</option>
-                                </select>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Vía</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="nombre_via" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100" required>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Zona</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <select class="form-control form-control-solid select-zona form-input-validate" name="zona_id" required>
-                                    <option value="" hidden>[SELECCIONE]</option>
-                                </select>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la Zona</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="nombre_zona" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100" required>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-xl-4 col-lg-4 col-form-label">Dirección</label>
-                            <div class="col-xl-8 col-lg-8">
-                                <input type="text" name="direccion" class="form-control form-control-solid form-control-validate  form-input-validate" minlength="3" maxlength="100" required>
-                                <div class="invalid-feedback">Por favor este campo es requerido.</div>
-                            </div>
-                        </div>
-                        <div class="form-group row mt-5 section" data-scrolled="3">
-                            <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label d-flex justify-content-between">
-                                <h5 class="my-auto">Formación académica:</h5>
-                                <button type="button" class="btn btn-primary btn-academic-training float-end form-input-validate">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-academic-training mb-0">
-                                <thead class="text-center">
-                                    <tr>
-                                        <th>Nivel Educativo</th>
-                                        <th>Grado Académico</th>
-                                        <th>Universidad</th>
-                                        <th>Carrera Profesional</th>
-                                        <th>N° de Registro de Título</th>
-                                        <th>RD de Título N°</th>
-                                        <th>Fecha de obtención del grado</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Las filas se agregarán dinámicamente aquí -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="form-group row mt-5 section" data-scrolled="4">
-                            <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label d-flex justify-content-between">
-                                <h5 class="my-auto">Formación Continua:</h5>
-                                <button type="button" class="btn btn-primary btn-specialization float-end form-input-validate">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-specialization mb-0">
-                                <thead class="text-center">
-                                    <tr>
-                                        <th>Tipo de especialización</th>
-                                        <th>Tema</th>
-                                        <th>Nombre de la entidad</th>
-                                        <th>Fecha de inicio</th>
-                                        <th>Fecha de termino</th>
-                                        <th>Número de horas</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Las filas se agregarán dinámicamente aquí -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="form-group row mt-5 section" data-scrolled="5">
-                            <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label d-flex justify-content-between">
-                                <h5 class="my-auto">Experiencia laboral:</h5>
-                                <button type="button" class="btn btn-primary btn-work-experience float-end form-input-validate">Agregar</button>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-work-experience mb-0">
-                                <thead class="text-center">
-                                    <tr>
-                                        <th>Institución educativa</th>
-                                        <th>Sector</th>
-                                        <th>Puesto</th>
-                                        <th>N° RD</th>
-                                        <th>N° Contrato</th>
-                                        <th>Fecha inicio</th>
-                                        <th>Fecha fin</th>
-                                        <th>Cantidad de meses</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Las filas se agregarán dinámicamente aquí -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="form-group row mt-5 section" data-scrolled="6">
+
+                          <div class="form-group row mt-5 section" data-scrolled="6">
                             <div class="offset-xl-4 offset-lg-4 col-xl-8 col-lg-8 col-form-label d-flex justify-content-between">
                                 <h5 class="my-auto">Archivos adjuntos:</h5>
                                 <!-- <button type="button" class="btn btn-primary btn-attached-file float-end form-input-validate">Agregar</button> -->
@@ -365,7 +161,7 @@ $convocatoria = $data['convocatoria'];
                                     <!-- Las filas se agregarán dinámicamente aquí -->
                                 </tbody>
                             </table>
-                            <small><b>Recuerda: </b> Los tipos que tienen (*) son documentos obligatorios.</small>
+                            <small><b>Recuerda: </b> Solo se podrá ingresar un archivo (PDF) de reclamo por postulación.</small>
                         </div>
                     </form>
                 </div>
@@ -527,7 +323,7 @@ $convocatoria = $data['convocatoria'];
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Número de horas</label>
                                 <div class="col-xl-8 col-lg-8">
-                                    <input type="number" id="numeroHoras" name="numero_horas" class="form-control form-control-solid" min="16" max="3000" required>
+                                    <input type="number" id="numeroHoras" name="numero_horas" class="form-control form-control-solid" min="16" max="300" required>
                                     <div class="invalid-feedback">Por favor este campo es requerido. (mínimo 16 horas)</div>
                                 </div>
                             </div>
@@ -606,12 +402,16 @@ $convocatoria = $data['convocatoria'];
                                     </select>
                                 </div>
                             </div>
+
+
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Mención de grado</label>
                                 <div class="col-xl-8 col-lg-8">
                                     <input type="text" id="mencion_grado_academico" readonly name="mencion_grado_academico" class="form-control form-control-solid" minlength="3" maxlength="200">
                                 </div>
                             </div>
+
+
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Universidad/Instituto</label>
                                 <div class="col-xl-8 col-lg-8">
@@ -623,6 +423,7 @@ $convocatoria = $data['convocatoria'];
                                      <input type="text" id="universidad"  name="universidad" class="form-control form-control-solid" minlength="3" maxlength="200" required>
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">Carrera profesional</label>
                                 <div class="col-xl-8 col-lg-8">
@@ -632,8 +433,10 @@ $convocatoria = $data['convocatoria'];
                                         <option value="Ingenieria ambiental">Ingenieria ambiental</option>
                                     </select>-->
                                     <input type="text" id="carrera_profesional"  name="carrera_profesional" class="form-control form-control-solid" minlength="3" maxlength="150" required>
+
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label class="col-xl-4 col-lg-4 col-form-label">N° de registro de título</label>
                                 <div class="col-xl-8 col-lg-8">
@@ -670,7 +473,7 @@ $convocatoria = $data['convocatoria'];
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title" id="exampleModalLabel">RESUMEN DE MI POSTULACIÓN</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">RESUMEN DE MI REGISTRO DE RECLAMO</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-4" id="previewPostulant">
@@ -678,7 +481,7 @@ $convocatoria = $data['convocatoria'];
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
-                        <button type="button" class="btn btn-primary btn-save">REGISTRAR MI POSTULACIÓN</button>
+                        <button type="button" class="btn btn-primary btn-save">REGISTRAR MI RECLAMO</button>
                     </div>
                 </div>
             </div>
@@ -701,20 +504,15 @@ $convocatoria = $data['convocatoria'];
             </div>
         </div>
     </div>
-
-
- <!-- Modal para información del proceso de postulación -->
-<!-- Modal -->
-<!-- Modal -->
-<div class="modal fade" id="showInformacionPostulacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="showInformacionPostulacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title">Cómo llevar a cabo mi proceso de postulación</h5>
+                <h5 class="modal-title">Cómo llevar a cabo mi proceso de registro de reclamo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p class="text-center mx-auto" style="max-width: 80%;">Actualmente te encuentras en el PASO 1 del proceso de postulación en SIGESCO. Este paso es crucial para iniciar correctamente tu postulación.</p>
+                <p class="text-center mx-auto" style="max-width: 80%;">Actualmente te encuentras en el PASO 1 del proceso de reclamo en SIGESCO. Este paso es crucial para iniciar correctamente tu proceso de reclamo.</p>
                 <div class="text-center">
                     <img src="<?php echo base_url() ?>assets/image/escala-de-satisfaccion.png" alt="niveles de satisfacción" class="img-fluid" style="max-width: 110px;">
                 </div>
@@ -727,11 +525,11 @@ $convocatoria = $data['convocatoria'];
                     <div class="carousel-inner">
                         <!-- Paso 1 -->
                         <div class="carousel-item active">
-                            <h6 class="fw-bold text-center">PASO ACTUAL: <br>Paso 1 - postulación en SIGESCO</h6>
+                            <h6 class="fw-bold text-center">PASO ACTUAL: <br>Paso 1 - registro en SIGESCO</h6>
                             <div class="text-center">
                                 <img src="<?php echo base_url() ?>assets/image/escala_paso_uno.png" alt="Paso 1" class="img-fluid" style="max-width: 60px;">
                             </div>
-                            <p class="text-center mx-auto" style="max-width: 80%;">Accede al sistema SIGESCO y completa el formulario de postulación. Asegúrate de adjuntar todos los documentos requeridos antes de enviar tu solicitud para avanzar al siguiente paso (paso 2).</p>
+                            <p class="text-center mx-auto" style="max-width: 80%;">Accede al sistema SIGESCO y completa el formulario de reclamo. Asegúrate de adjuntar todos los documentos requeridos antes de enviar tu solicitud para avanzar al siguiente paso (paso 2).</p>
                             <div class="mt-3 text-center">
                                 <span class="badge bg-primary">Paso 1 de 3</span>
                             </div>
@@ -750,6 +548,7 @@ $convocatoria = $data['convocatoria'];
 </div>
 
 
+
 <!-- Modal -->
 <div class="modal fade" id="showInformacionPostulacion_paso_dos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -762,7 +561,7 @@ $convocatoria = $data['convocatoria'];
 
                 <div id="div-step-2">
                         <p class="text-center mx-auto" style="max-width: 80%;">
-                            <b>¡Estás en el PASO 2!</b> Para continuar con tu postulación en SIGESCO, debes ahora completar el registro en el portal <b>MINEDU EN LÍNEA</b>.
+                            <b>¡Estás en el PASO 2!</b> Para continuar con tu reclamo en SIGESCO, debes ahora completar el registro en el portal <b>MINEDU EN LÍNEA</b>.
                         </p>
                     <div class="text-center">
                         <img src="<?php echo base_url() ?>assets/image/escala-de-satisfaccion.png" alt="niveles de satisfacción" class="img-fluid" style="max-width: 110px;">
@@ -782,8 +581,8 @@ $convocatoria = $data['convocatoria'];
                                     Para completar el Paso 2, asegurate de:
                                     <ol>
                                         <li>Ingresa al portal MINEDU EN LÍNEA.</li>
-                                        <li>Completa el formulario de postulación.</li>
-                                        <li>Cargar y enviar la <b>Ficha de Postulación</b>.</li>
+                                        <li>Completa el formulario de registro.</li>
+                                        <li>Cargar y enviar la <b>Ficha de reclamo</b>.</li>
                                         <li>Cargar y enviar el <b>Consolidado de Documentos</b>.</li>
                                         <li>Adjunta los documentos necesarios.</li>
                                     </ol>
@@ -798,7 +597,7 @@ $convocatoria = $data['convocatoria'];
                 </div>
 
                 <div class="text-center mt-4">
-                    <a class="btn-print-reporte-ficha-postulacion btn btn-primary mx-2" target="_blank" >Descargar Ficha de Postulación</a>
+                    <a class="btn-print-reporte-ficha-postulacion btn btn-primary mx-2" target="_blank" >Descargar Ficha de reclamo</a>
                     <a id="documentos_unificados"  class="btn btn-secondary mx-2" target="_blank">Descargar Consolidado de Documentos</a>
                 </div>
                 <div class="text-center mt-4">
@@ -844,7 +643,7 @@ $convocatoria = $data['convocatoria'];
                                         <input type="text" maxlength="20" id="numeroExpediente" name="numeroExpediente" class="form-control" placeholder="Número de expediente" required>
                                         <input type="hidden" id="uidExpediente" name="uidExpediente">
                                     </div>
-                                    <button type="button" class="btn btn-success btn-registrar-numero-expediente">Registrar expediente y terminar mi postulación</button>
+                                    <button type="button" class="btn btn-success btn-registrar-numero-expediente">Registrar expediente y terminar mi reclamo</button>
                                 </form>
                      </div>
                 </div>
@@ -856,91 +655,12 @@ $convocatoria = $data['convocatoria'];
     </div>
 </div>
 
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const myModal = new bootstrap.Modal(document.getElementById('showInformacionPostulacion'), {
+const myModal = new bootstrap.Modal(document.getElementById('showInformacionPostulacion'), {
         keyboard: false
     });
     myModal.show();
-
-    const nivelEducativoSelect = document.getElementById('nivel_educativo');
-    const gradoAcademicoSelect = document.getElementsByName('grado_academico')[0];
-    const subnivelSelect = document.getElementsByName('subnivel')[0];
-    const mencionAcademicoSelect = document.getElementsByName('mencion_academico')[0];
-    const mencionGradoInput = document.getElementById('mencion_grado_academico');
-
-    const opcionesPorNivel = {
-        'Superior no universitario': {
-            grados: ['Titulado', 'Egresado', 'VI Ciclo'],
-            subniveles: ['Profesor de educación', 'Profesor de educación inicial', 'Profesor de educación primaria', 'Profesor de educación secundaria', 'Profesor de educación e informática', 'Profesor de educación física'],
-            menciones: ['no disponible para el grado']
-        },
-        'Superior universitario': {
-            grados: ['Egresado', 'Bachiller', 'Titulado', 'Maestría', 'Doctorado', '2da especialidad'],
-            subniveles: ['De educación', 'De educación inicial', 'De educación primaria', 'De educación secundaria', 'De educación física'],
-            menciones: ['Egresado', 'Licenciado', 'Bachiller', 'Maestro', 'Doctor']
-        }
-    };
-
-    const agregarOpciones = (selectElement, opciones) => {
-        selectElement.innerHTML = `<option value="" hidden>[SELECCIONE]</option>`;
-        opciones.forEach(opcion => {
-            selectElement.innerHTML += `<option value="${opcion}">${opcion}</option>`;
-        });
-    };
-
-    nivelEducativoSelect.addEventListener('change', () => {
-        const nivelEducativo = nivelEducativoSelect.value;
-        const opciones = opcionesPorNivel[nivelEducativo] || {
-            grados: [],
-            subniveles: [],
-            menciones: []
-        };
-
-        agregarOpciones(gradoAcademicoSelect, opciones.grados);
-        agregarOpciones(subnivelSelect, opciones.subniveles);
-        agregarOpciones(mencionAcademicoSelect, opciones.menciones);
-
-        mencionGradoInput.value = "";
-
-        const actualizarMencionGrado = () => {
-            if (nivelEducativo === "Superior universitario") {
-                mencionGradoInput.value = `${mencionAcademicoSelect.value} ${subnivelSelect.value}`;
-            }
-        };
-
-        subnivelSelect.addEventListener('change', actualizarMencionGrado);
-        mencionAcademicoSelect.addEventListener('change', actualizarMencionGrado);
-    });
-    function calcularCantidadMeses() {
-    
-       let fechaInicioInput = document.getElementById('fechainicio_rd');
-       let fechaTerminoInput = document.getElementById('fechatermino_rd');
-
-       let fechaInicio = moment(fechaInicioInput.value);
-       let fechaTermino = moment(fechaTerminoInput.value);
-        
-        let fechaInicioOriginal = moment(fechaInicio);
-        let fechaTerminoOriginal = moment(fechaTermino);
-
-        if (fechaInicio.isAfter(fechaTermino)) {
-
-            fechaInicioInput.value = fechaInicioOriginal.format('DD/MM/YYYY');
-           fechaTerminoInput.value = fechaTerminoOriginal.format('DD/MM/YYYY');
-             sweet2.show({
-                 type: 'error',
-                 text: 'La fecha ingresada es incorrecta'
-             });
-              return;
-            }
-
-            let cantidadMeses = fechaTermino.diff(fechaInicio, 'months');
-            if (cantidadMeses >= 0) {
-             document.getElementById('cantidad_mesesrd').value = cantidadMeses;
-         }
-        }
-    
-        document.getElementById('fechainicio_rd').addEventListener('change', calcularCantidadMeses);
-        document.getElementById('fechatermino_rd').addEventListener('change', calcularCantidadMeses);
 });
 </script>
