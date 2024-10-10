@@ -588,10 +588,66 @@ class Postulaciones_auxiliar_model extends CI_Model
                                 'formato' => $extension,
                                 'peso' => $item['size'],
                             ];
+
+                            $pdfFiles[] = $fullpath; // Agregar ruta del archivo PDF al array
                         }
                     }
-                }              
-            }
+
+
+
+               // Crear una instancia de FPDI para combinar PDFs
+                $pdfi = new Fpdi();
+                foreach ($pdfFiles as $file) {
+                                
+                if (!file_exists($file)) {
+                    die('El archivo PDF no existe: ' . $file);
+                }
+                    // Abrir el archivo PDF para obtener la versión
+                    $filepdf = fopen($file, "r");
+
+                    if ($filepdf) {
+                        $line_first = fgets($filepdf);
+                        fclose($filepdf);
+
+                        // Verificar si la línea contiene la versión del PDF
+                        if (preg_match('/PDF-(\d\.\d)/', $line_first, $matches)) {
+
+                            $pdfVersion = $matches[1];
+
+                            if ($pdfVersion > "1.4") {
+                                log_message_ci("Versión de PDF mayor (v{$pdfVersion}) en archivo: " . $numero_documento);
+                                $convertedFile = $path . "converted_" . uniqid() . ".pdf";
+
+                                $command = "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$convertedFile\" \"$file\"";
+                               exec($command . ' 2>&1', $output, $return_var);
+                                $pdfi->SetPDFVersion('1.4');
+                                if ($return_var !== 0) {
+                                    log_message_ci("Error al combinar el archivo: " . implode("\n", $output));
+                                    continue;
+                                } else {
+                                    $file = $convertedFile;
+                                }
+                                }
+                            } else {
+                                log_message_ci("No se pudo determinar la versión del PDF: " . $numero_documento);
+                            }
+                        } else {
+                            log_message_ci("Error al abrir el archivo: " . $numero_documento);
+                            continue;
+                        }
+
+                        $pageCount = $pdfi->setSourceFile($file);
+                        for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+                            $templateId = $pdfi->importPage($pageNo);
+                            $size = $pdfi->getTemplateSize($templateId);
+                            $orientation = ($size['w'] > $size['h']) ? 'L' : 'P';
+                            $pdfi->addPage($orientation, [$size['w'], $size['h']]);
+                            $pdfi->useTemplate($templateId);
+                        }
+                     }
+
+                 }
+               }
 
             $this->db->update('auxiliar_postulaciones', ['fecha_reclamo' => $this->tools->getDateHour()], array('id' => $postulacion_id));
 
