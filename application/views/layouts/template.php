@@ -101,11 +101,6 @@
                                   $html = ""; //init        
                                   $rutas=[];
                                   if(!(empty($data_modulo))){
-
-                                    // Obtener el esquema (http o https)
-                                    $scheme = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http';
-                                    // Obtener la URL actual
-                                    $currentUrl = $scheme . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
                                     // Función auxiliar para verificar si un elemento tiene hijos
                                     function tieneHijos($menu, $parentId) {
                                         foreach ($menu as $item) {
@@ -115,13 +110,6 @@
                                         }
                                         return false;
                                     }
-                                    function islike($string, $pattern) {
-                                        // Reemplazamos los caracteres comodín con expresiones regulares
-                                        $pattern = str_replace(['%', '_'], ['.*', '.'], preg_quote($pattern, '/'));
-                                        
-                                        // Comprobamos si hay coincidencia
-                                        return preg_match("/^$pattern$/i", $string) === 1;
-                                    }
                                     // Función para imprimir el menú como navegación colapsable en Bootstrap 5
                                     function imprimirMenuNav($menu, $parentId = 0, $rutas, $currentUrl) {
                                         // Dividimos el menú por niveles
@@ -129,7 +117,6 @@
                                             if ($item['mdl_hijode'] == $parentId) {
                                                 $collapseId = "collapse_" . $item['mdl_id'];
                                                 $headingId = "heading_" . $item['mdl_id'];
-
                                                 // Cada item será parte de un contenedor nav
                                                 echo "<div class='nav-item'>";
                                                 // Cabecera del colapso (elemento visible)
@@ -149,7 +136,6 @@
                                                     echo "</div>"; // Cierra collapse
                                                 } else {
                                                     // Determinar si el elemento es activo
-                                                    $isActive = islike($currentUrl, $item['mdl_ruta']);
                                                     $ruta = base_url().$item["mdl_ruta"];
                                                     // Si no tiene hijos, mostramos el elemento como enlace
                                                     echo "<a class='nav-link' href='{$ruta}'>";
