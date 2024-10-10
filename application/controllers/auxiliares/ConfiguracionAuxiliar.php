@@ -422,10 +422,9 @@ class ConfiguracionAuxiliar extends CI_Controller
         $niveles =   $this->configuracion_auxiliar_model->listarNiveles();
 
         $idPer = $this->session->userdata("sigesco_default_periodo");
-        $idPro = $this->session->userdata("sigesco_default_proceso");
-
+        $idPro = 2; // $this->session->userdata("sigesco_default_proceso");
         $this->layout->setLayout("template_ajax");
-        $this->layout->view('grupoinscripcion/listar/VNuevoGrupoInscripcion', compact('periodos', 'procesos', 'modalidades', 'niveles'));
+        $this->layout->view('/admin/auxiliares/grupoinscripcion/listar/VNuevoGrupoInscripcion', compact('periodos', 'procesos', 'modalidades', 'niveles'));
     }
 
 

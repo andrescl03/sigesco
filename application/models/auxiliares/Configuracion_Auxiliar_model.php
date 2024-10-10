@@ -42,6 +42,15 @@ class Configuracion_Auxiliar_model extends CI_Model
     return $sql->result_array();
   }
 
+  public function listarTipoConvocatoria()
+  {
+    $sql = $this->db
+      ->select("*")
+      ->from("auxiliar_tipo_convocatoria")
+      ->get();
+    // echo $this->db->last_query(); exit(); 
+    return $sql->result_array();
+  }
 
   public function listarModalidades()
   {

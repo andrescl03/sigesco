@@ -45,4 +45,17 @@ $route['admin/auxiliares/bonificaciones/(:num)/edit'] = 'auxiliares/bonificacion
 
 $route['admin/auxiliares/grupoinscripcion'] = 'auxiliares/configuracionAuxiliar/grupoinscripcion';
 $route['admin/auxiliares/grupoinscripcion/VListarGrupoInscripcion'] = 'auxiliares/configuracionAuxiliar/VListarGrupoInscripcion';
+$route['admin/auxiliares/grupoinscripcion/VNuevoGrupoInscripcion'] = 'auxiliares/configuracionAuxiliar/VNuevoGrupoInscripcion';
+$route['admin/auxiliares/grupoinscripcion/CAgregarNuevoGrupoInscripcion'] = 'auxiliares/configuracionAuxiliar/CAgregarNuevoGrupoInscripcion';
+$route['admin/auxiliares/grupoinscripcion/eliminarGrupoInscripcion'] = 'auxiliares/configuracionAuxiliar/eliminarGrupoInscripcion';
+$route['admin/auxiliares/grupoinscripcion/validarGrupoInscripcion'] = 'auxiliares/configuracionAuxiliar/validarGrupoInscripcion';
+
+$route['admin/auxiliares/convocatorias'] = 'auxiliares/ConvocatoriasAuxiliar/listar';
+$route['admin/auxiliares/convocatorias/VListarConvocatorias'] = 'auxiliares/ConvocatoriasAuxiliar/VListarConvocatorias';
+$route['admin/auxiliares/convocatorias/VNuevaConvocatoria'] = 'auxiliares/ConvocatoriasAuxiliar/vnuevaconvocatoria';
+$route['admin/auxiliares/convocatorias/VSelectGrupoInscripcion'] = 'auxiliares/ConvocatoriasAuxiliar/VSelectGrupoInscripcion';
+$route['admin/auxiliares/convocatorias/VTablaGrupoInscripcion'] = 'auxiliares/ConvocatoriasAuxiliar/VTablaGrupoInscripcion';
+$route['admin/auxiliares/convocatorias/CAgregarNuevaConvocatoria'] = 'auxiliares/ConvocatoriasAuxiliar/CAgregarNuevaConvocatoria';
+
+
 

@@ -19,7 +19,7 @@ class ConvocatoriasWebAuxiliar extends CI_Controller
     {
         $dato = 1;
         $idPer  = true;
-        $idPro  = true;
+        $idPro  = 2;
         $datos  = $this->convocatorias_web_auxiliar_model->index($idPer, $idPro);
 
         $now_unix = strtotime($this->tools->getDateHour());

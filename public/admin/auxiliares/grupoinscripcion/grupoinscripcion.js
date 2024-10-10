@@ -118,7 +118,6 @@ var opt_renderModalidadModal = function () {
 	const items = dataModalidades;
 	const select = document.querySelectorAll('#opt_ModalidadModal');
 
-	console.log(select);
 	select.forEach(select => {
 		let html = `<option value="" hidden>[SELECCIONE]</option>`;
 		items.forEach(item => {
@@ -151,7 +150,7 @@ var opt_renderNivelModal = function () {
 
 var VNuevoGrupoInscripcion = function (parametros) {
 	$.ajax({
-		url: 'VNuevoGrupoInscripcion',
+		url: window.AppMain.url + `admin/auxiliares/grupoinscripcion/VNuevoGrupoInscripcion`,
 		method: 'POST',
 		data: parametros,
 		cache: 'false',
@@ -187,7 +186,7 @@ var VNuevoGrupoInscripcion = function (parametros) {
 				});
 				grupoArr = [];
 				frm = '#frmMantenimientoGrupoInscripcion';
-				opt_renderModalidadModal();
+				// opt_renderModalidadModal();
 
 			}
 		},
@@ -275,7 +274,7 @@ var btn_agregarNuevoGrupoInscripcion = function () {
 
 var CAgregarNuevoGrupoInscripcion = function (parametros) {
 	$.ajax({
-		url: 'CAgregarNuevoGrupoInscripcion',
+		url: window.AppMain.url + `admin/auxiliares/grupoinscripcion/CAgregarNuevoGrupoInscripcion`,
 		method: 'POST',
 		data: parametros,
 		cache: 'false',
@@ -346,7 +345,7 @@ var eliminarGrupo = function (idGin) {
 	}).then((result) => {
 		if (result.isConfirmed) {
 			$.ajax({
-				url: 'eliminarGrupoInscripcion',
+				url: window.AppMain.url + `admin/auxiliares/grupoinscripcion/eliminarGrupoInscripcion`,
 				method: 'POST',
 				data: parame,
 				cache: false,
@@ -386,7 +385,7 @@ var validarGrupoInscripcion = function (idGin, callback) {
 	};
 
 	$.ajax({
-		url: 'validarGrupoInscripcion',
+		url: window.AppMain.url + `admin/auxiliares/grupoinscripcion/validarGrupoInscripcion`,
 		method: 'POST',
 		data: parame,
 		cache: false,
