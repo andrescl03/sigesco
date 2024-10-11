@@ -242,15 +242,8 @@ class Postulaciones_auxiliar_model extends CI_Model
                                 log_message_ci("Versión de PDF mayor (v{$pdfVersion}) en archivo: " . $numero_documento);
                                 $convertedFile = $path . "converted_" . uniqid() . ".pdf";
 
-                                // Normaliza las rutas para que todas las barras sean consistentes
-                                //$convertedFile = str_replace('/', '\\', rtrim($convertedFile, '\\'));
-                                //$file = str_replace('/', '\\', rtrim($file, '\\'));
-                                // Usar comillas dobles sin escaparlas innecesariamente
-                                //$gsPath = "C:\Program Files\gs\gs10.04.0\bin\gswin64c.exe";  // Cambia esto por la ruta real
-
-                               // $command = "gswin64c -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$convertedFile\" \"$file\"";
                                 $command = "gswin64c -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$convertedFile\" \"$file\"";
-                               //exec($command, $output, $return_var);
+                              
                                exec($command . ' 2>&1', $output, $return_var);
 
                                 $pdfi->SetPDFVersion('1.4');
@@ -618,7 +611,7 @@ class Postulaciones_auxiliar_model extends CI_Model
                                 log_message_ci("Versión de PDF mayor (v{$pdfVersion}) en archivo: " . $numero_documento);
                                 $convertedFile = $path . "converted_" . uniqid() . ".pdf";
 
-                                $command = "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$convertedFile\" \"$file\"";
+                                $command = "gswin64c -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$convertedFile\" \"$file\"";
                                exec($command . ' 2>&1', $output, $return_var);
                                 $pdfi->SetPDFVersion('1.4');
                                 if ($return_var !== 0) {
