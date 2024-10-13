@@ -19,7 +19,7 @@ $(document).ready(function () {
       var tableBodyElement = document.getElementById('groupsTableBody'); // Cambio de groupsModal.querySelector a document.getElementById
 
       if (modalTitleElement && tableBodyElement) {
-          modalTitleElement.textContent = "Número de convocatoria: " + modalTitle;
+          modalTitleElement.textContent = "Convocatoria: " + modalTitle;
           tableBodyElement.innerHTML = groupsHtml;
       } else {
           console.error("Elementos del modal no encontrados.");
