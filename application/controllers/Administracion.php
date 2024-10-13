@@ -483,6 +483,8 @@ class Administracion extends CI_Controller {
 		if($this->session->userdata("sigesco_dni")){
 			if ($this->input->post()){				
 				$datos=$this->administracion_model->buscar_modulosPadre();
+				$todos=$this->administracion_model->buscar_modulos();
+				$padres=$this->busca_padres_con_padres($todos);
 				$mensaje["success"]="Carga Correcta.";	
 			/*	if(!empty($datos)){
 					$mensaje["success"]="Carga Correcta.";	
@@ -493,7 +495,7 @@ class Administracion extends CI_Controller {
 				$mensaje["error"]="No se ha enviado ninguna petición";
 			}
 			$this->layout->setLayout("template_ajax");					
-			$this->layout->view("modulos/agregarMod_ajax",compact("datos","mensaje"));
+			$this->layout->view("modulos/agregarMod_ajax",compact("datos","mensaje","padres"));
 		}else{    		
 	    		redirect(base_url()."login/login",301);
 	    }
@@ -563,6 +565,8 @@ class Administracion extends CI_Controller {
 			if ($this->input->post()){
 				$mdl_id=$this->input->post("mdl_id",true);
 				$datos=$this->administracion_model->buscar_modulosPadre();
+				$todos=$this->administracion_model->buscar_modulos();
+				$padres=$this->busca_padres_con_padres($todos);
 				$modulo=$this->administracion_model->buscarModulosxID($mdl_id);
 
 				$mensaje["success"]="Carga Correcta.";	
@@ -575,7 +579,7 @@ class Administracion extends CI_Controller {
 				$mensaje["error"]="No se ha enviado ninguna petición";
 			}
 			$this->layout->setLayout("template_ajax");					
-			$this->layout->view("modulos/editarMod_ajax",compact("datos","modulo","mensaje"));
+			$this->layout->view("modulos/editarMod_ajax",compact("datos","modulo","mensaje","padres"));
 		}else{    		
 	    		redirect(base_url()."login/login",301);
 	    }
@@ -789,6 +793,62 @@ class Administracion extends CI_Controller {
 	    }
 	}
 
+	public function busca_padres_con_padres($todos) {
+
+		function getAllParents($childId, $familyTree, $parents = []) {
+			foreach ($familyTree as &$member) {
+				if ($member['mdl_id'] == $childId) {
+					if ($member['mdl_hijode'] != 0) {
+						$parentMember = getMemberById($member['mdl_hijode'], $familyTree);
+						if ($parentMember) {
+							$parents[] = $parentMember['mdl_nombre']; // Agregar el padre a la lista de padres
+							// Continuar buscando los padres del padre
+							return getAllParents($member['mdl_hijode'], $familyTree, $parents);
+						}
+					}
+				}
+			}
+			return $parents;
+		}
+		
+		function getMemberById($id, $familyTree) {
+			foreach ($familyTree as $member) {
+				if ($member['mdl_id'] == $id) {
+					return $member;
+				}
+			}
+			return null; // No se encontró el miembro
+		}
+		
+		function getParentsForAllMembers($familyTree) {
+			$parentsOnly = [];
+			
+			foreach ($familyTree as &$member) {
+				// Identificar si es padre (si tiene hijos)
+				if (hasChildren($member['mdl_id'], $familyTree)) {
+					$member['padres'] = getAllParents($member['mdl_id'], $familyTree); // Agregar todos los ancestros
+					$parentsOnly[] = $member; // Agregar el miembro al resultado final
+				}
+			}
+			return $parentsOnly;
+		}
+		
+		function hasChildren($parentId, $familyTree) {
+			foreach ($familyTree as $member) {
+				if ($member['mdl_hijode'] == $parentId) {
+					return true; // El miembro tiene al menos un hijo
+				}
+			}
+			return false; // No tiene hijos
+		}
+
+		$parents = getParentsForAllMembers(json_decode(json_encode($todos), true));
+		foreach ($parents as $key => $value) {
+			$parents[$key]['pathname'] = count($value['padres']) > 0 ? implode('/', $value['padres']) .'/'. $value['mdl_nombre'] : $value['mdl_nombre'];
+		}
+		// Obtener solo los padres y agregar el atributo con los ancestros
+		return json_decode(json_encode($parents));
+	}
 
 
 

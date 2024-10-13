@@ -110,9 +110,9 @@ var validar_nuevoModulo = function (frm) {
             opt_hijode: {
                 required: true,
             },
-            txt_ruta: {
+            /*txt_ruta: {
                 required: true,
-            },
+            },*/
             opt_estado:{
             	required: true,
             }
@@ -121,7 +121,7 @@ var validar_nuevoModulo = function (frm) {
             txt_nombre: "Campo obligatorio.",
             txt_icono: "Campo obligatorio.",
             opt_hijode: "Campo obligatorio.",
-            txt_ruta: "Campo obligatorio.",
+            // txt_ruta: "Campo obligatorio.",
             opt_estado: "Campo obligatorio."                    
         }
     });

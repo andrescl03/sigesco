@@ -18,8 +18,8 @@
 			      		<select class="form-select form-select-sm" name="opt_hijode" id="opt_hijode">	
 							<option value="">Elegir...</option>
 							<option value="0">Padre</option>
-							<?php foreach ($datos as $dato) { ?>
-								<option value="<?php echo $dato->mdl_id; ?>"><?php echo $dato->mdl_nombre; ?></option>						
+							<?php foreach ($padres as $dato) { ?>
+								<option value="<?php echo $dato->mdl_id; ?>"><?php echo $dato->pathname; ?></option>						
 							<?php } ?>	
 																						
 						</select>

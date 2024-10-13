@@ -140,7 +140,8 @@ class Administracion_model extends CI_Model {
          $sql=$this->db
             ->select("mdl_id, mdl_nombre")
             ->from("modulos")
-            ->where(array("mdl_flag"=>1,"mdl_hijode"=>0, "mdl_estado"=>1))             
+            // ->where(array("mdl_flag"=>1,"mdl_hijode"=>0, "mdl_estado"=>1))             
+            ->where(array("mdl_flag"=>1,"mdl_ruta"=>"", "mdl_estado"=>1))
             ->get();
             //echo $this->db->last_query(); exit(); 
         return $sql->result();                

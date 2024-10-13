@@ -19,11 +19,15 @@
 			    	<div class="col-sm-8">						      		
 			      		<select class="form-select form-select-sm" name="opt_hijode" id="opt_hijode" <?php echo (($modulo->mdl_hijode==0) ? "disabled" : ""); ?>>	
 							<option value="">Elegir...</option>
-							<?php if($modulo->mdl_hijode==0){ ?>
+							<?php  // if($modulo->mdl_hijode==0){ ?>
 							<option value="0" <?php echo (($modulo->mdl_hijode==0) ? "Selected" : ""); ?>>Padre</option>
-							<?php } ?>
-							<?php foreach ($datos as $dato) { ?>
-								<option value="<?php echo $dato->mdl_id; ?>" <?php echo (($dato->mdl_id==$modulo->mdl_hijode) ? "Selected" : ""); ?>><?php echo $dato->mdl_nombre; ?></option>						
+							<?php // } ?>
+							<?php foreach ($padres as $dato) { 
+								if ($dato->mdl_id == $modulo->mdl_id) {
+									continue;
+								}	
+							?>
+								<option value="<?php echo $dato->mdl_id; ?>" <?php echo (($dato->mdl_id==$modulo->mdl_hijode) ? "Selected" : ""); ?>><?php echo $dato->pathname; // echo $dato->mdl_nombre; ?></option>						
 							<?php } ?>																						
 						</select>
 			    	</div>
