@@ -57,5 +57,7 @@ $route['admin/auxiliares/convocatorias/VSelectGrupoInscripcion'] = 'auxiliares/C
 $route['admin/auxiliares/convocatorias/VTablaGrupoInscripcion'] = 'auxiliares/ConvocatoriasAuxiliar/VTablaGrupoInscripcion';
 $route['admin/auxiliares/convocatorias/CAgregarNuevaConvocatoria'] = 'auxiliares/ConvocatoriasAuxiliar/CAgregarNuevaConvocatoria';
 
+$route['admin/auxiliares/evaluaciones'] = 'auxiliares/EvaluacionAuxiliar/convocatoria';
+$route['admin/auxiliares/evaluaciones/(:any)'] = 'auxiliares/EvaluacionAuxiliar/convocatoria';
 
 

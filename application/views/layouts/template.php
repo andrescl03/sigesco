@@ -111,7 +111,7 @@
                                         return false;
                                     }
                                     // Función para imprimir el menú como navegación colapsable en Bootstrap 5
-                                    function imprimirMenuNav($menu, $parentId = 0, $rutas, $currentUrl) {
+                                    function imprimirMenuNav($menu, $parentId = 0, $rutas) {
                                         // Dividimos el menú por niveles
                                         foreach ($menu as $item) {
                                             if ($item['mdl_hijode'] == $parentId) {
@@ -130,7 +130,7 @@
                                                     echo "<div id='{$collapseId}' class='collapse'>";
                                                     echo "<div class='nav flex-column ms-3'>"; // Flex column para los hijos
                                                     // Llamada recursiva para los hijos
-                                                    $result = imprimirMenuNav($menu, $item['mdl_id'], $rutas, $currentUrl);
+                                                    $result = imprimirMenuNav($menu, $item['mdl_id'], $rutas);
                                                     $rutas = $result["rutas"];
                                                     echo "</div>"; // Cierra flex-column
                                                     echo "</div>"; // Cierra collapse
@@ -150,7 +150,7 @@
                                         return compact("rutas");
                                     }
                                     // Imprimir el menú acordeón
-                                    $result = imprimirMenuNav(json_decode(json_encode($data_modulo),true), 0, $rutas, $currentUrl);
+                                    $result = imprimirMenuNav(json_decode(json_encode($data_modulo),true), 0, $rutas);
                                     $this->session->set_userdata("sigesco_rutas", $result["rutas"]);
                                     /*$i=1; 
                                        

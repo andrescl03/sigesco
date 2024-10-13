@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 error_reporting(E_ALL ^ E_NOTICE);
 
-class Evaluacion extends CI_Controller {
+class EvaluacionAuxiliar extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
@@ -18,20 +18,20 @@ class Evaluacion extends CI_Controller {
             }
         }
 		$this->layout->setLayout("template");
-        $this->load->model("convocatorias_model");
-        $this->load->model("evaluacion_model");
-        $this->load->model("configuracion_model");
-        $this->load->model("postulaciones_model");
+        $this->load->model("auxiliares/convocatorias_auxiliar_model");
+        $this->load->model("auxiliares/evaluacion_auxiliar_model");
+        $this->load->model("auxiliares/configuracion_auxiliar_model");
+        $this->load->model("auxiliares/postulaciones_auxiliar_model");
         //$this->load->model("mesadepartes_model");
 		date_default_timezone_set('America/Lima');
 	}
 
     public function convocatoria($cadena = null){   // TIENE SOLO 3 SEGMENTOS
-        if(!in_array($this->uri->slash_segment(1).$this->uri->segment(2), $this->session->userdata("sigesco_rutas"))){            
+        /*if(!in_array($this->uri->slash_segment(1).$this->uri->segment(2), $this->session->userdata("sigesco_rutas"))){            
             redirect(base_url()."inicio/index",'refresh');
         }
-        if (!empty($this->uri->segment(4))) redirect(base_url()."evaluacion/convocatoria/".$cadena, 'refresh');
-        if (empty($cadena)) redirect(base_url()."/admin/auxiliares/".encryption('0||0'));
+        if (!empty($this->uri->segment(4))) redirect(base_url()."evaluacion/convocatoria/".$cadena, 'refresh');*/
+        //if (empty($cadena)) redirect(base_url()."admin/auxiliares/evaluaciones/".encryption('0||0'));
 
         $_cadena    = decryption($cadena); // cadena tiene 2 parametros
         $arreglo    = explode("||",$_cadena);     
@@ -41,21 +41,21 @@ class Evaluacion extends CI_Controller {
         $tipo       = $arreglo[3]; // 1: PRELIMINAR, 2: FINAL   
 
         if($idCon == '0' && $idGin == '0'){
-            $periodos   = $this->configuracion_model->listarPeriodosActivos();
-            $procesos   = $this->configuracion_model->listarProcesosActivos();
+            $periodos   = $this->configuracion_auxiliar_model->listarPeriodosActivos();
+            $procesos   = $this->configuracion_auxiliar_model->listarProcesosActivos();
 
-            $this->layout->js(array(base_url()."public/js/myscript/evaluacion/convocatoria.js?t=".date("mdYHis")));
-		    $this->layout->view("convocatoria/convocatoria", compact('periodos', 'procesos')); 
+            $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/convocatoria.js?t=".date("mdYHis")));
+		    $this->layout->view("/admin/auxiliares/evaluaciones/convocatoria/convocatoria", compact('periodos', 'procesos')); 
         }
         if($idCon != '0' && $idGin == '0'){
-            $datos   = $this->evaluacion_model->listarGruposInscripcionxConvocatoria($idCon);
-            // $gruposInscripcion = $this->evaluacion_model->listarGruposAsignadosXConvocatoria($idConv);
+            $datos   = $this->evaluacion_auxiliar_model->listarGruposInscripcionxConvocatoria($idCon);
+            // $gruposInscripcion = $this->evaluacion_auxiliar_model->listarGruposAsignadosXConvocatoria($idConv);
 
 
             /*foreach ($datos as $key_1 => $dato) {
                 $_idGin = $dato['gin_id'];
                 $usuario = $this->session->userdata("sigesco_dni");
-                $docente   = $this->evaluacion_model->listarCuadroPunxIdGrupoConEvaluacion($_idGin, $usuario);
+                $docente   = $this->evaluacion_auxiliar_model->listarCuadroPunxIdGrupoConEvaluacion($_idGin, $usuario);
                 $datos[$key_1]['tp_docentes']    = $docente['t_docentes'];
                 $datos[$key_1]['tp_asigando']    = $docente['t_asigando'];
                 $datos[$key_1]['tp_preliminar']  = $docente['t_preliminar'];
@@ -63,7 +63,7 @@ class Evaluacion extends CI_Controller {
                 $datos[$key_1]['tp_mis_preliminar']  = $docente['t_mis_preliminar'];
                 $datos[$key_1]['tp_mis_final']       = $docente['t_mis_final'];
 
-                $docente   = $this->evaluacion_model->listarCuadroExpxIdGrupoConEvaluacion($_idGin, $usuario);
+                $docente   = $this->evaluacion_auxiliar_model->listarCuadroExpxIdGrupoConEvaluacion($_idGin, $usuario);
                 $datos[$key_1]['te_docentes']    = $docente['t_docentes'];
                 $datos[$key_1]['te_asigando']    = $docente['t_asigando'];
                 $datos[$key_1]['te_preliminar']  = $docente['t_preliminar'];
@@ -71,14 +71,14 @@ class Evaluacion extends CI_Controller {
                 $datos[$key_1]['te_mis_preliminar']  = $docente['t_mis_preliminar'];
                 $datos[$key_1]['te_mis_final']       = $docente['t_mis_final'];
             }*/
-            $this->layout->js(array(base_url()."public/js/myscript/evaluacion/grupos.js?t=".date("mdYHis")));
-		    $this->layout->view("convocatoria/grupos/grupos", ['datos' => $datos, 'convocatoria_id' => $idCon]); 
+            $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/grupos.js?t=".date("mdYHis")));
+		    $this->layout->view("/admin/auxiliares/evaluaciones/convocatoria/grupos/grupos", ['datos' => $datos, 'convocatoria_id' => $idCon]); 
         }
 
         if($idCon != '0' && $idGin != '0'){
-            $dato   = $this->evaluacion_model->listarGrupoInscripcionxConvocatoriaYEspecialidad($idCon, $idGin);
-            $this->layout->js(array(base_url()."public/js/myscript/evaluacion/cargar.js?t=".date("mdYHis")));
-		    $this->layout->view("convocatoria/cargar/cargar", compact('dato', 'eval', 'tipo')); 
+            $dato   = $this->evaluacion_auxiliar_model->listarGrupoInscripcionxConvocatoriaYEspecialidad($idCon, $idGin);
+            $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/cargar.js?t=".date("mdYHis")));
+		    $this->layout->view("/admin/auxiliares/evaluaciones/convocatoria/cargar/cargar", compact('dato', 'eval', 'tipo')); 
         }
 	}
 
@@ -91,10 +91,10 @@ class Evaluacion extends CI_Controller {
             $idPer  = $this->input->post("idPer",true);  
             $idPro  = $this->input->post("idPro",true);  
         }
-        $datos  = $this->convocatorias_model->listarConvocatoriasActivas($idPer, $idPro); 
+        $datos  = $this->convocatorias_auxiliar_model->listarConvocatoriasActivas($idPer, $idPro); 
               
         $this->layout->setLayout("template_ajax");
-        $this->layout->view('convocatoria/VListarConvocatoriasActivas', compact('datos'));
+        $this->layout->view('/admin/auxiliares/evaluaciones/convocatoria/VListarConvocatoriasActivas', compact('datos'));
     }
 
 
@@ -109,20 +109,20 @@ class Evaluacion extends CI_Controller {
         switch ($tipo) {
             case '1':
                 if($todos==1){// 1: todos
-                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarV2($convId, $idGin);
+                    $datos    = $this->evaluacion_auxiliar_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarV2($convId, $idGin);
                 }else{// 0: por especialista
-                    $datos    = $this->evaluacion_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuarioV2($convId, $idGin, $usuario);
+                    $datos    = $this->evaluacion_auxiliar_model->listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuarioV2($convId, $idGin, $usuario);
                 }
                 // writer($datos);
                 /*foreach ($datos as $key_1 => $dato) {
                     $idCpu = $dato['cpe_id'];
-                    $asignaciones = $this->convocatorias_model->listarAsignacionxCuadroPun($idCpu);
+                    $asignaciones = $this->convocatorias_auxiliar_model->listarAsignacionxCuadroPun($idCpu);
                     if(!empty($asignaciones)){
                         foreach ($asignaciones as $key_2 =>$asignacion) {
                             $datos[$key_1]['expediente'][$key_2]['idExp']   = $asignacion['exp_id'];
                             $datos[$key_1]['expediente'][$key_2]['codigo']  = $asignacion['exp_codigo'];
 
-                            $archivos = $this->convocatorias_model->listarArchivosDetalle($asignacion['exp_id']);
+                            $archivos = $this->convocatorias_auxiliar_model->listarArchivosDetalle($asignacion['exp_id']);
                             
                             foreach ($archivos as $key_3 => $archivo) {
                                 $datos[$key_1]['expediente'][$key_2]['archivo'][$key_3]['tipo'] = $archivo['adt_tipoArchivo'];
@@ -136,7 +136,7 @@ class Evaluacion extends CI_Controller {
                 }*/
                 //writer($datos);
                 $this->layout->setLayout("template_ajax");
-                $this->layout->view('convocatoria/cargar/pun/pun', compact('datos'));
+                $this->layout->view('/admin/auxiliares/evaluaciones/convocatoria/cargar/pun/pun', compact('datos'));
 
                 break;
             case '2':
@@ -149,14 +149,14 @@ class Evaluacion extends CI_Controller {
     public function VListarEspecialistas(){
         $idConv      = $this->input->post("idConv",true); //iConvocatoria
 
-        $datos   = $this->evaluacion_model->verEspecialistasAcceso();
+        $datos   = $this->evaluacion_auxiliar_model->verEspecialistasAcceso();
 
-        $grupos   = $this->evaluacion_model->VerGrupodeInscripcionxConvocatoria($idConv);// Listar grupos de inscripcion de la idconv
+        $grupos   = $this->evaluacion_auxiliar_model->VerGrupodeInscripcionxConvocatoria($idConv);// Listar grupos de inscripcion de la idconv
         $ar_idGin = [];
         foreach ($grupos as $grupo) {        
             array_push($ar_idGin, $grupo['grupo_inscripcion_gin_id']);
         }
-        $contador =  $this->evaluacion_model->contarEspecialistasAsignadosaPunxConvocatoriaPreliminarV2($ar_idGin, $idConv);
+        $contador =  $this->evaluacion_auxiliar_model->contarEspecialistasAsignadosaPunxConvocatoriaPreliminarV2($ar_idGin, $idConv);
 
         foreach ($datos as $key_1 => $dato) {
             $found_key = (string)array_search($dato['usu_dni'], array_column($contador, 'dni_espec'));    
@@ -170,7 +170,7 @@ class Evaluacion extends CI_Controller {
         }
 
         $this->layout->setLayout("template_ajax");
-        $this->layout->view('convocatoria/cargar/pun/VListarEspecialistas', compact('datos'));
+        $this->layout->view('/admin/auxiliares/evaluaciones/convocatoria/cargar/pun/VListarEspecialistas', compact('datos'));
     }
 
     public function CAsignarReasignar(){
@@ -223,11 +223,11 @@ class Evaluacion extends CI_Controller {
         }
 
         if(!empty($ar_insert)){
-            $insert = $this->evaluacion_model->insertarBatchEvaluacionPun($ar_insert);   
+            $insert = $this->evaluacion_auxiliar_model->insertarBatchEvaluacionPun($ar_insert);   
         }
 
         if(!empty($ar_update)){            
-            $update = $this->evaluacion_model->updateBatchEvaluacionPun($ar_update);            
+            $update = $this->evaluacion_auxiliar_model->updateBatchEvaluacionPun($ar_update);            
         }
 
          if($update > 0 || $insert > 0){
@@ -251,23 +251,23 @@ class Evaluacion extends CI_Controller {
 
         if (count($arreglo) != 2) redirect(base_url()."errores/error404");
 
-        $datos = $this->postulaciones_model->show(['id' => $idCpu]);
-        // $datos = $this->evaluacion_model->verFichaEvaluacion(); 
+        $datos = $this->postulaciones_auxiliar_model->show(['id' => $idCpu]);
+        // $datos = $this->evaluacion_auxiliar_model->verFichaEvaluacion(); 
         $this->layout->css(array(base_url()."public/css/ficha.css?t=".date("mdYHis")));
         $this->layout->js(array(
             // base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
-            base_url()."public/js/myscript/evaluacion/guide.js?v=".date("mdYHis")));
+            base_url()."public/admin/auxiliares/evaluacion/guide.js?v=".date("mdYHis")));
         $revaluar = 0;
         $this->layout->view("ficha/ficha", compact('datos', 'revaluar')); 
 	}
     
     public function indexPreliminar($convocatoria_id, $inscripcion_id) {
-        $this->layout->js(array(base_url()."public/js/myscript/evaluacion/evaluacion.js?t=".date("mdYHis")));
+        $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/evaluacion.js?t=".date("mdYHis")));
         $this->layout->view("/evaluacion/convocatoria/grupos/evaluacion", ['any' => 'preliminar', 'convocatoria_id' => $convocatoria_id, 'inscripcion_id' => $inscripcion_id]);
     }
 
     public function indexFinal($convocatoria_id, $inscripcion_id) {
-        $this->layout->js(array(base_url()."public/js/myscript/evaluacion/evaluacion.js?t=".date("mdYHis")));
+        $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/evaluacion.js?t=".date("mdYHis")));
         $this->layout->view("/evaluacion/convocatoria/grupos/evaluacion", ['any' => 'final', 'convocatoria_id' => $convocatoria_id, 'inscripcion_id' => $inscripcion_id]);
     }
 
@@ -275,7 +275,7 @@ class Evaluacion extends CI_Controller {
         if ($this->input->post()) {
             $this->output
                 ->set_content_type('application/json')
-                ->set_output(json_encode($this->evaluacion_model->pagination()));
+                ->set_output(json_encode($this->evaluacion_auxiliar_model->pagination()));
         } else {
             show_404();
         }    
@@ -285,7 +285,7 @@ class Evaluacion extends CI_Controller {
         if ($id > 0) {
             $this->output
                 ->set_content_type('application/json')
-                ->set_output(json_encode($this->evaluacion_model->attachedfiles(compact('id'))));   
+                ->set_output(json_encode($this->evaluacion_auxiliar_model->attachedfiles(compact('id'))));   
         } else {
             show_404();
         }    
@@ -297,7 +297,7 @@ class Evaluacion extends CI_Controller {
         if ($convocatoria_id > 0 && $inscripcion_id > 0) {
 
             $this->output
-                ->set_content_type('application/json')->set_output(json_encode($this->evaluacion_model->procesarExpedientesPreliminarCumpleFinal($convocatoria_id, $inscripcion_id)));
+                ->set_content_type('application/json')->set_output(json_encode($this->evaluacion_auxiliar_model->procesarExpedientesPreliminarCumpleFinal($convocatoria_id, $inscripcion_id)));
         } else {
             show_404();
         }
@@ -308,7 +308,7 @@ class Evaluacion extends CI_Controller {
         if ($convocatoria_id > 0 && $inscripcion_id > 0) {
             $this->output
                 ->set_content_type('application/json')
-                ->set_output(json_encode($this->evaluacion_model->procesarExpedientesPreliminarNoCumpleFinal($convocatoria_id, $inscripcion_id)));
+                ->set_output(json_encode($this->evaluacion_auxiliar_model->procesarExpedientesPreliminarNoCumpleFinal($convocatoria_id, $inscripcion_id)));
         } else {
             show_404();
         }    
@@ -318,7 +318,7 @@ class Evaluacion extends CI_Controller {
         if ($this->input->post()) {
             $this->output
                 ->set_content_type('application/json')
-                ->set_output(json_encode($this->evaluacion_model->status()));
+                ->set_output(json_encode($this->evaluacion_auxiliar_model->status()));
         } else {
             show_404();
         }    
@@ -327,11 +327,11 @@ class Evaluacion extends CI_Controller {
  
 
     public function revaluarPreliFinal($id) {
-        $datos = $this->postulaciones_model->show(['id' => $id]);
+        $datos = $this->postulaciones_auxiliar_model->show(['id' => $id]);
         $this->layout->css(array(base_url()."public/css/ficha.css?t=".date("mdYHis")));
         $this->layout->js(array(
             // base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
-            base_url()."public/js/myscript/evaluacion/guide.js?v=".date("mdYHis")
+            base_url()."public/admin/auxiliares/evaluacion/guide.js?v=".date("mdYHis")
         ));
         $revaluar = 1;
         $this->layout->view("ficha/ficha", compact('datos', 'revaluar'));       
@@ -357,7 +357,7 @@ class Evaluacion extends CI_Controller {
     }
 
     public function reporte_excel($convocatoria_id, $inscripcion_id, $estado, $ficha) {
-        $response = $this->evaluacion_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado, true);
+        $response = $this->evaluacion_auxiliar_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado, true);
         if (!$response['success']) {
             echo $response['message'];
         }
@@ -366,7 +366,7 @@ class Evaluacion extends CI_Controller {
     }
 
     public function reporte_excel_2($convocatoria_id, $inscripcion_id, $estado, $ficha) {
-        $response = $this->evaluacion_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado, true);
+        $response = $this->evaluacion_auxiliar_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado, true);
 
         if (!$response['success']) {
             echo $response['message'];
@@ -378,7 +378,7 @@ class Evaluacion extends CI_Controller {
     public function reporte_excel_general($convocatoria_id) {
         $estado  = $this->input->post("estado", true);
         $inscripcion_id  = $this->input->post("inscripcion_id", true);
-        $response = $this->evaluacion_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado);
+        $response = $this->evaluacion_auxiliar_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado);
         if (!$response['success']) {
             echo $response['message'];
         }

@@ -246,19 +246,19 @@ class ConvocatoriasAuxiliar extends CI_Controller {
             $periodos   = $this->configuracion_auxiliar_model->listarPeriodosActivos();
             $procesos   = $this->configuracion_auxiliar_model->listarProcesosActivos();
 
-            $this->layout->js(array(base_url()."public/js/myscript/convocatorias/cargarexpedientes.js?t=".date("mdYHis")));
+            $this->layout->js(array(base_url()."public/admin/auxiliares/convocatorias/cargarexpedientes.js?t=".date("mdYHis")));
 		    $this->layout->view("cargarexpedientes/cargarexpedientes", compact('periodos', 'procesos')); 
         }
 
         if($idCon != '0' && $idGin == '0'){
             $datos   = $this->convocatorias_auxiliar_model->listarGruposInscripcionxConvocatoria($idCon);
-            $this->layout->js(array(base_url()."public/js/myscript/convocatorias/grupos.js?t=".date("mdYHis")));
+            $this->layout->js(array(base_url()."public/admin/auxiliares/convocatorias/grupos.js?t=".date("mdYHis")));
 		    $this->layout->view("cargarexpedientes/grupos/grupos", compact('datos')); 
         }
 
         if($idCon != '0' && $idGin != '0'){
             $dato   = $this->convocatorias_auxiliar_model->listarGrupoInscripcionxConvocatoriaYEspecialidad($idCon, $idGin);
-            $this->layout->js(array(base_url()."public/js/myscript/convocatorias/cargar.js?t=".date("mdYHis")));
+            $this->layout->js(array(base_url()."public/admin/auxiliares/convocatorias/cargar.js?t=".date("mdYHis")));
 		    $this->layout->view("cargarexpedientes/cargar/cargar", compact('dato')); 
         }
 	}
