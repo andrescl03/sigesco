@@ -17,7 +17,7 @@
 			  	<div class="form-group row">
 		    		<label for="opt_hijode" class="col-sm-3 col-form-label"><b>Hijo de:</b></label>
 			    	<div class="col-sm-8">						      		
-			      		<select class="form-select form-select-sm" name="opt_hijode" id="opt_hijode" <?php echo (($modulo->mdl_hijode==0) ? "disabled" : ""); ?>>	
+			      		<select class="form-select form-select-sm" name="opt_hijode" id="opt_hijode">	
 							<option value="">Elegir...</option>
 							<?php  // if($modulo->mdl_hijode==0){ ?>
 							<option value="0" <?php echo (($modulo->mdl_hijode==0) ? "Selected" : ""); ?>>Padre</option>
@@ -35,7 +35,7 @@
 				<div class="form-group row">
 			    	<label for="txt_ruta" class="col-sm-3 col-form-label"><b>Ruta:</b></label>
 			    	<div class="col-sm-8">
-			     		<input type="text" class="form-control form-control-sm" id="txt_ruta" name="txt_ruta" onkeyup="minus(this)" value="<?php echo $modulo->mdl_ruta; ?>" <?php echo (($modulo->mdl_hijode==0) ? "disabled" : ""); ?>>
+			     		<input type="text" class="form-control form-control-sm" id="txt_ruta" name="txt_ruta" onkeyup="minus(this)" value="<?php echo $modulo->mdl_ruta; ?>">
 			    	</div>
 			  	</div>
 			  	<div class="form-group row">
