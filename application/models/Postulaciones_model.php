@@ -242,9 +242,8 @@ class Postulaciones_model extends CI_Model
                                 log_message_ci("Versión de PDF mayor (v{$pdfVersion}) en archivo: " . $numero_documento);
                                 $convertedFile = $path . "converted_" . uniqid() . ".pdf";
 
-                               //$command = "gswin64c -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$convertedFile\" \"$file\"";
+                               //$command = "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$convertedFile\" \"$file\"";
                                 $command = "gswin64c -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$convertedFile\" \"$file\"";
-                               //exec($command, $output, $return_var);
                                exec($command . ' 2>&1', $output, $return_var);
                                 $pdfi->SetPDFVersion('1.4');
                                 if ($return_var !== 0) {

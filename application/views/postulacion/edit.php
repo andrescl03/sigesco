@@ -465,7 +465,7 @@
                                                                         <option value="Actualizacion">Actualizacion</option>
                                                                         <option value="Curso">Curso</option>
                                                                         <option value="Taller">Taller</option>
-                                                                        <option value="Otros">Otros</option>
+                                                                        <option value="Capacitacion">Capacitacion</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -479,16 +479,8 @@
                                                             <div class="mb-3 row">
                                                                 <label class="col-xl-4 col-lg-4 col-form-label">Nombre de la entidad</label>
                                                                 <div class="col-xl-8 col-lg-8">
-
-                                                                    <select id="nombre_entidad" class="form-control form-control-solid" name="nombre_entidad" required>
-                                                                        <option value="" hidden>[SELECCIONE]</option>
-                                                                        <!--  <option value="Pública">Pública</option>
-                                                                        <option value="Privada">Privada</option> -->
-                                                                        <option value="edutalento">Edutalento</option>
-                                                                        <option value="perueduca">Perú Educa</option>
-                                                                        <option value="otros">otros</option>
-
-                                                                    </select>
+                                                                    <input type="text" id="nombre_entidad" name="nombre_entidad" class="form-control form-control-solid" minlength="3" maxlength="100" required>
+                                                                    <div class="invalid-feedback">Por favor este campo es requerido.</div>
                                                                 </div>
                                                             </div>
                                                             <div class="mb-3 row">

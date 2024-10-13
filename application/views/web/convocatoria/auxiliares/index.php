@@ -44,13 +44,13 @@
                                     }
                             ?>
                                     <tr>
-                                        <td class="text-center"><b><?= "CONV-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio'] ?></b></td>
+                                        <td class="text-center"><b><?= "CONV-CEA-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio'] ?></b></td>
                                         <td class="text-center"><?= format_date($dato['con_fechainicio'], "d/m/Y") . " " . substr($dato['con_horainicio'], 0, 5) ?></td>
                                         <td class="text-center"><?= format_date($dato['con_fechafin'], "d/m/Y") . " " . substr($dato['con_horafin'], 0, 5) ?></td>
                                         <td class="text-center"><?= $dato['con_fechainicio_reclamo'] ? (format_date($dato['con_fechainicio_reclamo'], "d/m/Y") . " " . substr($dato['con_horainicio_reclamo'], 0, 5)) : '' ?></td>
                                         <td class="text-center"><?= $dato['con_fechafin_reclamo'] ? (format_date($dato['con_fechafin_reclamo'], "d/m/Y") . " " . substr($dato['con_horafin_reclamo'], 0, 5)) : '' ?></td>
                                         <td class="text-center">
-                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#groupsModal" data-groups="<?= htmlspecialchars($groupsList) ?>" data-title="<?= "CONV-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio'] ?>">
+                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#groupsModal" data-groups="<?= htmlspecialchars($groupsList) ?>" data-title="<?= "CONV-CEA-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio'] ?>">
                                                 Ver Grupos
                                             </button>
                                         </td>
@@ -66,7 +66,7 @@
                                         <td class="text-center">
                                             <div class="d-flex justify-content-center gap-2">
                                                 <?php if ($dato['con_tipo'] == 2 || $dato['con_tipo'] == 1) { ?>
-                                                    <a type="button" class="<?= $buttonClass ?>" title="Ingresar a postular" data-bs-toggle="modal" data-bs-target="#postularModal" data-conid="<?= $dato['con_id'] ?>" data-contitle="<?= "CONV-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio'] ?>">
+                                                    <a type="button" class="<?= $buttonClass ?>" title="Ingresar a postular" data-bs-toggle="modal" data-bs-target="#postularModal" data-conid="<?= $dato['con_id'] ?>" data-contitle="<?= "CONV-CEA-" . sprintf('%04d', $dato['con_numero']) . "-" . $dato['con_anio'] ?>">
                                                         <b><i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i> POSTULAR</b>
                                                     </a>
                                                 <?php } ?>
