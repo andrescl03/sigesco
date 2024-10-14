@@ -183,16 +183,16 @@ CREATE TABLE `auxiliar_postulacion_formaciones_academicas` (
 );
 
 
-INSERT INTO `modulos` (`mdl_id`, `mdl_nombre`, `mdl_ruta`, `mdl_icono`, `mdl_hijode`, `mdl_orden`, `mdl_fechaRegistro`, `mdl_fechaModificacion`, `mdl_estado`, `mdl_flag`) VALUES (22, 'AUXILIARES', '', '.', 0, 7, '2022-07-04 08:57:16', NULL, 1, 1);
-INSERT INTO `modulos` (`mdl_id`, `mdl_nombre`, `mdl_ruta`, `mdl_icono`, `mdl_hijode`, `mdl_orden`, `mdl_fechaRegistro`, `mdl_fechaModificacion`, `mdl_estado`, `mdl_flag`) VALUES (23, 'PERIODOS', 'admin/auxiliares/periodos', '.', 22, 7.7, '2022-07-04 08:57:52', NULL, 1, 1);
-INSERT INTO `modulos` (`mdl_id`, `mdl_nombre`, `mdl_ruta`, `mdl_icono`, `mdl_hijode`, `mdl_orden`, `mdl_fechaRegistro`, `mdl_fechaModificacion`, `mdl_estado`, `mdl_flag`) VALUES (24, 'PROCESOS', 'admin/auxiliares/procesos', '.', 22, 7.8, '2022-07-04 08:58:57', NULL, 1, 1);
-INSERT INTO `modulos` (`mdl_id`, `mdl_nombre`, `mdl_ruta`, `mdl_icono`, `mdl_hijode`, `mdl_orden`, `mdl_fechaRegistro`, `mdl_fechaModificacion`, `mdl_estado`, `mdl_flag`) VALUES (25, 'GRUPO DE INSCRIPCIÓN', 'admin/auxiliares/grupoinscripcion', '.', 22, 7.9, '2022-07-14 15:00:04', '2022-07-18 17:23:08', 1, 1);
+-- INSERT INTO `modulos` (`mdl_id`, `mdl_nombre`, `mdl_ruta`, `mdl_icono`, `mdl_hijode`, `mdl_orden`, `mdl_fechaRegistro`, `mdl_fechaModificacion`, `mdl_estado`, `mdl_flag`) VALUES (22, 'AUXILIARES', '', '.', 0, 7, '2022-07-04 08:57:16', NULL, 1, 1);
+-- INSERT INTO `modulos` (`mdl_id`, `mdl_nombre`, `mdl_ruta`, `mdl_icono`, `mdl_hijode`, `mdl_orden`, `mdl_fechaRegistro`, `mdl_fechaModificacion`, `mdl_estado`, `mdl_flag`) VALUES (23, 'PERIODOS', 'admin/auxiliares/periodos', '.', 22, 7.7, '2022-07-04 08:57:52', NULL, 1, 1);
+-- INSERT INTO `modulos` (`mdl_id`, `mdl_nombre`, `mdl_ruta`, `mdl_icono`, `mdl_hijode`, `mdl_orden`, `mdl_fechaRegistro`, `mdl_fechaModificacion`, `mdl_estado`, `mdl_flag`) VALUES (24, 'PROCESOS', 'admin/auxiliares/procesos', '.', 22, 7.8, '2022-07-04 08:58:57', NULL, 1, 1);
+-- INSERT INTO `modulos` (`mdl_id`, `mdl_nombre`, `mdl_ruta`, `mdl_icono`, `mdl_hijode`, `mdl_orden`, `mdl_fechaRegistro`, `mdl_fechaModificacion`, `mdl_estado`, `mdl_flag`) VALUES (25, 'GRUPO DE INSCRIPCIÓN', 'admin/auxiliares/grupoinscripcion', '.', 22, 7.9, '2022-07-14 15:00:04', '2022-07-18 17:23:08', 1, 1);
 
 
-INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (22, 2, '2022-07-04 08:57:16', '2022-07-04 08:59:12', 1, 1);
-INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (23, 2, '2022-07-04 08:57:16', '2022-07-04 08:59:12', 1, 1);
-INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (24, 2, '2022-07-04 08:57:16', '2022-07-04 08:59:12', 1, 1);
-INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (25, 2, '2022-07-04 08:57:16', '2022-07-04 08:59:12', 1, 1);
+-- INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (22, 2, '2022-07-04 08:57:16', '2022-07-04 08:59:12', 1, 1);
+-- INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (23, 2, '2022-07-04 08:57:16', '2022-07-04 08:59:12', 1, 1);
+-- INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (24, 2, '2022-07-04 08:57:16', '2022-07-04 08:59:12', 1, 1);
+-- INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (25, 2, '2022-07-04 08:57:16', '2022-07-04 08:59:12', 1, 1);
 
 
 /****** 06/10/2024 **********/
@@ -958,4 +958,63 @@ INSERT INTO `auxiliar_periodo_ficha_especialidades` (`periodo_ficha_id`, `especi
 INSERT INTO `auxiliar_periodo_ficha_especialidades` (`periodo_ficha_id`, `especialidad_id`, `created_at`, `updated_at`, `deleted_at`) VALUES (8, 24, '2024-03-18 21:32:13', '2024-03-18 21:32:13', NULL);
 INSERT INTO `auxiliar_periodo_ficha_especialidades` (`periodo_ficha_id`, `especialidad_id`, `created_at`, `updated_at`, `deleted_at`) VALUES (10, 57, '2024-06-22 18:12:46', '2024-06-22 18:12:46', NULL);
 INSERT INTO `auxiliar_periodo_ficha_especialidades` (`periodo_ficha_id`, `especialidad_id`, `created_at`, `updated_at`, `deleted_at`) VALUES (11, 57, '2024-06-22 21:04:20', '2024-06-22 21:04:20', NULL);
+
+/****** 13-10-2024 ***********/
+
+/** ACTUALIZACION DE MODULOS **/
+INSERT INTO `modulos` VALUES ('22', 'DOCENTES', '', '.', '0', '2', '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+INSERT INTO `modulos` VALUES ('23', 'AUXILIARES', '', '.', '0', '3', '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+
+UPDATE `modulos` SET mdl_hijode = 22, mdl_orden = 2.1 WHERE mdl_id = 6;
+UPDATE `modulos` SET mdl_hijode = 22, mdl_orden = 2.2  WHERE mdl_id = 11;
+UPDATE `modulos` SET mdl_hijode = 22, mdl_orden = 2.3  WHERE mdl_id = 14;
+UPDATE `modulos` SET mdl_hijode = 22, mdl_orden = 2.4  WHERE mdl_id = 18;
+
+UPDATE `modulos` SET mdl_orden = 2.11  WHERE mdl_id = 7;
+UPDATE `modulos` SET mdl_orden = 2.12  WHERE mdl_id = 8;
+UPDATE `modulos` SET mdl_orden = 2.13  WHERE mdl_id = 9;
+UPDATE `modulos` SET mdl_orden = 2.14  WHERE mdl_id = 10;
+UPDATE `modulos` SET mdl_orden = 2.15  WHERE mdl_id = 17;
+UPDATE `modulos` SET mdl_orden = 2.16  WHERE mdl_id = 21;
+
+UPDATE `modulos` SET mdl_orden = 2.31  WHERE mdl_id = 15;
+UPDATE `modulos` SET mdl_orden = 2.41  WHERE mdl_id = 19;
+
+INSERT INTO `modulos` VALUES ('24', 'CONFIGURACIÓN', '', '.', '23', 3.1, '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+INSERT INTO `modulos` VALUES ('25', 'CONVOCATORIAS', '', '.', '23', 3.2, '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+INSERT INTO `modulos` VALUES ('26', 'EVALUACIÓN', '', '.', '23', 3.3, '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+INSERT INTO `modulos` VALUES ('27', 'ADJUDICACIÓN', '', '.', '23', 3.4, '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+
+INSERT INTO `modulos` VALUES ('28', 'PERIODOS', 'admin/auxiliares/periodos', '.', '24', 3.11, '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+INSERT INTO `modulos` VALUES ('29', 'PROCESOS', 'admin/auxiliares/procesos', '.', '24', 3.12, '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+INSERT INTO `modulos` VALUES ('30', 'GRUPO DE INSCRIPCIÓN', 'admin/auxiliares/grupoinscripcion', '.', '24', 3.13, '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+INSERT INTO `modulos` VALUES ('31', 'PLAZAS', 'admin/auxiliares/plazas', '.', '24', 3.14, '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+INSERT INTO `modulos` VALUES ('32', 'COLEGIOS', 'admin/auxiliares/colegios', '.', '24', 3.15, '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+
+INSERT INTO `modulos` VALUES ('33', 'REGISTRO CONVOCATORIAS', 'admin/auxiliares/convocatorias', '.', '25', 3.21, '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+INSERT INTO `modulos` VALUES ('34', 'EVALUACIÓN DE POSTULANTES', 'admin/auxiliares/evaluaciones', '.', '26', 3.31, '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+INSERT INTO `modulos` VALUES ('35', 'ADJUDICACIÓN', 'admin/auxiliares/adjudicaciones', '.', '27', 3.41, '2024-10-13 20:34:39', '2024-10-13 20:34:39', '1', '1');
+
+/** ACTUALIZACION DE PERMISOS usuario_id 47649297 tipo_usuario 2**/
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (1, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (2, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (3, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (4, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (5, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (22, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (23, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (24, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (25, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (26, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (27, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (28, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (29, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (30, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (31, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (32, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (33, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (34, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (35, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
+
 
