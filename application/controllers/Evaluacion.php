@@ -31,8 +31,8 @@ class Evaluacion extends CI_Controller {
             redirect(base_url()."inicio/index",'refresh');
         }
         if (!empty($this->uri->segment(4))) redirect(base_url()."evaluacion/convocatoria/".$cadena, 'refresh');
-        if (empty($cadena)) redirect(base_url()."/admin/auxiliares/".encryption('0||0'));
-
+        if (empty($cadena)) redirect(base_url()."evaluacion/convocatoria/".encryption('0||0'));
+        
         $_cadena    = decryption($cadena); // cadena tiene 2 parametros
         $arreglo    = explode("||",$_cadena);     
         $idCon      = $arreglo[0];
