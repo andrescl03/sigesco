@@ -40,10 +40,10 @@ class PostulacionesAuxiliar extends CI_Controller {
 
     public function edit($id) {
         if (is_numeric($id)) {
-            $this->layout->js(array(base_url() . "public/js/myscript/postulacion/edit.js"));
+            $this->layout->js(array(base_url() . "public/admin/auxiliares/postulacion/edit.js"));
             $response = $this->postulaciones_auxiliar_model->edit(compact('id'));
             if ($response['success']) {
-                return $this->layout->view("/postulacion/edit", $response);
+                return $this->layout->view("/admin/auxiliares/postulacion/edit", $response);
             }
         }
         show_404();

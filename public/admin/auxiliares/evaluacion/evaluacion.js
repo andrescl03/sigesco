@@ -162,7 +162,7 @@ const AppAdjudicacionAdmin = () => {
                         "retrieve": true,
                         "dom": '<l<t>ip>',	
                         "ajax": {
-                           "url": window.AppMain.url + 'evaluacion/convocatoria/inscripcion/pagination',
+                           "url": window.AppMain.url + 'admin/auxiliares/evaluacion/convocatoria/inscripcion/pagination',
                            "method": "POST",
                            "dataType": "json",
                            "data": {
@@ -297,14 +297,14 @@ const AppAdjudicacionAdmin = () => {
                                             </button>
                                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-2 dropdown-menu dropdown-menu-start">
                                                 <div class="menu-item px-3 py-2">
-                                                    <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/revaluar" class="menu-link text-danger px-3">Revaluar</a>
+                                                    <a href="${window.AppMain.url}admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/${row.id}/revaluar" class="menu-link text-danger px-3">Revaluar</a>
                                                 </div>
                                                 <div class="menu-item px-3 py-2">
-                                                    <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/editar" class="menu-link text-danger px-3">Editar</a>
+                                                    <a href="${window.AppMain.url}admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/${row.id}/editar" class="menu-link text-danger px-3">Editar</a>
                                                 </div>
                                             </div>` : `
                                             <input type="checkbox" value="${row.id}" class="pagination-check-item">
-                                            <a href="${window.AppMain.url}evaluacion/convocatoria/inscripcion/postulante/${row.id}/revaluar">
+                                            <a href="${window.AppMain.url}admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/${row.id}/revaluar">
                                                 <i class="fa fa-file-text ms-3 fa-xl text-dark" aria-hidden="true" title="Visualizar Evaluación"></i>
                                             </a>`;
                                 }
@@ -323,7 +323,7 @@ const AppAdjudicacionAdmin = () => {
                     return new Promise((resolve, reject)=>{
                         sweet2.loading();
                         $.ajax({
-                            url: window.AppMain.url + `evaluacion/convocatoria/inscripcion/postulantes/${id}/attachedfiles`,
+                            url: window.AppMain.url + `admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/${id}/attachedfiles`,
                             method: 'POST',
                             dataType: 'json',
                             data: {},
@@ -346,7 +346,7 @@ const AppAdjudicacionAdmin = () => {
                     return new Promise((resolve, reject)=>{
                         sweet2.loading();
                         $.ajax({
-                            url: window.AppMain.url + `evaluacion/convocatoria/${convocatoria_id}/inscripcion/${inscripcion_id}/procesar/expedientes`,
+                            url: window.AppMain.url + `admin/auxiliares/evaluacion/convocatoria/${convocatoria_id}/inscripcion/${inscripcion_id}/procesar/expedientes`,
                             method: 'POST',
                             dataType: 'json',
                             data: {},
@@ -374,7 +374,7 @@ const AppAdjudicacionAdmin = () => {
                     return new Promise((resolve, reject)=>{
                         sweet2.loading();
                         $.ajax({
-                            url: window.AppMain.url + `evaluacion/convocatoria/${convocatoria_id}/inscripcion/${inscripcion_id}/procesar/expedientes_nocumplen`,
+                            url: window.AppMain.url + `admin/auxiliares/evaluacion/convocatoria/${convocatoria_id}/inscripcion/${inscripcion_id}/procesar/expedientes_nocumplen`,
                             method: 'POST',
                             dataType: 'json',
                             processData: false,
@@ -399,7 +399,7 @@ const AppAdjudicacionAdmin = () => {
                     return new Promise((resolve, reject)=>{
                         sweet2.loading();
                         $.ajax({
-                            url: window.AppMain.url + `evaluacion/convocatoria/inscripcion/postulantes/status`,
+                            url: window.AppMain.url + `admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/status`,
                             method: 'POST',
                             dataType: 'json',
                             data: formData,

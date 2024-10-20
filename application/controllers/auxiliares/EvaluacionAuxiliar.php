@@ -257,12 +257,12 @@ class EvaluacionAuxiliar extends CI_Controller {
     
     public function indexPreliminar($convocatoria_id, $inscripcion_id) {
         $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/evaluacion.js?t=".date("mdYHis")));
-        $this->layout->view("/evaluacion/convocatoria/grupos/evaluacion", ['any' => 'preliminar', 'convocatoria_id' => $convocatoria_id, 'inscripcion_id' => $inscripcion_id]);
+        $this->layout->view("/admin/auxiliares/evaluaciones/convocatoria/grupos/evaluacion", ['any' => 'preliminar', 'convocatoria_id' => $convocatoria_id, 'inscripcion_id' => $inscripcion_id]);
     }
 
     public function indexFinal($convocatoria_id, $inscripcion_id) {
         $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/evaluacion.js?t=".date("mdYHis")));
-        $this->layout->view("/evaluacion/convocatoria/grupos/evaluacion", ['any' => 'final', 'convocatoria_id' => $convocatoria_id, 'inscripcion_id' => $inscripcion_id]);
+        $this->layout->view("/admin/auxiliares/evaluaciones/convocatoria/grupos/evaluacion", ['any' => 'final', 'convocatoria_id' => $convocatoria_id, 'inscripcion_id' => $inscripcion_id]);
     }
 
     public function pagination() {
@@ -328,7 +328,7 @@ class EvaluacionAuxiliar extends CI_Controller {
             base_url()."public/admin/auxiliares/evaluacion/guide.js?v=".date("mdYHis")
         ));
         $revaluar = 1;
-        $this->layout->view("ficha/ficha", compact('datos', 'revaluar'));       
+        $this->layout->view("/admin/auxiliares/evaluaciones/ficha/ficha", compact('datos', 'revaluar'));       
 	}
 
     public function reporte_excel_preliminar($convocatoria_id, $inscripcion_id) {
