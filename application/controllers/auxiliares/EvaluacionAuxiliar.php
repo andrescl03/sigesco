@@ -26,7 +26,7 @@ class EvaluacionAuxiliar extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 	}
 
-    public function convocatoria($cadena = null){   // TIENE SOLO 3 SEGMENTOS
+    public function convocatorias($cadena = null){   // TIENE SOLO 3 SEGMENTOS
         /*if(!in_array($this->uri->slash_segment(1).$this->uri->segment(2), $this->session->userdata("sigesco_rutas"))){            
             redirect(base_url()."inicio/index",'refresh');
         }
@@ -35,58 +35,37 @@ class EvaluacionAuxiliar extends CI_Controller {
 
         $_cadena    = decryption($cadena); // cadena tiene 2 parametros
         $arreglo    = explode("||",$_cadena);     
-        $idCon      = $arreglo[0];
-        $idGin      = $arreglo[1];
-        $eval       = $arreglo[2]; // 1: PUN, 2: POR EXP   
-        $tipo       = $arreglo[3]; // 1: PRELIMINAR, 2: FINAL   
+        $idCon      = $arreglo[0] ? $arreglo[0] : 0;
+        $idGin      = $arreglo[1] ? $arreglo[1] : 0;
+        // $eval       = $arreglo[2]; // 1: PUN, 2: POR EXP   
+        // $tipo       = $arreglo[3]; // 1: PRELIMINAR, 2: FINAL   
 
-        if($idCon == '0' && $idGin == '0'){
-            $periodos   = $this->configuracion_auxiliar_model->listarPeriodosActivos();
-            $procesos   = $this->configuracion_auxiliar_model->listarProcesosActivos();
+        $periodos   = $this->configuracion_auxiliar_model->listarPeriodosActivos();
+        $procesos   = $this->configuracion_auxiliar_model->listarProcesosActivos();
 
-            $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/convocatoria.js?t=".date("mdYHis")));
-		    $this->layout->view("/admin/auxiliares/evaluaciones/convocatoria/convocatoria", compact('periodos', 'procesos')); 
-        }
-        if($idCon != '0' && $idGin == '0'){
-            $datos   = $this->evaluacion_auxiliar_model->listarGruposInscripcionxConvocatoria($idCon);
-            // $gruposInscripcion = $this->evaluacion_auxiliar_model->listarGruposAsignadosXConvocatoria($idConv);
-
-
-            /*foreach ($datos as $key_1 => $dato) {
-                $_idGin = $dato['gin_id'];
-                $usuario = $this->session->userdata("sigesco_dni");
-                $docente   = $this->evaluacion_auxiliar_model->listarCuadroPunxIdGrupoConEvaluacion($_idGin, $usuario);
-                $datos[$key_1]['tp_docentes']    = $docente['t_docentes'];
-                $datos[$key_1]['tp_asigando']    = $docente['t_asigando'];
-                $datos[$key_1]['tp_preliminar']  = $docente['t_preliminar'];
-                $datos[$key_1]['tp_final']       = $docente['t_final'];
-                $datos[$key_1]['tp_mis_preliminar']  = $docente['t_mis_preliminar'];
-                $datos[$key_1]['tp_mis_final']       = $docente['t_mis_final'];
-
-                $docente   = $this->evaluacion_auxiliar_model->listarCuadroExpxIdGrupoConEvaluacion($_idGin, $usuario);
-                $datos[$key_1]['te_docentes']    = $docente['t_docentes'];
-                $datos[$key_1]['te_asigando']    = $docente['t_asigando'];
-                $datos[$key_1]['te_preliminar']  = $docente['t_preliminar'];
-                $datos[$key_1]['te_final']       = $docente['t_final'];
-                $datos[$key_1]['te_mis_preliminar']  = $docente['t_mis_preliminar'];
-                $datos[$key_1]['te_mis_final']       = $docente['t_mis_final'];
-            }*/
-            $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/grupos.js?t=".date("mdYHis")));
-		    $this->layout->view("/admin/auxiliares/evaluaciones/convocatoria/grupos/grupos", ['datos' => $datos, 'convocatoria_id' => $idCon]); 
-        }
-
-        if($idCon != '0' && $idGin != '0'){
-            $dato   = $this->evaluacion_auxiliar_model->listarGrupoInscripcionxConvocatoriaYEspecialidad($idCon, $idGin);
-            $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/cargar.js?t=".date("mdYHis")));
-		    $this->layout->view("/admin/auxiliares/evaluaciones/convocatoria/cargar/cargar", compact('dato', 'eval', 'tipo')); 
-        }
+        $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/convocatoria.js?t=".date("mdYHis")));
+        $this->layout->view("/admin/auxiliares/evaluaciones/convocatoria/convocatoria", compact('periodos', 'procesos')); 
 	}
+
+    public function convocatoria($con_id = 0){   // TIENE SOLO 3 SEGMENTOS
+        /*if(!in_array($this->uri->slash_segment(1).$this->uri->segment(2), $this->session->userdata("sigesco_rutas"))){            
+            redirect(base_url()."inicio/index",'refresh');
+        }
+        if (!empty($this->uri->segment(4))) redirect(base_url()."evaluacion/convocatoria/".$cadena, 'refresh');*/
+        //if (empty($cadena)) redirect(base_url()."admin/auxiliares/evaluaciones/".encryption('0||0'));
+        
+        $datos   = $this->evaluacion_auxiliar_model->listarGruposInscripcionxConvocatoria($con_id);
+        $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/grupos.js?t=".date("mdYHis")));
+        $this->layout->view("/admin/auxiliares/evaluaciones/convocatoria/grupos/grupos", ['datos' => $datos, 'convocatoria_id' => $con_id]); 
+   
+	}
+
 
     public function VListarConvocatoriasActivas(){
         $tipoCarga  = $this->input->post("tipoCarga",true); 
         if ($tipoCarga == 0){ // carga default
             $idPer = $this->session->userdata("sigesco_default_periodo");
-            $idPro = $this->session->userdata("sigesco_default_proceso");
+            $idPro = 2; // $this->session->userdata("sigesco_default_proceso");
         }else{
             $idPer  = $this->input->post("idPer",true);  
             $idPro  = $this->input->post("idPro",true);  
@@ -241,24 +220,39 @@ class EvaluacionAuxiliar extends CI_Controller {
     }
 
 
-    public function ficha($cadena = null){   // TIENE SOLO 3 SEGMENTOS
+    public function ficha($postulacion_id){   // TIENE SOLO 3 SEGMENTOS
 
-        $_cadena    = decryption($cadena); // cadena tiene 2 parametros
+        /*$_cadena    = decryption($cadena); // cadena tiene 2 parametros
         $arreglo    = explode("||",$_cadena);     
         $idCpu      = $arreglo[0];
         $idEpu      = $arreglo[1];       
         
 
-        if (count($arreglo) != 2) redirect(base_url()."errores/error404");
+        if (count($arreglo) != 2) redirect(base_url()."errores/error404");*/
 
-        $datos = $this->postulaciones_auxiliar_model->show(['id' => $idCpu]);
+        $datos = $this->postulaciones_auxiliar_model->show(['id' => $postulacion_id]);
         // $datos = $this->evaluacion_auxiliar_model->verFichaEvaluacion(); 
         $this->layout->css(array(base_url()."public/css/ficha.css?t=".date("mdYHis")));
         $this->layout->js(array(
             // base_url()."public/js/myscript/evaluacion/ficha.js?t=".date("mdYHis"),
             base_url()."public/admin/auxiliares/evaluacion/guide.js?v=".date("mdYHis")));
         $revaluar = 0;
-        $this->layout->view("ficha/ficha", compact('datos', 'revaluar')); 
+        $this->layout->view("/admin/auxiliares/evaluaciones/ficha/ficha", compact('datos', 'revaluar')); 
+	}
+
+    public function indexSinevaluar($convocatoria_id, $inscripcion_id){   // TIENE SOLO 3 SEGMENTOS
+        /*if(!in_array($this->uri->slash_segment(1).$this->uri->segment(2), $this->session->userdata("sigesco_rutas"))){            
+            redirect(base_url()."inicio/index",'refresh');
+        }
+        if (!empty($this->uri->segment(4))) redirect(base_url()."evaluacion/convocatoria/".$cadena, 'refresh');*/
+        //if (empty($cadena)) redirect(base_url()."admin/auxiliares/evaluaciones/".encryption('0||0'));
+
+        $eval       = 2; // $arreglo[2]; // 1: PUN, 2: POR EXP   
+        $tipo       = 1; // $arreglo[3]; // 1: PRELIMINAR, 2: FINAL   
+
+        $dato   = $this->evaluacion_auxiliar_model->listarGrupoInscripcionxConvocatoriaYEspecialidad($convocatoria_id, $inscripcion_id);
+        $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/cargar.js?t=".date("mdYHis")));
+        $this->layout->view("/admin/auxiliares/evaluaciones/convocatoria/cargar/cargar", compact('dato', 'eval', 'tipo'));         
 	}
     
     public function indexPreliminar($convocatoria_id, $inscripcion_id) {

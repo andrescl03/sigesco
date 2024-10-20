@@ -1,7 +1,7 @@
 <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Evaluación de postulantes / <?= $datos[0]['pro_descripcion'] ?> | Convocatoria <?= sprintf('%04d', $datos[0]['con_numero']) . "-" . $datos[0]['con_anio'] ?></b></h4>
 <ol class="breadcrumb mb-2">
     <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
-    <li class="breadcrumb-item"><a href="<?php echo base_url() . "evaluacion/convocatoria/" . encryption('0||0'); ?>"> Evaluación de postulantes</a></li>
+    <li class="breadcrumb-item"><a href="<?php echo base_url() . "admin/auxiliares/evaluaciones" ?>"> Evaluación de postulantes</a></li>
     <li class="breadcrumb-item active"><?= $datos[0]['pro_descripcion'] ?> | Convocatoria <?= sprintf('%04d', $datos[0]['con_numero']) . "-" . $datos[0]['con_anio'] ?></li>
 </ol>
 <div class="app-row">
@@ -27,16 +27,15 @@
                                                         <button type="button" class="btn btn-sm btn-success me-2 mb-2" data-bs-toggle="modal" data-bs-target="#modalExcelReport">
                                                             Reporte General
                                                         </button>
-                                                        <a type="button" target="_blank" href="<?php echo base_url() . 'evaluacion/convocatoria/' . $datos[0]['con_numero'] . '/inscripcion/preliminar/exportar' ?>" class="btn btn-sm btn-primary me-2 mb-2">
+                                                        <a type="button" target="_blank" href="<?php echo base_url() . 'admin/auxiliares/evaluaciones/convocatorias/' . $datos[0]['con_numero'] . '/inscripciones/preliminar/exportar' ?>" class="btn btn-sm btn-primary me-2 mb-2">
                                                             Reporte General Preliminar
                                                         </a>
-                                                        <a type="button" target="_blank" href="<?php echo base_url() . 'evaluacion/convocatoria/' . $datos[0]['con_numero'] . '/inscripcion/final/exportar' ?>" class="btn btn-sm btn-primary me-2 mb-2">
+                                                        <a type="button" target="_blank" href="<?php echo base_url() . 'admin/auxiliares/evaluaciones/convocatorias/' . $datos[0]['con_numero'] . '/inscripciones/final/exportar' ?>" class="btn btn-sm btn-primary me-2 mb-2">
                                                             Reporte General Final
                                                         </a>
-
-                                                        <button data-id="<?= $datos[0]['con_id'] ?>" type="button" id="btn-procesar-expedientes" class="btn btn-sm btn-danger btn-procesar-expedientes mb-2">
+                                                        <!-- <button data-id="<?= $datos[0]['con_id'] ?>" type="button" id="btn-procesar-expedientes" class="btn btn-sm btn-danger btn-procesar-expedientes mb-2">
                                                             Procesar expedientes de la MPV para esta convocatoria
-                                                        </button>
+                                                        </button> -->
                                                     <?php } ?>
                                                 </div>
                                                 <div class="col-sm-4">
@@ -120,19 +119,19 @@
                                                         </td> -->
                                                             <td class="text-center">
                                                                 <span class="badge rounded-pill bg-light text-dark" style="font-size: 1em;"><?= $dato['cantidad_sin_evaluar'] ?></span></b>
-                                                                <a type="button" title="Ingresar a detalle" href="<?= base_url() ?>evaluacion/convocatoria/<?= encryption($cadena . "||1||1") ?>">
+                                                                <a type="button" title="Ingresar a detalle" href="<?= base_url() ?>admin/auxiliares/evaluaciones/convocatorias/<?= $dato['con_id'] ?>/inscripciones/<?= $dato['gin_id'] ?>/sinevaluar">
                                                                     <span class="badge bg-success" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
                                                                 </a>
                                                             </td>
                                                             <td class="text-center">
                                                                 <span class="badge rounded-pill bg-light text-dark" style="font-size: 1em;"><?= $dato['cantidad_preliminar'] ?></span></b>
-                                                                <a type="button" title="Ingresar a detalle" href="<?= base_url() ?>evaluacion/convocatoria/<?= $dato['con_id'] ?>/inscripcion/<?= $dato['gin_id'] ?>/preliminar">
+                                                                <a type="button" title="Ingresar a detalle" href="<?= base_url() ?>admin/auxiliares/evaluaciones/convocatorias/<?= $dato['con_id'] ?>/inscripciones/<?= $dato['gin_id'] ?>/preliminar">
                                                                     <span class="badge bg-success" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
                                                                 </a>
                                                             </td>
                                                             <td class="text-center">
                                                                 <span class="badge rounded-pill bg-light text-dark" style="font-size: 1em;"><?= $dato['cantidad_final'] ?></span></b>
-                                                                <a type="button" title="Ingresar a detalle" href="<?= base_url() ?>evaluacion/convocatoria/<?= $dato['con_id'] ?>/inscripcion/<?= $dato['gin_id'] ?>/final">
+                                                                <a type="button" title="Ingresar a detalle" href="<?= base_url() ?>admin/auxiliares/evaluaciones/convocatorias/<?= $dato['con_id'] ?>/inscripciones/<?= $dato['gin_id'] ?>/final">
                                                                     <span class="badge bg-success" style="font-size: 1em;"><b><i class="fa-solid fa-arrow-right-to-bracket fa-lg"></i> <?= $valor_1 ?></b> </span>
                                                                 </a>
                                                             </td>

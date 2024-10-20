@@ -57,7 +57,32 @@ $route['admin/auxiliares/convocatorias/VSelectGrupoInscripcion'] = 'auxiliares/C
 $route['admin/auxiliares/convocatorias/VTablaGrupoInscripcion'] = 'auxiliares/ConvocatoriasAuxiliar/VTablaGrupoInscripcion';
 $route['admin/auxiliares/convocatorias/CAgregarNuevaConvocatoria'] = 'auxiliares/ConvocatoriasAuxiliar/CAgregarNuevaConvocatoria';
 
-$route['admin/auxiliares/evaluaciones'] = 'auxiliares/EvaluacionAuxiliar/convocatoria';
-$route['admin/auxiliares/evaluaciones/(:any)'] = 'auxiliares/EvaluacionAuxiliar/convocatoria';
+$route['admin/auxiliares/evaluaciones'] = 'auxiliares/EvaluacionAuxiliar/convocatorias';
+$route['admin/auxiliares/evaluaciones/VListarConvocatoriasActivas'] = 'auxiliares/EvaluacionAuxiliar/VListarConvocatoriasActivas';
+$route['admin/auxiliares/evaluaciones/VListarEspecialistas'] = 'auxiliares/EvaluacionAuxiliar/VListarEspecialistas';
+$route['admin/auxiliares/evaluaciones/CAsignarReasignar'] = 'auxiliares/EvaluacionAuxiliar/CAsignarReasignar';
+$route['admin/auxiliares/evaluaciones/VListarCargarExpedientePunEvaluar'] = 'auxiliares/EvaluacionAuxiliar/VListarCargarExpedientePunEvaluar';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)'] = 'auxiliares/EvaluacionAuxiliar/convocatoria/$1';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/sinevaluar'] = 'auxiliares/EvaluacionAuxiliar/indexSinevaluar/$1/$2';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/preliminar'] = 'auxiliares/EvaluacionAuxiliar/indexPreliminar/$1/$2';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/final'] = 'auxiliares/EvaluacionAuxiliar/indexFinal/$1/$2';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/editar'] = 'auxiliares/EvaluacionAuxiliar/editarFicha/$1/$2';
+
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/preliminar/exportar'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_preliminar/$1/$2';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/final/exportar'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_final/$1/$2';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/pendiente/exportar'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_pendiente/$1/$2';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/preliminar/exportar'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_preliminar_total/$1';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/final/exportar'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_final_total/$1';
+
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/(:num)/ficha'] = 'auxiliares/EvaluacionAuxiliar/ficha/$1';
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulantes/status'] = 'auxiliares/EvaluacionAuxiliar/status';
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulantes/(:num)/attachedfiles'] = 'auxiliares/EvaluacionAuxiliar/attachedfiles/$1';
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/(:num)/revaluar'] = 'auxiliares/EvaluacionAuxiliar/revaluarPreliFinal/$1';
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/(:num)/editar'] = 'auxiliares/postulacionesAuxiliar/edit/$1';
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/(:num)/detail'] = 'auxiliares/postulacionesAuxiliar/detail/$1';
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/(:num)/update'] = 'auxiliares/postulacionesAuxiliar/update/$1';
+
+$route['admin/auxiliares/evaluaciones/postulaciones/(:num)/ficha'] = 'auxiliares/postulacionesAuxiliar/ficha/$1';
+$route['admin/auxiliares/evaluaciones/postulaciones/(:num)/fichas'] = 'auxiliares/postulacionesAuxiliar/fichas/$1';
 
 

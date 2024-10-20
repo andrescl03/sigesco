@@ -38,7 +38,7 @@
                                                                         <select class="form-select form-select-sm"  name="opt_tipoProceso" id="opt_tipoProceso" >
                                                                             <option value="0">Elegir...</option> 
                                                                             <?php foreach ($procesos as $proceso) { ?>
-                                                                                <option value="<?= $proceso['pro_id'] ?>" <?= $proceso['pro_default']==1 ? "Selected" : "" ?> ><?= $proceso['pro_descripcion'] ?></option>
+                                                                                <option value="<?= $proceso['pro_id'] ?>" <?= $proceso['pro_id']==2 ? "Selected" : "" ?> ><?= $proceso['pro_descripcion'] ?></option>
                                                                             <?php } ?>
                                                                         </select>
                                                                     </div>

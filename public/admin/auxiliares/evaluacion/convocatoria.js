@@ -14,7 +14,7 @@ $(document).ready(function(){
 		}
 	}
 
-	act.pag('admin/auxiliares/evaluacion/convocatoria', function(){		
+	act.pag('admin/auxiliares/evaluaciones', function(){
 		parametros={
             tipoCarga 	: 0,
 			idPer		: null,
@@ -30,7 +30,7 @@ $(document).ready(function(){
 
 var VListarConvocatoriasActivas = function(parametros){	
 	$.ajax({
-		url: '../VListarConvocatoriasActivas',
+		url: window.AppMain.url + `admin/auxiliares/evaluaciones/VListarConvocatoriasActivas`,
 		method: 'POST',
 		data: parametros,
 		cache: 'false',

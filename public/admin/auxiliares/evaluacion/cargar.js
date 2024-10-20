@@ -14,7 +14,7 @@ $(document).ready(function(){
 		}
 	}
 
-	act.pag('evaluacion/convocatoria', function(){	
+	act.pag('admin/auxiliares/evaluaciones/convocatorias/', function(){	
 		Init();
 		chk_especialistasTodos();
 	});
@@ -65,7 +65,7 @@ var chk_expedientetotal = function () {
 
 var VListarCargarExpedientePunEvaluar = function(parametros){	
 	$.ajax({
-		url: '../VListarCargarExpedientePunEvaluar',
+		url: window.AppMain.url + `admin/auxiliares/evaluaciones/VListarCargarExpedientePunEvaluar`,
 		method: 'POST',
 		data: parametros,
 		cache: 'false',
@@ -197,7 +197,7 @@ var btn_modalAsignarReasignar= function () {
 
 var VListarEspecialistas = function(parametros){	
 	$.ajax({
-		url: '../VListarEspecialistas',
+		url: window.AppMain.url + `admin/auxiliares/evaluaciones/VListarEspecialistas`,
 		method: 'POST',
 		data: parametros,
 		cache: 'false',
@@ -270,7 +270,7 @@ var btn_asignarReasignar= function(cadena){
 
 var CAsignarReasignar=function(parametros){	
 	$.ajax({
-		url: '../CAsignarReasignar',
+		url: window.AppMain.url + `admin/auxiliares/evaluaciones/CAsignarReasignar`,
 		method: 'POST',
 		data: parametros,
 		cache: 'false',

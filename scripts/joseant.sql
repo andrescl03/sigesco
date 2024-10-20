@@ -1018,3 +1018,49 @@ INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegi
 INSERT INTO `permisos` (`modulos_mdl_id`, `tipo_usuarios_tus_id`, `per_fechaRegistro`, `per_fechaModificacion`, `per_estado`, `per_flag`) VALUES (35, 2, '2024-10-13 20:08:57', '2024-10-13 20:08:57', 1, 1);
 
 
+/**  PUN EN AUXILIARES 19-10-2024  ***/
+
+CREATE TABLE `auxiliar_evaluacion_pun_exp` (
+	`epe_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`epe_tipoevaluacion` INT(1) NULL DEFAULT NULL COMMENT '1: preliminar\n2: final',
+	`epe_especialistaAsignado` VARCHAR(12) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`epe_fechaAsignacion` DATETIME NULL DEFAULT NULL,
+	`epe_fechaApertura` DATETIME NULL DEFAULT NULL COMMENT 'fecha de inicio de evaluacion',
+	`epe_fechaCierre` DATETIME NULL DEFAULT NULL COMMENT 'fecha de cierre de evaluacion',
+	`epe_fechaModificacion` DATETIME NULL DEFAULT NULL,
+	`epe_estadoEvaluacion` INT(1) NULL DEFAULT NULL COMMENT '1: abierto\n0: cerrado',
+	`epe_estado` INT(1) NULL DEFAULT NULL,
+	`postulacion_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`convocatorias_con_id` INT(11) NULL DEFAULT '0',
+	PRIMARY KEY (`epe_id`) USING BTREE,
+	INDEX `idx_auxiliar_epe_especialistaAsignado` (`epe_especialistaAsignado`) USING BTREE
+);
+
+CREATE TABLE `auxiliar_cuadro_pun_exp` (
+	`cpe_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`cpe_tipoCuadro` INT(1) NULL DEFAULT NULL COMMENT '1: PUN 2. EXPEDIENTE',
+	`cpe_anio` VARCHAR(4) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`cpe_documento` VARCHAR(15) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`cpe_apaterno` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`cpe_amaterno` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`cpe_apellidos` VARCHAR(400) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`cpe_nombres` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`cpe_s1` VARCHAR(15) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`cpe_s2` VARCHAR(15) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`cpe_s3` VARCHAR(15) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`cpe_s4` VARCHAR(15) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`cpe_s5` VARCHAR(15) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`cpe_orden` INT(11) NULL DEFAULT NULL,
+	`cpe_sepresento` INT(1) NULL DEFAULT NULL COMMENT '0: no se presento 1: se presento 2: solo registrado',
+	`cpe_enviadoeval` INT(1) NULL DEFAULT NULL COMMENT '0: no enviado 1: enviado',
+	`cpe_fechaCarga` DATETIME NULL DEFAULT NULL,
+	`cpe_fechaModificacion` DATETIME NULL DEFAULT NULL,
+	`cpe_estado` INT(1) NULL DEFAULT NULL,
+	`grupo_inscripcion_gin_id` INT(11) NOT NULL,
+	`afiliacion` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`cuss` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	PRIMARY KEY (`cpe_id`) USING BTREE,
+	INDEX `fk_auxiliar_cuadropun_grupo_inscripcion1_idx` (`grupo_inscripcion_gin_id`) USING BTREE,
+	CONSTRAINT `fk_auxiliar_cuadropun_grupo_inscripcion10` FOREIGN KEY (`grupo_inscripcion_gin_id`) REFERENCES `grupo_inscripcion` (`gin_id`) ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+

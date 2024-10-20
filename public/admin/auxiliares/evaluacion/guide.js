@@ -270,7 +270,7 @@ const viewfichaDetail = function (pageActive) {
 	function getDetail() {
 	  return new Promise(function (resolve, reject) {
 		$.ajax({
-		  url: window.AppMain.url + `postulaciones/${postulant_id}/fichas`,
+		  url: window.AppMain.url + `admin/auxiliares/evaluaciones/postulaciones/${postulant_id}/fichas`,
 		  method: 'POST',
 		  dataType: 'json',
 		  cache: 'false'
