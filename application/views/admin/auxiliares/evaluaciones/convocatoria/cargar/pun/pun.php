@@ -108,7 +108,7 @@
                             href="<?= base_url() . "admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/" . $dato['id'] . "/ficha" ?>"
                             target="_blank">EVALUAR FICHA</a>
                         <?php } ?>
-                        <a href="<?= base_url() . 'evaluacion/convocatoria/inscripcion/postulante/' . $dato['id'] . '/editar' ?>"
+                        <a href="<?= base_url() . 'admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/' . $dato['id'] . '/editar' ?>"
                             class="menu-link text-danger px-3">EDITAR REGISTRO</a>
                     </div>
                 </td>

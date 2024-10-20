@@ -6,6 +6,8 @@
 <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Edición del postulante</b></h4>
 <ol class="breadcrumb mb-2">
     <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
+    <li class="breadcrumb-item"><a href="<?php echo base_url() . "admin/auxiliares/evaluaciones" ?>"> Evaluación de postulantes</a></li>
+    <li class="breadcrumb-item"><a href="<?php echo base_url()."admin/auxiliares/evaluaciones/convocatorias/".$postulante->convocatoria_id; ?>"> Grupo de inscripción</a></li>
     <li class="breadcrumb-item active">Edición del postulante</li>
 </ol>
 <?php  $CargoOficina = $this->session->userdata('CargoOficina'); ?>

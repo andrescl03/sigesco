@@ -210,7 +210,7 @@
             </div>
             <div class="modal-body">
                 <div class="container">
-                    <form id="formReportExcelGeneral" action="<?php echo base_url(); ?>/evaluacion/convocatoria/<?= $convocatoria_id ?>/inscripcion/reporte/excel" method="post" target="_blank">
+                    <form id="formReportExcelGeneral" action="<?php echo base_url(); ?>admin/auxiliares/evaluaciones/convocatorias/<?= $convocatoria_id ?>/inscripciones/reporte/excel" method="post" target="_blank">
                         <div class="mb-3 row">
                             <label class="col-4 col-form-label">Inscripción</label>
                             <div class="col-8">

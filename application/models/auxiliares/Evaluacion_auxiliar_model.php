@@ -484,8 +484,8 @@ class Evaluacion_auxiliar_model extends CI_Model {
                   LEFT JOIN auxiliar_cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
                   LEFT JOIN auxiliar_postulacion_evaluaciones pev ON pev.postulacion_id = pos.id AND pev.promedio = 1
                   LEFT JOIN auxiliar_postulacion_evaluaciones pep ON pep.postulacion_id = pos.id AND pep.promedio = 0  
-                  LEFT JOIN especialidad_prelaciones epre ON epre.id = pev.prelacion_id
-                  LEFT JOIN bonificaciones bon ON bon.id = pev.bonificacion_id
+                  LEFT JOIN auxiliar_especialidad_prelaciones epre ON epre.id = pev.prelacion_id
+                  LEFT JOIN auxiliar_bonificaciones bon ON bon.id = pev.bonificacion_id
                   WHERE pos.deleted_at IS NULL 
                   AND pos.convocatoria_id = $convocatoria_id
                   $where

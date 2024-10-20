@@ -346,7 +346,7 @@ const AppAdjudicacionAdmin = () => {
                     return new Promise((resolve, reject)=>{
                         sweet2.loading();
                         $.ajax({
-                            url: window.AppMain.url + `admin/auxiliares/evaluacion/convocatoria/${convocatoria_id}/inscripcion/${inscripcion_id}/procesar/expedientes`,
+                            url: window.AppMain.url + `admin/auxiliares/evaluacion/convocatorias/${convocatoria_id}/inscripciones/${inscripcion_id}/procesar/expedientes`,
                             method: 'POST',
                             dataType: 'json',
                             data: {},
@@ -374,7 +374,7 @@ const AppAdjudicacionAdmin = () => {
                     return new Promise((resolve, reject)=>{
                         sweet2.loading();
                         $.ajax({
-                            url: window.AppMain.url + `admin/auxiliares/evaluacion/convocatoria/${convocatoria_id}/inscripcion/${inscripcion_id}/procesar/expedientes_nocumplen`,
+                            url: window.AppMain.url + `admin/auxiliares/evaluacion/convocatorias/${convocatoria_id}/inscripciones/${inscripcion_id}/procesar/expedientes_nocumplen`,
                             method: 'POST',
                             dataType: 'json',
                             processData: false,

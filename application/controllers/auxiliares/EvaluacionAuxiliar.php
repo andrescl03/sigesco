@@ -26,17 +26,17 @@ class EvaluacionAuxiliar extends CI_Controller {
 		date_default_timezone_set('America/Lima');
 	}
 
-    public function convocatorias($cadena = null){   // TIENE SOLO 3 SEGMENTOS
+    public function convocatorias(){   // TIENE SOLO 3 SEGMENTOS
         /*if(!in_array($this->uri->slash_segment(1).$this->uri->segment(2), $this->session->userdata("sigesco_rutas"))){            
             redirect(base_url()."inicio/index",'refresh');
         }
         if (!empty($this->uri->segment(4))) redirect(base_url()."evaluacion/convocatoria/".$cadena, 'refresh');*/
         //if (empty($cadena)) redirect(base_url()."admin/auxiliares/evaluaciones/".encryption('0||0'));
 
-        $_cadena    = decryption($cadena); // cadena tiene 2 parametros
+        /*$_cadena    = decryption($cadena); // cadena tiene 2 parametros
         $arreglo    = explode("||",$_cadena);     
-        $idCon      = $arreglo[0] ? $arreglo[0] : 0;
-        $idGin      = $arreglo[1] ? $arreglo[1] : 0;
+        $idCon      = $arreglo[0];
+        $idGin      = $arreglo[1];*/
         // $eval       = $arreglo[2]; // 1: PUN, 2: POR EXP   
         // $tipo       = $arreglo[3]; // 1: PRELIMINAR, 2: FINAL   
 
@@ -53,7 +53,7 @@ class EvaluacionAuxiliar extends CI_Controller {
         }
         if (!empty($this->uri->segment(4))) redirect(base_url()."evaluacion/convocatoria/".$cadena, 'refresh');*/
         //if (empty($cadena)) redirect(base_url()."admin/auxiliares/evaluaciones/".encryption('0||0'));
-        
+
         $datos   = $this->evaluacion_auxiliar_model->listarGruposInscripcionxConvocatoria($con_id);
         $this->layout->js(array(base_url()."public/admin/auxiliares/evaluacion/grupos.js?t=".date("mdYHis")));
         $this->layout->view("/admin/auxiliares/evaluaciones/convocatoria/grupos/grupos", ['datos' => $datos, 'convocatoria_id' => $con_id]); 
@@ -361,7 +361,6 @@ class EvaluacionAuxiliar extends CI_Controller {
 
     public function reporte_excel_2($convocatoria_id, $inscripcion_id, $estado, $ficha) {
         $response = $this->evaluacion_auxiliar_model->f_report_postulant($convocatoria_id, $inscripcion_id, $estado, true);
-
         if (!$response['success']) {
             echo $response['message'];
         }
@@ -443,7 +442,7 @@ class EvaluacionAuxiliar extends CI_Controller {
         $hoja->setCellValue('J2', ($convocatoria->con_tipo == 2 ? "" : "ORDEN DE MERITO"))->getStyle('J2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('K2', 'PUNTAJE')->getStyle('K2')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('L2', 'OBSERVACIÓN')->getStyle('L2')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('M2', 'ESPECIALIDAD DEL DOCENTE (ETP)')->getStyle('M2')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('M2', 'ESPECIALIDAD DEL AUXILIAR (ETP)')->getStyle('M2')->getFont()->setSize(15)->setBold(true);
 
 
      // $hoja->setAutoFilter('A:L');
@@ -592,7 +591,7 @@ class EvaluacionAuxiliar extends CI_Controller {
            //name the worksheet
        $hoja->setTitle('Reporte.');
        //set cell A1 content with some text
-       $hoja->setCellValue('A2', 'CONTRATO DOCENTE PERIODO 2024  ' . ' - ' . ' ORDEN DE MÉRITO ' . $orden);
+       $hoja->setCellValue('A2', 'CONTRATO AUXILIAR PERIODO 2024  ' . ' - ' . ' ORDEN DE MÉRITO ' . $orden);
        //change the font size
        $hoja->getStyle('A2')->getFont()->setSize(24);
        //make the font become bold
@@ -603,10 +602,10 @@ class EvaluacionAuxiliar extends CI_Controller {
 
 
         // Center align headers
-    $headerColumns = range('A', 'U');
-    foreach ($headerColumns as $column) {
-        $hoja->getStyle($column . '3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-    }
+        $headerColumns = range('A', 'U');
+        foreach ($headerColumns as $column) {
+            $hoja->getStyle($column . '3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        }
 
     
        //set aligment to center for that merged cell (A1 to D1)
@@ -654,7 +653,7 @@ class EvaluacionAuxiliar extends CI_Controller {
         $hoja->setCellValue('J3', ($convocatoria->con_tipo == 2 ? "" : "ORDEN DE MERITO"))->getStyle('J3')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('K3', 'PUNTAJE')->getStyle('K3')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('L3', 'OBSERVACIÓN')->getStyle('L3')->getFont()->setSize(15)->setBold(true);
-        $hoja->setCellValue('M3', 'ESPECIALIDAD DEL DOCENTE (ETP)')->getStyle('M3')->getFont()->setSize(15)->setBold(true);
+        $hoja->setCellValue('M3', 'ESPECIALIDAD DEL AUXILIAR (ETP)')->getStyle('M3')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('N3', 'FORMACIÓN ACADEMICA Y PROFESIONAL')->getStyle('N3')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('O3', 'FORMACIÓN CONTINUA')->getStyle('O3')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('P3', 'EXPERIENCIA LABORAL')->getStyle('P3')->getFont()->setSize(15)->setBold(true);

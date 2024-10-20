@@ -63,6 +63,7 @@ $route['admin/auxiliares/evaluaciones/VListarEspecialistas'] = 'auxiliares/Evalu
 $route['admin/auxiliares/evaluaciones/CAsignarReasignar'] = 'auxiliares/EvaluacionAuxiliar/CAsignarReasignar';
 $route['admin/auxiliares/evaluaciones/VListarCargarExpedientePunEvaluar'] = 'auxiliares/EvaluacionAuxiliar/VListarCargarExpedientePunEvaluar';
 $route['admin/auxiliares/evaluaciones/convocatorias/(:num)'] = 'auxiliares/EvaluacionAuxiliar/convocatoria/$1';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/reporte/excel'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_general/$1';
 $route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/sinevaluar'] = 'auxiliares/EvaluacionAuxiliar/indexSinevaluar/$1/$2';
 $route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/preliminar'] = 'auxiliares/EvaluacionAuxiliar/indexPreliminar/$1/$2';
 $route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/final'] = 'auxiliares/EvaluacionAuxiliar/indexFinal/$1/$2';
@@ -73,6 +74,8 @@ $route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/
 $route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/pendiente/exportar'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_pendiente/$1/$2';
 $route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/preliminar/exportar'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_preliminar_total/$1';
 $route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/final/exportar'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_final_total/$1';
+$route['admin/auxiliares/evaluacion/convocatorias/(:num)/inscripciones/(:num)/procesar/expedientes'] = 'auxiliares/EvaluacionAuxiliar/procesar_expedientes/$1/$2';
+$route['admin/auxiliares/evaluacion/convocatorias/(:num)/inscripciones/(:num)/procesar/expedientes_nocumplen'] = 'auxiliares/EvaluacionAuxiliar/procesar_expedientes_nocumplen/$1/$2';
 
 $route['admin/auxiliares/evaluacion/convocatoria/inscripcion/pagination'] = 'auxiliares/EvaluacionAuxiliar/pagination/$1/$2';
 $route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/(:num)/ficha'] = 'auxiliares/EvaluacionAuxiliar/ficha/$1';
