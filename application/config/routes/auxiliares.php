@@ -89,5 +89,36 @@ $route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/(:num)/u
 $route['admin/auxiliares/evaluaciones/postulaciones/(:num)/ficha'] = 'auxiliares/postulacionesAuxiliar/ficha/$1';
 $route['admin/auxiliares/evaluaciones/postulaciones/(:num)/fichas'] = 'auxiliares/postulacionesAuxiliar/fichas/$1';
 
+$route['admin/auxiliares/adjudicaciones'] = 'auxiliares/adjudicacionesAuxiliar/index';
+$route['admin/auxiliares/adjudicaciones/listarGruposInscripcion'] = 'auxiliares/adjudicacionesAuxiliar/listarGruposInscripcion';
+$route['admin/auxiliares/adjudicaciones/usuarios/firmas'] = 'auxiliares/adjudicacionesAuxiliar/usuarioFirmas';
+$route['admin/auxiliares/adjudicaciones/plazas'] = 'auxiliares/adjudicacionesAuxiliar/plazas';
+$route['admin/auxiliares/adjudicaciones/postulantes'] = 'auxiliares/adjudicacionesAuxiliar/postulantes';
+$route['admin/auxiliares/adjudicaciones/create'] = 'auxiliares/adjudicacionesAuxiliar/create';
+$route['admin/auxiliares/adjudicaciones/(:num)/edit'] = 'auxiliares/adjudicacionesAuxiliar/edit/$1';
+$route['admin/auxiliares/adjudicaciones/postulantes/(:num)/status'] = 'auxiliares/adjudicacionesAuxiliar/updateStatus/$1';
+$route['admin/auxiliares/adjudicaciones/pagination'] = 'auxiliares/adjudicacionesAuxiliar/pagination';
+$route['admin/auxiliares/adjudicaciones/resource'] = 'auxiliares/adjudicacionesAuxiliar/resource';
+$route['admin/auxiliares/adjudicaciones/store'] = 'auxiliares/adjudicacionesAuxiliar/store';
+$route['admin/auxiliares/adjudicaciones/(:num)/remove'] = 'auxiliares/adjudicacionesAuxiliar/remove/$1';
+$route['admin/auxiliares/adjudicaciones/(:num)/update'] = 'auxiliares/adjudicacionesAuxiliar/update/$1';
+$route['admin/auxiliares/adjudicaciones/datedefault'] = 'auxiliares/adjudicacionesAuxiliar/datedefault';
+$route['admin/auxiliares/adjudicaciones/reporte'] = 'auxiliares/adjudicacionesAuxiliar/generar_reporte_adjudicados';
+$route['admin/auxiliares/adjudicaciones/(:num)/actafirmada'] = 'auxiliares/adjudicacionesAuxiliar/uploadactafirmada/$1';
+
+$route['admin/auxiliares/reportes/adjudicaciones/(:num)/acta'] = 'auxiliares/reporteDocumentoWebAuxiliar/adjudicacion/$1';
+$route['admin/auxiliares/reportes/adjudicaciones/(:num)/contrato'] = 'auxiliares/reporteDocumentoWebAuxiliar/contrato/$1';
+$route['admin/auxiliares/reportes/adjudicaciones/(:num)/rd'] = 'auxiliares/reporteDocumentoWebAuxiliar/resolucion/$1';
+
+$route['admin/auxiliares/plazas'] = 'auxiliares/plazasAuxiliar/index';
+$route['admin/auxiliares/plazas/store'] = 'auxiliares/plazasAuxiliar/store';
+$route['admin/auxiliares/plazas/create'] = 'auxiliares/plazasAuxiliar/create';
+$route['admin/auxiliares/plazas/upload'] = 'auxiliares/plazasAuxiliar/upload';
+$route['admin/auxiliares/plazas/pagination'] = 'auxiliares/plazasAuxiliar/pagination';
+$route['admin/auxiliares/plazas/(:num)/update'] = 'auxiliares/plazasAuxiliar/update/$1';
+$route['admin/auxiliares/plazas/(:num)/remove'] = 'auxiliares/plazasAuxiliar/remove/$1';
+$route['admin/auxiliares/plazas/(:num)/edit'] = 'auxiliares/plazasAuxiliar/edit/$1';
+$route['admin/auxiliares/plazas/postulantes/liberar'] = 'auxiliares/plazasAuxiliar/liberar';
+$route['admin/auxiliares/plazas/exportar'] = 'auxiliares/plazasAuxiliar/reporte_plazas';
 
 

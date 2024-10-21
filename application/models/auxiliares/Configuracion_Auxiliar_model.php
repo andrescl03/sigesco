@@ -519,7 +519,7 @@ class Configuracion_auxiliar_model extends CI_Model
   {
     $sql = $this->db
       ->select("*")
-      ->from("plazas")
+      ->from("auxiliar_plazas")
       ->get();
     // echo $this->db->last_query(); exit(); 
     return $sql->result_array();

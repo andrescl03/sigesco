@@ -1064,3 +1064,78 @@ CREATE TABLE `auxiliar_cuadro_pun_exp` (
 	CONSTRAINT `fk_auxiliar_cuadropun_grupo_inscripcion10` FOREIGN KEY (`grupo_inscripcion_gin_id`) REFERENCES `grupo_inscripcion` (`gin_id`) ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
+CREATE TABLE `auxiliar_adjudicaciones` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`postulacion_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`plaza_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`observacion` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`fecha_liberacion` DATETIME NULL DEFAULT NULL,
+	`estado` INT(11) NULL DEFAULT '1',
+	`fecha_inicio` DATE NULL DEFAULT NULL,
+	`fecha_final` DATE NULL DEFAULT NULL,
+	`fecha_registro` DATETIME NULL DEFAULT NULL,
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+);
+
+CREATE TABLE `auxiliar_adjudicaciones_usuario_firmas` (
+	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`usuario_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`parent_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+);
+
+CREATE TABLE `auxiliar_adjudicacion_firmas` (
+	`adjudicacion_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`usuario_id` INT(11) UNSIGNED NULL DEFAULT '0',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	`updated_at` DATETIME NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	`deleted_at` DATETIME NULL DEFAULT NULL
+);
+
+CREATE TABLE `auxiliar_plazas` (
+	`plz_id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+	`codigoPlaza` VARCHAR(40) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`codigoModular` VARCHAR(8) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`ie` VARCHAR(150) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`mod_id` INT(11) NULL DEFAULT NULL,
+	`especialidad` TEXT NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`cargo` VARCHAR(40) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`caracteristica` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`tipo` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`jornada` TINYINT(3) NULL DEFAULT NULL,
+	`tipo_vacante` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`motivo_vacante` VARCHAR(8000) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`observacion` TEXT NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`fecha_reg` DATETIME NULL DEFAULT NULL,
+	`tipo_id` INT(11) NULL DEFAULT NULL,
+	`registrado_por` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`fecha` YEAR NULL DEFAULT NULL,
+	`estado` TINYINT(1) NULL DEFAULT NULL,
+	`modificado_por` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`fecha_mod` DATETIME NULL DEFAULT NULL,
+	`fecha_publicacion` DATETIME NULL DEFAULT NULL,
+	`tipo_proceso` INT(11) NULL DEFAULT '0',
+	`tipo_convocatoria` INT(11) NULL DEFAULT '0',
+	`periodo_id` INT(11) NULL DEFAULT '0',
+	`nivel_id` INT(11) NULL DEFAULT '0',
+	`colegio_id` INT(11) NULL DEFAULT '0',
+	`codigo_plaza` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`deleted_at` DATETIME NULL DEFAULT NULL,
+	`nivel` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`codigo_modular` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`especialidad_general` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	`fecha_inicio` DATE NULL DEFAULT NULL,
+	`fecha_fin` DATE NULL DEFAULT NULL,
+	`plaza_nombrada` TINYINT(1) NULL DEFAULT NULL,
+	PRIMARY KEY (`plz_id`) USING BTREE,
+	INDEX `modalidades` (`mod_id`) USING BTREE,
+	INDEX `tipo_convocatoria` (`tipo_id`) USING BTREE
+);
+
+
