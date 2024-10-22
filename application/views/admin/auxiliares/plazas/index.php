@@ -12,6 +12,7 @@ $procesos = $data['procesos'];
 $colegios = $data['colegios'];
 $modalidades = $data['modalidades'];
 $niveles = $data['niveles'];
+$tipos = $data['tipos'];
 ?>
 <div class="app-row" id="AppIndexPlaza"  id-data-tipo-perfil="<?php echo $this->session->userdata('sigesco_tus_iduser'); ?>"  data-modalidades='<?php echo json_encode($modalidades) ?>'  data-niveles='<?php echo json_encode($niveles) ?> '  >
     <div class="col-md-12">
@@ -109,10 +110,12 @@ $niveles = $data['niveles'];
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label for="">Tipo de contrato</label>
-                                                    <select class="form-control" name="" id="tipoContratotxtBuscador">
+                                                    <select class="form-control form-control-sm shadow-none" name="" id="tipoContratotxtBuscador">
                                                         <option value="">[Seleccione]</option>
-                                                        <option value="1">PUN</option>
-                                                        <option value="2">Evaluación de expedientes</option>
+                                                        <?php foreach ($tipos as $tipo) { ?>
+                                                        <option value="<?= $tipo->tipo_id ?>">
+                                                            <?= $tipo->descripcion ?></option>
+                                                        <?php } ?>
                                                     </select>
                                                 </div>
                                             </div>
@@ -197,7 +200,7 @@ $niveles = $data['niveles'];
                                         <option value="" hidden>Elegir...</option>
                                         <?php foreach ($procesos as $proceso) { ?>
                                         <option value="<?= $proceso->pro_id ?>"
-                                            <?= $proceso->pro_default == 1 ? "Selected" : "" ?>>
+                                            <?= $proceso->pro_id == 2 ? "Selected" : "" ?>>
                                             <?= $proceso->pro_descripcion ?></option>
                                         <?php } ?>
                                     </select>
@@ -213,10 +216,9 @@ $niveles = $data['niveles'];
                                 <div class="col-md-10 mb-2">
                                     <select class="form-select form-select-sm" name="tipo_convocatoria" required>
                                         <option value="" hidden>Elegir...</option>
-                                        <?php $tipos = [['id' => 1, 'descripcion' => 'PUN'],  ['id' => 2, 'descripcion' => 'EVALUACION DE EXPEDIENTE']]; ?>
                                         <?php foreach ($tipos as $tipo) { ?>
-                                        <option value="<?= $tipo['id'] ?>" <?= $tipo['id'] == 1 ? "Selected" : "" ?>>
-                                            <?= $tipo['descripcion'] ?></option>
+                                        <option value="<?= $tipo->tipo_id ?>" <?= $tipo->tipo_id == 2 ? "Selected" : "" ?>>
+                                            <?= $tipo->descripcion ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -319,7 +321,7 @@ $niveles = $data['niveles'];
                 <div class="modal-body">
                     <div class="container">
                         <form id="formReportExcelGeneral"
-                            action="<?php echo base_url(); ?>/configuracion/plazas/exportar" method="post"
+                            action="<?php echo base_url(); ?>admin/auxiliares/plazas/exportar" method="post"
                             target="_blank">
 
                             <div class="mb-3 row">

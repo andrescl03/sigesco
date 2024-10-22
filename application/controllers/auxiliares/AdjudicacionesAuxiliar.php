@@ -33,7 +33,7 @@ class AdjudicacionesAuxiliar extends CI_Controller {
 
     public function create() {
         $this->layout->js(array(base_url()."public/admin/auxiliares/adjudicacion/form.js?t=".date("mdYHis")));
-        $this->layout->view("/admin/auxiliares/adjudicacion/form");
+        $this->layout->view("/admin/auxiliares/adjudicacion/form", $this->adjudicaciones_auxiliar_model->form());
     }
 
     public function edit($id) {

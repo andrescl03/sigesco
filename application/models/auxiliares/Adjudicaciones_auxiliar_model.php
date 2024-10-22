@@ -12,6 +12,25 @@ class Adjudicaciones_auxiliar_model extends CI_Model
     return [];
   }
 
+  public function form() {
+    $response = $this->tools->responseDefault();
+    try {
+
+      $sql = "SELECT 
+            * FROM auxiliar_tipo_convocatoria where deleted_at IS NULL";
+      $tipos = $this->db->query($sql)->result_object();
+
+      $response['success'] = true;
+      $response['data']  = compact('tipos');
+      $response['status']  = 200;
+      $response['message'] = 'Se proceso correctamente';
+
+    } catch (\Exception $e) {
+        $response['message'] = $e->getMessage();
+    }
+    return $response; 
+  }
+
   public function uploadActaFirmada()
   {
     $actaFirmada = isset($_FILES['archivos']) ? $_FILES['archivos'] : [];
@@ -223,9 +242,9 @@ class Adjudicaciones_auxiliar_model extends CI_Model
       $adjudicacion_id = $this->input->post("adjudicacion_id", true);
       $adjudicacion    = [];
       if ($adjudicacion_id > 0) {
-        $sql = "SELECT * FROM adjudicaciones WHERE id = ? AND deleted_at IS NULL";
+        $sql = "SELECT * FROM auxiliar_adjudicaciones WHERE id = ? AND deleted_at IS NULL";
         $adjudicacion = $this->db->query($sql, compact('adjudicacion_id'))->row();
-        $sql = "SELECT * FROM plazas WHERE plz_id = ?";
+        $sql = "SELECT * FROM auxiliar_plazas WHERE plz_id = ?";
         $adjudicacion->plaza = $this->db->query($sql, ['plaza_id' => $adjudicacion->plaza_id])->row();
         $sql = "SELECT
                     P.*,

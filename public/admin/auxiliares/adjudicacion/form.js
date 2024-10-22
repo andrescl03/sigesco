@@ -490,7 +490,7 @@ const AppAdjudicacionAdmin = () => {
                                 if (isvalid > 0) {
                                     self.modalidades = self.modalidades.find((o) => { return o.esp_id === isvalid });
                                     self.tipo_postulacion = tipo_postulacion_convocatoria.value;
-                                    self.tipo_postulacion_name =  tipo_postulacion_convocatoria.options[tipo_postulacion_convocatoria.value].text;
+                                    self.tipo_postulacion_name =  tipo_postulacion_convocatoria.options[(tipo_postulacion_convocatoria.value - 1)].text;
                                     self.modalidadRender();
                                     self.modalFiltroBusqueda.hide();
                                 }
@@ -637,7 +637,7 @@ const AppAdjudicacionAdmin = () => {
                             formData.append('plaza_id', self.plaza.plz_id);
                             formData.append('postulacion_id', self.postulacion.id);
                             formData.append('firmas', JSON.stringify(self.firmas));
-                            const url = self.edit ? `admin/adjudicaciones/${adjudicacion_id}/update` : `admin/adjudicaciones/store`;
+                            const url = self.edit ? `admin/auxiliares/adjudicaciones/${adjudicacion_id}/update` : `admin/auxiliares/adjudicaciones/store`;
                             self.createUpdate(url, formData)
                             .then((response) =>{
                                 e.target.reset();
@@ -649,7 +649,7 @@ const AppAdjudicacionAdmin = () => {
 
                                 setTimeout(() => {
                                     sweet2.loading();
-                                    window.location.href = '/adjudicaciones';                                
+                                    window.location.href = window.AppMain.url + `admin/auxiliares/adjudicaciones`;                                
                                 }, 2500);
                             
                             });

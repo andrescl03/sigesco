@@ -141,9 +141,9 @@ const AppPlazaIndex = () => {
                         form.addEventListener('submit', (e) => {
                             e.preventDefault();
                             const formData = new FormData(e.target);
-                            let url = `configuracion/plazas/store`;
+                            let url = `admin/auxiliares/plazas/store`;
                             if (Number(self.any) > 0) {
-                               url = `configuracion/plazas/${self.any}/update`
+                               url = `admin/auxiliares/plazas/${self.any}/update`
                             }
                             self.createUpdate(url, formData)
                             .then(({success, data, message}) => {

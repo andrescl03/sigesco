@@ -305,7 +305,7 @@ const AppAdjudicacionAdmin = () => {
                     return new Promise((resolve, reject)=>{
                         sweet2.loading();
                         $.ajax({
-                            url: window.AppMain.url + `admin/auxiliares/evaluacion/convocatoria/inscripcion/postulantes/${id}/attachedfiles`,
+                            url: window.AppMain.url + `admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/${id}/attachedfiles`,
                             method: 'POST',
                             dataType: 'json',
                             data: {},

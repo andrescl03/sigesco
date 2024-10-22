@@ -31,7 +31,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="vr"></div>
+                                                            <!-- <div class="vr"></div>
                                                             <div class="d-grid gap-2 col-sm-3">
                                                                 <div class="row">
                                                                     <div class="col-sm-5 mt-1"><b>Tipo de proceso:</b></div>
@@ -45,7 +45,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="vr"></div>
+                                                            <div class="vr"></div> -->
                                                             
                                                             <div class="vr"></div>
                                                             <div class="col-sm-4"><input type="text" class="form-control form-control-sm" id="txt_buscador" placeholder="Buscar..." ></div>

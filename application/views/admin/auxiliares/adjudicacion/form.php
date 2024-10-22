@@ -33,7 +33,10 @@
         margin: 100px 20px;
     }
 </style>
-<?php $edit = isset($data['adjudicacion']) ? true : false ?>
+<?php 
+    $edit = isset($data['adjudicacion']) ? true : false; 
+    $tipos = isset($data['tipos']) ? $data['tipos'] : [];
+?>
 <div id="AppFormAdjudicacionAdmin" data-id="<?php echo $edit ? $data['adjudicacion']->id : 0 ?>"
     data-now="<?php echo date('Y-m-d H:i'); ?>">
     <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> <?php echo $edit ? "Editar" : "Crear" ?>
@@ -87,14 +90,14 @@
                                                         <div class="d-flex">
                                                             <h5 class="col"><span
                                                                     class="badge rounded-pill bg-light text-primary me-1 fs-7">1</span>
-                                                                Docente</h5>
+                                                                Auxiliar</h5>
                                                             <?php if (!$edit) { ?>
                                                                 <div class="col text-end">
                                                                     <button type="button"
                                                                         class="btn btn-sm btn-outline-light btn-docente">
                                                                         <i
                                                                             class="fa-solid fa-file-signature fa-lg me-1"></i>
-                                                                        Buscar Docente
+                                                                        Buscar Auxiliar
                                                                     </button>
                                                                 </div>
                                                             <?php } ?>
@@ -119,7 +122,7 @@
                                                                         <thead>
                                                                             <tr class="cabecera_tabla_2 bg-primary">
                                                                                 <th>Orden de mérito</th>
-                                                                                <th>Docente</th>
+                                                                                <th>Auxiliar</th>
                                                                                 <th>Número de Documento</th>
                                                                                 <th>Modalidad</th>
                                                                                 <th>Nivel</th>
@@ -329,7 +332,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Listado de Docentes</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Listado de Auxiliares</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -365,7 +368,7 @@
                                     <thead>
                                         <tr class="cabecera_tabla_2">
                                             <th>#</th>
-                                            <th>Docente</th>
+                                            <th>Auxiliar</th>
                                             <th>Número de Documento</th>
                                             <th>Modalidad</th>
                                             <th>Nivel</th>
@@ -436,8 +439,10 @@
                             <label class="form-label" for="">Seleccione el tipo de postulación</label>
                             <select name="tipo_postulacion_convocatoria" id="tipo_postulacion_convocatoria" class="form-select form-control-sm">
                                 <option hidden value="0">[SELECCIONE]</option>
-                                <option value="1">PUN</option>
-                                <option value="2">EVALUACION DE EXPEDIENTE</option>
+                                <?php foreach ($tipos as $tipo) { ?>
+                                <option value="<?= $tipo->tipo_id ?>">
+                                    <?= $tipo->descripcion ?></option>
+                                <?php } ?>
                             </select>
                         </div>
                      </div>

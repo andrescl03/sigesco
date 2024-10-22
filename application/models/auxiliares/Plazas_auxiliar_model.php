@@ -19,7 +19,8 @@ class Plazas_auxiliar_model extends CI_Model {
         $sql = "SELECT 
                 e.*
               FROM procesos e
-              WHERE e.pro_estado = 1";
+              WHERE e.pro_estado = 1
+              AND e.pro_id = 2";
         $procesos = $this->db->query($sql)->result_object();
 
         $sql = "SELECT 
@@ -31,23 +32,20 @@ class Plazas_auxiliar_model extends CI_Model {
               ORDER BY e2.mod_nombre ASC";
         $colegios = $this->db->query($sql)->result_object();
 
+        $sql = "SELECT 
+          * FROM modalidades where mod_estado = 1";
+        $modalidades = $this->db->query($sql)->result_object();
 
-      $sql = "SELECT 
-         * FROM modalidades where mod_estado = 1";
-      $modalidades = $this->db->query($sql)->result_object();
+        $sql = "SELECT 
+                * FROM niveles where niv_estado = 1";
+        $niveles = $this->db->query($sql)->result_object();
 
-      $sql = "SELECT 
-              * FROM niveles where niv_estado = 1";
-      $niveles = $this->db->query($sql)->result_object();
+        $sql = "SELECT 
+              * FROM auxiliar_tipo_convocatoria where deleted_at IS NULL";
+        $tipos = $this->db->query($sql)->result_object();
 
-
-      /*$sql = "SELECT 
-              e2.*
-              FROM modularie e2
-              ORDER BY e2.mod_nombre ASC";
-      $niveles = $this->db->query($sql)->result_object();*/
         $response['success'] = true;
-        $response['data']  = compact('periodos', 'procesos', 'colegios','modalidades','niveles');
+        $response['data']  = compact('periodos', 'procesos', 'colegios','modalidades','niveles', 'tipos');
         $response['status']  = 200;
         $response['message'] = 'Se proceso correctamente';
   
@@ -57,47 +55,47 @@ class Plazas_auxiliar_model extends CI_Model {
       return $response; 
     }
 
-  public function f_details_plazas()
-  {
-    $sql = "SELECT 
-      plz.*,
-      moda.mod_abreviatura,
-      nive.niv_descripcion,
-      adj.observacion as 'observacion_liberacion'
-    FROM plazas plz
-    LEFT JOIN adjudicaciones adj ON adj.plaza_id = plz.plz_id
-    INNER JOIN modalidades moda ON plz.mod_id = moda.mod_id
-    INNER JOIN niveles nive ON nive.niv_id =  plz.nivel_id
-    WHERE plz.deleted_at IS NULL 
-    AND (adj.id IS NULL OR adj.estado = 0)
-    GROUP BY plz.plz_id
-    ORDER BY plz.plz_id DESC";
-    $plazas = $this->db->query($sql)->result_object();
+    public function f_details_plazas()
+    {
+      $sql = "SELECT 
+        plz.*,
+        moda.mod_abreviatura,
+        nive.niv_descripcion,
+        adj.observacion as 'observacion_liberacion'
+      FROM auxiliar_plazas plz
+      LEFT JOIN auxiliar_adjudicaciones adj ON adj.plaza_id = plz.plz_id
+      INNER JOIN modalidades moda ON plz.mod_id = moda.mod_id
+      INNER JOIN niveles nive ON nive.niv_id =  plz.nivel_id
+      WHERE plz.deleted_at IS NULL 
+      AND (adj.id IS NULL OR adj.estado = 0)
+      GROUP BY plz.plz_id
+      ORDER BY plz.plz_id DESC";
+      $plazas = $this->db->query($sql)->result_object();
 
 
-    return $plazas;
-  }
+      return $plazas;
+    }
 
-  public function f_details_plazas_liberadas()
-  {
-    $sql = "SELECT 
-      plz.*,
-      moda.mod_abreviatura,
-      nive.niv_descripcion,
-      adj.observacion as 'observacion_liberacion'
-    FROM plazas plz
-    LEFT JOIN adjudicaciones adj ON adj.plaza_id = plz.plz_id
-    INNER JOIN modalidades moda ON plz.mod_id = moda.mod_id
-    INNER JOIN niveles nive ON nive.niv_id =  plz.nivel_id
-    WHERE plz.deleted_at IS NULL 
-    AND ( adj.estado = 0 and plz.estado = 1)
-    GROUP BY plz.plz_id
-    ORDER BY plz.plz_id DESC";
-    $plazas = $this->db->query($sql)->result_object();
+    public function f_details_plazas_liberadas()
+    {
+      $sql = "SELECT 
+        plz.*,
+        moda.mod_abreviatura,
+        nive.niv_descripcion,
+        adj.observacion as 'observacion_liberacion'
+      FROM auxiliar_plazas plz
+      LEFT JOIN auxiliar_adjudicaciones adj ON adj.plaza_id = plz.plz_id
+      INNER JOIN modalidades moda ON plz.mod_id = moda.mod_id
+      INNER JOIN niveles nive ON nive.niv_id =  plz.nivel_id
+      WHERE plz.deleted_at IS NULL 
+      AND ( adj.estado = 0 and plz.estado = 1)
+      GROUP BY plz.plz_id
+      ORDER BY plz.plz_id DESC";
+      $plazas = $this->db->query($sql)->result_object();
 
 
-    return $plazas;
-  }
+      return $plazas;
+    }
 
   
     public function pagination() {
@@ -149,7 +147,7 @@ class Plazas_auxiliar_model extends CI_Model {
 
           $sql = "SELECT 
                     plz.* , tc.*, niv.*, moda.*
-                  FROM plazas plz
+                  FROM auxiliar_plazas plz
                   INNER JOIN tipo_convocatoria tc ON plz.tipo_convocatoria = tc.tipo_id
                   INNER JOIN niveles niv ON plz.nivel_id = niv.niv_id
                   INNER JOIN modalidades moda  ON moda.mod_id = niv.modalidad_mod_id
@@ -202,7 +200,7 @@ class Plazas_auxiliar_model extends CI_Model {
       if (is_numeric($codigo_plaza)) {
         $sql = "SELECT 
                 *
-              FROM plazas
+              FROM auxiliar_plazas
               WHERE deleted_at IS NULL
               AND codigo_plaza = ?";
         $valid = $this->db->query($sql, ['codigo_plaza' => $codigo_plaza])->row();
@@ -245,7 +243,7 @@ class Plazas_auxiliar_model extends CI_Model {
         'fecha_fin'=>$fecha_fin,
       ];
       
-      $this->db->insert('plazas',$data);
+      $this->db->insert('auxiliar_plazas',$data);
       $id = $this->db->insert_id(); // para saber el id ingresado
 
       $response['success'] = true;
@@ -265,7 +263,7 @@ class Plazas_auxiliar_model extends CI_Model {
 
       $id = isset($request['id']) ? $request['id'] : 0;
 
-      $sql = "SELECT * FROM plazas WHERE plz_id = ? AND deleted_at IS NULL";
+      $sql = "SELECT * FROM auxiliar_plazas WHERE plz_id = ? AND deleted_at IS NULL";
       $plaza = $this->db->query($sql, compact('id'))->row();
       if (!$plaza) {
         throw new Exception("No sé encuentra registrado en está plaza");
@@ -291,7 +289,7 @@ class Plazas_auxiliar_model extends CI_Model {
       if (is_numeric($codigo_plaza)) {
         $sql = "SELECT 
               *
-            FROM plazas
+            FROM auxiliar_plazas
             WHERE deleted_at IS NULL
             AND plz_id != ?
             AND codigo_plaza = ?";
@@ -334,7 +332,7 @@ class Plazas_auxiliar_model extends CI_Model {
         'fecha_fin'=>$fecha_fin
       ];
       
-      $this->db->update('plazas', $data, ['plz_id' => $id]);
+      $this->db->update('auxiliar_plazas', $data, ['plz_id' => $id]);
 
       $response['success'] = true;
       $response['status']  = 200;
@@ -353,13 +351,13 @@ class Plazas_auxiliar_model extends CI_Model {
 
           $id = isset($request['id']) ? $request['id'] : 0;
 
-          $sql = "SELECT * FROM plazas WHERE plz_id = ? AND deleted_at IS NULL";
+          $sql = "SELECT * FROM auxiliar_plazas WHERE plz_id = ? AND deleted_at IS NULL";
           $plaza = $this->db->query($sql, compact('id'))->row();
           if (!$plaza) {
             throw new Exception("No sé encuentra registrado en está plaza");
           }
 
-          $this->db->update('plazas', ['deleted_at' => $this->tools->getDateHour()], array('plz_id' => $id));
+          $this->db->update('auxiliar_plazas', ['deleted_at' => $this->tools->getDateHour()], array('plz_id' => $id));
        
           $response['success'] = true;
           $response['status']  = 200;
@@ -377,7 +375,7 @@ class Plazas_auxiliar_model extends CI_Model {
 
           $id = isset($request['id']) ? $request['id'] : 0;
 
-          $sql = "SELECT * FROM plazas WHERE plz_id = ? AND deleted_at IS NULL";
+          $sql = "SELECT * FROM auxiliar_plazas WHERE plz_id = ? AND deleted_at IS NULL";
           $plaza = $this->db->query($sql, compact('id'))->row();
           if (!$plaza) {
             throw new Exception("No sé encuentra registrado está plaza");
@@ -391,8 +389,8 @@ class Plazas_auxiliar_model extends CI_Model {
                     pos.numero_documento,
                     pos.correo,
                     pos.numero_celular
-                  FROM adjudicaciones AS adj
-                  INNER JOIN postulaciones AS pos ON adj.postulacion_id = pos.id
+                  FROM auxiliar_adjudicaciones AS adj
+                  INNER JOIN auxiliar_postulaciones AS pos ON adj.postulacion_id = pos.id
                   WHERE adj.plaza_id = {$plaza_id}
                   AND adj.deleted_at IS NULL";
           $plaza_adjudicaciones = $this->db->query($sql)->result_object();
@@ -450,7 +448,7 @@ class Plazas_auxiliar_model extends CI_Model {
           $id = $this->input->post("id", true);
           $observacion = $this->input->post("observacion", true);
 
-          $sql = "SELECT * FROM adjudicaciones WHERE id = ? AND deleted_at IS NULL";
+          $sql = "SELECT * FROM auxiliar_adjudicaciones WHERE id = ? AND deleted_at IS NULL";
           $adjudicacion = $this->db->query($sql, compact('id'))->row();
           if (!$adjudicacion) {
             throw new Exception("No sé encuentra registrado está adjudicación");
@@ -459,9 +457,9 @@ class Plazas_auxiliar_model extends CI_Model {
           $plaza_id = $adjudicacion->plaza_id;
           $postulacion_id = $adjudicacion->postulacion_id;
 
-          $this->db->update('adjudicaciones', ['observacion' => $observacion, 'estado' => 0, 'fecha_liberacion' => $this->tools->getDateHour()], array('id' => $id));
-          $this->db->update('postulaciones', ['estado_adjudicacion' => 0, 'intentos_adjudicacion' => 0], array('id' => $postulacion_id));
-          $this->db->update('plazas', ['estado' => 1], array('plz_id' => $plaza_id));
+          $this->db->update('auxiliar_adjudicaciones', ['observacion' => $observacion, 'estado' => 0, 'fecha_liberacion' => $this->tools->getDateHour()], array('id' => $id));
+          $this->db->update('auxiliar_postulaciones', ['estado_adjudicacion' => 0, 'intentos_adjudicacion' => 0], array('id' => $postulacion_id));
+          $this->db->update('auxiliar_plazas', ['estado' => 1], array('plz_id' => $plaza_id));
           
           $response['success'] = true;
           $response['status']  = 200;
@@ -486,7 +484,7 @@ class Plazas_auxiliar_model extends CI_Model {
       }
 
       foreach ($ids as $k => $id) {
-        $this->db->update('postulaciones', ['estado' => $estado], ['id' => $id]);
+        $this->db->update('auxiliar_postulaciones', ['estado' => $estado], ['id' => $id]);
       }
 
       $response['success'] = true;
@@ -600,22 +598,22 @@ class Plazas_auxiliar_model extends CI_Model {
             }
 
             if (is_numeric($codigo_plaza)) {
-              $sql = "SELECT * FROM plazas WHERE codigo_plaza = ? AND deleted_at IS NULL";
+              $sql = "SELECT * FROM auxiliar_plazas WHERE codigo_plaza = ? AND deleted_at IS NULL";
               $plaza = $this->db->query($sql, compact('codigo_plaza'))->row();
               $id = $plaza ? $plaza->plz_id : false;
             }
 
             if ((is_numeric($id) && $id > 0)) {
-              $this->db->update('plazas', $data, ['plz_id' => $id]);
+              $this->db->update('auxiliar_plazas', $data, ['plz_id' => $id]);
               $message = "Se actualizo correctamente";
             } else {
               $data['estado'] = '1';
-              $this->db->insert('plazas', $data);
+              $this->db->insert('auxiliar_plazas', $data);
               $id = $this->db->insert_id();
               $message = "Se registro correctamente";
             }
 
-            $sql = "SELECT * FROM plazas WHERE plz_id = ? AND deleted_at IS NULL";
+            $sql = "SELECT * FROM auxiliar_plazas WHERE plz_id = ? AND deleted_at IS NULL";
             $plaza = $this->db->query($sql, compact('id'))->row();
             
             $resp['data'] = $plaza;

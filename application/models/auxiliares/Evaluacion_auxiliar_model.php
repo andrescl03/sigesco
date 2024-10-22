@@ -599,7 +599,7 @@ class Evaluacion_auxiliar_model extends CI_Model {
                 par.*,
                 tar.nombre AS tipo_nombre
               FROM auxiliar_postulacion_archivos par
-              INNER JOIN tipo_archivos tar ON tar.id = par.tipo_id
+              INNER JOIN auxiliar_tipo_archivos tar ON tar.id = par.tipo_id
               WHERE par.deleted_at IS NULL 
               AND par.postulacion_id = ?";
       $archivos = $this->db->query($sql, ['postulacion_id' => $id])->result_object();

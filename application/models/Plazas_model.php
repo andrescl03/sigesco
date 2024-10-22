@@ -19,7 +19,8 @@ class Plazas_model extends CI_Model {
         $sql = "SELECT 
                 e.*
               FROM procesos e
-              WHERE e.pro_estado = 1";
+              WHERE e.pro_estado = 1
+              AND e.pro_id = 1";
         $procesos = $this->db->query($sql)->result_object();
 
         $sql = "SELECT 
