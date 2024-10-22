@@ -203,7 +203,7 @@ class Configuracion_auxiliar_model extends CI_Model
       INNER JOIN `grupo_inscripcion` `gin` ON `esp`.`esp_id` = `gin`.`especialidades_esp_id`
       WHERE `gin`.`gin_estado` = 1
       AND `gin`.`periodos_per_id` = '1'
-      AND `gin`.`procesos_pro_id` = '1'
+      AND `gin`.`procesos_pro_id` = '2'
       ORDER BY `mod`.`mod_id` ASC, `niv`.`niv_id` ASC, `esp`.`esp_id` ASC " ;
       
 
@@ -519,7 +519,7 @@ class Configuracion_auxiliar_model extends CI_Model
   {
     $sql = $this->db
       ->select("*")
-      ->from("plazas")
+      ->from("auxiliar_plazas")
       ->get();
     // echo $this->db->last_query(); exit(); 
     return $sql->result_array();

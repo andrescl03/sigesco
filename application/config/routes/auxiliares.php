@@ -57,7 +57,68 @@ $route['admin/auxiliares/convocatorias/VSelectGrupoInscripcion'] = 'auxiliares/C
 $route['admin/auxiliares/convocatorias/VTablaGrupoInscripcion'] = 'auxiliares/ConvocatoriasAuxiliar/VTablaGrupoInscripcion';
 $route['admin/auxiliares/convocatorias/CAgregarNuevaConvocatoria'] = 'auxiliares/ConvocatoriasAuxiliar/CAgregarNuevaConvocatoria';
 
-$route['admin/auxiliares/evaluaciones'] = 'auxiliares/EvaluacionAuxiliar/convocatoria';
-$route['admin/auxiliares/evaluaciones/(:any)'] = 'auxiliares/EvaluacionAuxiliar/convocatoria';
+$route['admin/auxiliares/evaluaciones'] = 'auxiliares/EvaluacionAuxiliar/convocatorias';
+$route['admin/auxiliares/evaluaciones/VListarConvocatoriasActivas'] = 'auxiliares/EvaluacionAuxiliar/VListarConvocatoriasActivas';
+$route['admin/auxiliares/evaluaciones/VListarEspecialistas'] = 'auxiliares/EvaluacionAuxiliar/VListarEspecialistas';
+$route['admin/auxiliares/evaluaciones/CAsignarReasignar'] = 'auxiliares/EvaluacionAuxiliar/CAsignarReasignar';
+$route['admin/auxiliares/evaluaciones/VListarCargarExpedientePunEvaluar'] = 'auxiliares/EvaluacionAuxiliar/VListarCargarExpedientePunEvaluar';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)'] = 'auxiliares/EvaluacionAuxiliar/convocatoria/$1';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/reporte/excel'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_general/$1';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/sinevaluar'] = 'auxiliares/EvaluacionAuxiliar/indexSinevaluar/$1/$2';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/preliminar'] = 'auxiliares/EvaluacionAuxiliar/indexPreliminar/$1/$2';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/final'] = 'auxiliares/EvaluacionAuxiliar/indexFinal/$1/$2';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/editar'] = 'auxiliares/EvaluacionAuxiliar/editarFicha/$1/$2';
+
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/preliminar/exportar'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_preliminar/$1/$2';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/final/exportar'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_final/$1/$2';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/(:num)/pendiente/exportar'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_pendiente/$1/$2';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/preliminar/exportar'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_preliminar_total/$1';
+$route['admin/auxiliares/evaluaciones/convocatorias/(:num)/inscripciones/final/exportar'] = 'auxiliares/EvaluacionAuxiliar/reporte_excel_final_total/$1';
+$route['admin/auxiliares/evaluacion/convocatorias/(:num)/inscripciones/(:num)/procesar/expedientes'] = 'auxiliares/EvaluacionAuxiliar/procesar_expedientes/$1/$2';
+$route['admin/auxiliares/evaluacion/convocatorias/(:num)/inscripciones/(:num)/procesar/expedientes_nocumplen'] = 'auxiliares/EvaluacionAuxiliar/procesar_expedientes_nocumplen/$1/$2';
+
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/pagination'] = 'auxiliares/EvaluacionAuxiliar/pagination/$1/$2';
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/(:num)/ficha'] = 'auxiliares/EvaluacionAuxiliar/ficha/$1';
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/status'] = 'auxiliares/EvaluacionAuxiliar/status';
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/(:num)/attachedfiles'] = 'auxiliares/EvaluacionAuxiliar/attachedfiles/$1';
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/(:num)/revaluar'] = 'auxiliares/EvaluacionAuxiliar/revaluarPreliFinal/$1';
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/(:num)/editar'] = 'auxiliares/postulacionesAuxiliar/edit/$1';
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/(:num)/detail'] = 'auxiliares/postulacionesAuxiliar/detail/$1';
+$route['admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/(:num)/update'] = 'auxiliares/postulacionesAuxiliar/update/$1';
+
+$route['admin/auxiliares/evaluaciones/postulaciones/(:num)/ficha'] = 'auxiliares/postulacionesAuxiliar/ficha/$1';
+$route['admin/auxiliares/evaluaciones/postulaciones/(:num)/fichas'] = 'auxiliares/postulacionesAuxiliar/fichas/$1';
+
+$route['admin/auxiliares/adjudicaciones'] = 'auxiliares/adjudicacionesAuxiliar/index';
+$route['admin/auxiliares/adjudicaciones/listarGruposInscripcion'] = 'auxiliares/adjudicacionesAuxiliar/listarGruposInscripcion';
+$route['admin/auxiliares/adjudicaciones/usuarios/firmas'] = 'auxiliares/adjudicacionesAuxiliar/usuarioFirmas';
+$route['admin/auxiliares/adjudicaciones/plazas'] = 'auxiliares/adjudicacionesAuxiliar/plazas';
+$route['admin/auxiliares/adjudicaciones/postulantes'] = 'auxiliares/adjudicacionesAuxiliar/postulantes';
+$route['admin/auxiliares/adjudicaciones/create'] = 'auxiliares/adjudicacionesAuxiliar/create';
+$route['admin/auxiliares/adjudicaciones/(:num)/edit'] = 'auxiliares/adjudicacionesAuxiliar/edit/$1';
+$route['admin/auxiliares/adjudicaciones/postulantes/(:num)/status'] = 'auxiliares/adjudicacionesAuxiliar/updateStatus/$1';
+$route['admin/auxiliares/adjudicaciones/pagination'] = 'auxiliares/adjudicacionesAuxiliar/pagination';
+$route['admin/auxiliares/adjudicaciones/resource'] = 'auxiliares/adjudicacionesAuxiliar/resource';
+$route['admin/auxiliares/adjudicaciones/store'] = 'auxiliares/adjudicacionesAuxiliar/store';
+$route['admin/auxiliares/adjudicaciones/(:num)/remove'] = 'auxiliares/adjudicacionesAuxiliar/remove/$1';
+$route['admin/auxiliares/adjudicaciones/(:num)/update'] = 'auxiliares/adjudicacionesAuxiliar/update/$1';
+$route['admin/auxiliares/adjudicaciones/datedefault'] = 'auxiliares/adjudicacionesAuxiliar/datedefault';
+$route['admin/auxiliares/adjudicaciones/reporte'] = 'auxiliares/adjudicacionesAuxiliar/generar_reporte_adjudicados';
+$route['admin/auxiliares/adjudicaciones/(:num)/actafirmada'] = 'auxiliares/adjudicacionesAuxiliar/uploadactafirmada/$1';
+
+$route['admin/auxiliares/reportes/adjudicaciones/(:num)/acta'] = 'auxiliares/reporteDocumentoWebAuxiliar/adjudicacion/$1';
+$route['admin/auxiliares/reportes/adjudicaciones/(:num)/contrato'] = 'auxiliares/reporteDocumentoWebAuxiliar/contrato/$1';
+$route['admin/auxiliares/reportes/adjudicaciones/(:num)/rd'] = 'auxiliares/reporteDocumentoWebAuxiliar/resolucion/$1';
+
+$route['admin/auxiliares/plazas'] = 'auxiliares/plazasAuxiliar/index';
+$route['admin/auxiliares/plazas/store'] = 'auxiliares/plazasAuxiliar/store';
+$route['admin/auxiliares/plazas/create'] = 'auxiliares/plazasAuxiliar/create';
+$route['admin/auxiliares/plazas/upload'] = 'auxiliares/plazasAuxiliar/upload';
+$route['admin/auxiliares/plazas/pagination'] = 'auxiliares/plazasAuxiliar/pagination';
+$route['admin/auxiliares/plazas/(:num)/update'] = 'auxiliares/plazasAuxiliar/update/$1';
+$route['admin/auxiliares/plazas/(:num)/remove'] = 'auxiliares/plazasAuxiliar/remove/$1';
+$route['admin/auxiliares/plazas/(:num)/edit'] = 'auxiliares/plazasAuxiliar/edit/$1';
+$route['admin/auxiliares/plazas/postulantes/liberar'] = 'auxiliares/plazasAuxiliar/liberar';
+$route['admin/auxiliares/plazas/exportar'] = 'auxiliares/plazasAuxiliar/reporte_plazas';
 
 

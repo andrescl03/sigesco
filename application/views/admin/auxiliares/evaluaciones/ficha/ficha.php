@@ -8,8 +8,8 @@
 <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Ficha de evaluación</b></h4>
 <ol class="breadcrumb mb-2">
     <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
-    <li class="breadcrumb-item"><a href="<?php echo base_url()."evaluacion/convocatoria/".encryption('0||0'); ?>"> Evaluación de postulantes</a></li>
-    <li class="breadcrumb-item"><a href="<?php echo base_url()."evaluacion/convocatoria/".encryption($postulante->convocatoria_id.'||0'); ?>"> Grupo de inscripción</a></li>
+    <li class="breadcrumb-item"><a href="<?php echo base_url()."admin/auxiliares/evaluaciones"; ?>"> Evaluación de postulantes</a></li>
+    <li class="breadcrumb-item"><a href="<?php echo base_url()."admin/auxiliares/evaluaciones/convocatorias/".$postulante->convocatoria_id; ?>"> Grupo de inscripción</a></li>
 
     <!-- <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>/porderivar/listar"> Expedientes Por Derivar</a></li>
         <li class="breadcrumb-item active">Registro de Expediente Externo</li> -->

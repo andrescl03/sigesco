@@ -4,8 +4,8 @@
     <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Listado de Evaluaciones <?= $any == 'preliminar' ? 'Preliminares' : 'Finales' ?></b></h4>
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
-        <li class="breadcrumb-item"><a href="<?php echo base_url() . "evaluacion/convocatoria/" . encryption('0||0'); ?>"> Evaluación de postulantes</a></li>
-        <li class="breadcrumb-item"><a href="<?php echo base_url() . "evaluacion/convocatoria/" . encryption($convocatoria_id . '||0'); ?>"> Grupo de inscripción</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo base_url() . "admin/auxiliares/evaluaciones" ?>"> Evaluación de postulantes</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo base_url() . "admin/auxiliares/evaluaciones/convocatorias/" .$convocatoria_id ?>"> Grupo de inscripción</a></li>
         <li class="breadcrumb-item active"><?= $any == 'preliminar' ? 'Preliminares' : 'Finales' ?></li>
     </ol>
     <div class="app-row">
@@ -21,10 +21,10 @@
                                         <div class="card border bg-light">
                                             <div class="card-body" style="padding: 0.8rem 1rem;">
                                                 <div class="row">
-                                                    <div class="col-sm-12 ">
+                                                    <div class="col-sm-12 mb-3">
                                                         <div class="d-flex align-content-start flex-wrap gap-3">
                                                             <div class="d-grid gap-2 col-sm-2">
-                                                                <a type="button" target="_blank" href="<?php echo base_url() . 'evaluacion/convocatoria/' . $convocatoria_id . '/inscripcion/' . $inscripcion_id . '/' . ($any == 'preliminar' ? 'preliminar' : 'final') . '/exportar' ?>" class="btn btn-outline-success btn-sm">
+                                                                <a type="button" target="_blank" href="<?php echo base_url() . 'admin/auxiliares/evaluaciones/convocatorias/' . $convocatoria_id . '/inscripciones/' . $inscripcion_id . '/' . ($any == 'preliminar' ? 'preliminar' : 'final') . '/exportar' ?>" class="btn btn-outline-success btn-sm">
                                                                     <b><i class="fa-solid fa-file-excel fa-lg"></i> Exportar</b>
                                                                 </a>
                                                             </div>
@@ -35,8 +35,8 @@
                                                                     <button type="button" class="input-group-text btn btn-sm btn-primary shadow-none" id="btnBuscador">Buscar</button>
                                                                 </div>
                                                             </div>
-
-                                                            <div class="col-sm-2">
+                                                            <div class="vr"></div>
+                                                            <div class="col-sm-3">
                                                                 <div class="input-group">
                                                                      <select name="txtBuscadorReclamo" id="txtBuscadorReclamo" class="form-control form-control-sm">
                                                                     <option value="0">[CON/SIN RECLAMO]</option> 
@@ -47,28 +47,31 @@
                                                                     <button type="button" class="input-group-text btn btn-sm btn-primary shadow-none" id="btnBuscadorReclamo">Buscar Reclamo</button>
                                                                 </div>
                                                             </div>
-                                                            <?php
-                                                            if (in_array($this->session->userdata("sigesco_tus_iduser"), array('3')) && $any == 'preliminar') { ?>
-                                                                <button  data-id="<?= $datos[0]['con_numero'] ?>" type="button" id="btn-procesar-expedientes-preliminar-final" class="btn btn-sm btn-success btn-procesar-expedientes-preliminar-final mb-2">
-                                                                    Procesar expedientes con estado CUMPLE a etapa FINAL
-                                                                </button>
-                                                            <?php } ?>
-
-                                                            <?php
-                                                            if ($any != 'preliminar') { ?>
-                                                            <div class="vr"></div>
-                                                            <div class="col">
-                                                                <button type="button" class="btn btn-sm btn-dark float-end pagination-btn-all">Procesar registros a Preliminar</button>
-                                                            </div>
-                                                            <?php } ?>
-                                                            <?php 
-                                                            if ($any == 'preliminar') { ?>
-                                                            <div class="vr"></div>
-                                                            <div class="col">
-                                                                <button type="button" class="btn btn-sm btn-dark float-end pagination-no-cumple-btn-all">Procesar registros que NO CUMPLEN a final</button>
-                                                            </div>
-                                                            <?php } ?>
                                                         </div>
+                                                    </div>
+                                                    <div class="col-sm-12 ">
+                                                    <?php
+                                                    if (in_array($this->session->userdata("sigesco_tus_iduser"), array('3')) && $any == 'preliminar') { ?>
+                                                        <div class="col">
+                                                            <button  data-id="<?= $datos[0]['con_numero'] ?>" type="button" id="btn-procesar-expedientes-preliminar-final" class="btn btn-sm btn-success btn-procesar-expedientes-preliminar-final mb-2">
+                                                                Procesar expedientes con estado CUMPLE a etapa FINAL
+                                                            </button>
+                                                        </div>
+                                                        <div class="vr"></div>
+                                                    <?php } ?>
+                                                    <?php
+                                                        if ($any != 'preliminar') { ?>
+                                                        <div class="col">
+                                                            <button type="button" class="btn btn-sm btn-dark float-end pagination-btn-all">Procesar registros a Preliminar</button>
+                                                        </div>
+                                                        <div class="vr"></div>
+                                                    <?php } ?>
+                                                    <?php 
+                                                        if ($any == 'preliminar') { ?>
+                                                        <div class="col">
+                                                            <button type="button" class="btn btn-sm btn-dark float-end pagination-no-cumple-btn-all">Procesar registros que NO CUMPLEN a final</button>
+                                                        </div>
+                                                    <?php } ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -92,7 +95,7 @@
                                                         <th class="text-center">ADJUNTOS</th>
                                                         <th class="text-center">FECHA DE INGRESO DE RECLAMO</th>
                                                         <th class="text-center">NÚMERO DE EXPEDIENTE DE RECLAMO</th>
-                                                        <th class="text-center">ACCIONES</th>
+                                                        <th class="text-center" style="min-width:150px;">ACCIONES</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

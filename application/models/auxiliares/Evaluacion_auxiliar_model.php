@@ -26,7 +26,7 @@ class Evaluacion_auxiliar_model extends CI_Model {
                   POS.*,
                   EPE.epe_id AS epe_id
                 FROM auxiliar_postulaciones AS POS
-                LEFT JOIN evaluacion_pun_exp AS EPE ON POS.id = EPE.postulacion_id
+                LEFT JOIN auxiliar_evaluacion_pun_exp AS EPE ON POS.id = EPE.postulacion_id
                 WHERE POS.deleted_at IS NULL 
                 AND POS.convocatoria_id = $idCon
                 GROUP BY POS.id";
@@ -35,7 +35,7 @@ class Evaluacion_auxiliar_model extends CI_Model {
                   POS.*,
                   EPE.epe_id AS epe_id
                 FROM auxiliar_postulaciones AS POS
-                INNER JOIN evaluacion_pun_exp AS EPE ON POS.id = EPE.postulacion_id
+                INNER JOIN auxiliar_evaluacion_pun_exp AS EPE ON POS.id = EPE.postulacion_id
                 WHERE POS.deleted_at IS NULL 
                 AND POS.convocatoria_id = $idCon
                 AND EPE.epe_especialistaAsignado = $sigesco_dni
@@ -105,8 +105,8 @@ class Evaluacion_auxiliar_model extends CI_Model {
     public function listarCuadroPunxIdGrupoConEvaluacion($idGin, $usuario){ //1: se presento
       $sql=$this->db
         ->select("COUNT(cpe_id) as t_docentes, SUM(epe_estadoEvaluacion) as t_asigando, SUM(IF(epe_tipoevaluacion IS NULL, 1, IF(epe_tipoevaluacion = 1 AND epe_estadoEvaluacion = 1, 1, 0))) as t_preliminar, SUM(IF(epe_tipoevaluacion = 2 AND epe_estadoEvaluacion = 1, 1, 0)) as t_final, SUM(IF(epe_tipoevaluacion = 1 AND epe_especialistaAsignado = $usuario AND epe_estadoEvaluacion = 1, 1, 0)) as t_mis_preliminar, SUM(IF(epe_tipoevaluacion = 2 AND epe_especialistaAsignado = $usuario AND epe_estadoEvaluacion = 1, 1, 0)) as t_mis_final")      
-        ->from("cuadro_pun_exp cpe")
-        ->join("evaluacion_pun_exp epe", "cpe.cpe_id = epe.cuadro_pun_exp_cpe_id", "left")
+        ->from("auxiliar_cuadro_pun_exp cpe")
+        ->join("auxiliar_evaluacion_pun_exp epe", "cpe.cpe_id = epe.cuadro_pun_exp_cpe_id", "left")
         ->where(array("cpe.cpe_estado"=>1, "cpe_sepresento"=>1, "cpe_tipoCuadro"=>1, "cpe.grupo_inscripcion_gin_id"=>$idGin))
         ->group_start()
         ->where('epe.epe_estado', 1)
@@ -120,8 +120,8 @@ class Evaluacion_auxiliar_model extends CI_Model {
     public function listarCuadroExpxIdGrupoConEvaluacion($idGin, $usuario){ //1: se presento
       $sql=$this->db
         ->select("COUNT(cpe_id) as t_docentes, SUM(epe_estadoEvaluacion) as t_asigando, SUM(IF(epe_tipoevaluacion IS NULL, 1, IF(epe_tipoevaluacion = 1 AND epe_estadoEvaluacion = 1, 1, 0))) as t_preliminar, SUM(IF(epe_tipoevaluacion = 2 AND epe_estadoEvaluacion = 1, 1, 0)) as t_final, SUM(IF(epe_tipoevaluacion = 1 AND epe_especialistaAsignado = $usuario AND epe_estadoEvaluacion = 1, 1, 0)) as t_mis_preliminar, SUM(IF(epe_tipoevaluacion = 2 AND epe_especialistaAsignado = $usuario AND epe_estadoEvaluacion = 1, 1, 0)) as t_mis_final")      
-        ->from("cuadro_pun_exp cpe")
-        ->join("evaluacion_pun_exp epe", "cpe.cpe_id = epe.cuadro_pun_exp_cpe_id", "left")
+        ->from("auxiliar_cuadro_pun_exp cpe")
+        ->join("auxiliar_evaluacion_pun_exp epe", "cpe.cpe_id = epe.cuadro_pun_exp_cpe_id", "left")
         ->where(array("cpe.cpe_estado"=>1, "cpe_sepresento"=>1, "cpe_tipoCuadro"=>2, "cpe.grupo_inscripcion_gin_id"=>$idGin))
         ->group_start()
         ->where('epe.epe_estado', 1)
@@ -152,8 +152,8 @@ class Evaluacion_auxiliar_model extends CI_Model {
     public function listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminar($idGin, $evaluc){
       $sql=$this->db
         ->select("cpe.*,epe.epe_id, usu.usu_nombre, usu.usu_apellidos, usu.usu_dni")      
-        ->from("cuadro_pun_exp cpe")
-        ->join("evaluacion_pun_exp epe", "cpe.cpe_id = epe.cuadro_pun_exp_cpe_id ", "left")   
+        ->from("auxiliar_cuadro_pun_exp cpe")
+        ->join("auxiliar_evaluacion_pun_exp epe", "cpe.cpe_id = epe.cuadro_pun_exp_cpe_id ", "left")   
         ->join("usuarios usu", "usu.usu_dni = epe.epe_especialistaAsignado ", "left")    
         ->where(array("cpe.cpe_estado"=>1, "cpe.cpe_enviadoeval"=>1, "cpe_tipoCuadro"=>$evaluc, "cpe.grupo_inscripcion_gin_id"=>$idGin))
         ->group_start()
@@ -179,9 +179,9 @@ class Evaluacion_auxiliar_model extends CI_Model {
                 usu.usu_apellidos, 
                 usu.usu_dni 
               FROM auxiliar_postulaciones pos
-              LEFT JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
+              LEFT JOIN auxiliar_evaluacion_pun_exp epe ON epe.postulacion_id = pos.id 
               LEFT JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
-              LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
+              LEFT JOIN auxiliar_cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
               WHERE pos.deleted_at IS NULL 
               AND pos.estado = 'enviado'
               AND pos.convocatoria_id = $convId
@@ -195,8 +195,8 @@ class Evaluacion_auxiliar_model extends CI_Model {
     public function listarCuadroPunxIdGrupoEnviadoEvaluacionPreliminarxUsuario($idGin, $usuario, $evaluc){
       $sql=$this->db
         ->select("cpe.*,epe.epe_id, usu.usu_nombre, usu.usu_apellidos, usu.usu_dni")      
-        ->from("cuadro_pun_exp cpe")
-        ->join("evaluacion_pun_exp epe", "cpe.cpe_id = epe.cuadro_pun_exp_cpe_id ", "left")   
+        ->from("auxiliar_cuadro_pun_exp cpe")
+        ->join("auxiliar_evaluacion_pun_exp epe", "cpe.cpe_id = epe.cuadro_pun_exp_cpe_id ", "left")   
         ->join("usuarios usu", "usu.usu_dni = epe.epe_especialistaAsignado ", "left")    
         ->where(array("cpe.cpe_estado"=>1, "cpe.cpe_enviadoeval"=>1, "cpe_tipoCuadro"=>$evaluc, "cpe.grupo_inscripcion_gin_id"=>$idGin, "epe.epe_especialistaAsignado" => $usuario))
         ->group_start()
@@ -221,9 +221,9 @@ class Evaluacion_auxiliar_model extends CI_Model {
             usu.usu_apellidos, 
             usu.usu_dni 
           FROM auxiliar_postulaciones pos
-          INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id AND epe.epe_especialistaAsignado = $usuario
+          INNER JOIN auxiliar_evaluacion_pun_exp epe ON epe.postulacion_id = pos.id AND epe.epe_especialistaAsignado = $usuario
           INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado 
-          LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
+          LEFT JOIN auxiliar_cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
           WHERE pos.deleted_at IS NULL 
           AND pos.convocatoria_id = $convId
           AND pos.inscripcion_id = $insId AND pos.estado = 'enviado'";
@@ -288,8 +288,8 @@ class Evaluacion_auxiliar_model extends CI_Model {
     public function contarEspecialistasAsignadosaPunxConvocatoriaPreliminar($ar_idGin){
       $sql=$this->db
         ->select("epe.epe_especialistaAsignado as dni_espec, count(epe_especialistaAsignado) AS total")      
-        ->from("cuadro_pun_exp cpe")
-        ->join("evaluacion_pun_exp epe", "cpe.cpe_id = epe.cuadro_pun_exp_cpe_id ")
+        ->from("auxiliar_cuadro_pun_exp cpe")
+        ->join("auxiliar_evaluacion_pun_exp epe", "cpe.cpe_id = epe.cuadro_pun_exp_cpe_id ")
         ->where(array("cpe.cpe_estado"=>1, "cpe.cpe_enviadoeval"=>1, "cpe_tipoCuadro"=>1, "epe.epe_estadoEvaluacion"=> 1))
         ->where_in("cpe.grupo_inscripcion_gin_id", $ar_idGin)
         ->group_by(array("epe_especialistaAsignado"))
@@ -302,7 +302,7 @@ class Evaluacion_auxiliar_model extends CI_Model {
       $sql=$this->db
         ->select("epe.epe_especialistaAsignado as dni_espec, count(epe_especialistaAsignado) AS total")      
         ->from("auxiliar_postulaciones pos")
-        ->join("evaluacion_pun_exp epe", "pos.id = epe.postulacion_id ")
+        ->join("auxiliar_evaluacion_pun_exp epe", "pos.id = epe.postulacion_id ")
         ->where(array("pos.deleted_at", "pos.convocatoria_id"=>$idConv))
         ->where_in("pos.inscripcion_id", $ar_idGin)
         ->group_by(array("epe_especialistaAsignado"))
@@ -311,12 +311,12 @@ class Evaluacion_auxiliar_model extends CI_Model {
     }
 
     public function updateBatchEvaluacionPun($data){
-      $this->db->update_batch('evaluacion_pun_exp', $data, 'epe_id', 1000);
+      $this->db->update_batch('auxiliar_evaluacion_pun_exp', $data, 'epe_id', 1000);
       return $this->db->affected_rows();  
     }
 
     public function insertarBatchEvaluacionPun($data) {
-      $this->db->insert_batch('evaluacion_pun_exp',$data, 1000);      
+      $this->db->insert_batch('auxiliar_evaluacion_pun_exp',$data, 1000);      
       return $this->db->affected_rows();
     }
     
@@ -383,12 +383,12 @@ class Evaluacion_auxiliar_model extends CI_Model {
                     pe.estado as prerequisito_estado,
                     con.con_tipo as convocatoria_tipo_id
                   FROM auxiliar_postulaciones pos
-                  INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id $filterByUser
+                  INNER JOIN auxiliar_evaluacion_pun_exp epe ON epe.postulacion_id = pos.id $filterByUser
                   INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
                   INNER JOIN auxiliar_convocatorias con ON con.con_id = pos.convocatoria_id
                   /**TEMPORAL 09022024 */
                   INNER JOIN auxiliar_postulacion_evaluaciones pe ON pos.id = pe.postulacion_id AND pe.promedio = 0
-                  LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
+                  LEFT JOIN auxiliar_cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
                   WHERE pos.deleted_at IS NULL 
                   AND pos.convocatoria_id = $convocatoria_id
                   AND pos.inscripcion_id = $inscripcion_id
@@ -475,17 +475,17 @@ class Evaluacion_auxiliar_model extends CI_Model {
                       WHEN 2 THEN 1
                     END AS prerequisito_estado_orden
                   FROM auxiliar_postulaciones pos
-                  INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
+                  INNER JOIN auxiliar_evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
                   INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado                  
                   INNER JOIN grupo_inscripcion AS gin ON pos.inscripcion_id = gin.gin_id
                   INNER JOIN especialidades AS esp ON esp.esp_id = gin.especialidades_esp_id
                   INNER JOIN niveles AS niv ON niv.niv_id = esp.niveles_niv_id
                   INNER JOIN modalidades AS mdd ON mdd.mod_id = niv.modalidad_mod_id 
-                  LEFT JOIN cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
+                  LEFT JOIN auxiliar_cuadro_pun_exp cpp ON cpp.grupo_inscripcion_gin_id = pos.inscripcion_id  AND cpp.cpe_documento = pos.numero_documento AND cpp.cpe_tipoCuadro = 1
                   LEFT JOIN auxiliar_postulacion_evaluaciones pev ON pev.postulacion_id = pos.id AND pev.promedio = 1
                   LEFT JOIN auxiliar_postulacion_evaluaciones pep ON pep.postulacion_id = pos.id AND pep.promedio = 0  
-                  LEFT JOIN especialidad_prelaciones epre ON epre.id = pev.prelacion_id
-                  LEFT JOIN bonificaciones bon ON bon.id = pev.bonificacion_id
+                  LEFT JOIN auxiliar_especialidad_prelaciones epre ON epre.id = pev.prelacion_id
+                  LEFT JOIN auxiliar_bonificaciones bon ON bon.id = pev.bonificacion_id
                   WHERE pos.deleted_at IS NULL 
                   AND pos.convocatoria_id = $convocatoria_id
                   $where
@@ -599,7 +599,7 @@ class Evaluacion_auxiliar_model extends CI_Model {
                 par.*,
                 tar.nombre AS tipo_nombre
               FROM auxiliar_postulacion_archivos par
-              INNER JOIN tipo_archivos tar ON tar.id = par.tipo_id
+              INNER JOIN auxiliar_tipo_archivos tar ON tar.id = par.tipo_id
               WHERE par.deleted_at IS NULL 
               AND par.postulacion_id = ?";
       $archivos = $this->db->query($sql, ['postulacion_id' => $id])->result_object();
@@ -659,7 +659,7 @@ class Evaluacion_auxiliar_model extends CI_Model {
       pep.plantilla AS prerequisito_plantilla,
       pep.estado as prerequisito_estado
     FROM auxiliar_postulaciones pos
-    INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
+    INNER JOIN auxiliar_evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
     INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
     INNER JOIN auxiliar_postulacion_evaluaciones pep ON pep.postulacion_id = pos.id AND pep.promedio = 0  
     WHERE pos.deleted_at IS NULL 
@@ -716,7 +716,7 @@ class Evaluacion_auxiliar_model extends CI_Model {
       pep.plantilla AS prerequisito_plantilla,
       pep.estado as prerequisito_estado
     FROM auxiliar_postulaciones pos
-    INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
+    INNER JOIN auxiliar_evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
     INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
     INNER JOIN auxiliar_postulacion_evaluaciones pep ON pep.postulacion_id = pos.id AND pep.promedio = 0  
     WHERE pos.deleted_at IS NULL 
@@ -736,7 +736,7 @@ class Evaluacion_auxiliar_model extends CI_Model {
       pep.plantilla AS prerequisito_plantilla,
       pep.estado as prerequisito_estado
     FROM auxiliar_postulaciones pos
-    INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
+    INNER JOIN auxiliar_evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
     INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
     INNER JOIN auxiliar_postulacion_evaluaciones pep ON pep.postulacion_id = pos.id AND pep.promedio = 0  
     WHERE pos.deleted_at IS NULL 

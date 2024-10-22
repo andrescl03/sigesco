@@ -1,8 +1,8 @@
 <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> Evaluación de postulantes / <?= $dato['pro_descripcion'] ?> | Convocatoria <?= sprintf('%04d', $dato['con_numero'])."-".$dato['con_anio'] ?> / <?= $dato['mod_abreviatura']." ".$dato['niv_descripcion'].($dato['esp_descripcion']!="-" ? " ".$dato['esp_descripcion'] : "" )." | ".($eval== '1' ? "PUN" : "POR EXPEDIENTE")."-".($tipo== '1' ? "Preliminar" : "Final") ?></b></h4>
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>"> Inicio</a></li>
-        <li class="breadcrumb-item"><a href="<?php echo base_url()."evaluacion/convocatoria/".encryption('0||0'); ?>"> Evaluación de postulantes</a></li>
-        <li class="breadcrumb-item"><a href="<?php echo base_url()."evaluacion/convocatoria/".encryption($dato['con_id'].'||0'); ?>"> <?= $dato['pro_descripcion'] ?> | Convocatoria <?= sprintf('%04d', $dato['con_numero'])."-".$dato['con_anio'] ?></a></li>
+        <li class="breadcrumb-item"><a href="<?php echo base_url()."admin/auxiliares/evaluaciones" ?>"> Evaluación de postulantes</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo base_url()."admin/auxiliares/evaluaciones/convocatorias/".$dato['con_id'] ?>"> <?= $dato['pro_descripcion'] ?> | Convocatoria <?= sprintf('%04d', $dato['con_numero'])."-".$dato['con_anio'] ?></a></li>
         <li class="breadcrumb-item active"><?= $dato['mod_abreviatura']." ".$dato['niv_descripcion'].($dato['esp_descripcion']!="-" ? " ".$dato['esp_descripcion'] : "" )." | ".($eval== '1' ? "PUN" : "POR EXPEDIENTE")."-".($tipo== '1' ? "Preliminar" : "Final") ?></li>
     </ol>  
     <input type="hidden" class="form-control form-control-sm" id="txt_idGin" name="txt_idGin" value="<?= $dato['gin_id'] ?>" >
@@ -39,7 +39,7 @@
                                                             <?php } ?>  
 
                                                             <div class="vr"></div>
-                                                            <a type="button" target="_blank" href="<?php echo base_url().'evaluacion/convocatoria/'.$dato['convocatorias_con_id'].'/inscripcion/'.$dato['gin_id'].'/pendiente/exportar' ?>" class="btn btn-outline-success btn-sm" >
+                                                            <a type="button" target="_blank" href="<?php echo base_url().'admin/auxiliares/evaluaciones/convocatorias/'.$dato['convocatorias_con_id'].'/inscripciones/'.$dato['gin_id'].'/pendiente/exportar' ?>" class="btn btn-outline-success btn-sm" >
                                                                 <b><i class="fa-solid fa-cloud-arrow-down fa-lg"></i></i> Descargar Reporte</b>
                                                             </a>
                                                         </div>

@@ -105,10 +105,10 @@
                         data-epe_id="<?= $dato['epe_id'] ?>">
                         <?php if ($dato['epe_id'] != NULL) { ?>
                         <a type="button" class="text-dark" title="Ver Ficha"
-                            href="<?= base_url() . "evaluacion/ficha/" . encryption($dato['id'] . "||" . ($dato['epe_id'] == NULL ? 0 : $dato['epe_id'])) ?>"
+                            href="<?= base_url() . "admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/" . $dato['id'] . "/ficha" ?>"
                             target="_blank">EVALUAR FICHA</a>
                         <?php } ?>
-                        <a href="<?= base_url() . 'evaluacion/convocatoria/inscripcion/postulante/' . $dato['id'] . '/editar' ?>"
+                        <a href="<?= base_url() . 'admin/auxiliares/evaluacion/convocatoria/inscripcion/postulante/' . $dato['id'] . '/editar' ?>"
                             class="menu-link text-danger px-3">EDITAR REGISTRO</a>
                     </div>
                 </td>

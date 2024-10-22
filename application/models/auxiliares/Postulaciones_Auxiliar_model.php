@@ -1651,7 +1651,7 @@ class Postulaciones_auxiliar_model extends CI_Model
             $periodo_id = $inscripcion->periodos_per_id;
             $especialidad_id = $inscripcion->especialidades_esp_id;
 
-            $sql = "SELECT * FROM bonificaciones WHERE deleted_at IS NULL";
+            $sql = "SELECT * FROM auxiliar_bonificaciones WHERE deleted_at IS NULL";
             $bonificaciones = $this->db->query($sql)->result_object();
 
             $sql = "SELECT 
@@ -1661,8 +1661,8 @@ class Postulaciones_auxiliar_model extends CI_Model
                         PE.puntaje AS evaluacion_puntaje,
                         PE.prelacion_id AS evaluacion_prelacion_id,
                         PE.bonificacion_id AS evaluacion_bonificacion_id
-                    FROM periodo_fichas AS P 
-                    INNER JOIN periodo_ficha_especialidades AS PFE ON PFE.periodo_ficha_id = P.id
+                    FROM auxiliar_periodo_fichas AS P 
+                    INNER JOIN auxiliar_periodo_ficha_especialidades AS PFE ON PFE.periodo_ficha_id = P.id
                     LEFT JOIN auxiliar_postulacion_evaluaciones AS PE ON P.id = PE.ficha_id AND PE.postulacion_id = {$id} AND PE.deleted_at IS NULL
                     WHERE P.deleted_at IS NULL
                     AND P.tipo_id = ? AND P.periodo_id  = ? AND PFE.especialidad_id = ?
@@ -1696,7 +1696,7 @@ class Postulaciones_auxiliar_model extends CI_Model
             $sql = "SELECT * FROM periodos WHERE per_id = ?";
             $periodo = $this->db->query($sql, compact('periodo_id'))->row();
 
-            $sql = "SELECT * FROM especialidad_prelaciones WHERE especialidad_id = ? AND deleted_at IS NULL";
+            $sql = "SELECT * FROM auxiliar_especialidad_prelaciones WHERE especialidad_id = ? AND deleted_at IS NULL";
             $especialidad_prelaciones = $this->db->query($sql, compact('especialidad_id'))->result_object();
 
             $response['success'] = true;

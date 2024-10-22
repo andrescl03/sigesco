@@ -19,7 +19,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
         // $this->load->model('Evaluacion_expediente_model', 'evaluacion_expediente');
         // $this->load->model('Evaluacion_expediente_anexo10_model', 'evaluacion_expediente_anexo10');
 
-        $this->load->model('adjudicaciones_model');
+        $this->load->model('auxiliares/adjudicaciones_auxiliar_model');
     }
 
     var $meses = array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
@@ -1270,7 +1270,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
 
         $datos = []; // $this->documento->obtener_datos_acta($convocatoriaID, $plazaID);
 
-        $detail = $this->adjudicaciones_model->f_detail($id);
+        $detail = $this->adjudicaciones_auxiliar_model->f_detail($id);
         $adjudicacion = $detail['adjudicacion'];
 
         $postulante = $adjudicacion->postulacion;
@@ -1282,7 +1282,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
         $this->db->reconnect();
 
         if (empty($adjudicacion)) {
-            redirect("adjudicaciones");
+            redirect("admin/auxiliares/adjudicaciones");
         }
         ob_start();
 
@@ -2444,7 +2444,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
 
         $datos = []; // $this->documento->obtener_datos_acta($convocatoriaID, $plazaID);
 
-        $detail = $this->adjudicaciones_model->f_detail($id);
+        $detail = $this->adjudicaciones_auxiliar_model->f_detail($id);
         $adjudicacion = $detail['adjudicacion'];
 
         $postulante = $adjudicacion->postulacion;
@@ -2456,7 +2456,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
         $this->db->reconnect();
 
         if (empty($adjudicacion)) {
-            redirect("adjudicaciones");
+            redirect("admin/auxiliares/adjudicaciones");
         }
         ob_start();
 

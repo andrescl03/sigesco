@@ -37,7 +37,7 @@
 				</td>              
                 <td class="text-center">
 					<div class="d-flex justify-content-center gap-2">
-                        <a type="button" class="text-success" title="Ingresar a detalle" href="<?= base_url()?>evaluacion/convocatoria/<?= encryption($cadena) ?>" ><b><i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i> </b></a>
+                        <a type="button" class="text-success" title="Ingresar a detalle" href="<?= base_url()?>admin/auxiliares/evaluaciones/convocatorias/<?= $dato['con_id'] ?>" ><b><i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i> </b></a>
                     </div>
 				</td>
         	</tr>

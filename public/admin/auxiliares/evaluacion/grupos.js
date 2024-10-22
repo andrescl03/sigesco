@@ -14,7 +14,7 @@ $(document).ready(function () {
 		}
 	}
 
-	act.pag('evaluacion/convocatoria', function () {
+	act.pag('admin/auxiliares/evaluaciones/convocatorias/', function () {
 		procesarExpedientes();
 
 		tabla = $('#tb_listarConvocatorias').DataTable({
