@@ -122,3 +122,39 @@
     padding:8px; 
     color:#ccc;
 }
+
+.bg-docente {
+    background-color: rgba(13, 110, 253, 1) !important;
+    color: #fff !important;
+}
+
+.bg-auxiliar {
+    background-color: rgba(13, 202, 240, 1) !important;
+    color: #fff !important;
+}
+
+.table-docente thead {
+    background-color: rgba(13, 110, 253, 1) !important;
+    color: #fff !important;
+    vertical-align: middle;
+    font-size: 12px;
+}
+.table-docente .pagination .active .page-link {
+    background-color: rgba(13, 110, 253, 1) !important;
+    border-color: rgba(13, 110, 253, 1) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+
+.table-auxiliar thead {
+    background-color: rgba(13, 202, 240, 1) !important;
+    color: #fff !important;
+    vertical-align: middle;
+    font-size: 12px;
+}
+.table-auxiliar .pagination .active .page-link {
+    background-color: rgba(13, 202, 240, 1) !important;
+    border-color: rgba(13, 202, 240, 1) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}

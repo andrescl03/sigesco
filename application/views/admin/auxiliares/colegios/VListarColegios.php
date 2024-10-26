@@ -1,5 +1,5 @@
 <?php //writer($datos);?>
-<div class="table-responsive table-docente">
+<div class="table-responsive table-auxiliar">
 	<table id="tb_listarColegios" class="table  table-hover table-sm" cellspacing="0" width="100%" style="font-size:13px; vertical-align: middle;">
 		<thead>
 			<tr>

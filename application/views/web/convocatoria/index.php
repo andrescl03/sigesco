@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="table-responsive">
                     <table class="table table-hover">
-                        <thead style="background-color:red" class="text-white">
+                        <thead class="text-white bg-docente">
                             <tr>
                                 <th class="text-center">NÚMERO</th>
                                 <th class="text-center">TIPO</th>

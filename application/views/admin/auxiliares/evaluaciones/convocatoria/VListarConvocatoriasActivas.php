@@ -1,7 +1,7 @@
-<div class="table-responsive">
+<div class="table-responsive table-auxiliar">
 	<table id="tb_listarConvocatorias" class="table  table-hover table-sm" cellspacing="0" width="100%" style="font-size:13px; vertical-align: middle;">
 		<thead>
-			<tr class="cabecera_tabla_2">
+			<tr>
 				<th class="text-center">#</th>
                 <th class="text-center">NÚMERO</th>
                 <th class="text-center">FECHA DE INICIO</th>

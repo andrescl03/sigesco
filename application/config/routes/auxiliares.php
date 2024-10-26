@@ -121,4 +121,6 @@ $route['admin/auxiliares/plazas/(:num)/edit'] = 'auxiliares/plazasAuxiliar/edit/
 $route['admin/auxiliares/plazas/postulantes/liberar'] = 'auxiliares/plazasAuxiliar/liberar';
 $route['admin/auxiliares/plazas/exportar'] = 'auxiliares/plazasAuxiliar/reporte_plazas';
 
+$route['admin/auxiliares/colegios'] = 'auxiliares/configuracionAuxiliar/colegios';
+$route['admin/auxiliares/colegios/VListarColegios'] = 'auxiliares/configuracionAuxiliar/VListarColegios';
 
