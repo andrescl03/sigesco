@@ -270,7 +270,7 @@ class Evaluacion_auxiliar_model extends CI_Model {
           ->join('permisos as p','p.modulos_mdl_id=m.mdl_id', 'inner')
           ->join('tipo_usuarios as tu','tu.tus_id=p.tipo_usuarios_tus_id', 'inner')
           ->join('usuarios as u','u.tipo_usuarios_tus_id=tu.tus_id', 'inner')
-          ->where(array("u.usu_estado"=>1,"m.mdl_estado"=>1,"p.per_estado"=>1, "tu.tus_estado"=>1,"m.mdl_ruta"=>'evaluacion/convocatoria'))
+          ->where(array("u.usu_estado"=>1,"m.mdl_estado"=>1,"p.per_estado"=>1, "tu.tus_estado"=>1,"m.mdl_ruta"=>'admin/auxiliares/convocatorias'))
           ->order_by('u.usu_nombre asc, u.usu_apellidos')
           ->get();         
       return $sql->result_array();
