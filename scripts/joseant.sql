@@ -1142,3 +1142,13 @@ CREATE TABLE `auxiliar_plazas` (
 
 ALTER TABLE grupo_inscripcion ADD COLUMN gin_correlative INT(11) NULL DEFAULT '0';
 
+/*
+	admin/auxiliares/periodos
+	admin/auxiliares/procesos
+	admin/auxiliares/grupoinscripcion
+	admin/auxiliares/plazas
+	admin/auxiliares/colegios
+	admin/auxiliares/convocatorias
+	admin/auxiliares/evaluaciones
+	admin/auxiliares/adjudicaciones
+*/
