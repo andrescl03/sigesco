@@ -11,7 +11,7 @@ function isAllowedBaseRoute($url, $baseRoutes) {
 $currentUrl = $_SERVER['REQUEST_URI'];
 
 $baseRoutes = [
-    '/sigesco/web/auxiliares'
+    '/web/auxiliares'
 ];
 
 if (isAllowedBaseRoute($currentUrl, $baseRoutes)) {
