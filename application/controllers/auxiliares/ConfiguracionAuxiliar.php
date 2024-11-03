@@ -357,15 +357,15 @@ class ConfiguracionAuxiliar extends CI_Controller
 
     public function colegios()
     {   // TIENE SOLO 2 SEGMENTOS    
-        if (!in_array($this->uri->slash_segment(1) . $this->uri->segment(2), $this->session->userdata("sigesco_rutas"))) {
+        /*if (!in_array($this->uri->slash_segment(1) . $this->uri->segment(2), $this->session->userdata("sigesco_rutas"))) {
             redirect(base_url() . "inicio/index", 'refresh');
         }
-        if (!empty($this->uri->segment(3))) redirect(base_url() . "configuracion/colegios", 'refresh');
+        if (!empty($this->uri->segment(3))) redirect(base_url() . "configuracion/colegios", 'refresh');*/
 
         $periodos = $this->configuracion_auxiliar_model->listarPeriodosActivos();
         $procesos = $this->configuracion_auxiliar_model->listarProcesosActivos();
-        $this->layout->js(array(base_url() . "public/js/myscript/configuracion/colegios.js?t=" . date("mdYHis")));
-        $this->layout->view("colegios/colegios", compact('periodos', 'procesos'));
+        $this->layout->js(array(base_url() . "public/admin/auxiliares/colegios/colegios.js?t=" . date("mdYHis")));
+        $this->layout->view("/admin/auxiliares/colegios/colegios", compact('periodos', 'procesos'));
     }
 
     public function VListarColegios()
@@ -373,7 +373,7 @@ class ConfiguracionAuxiliar extends CI_Controller
 
         $datos = $this->configuracion_auxiliar_model->listarColegios();
         $this->layout->setLayout("template_ajax");
-        $this->layout->view('colegios/VListarColegios', compact('datos'));
+        $this->layout->view('/admin/auxiliares/colegios/VListarColegios', compact('datos'));
     }
 
 
@@ -451,12 +451,18 @@ class ConfiguracionAuxiliar extends CI_Controller
             exit();
         }
 
+        $gin_correlative = 1;
+        $ultimoGrupoInscripcion = $this->configuracion_auxiliar_model->ultimoGrupoInscripcion();
+        if ($ultimoGrupoInscripcion) {
+            $gin_correlative = intval($ultimoGrupoInscripcion->gin_correlative) + 1;
+        }
+
         $arr_2 = array(
             "procesos_pro_id"  => $idProceso,
             "periodos_per_id" => $idPeriodo,
             "especialidades_esp_id"  => $idEspecialidad,
-            "gin_estado"      => 1
-
+            "gin_estado"      => 1,
+            "gin_correlative" => $gin_correlative
         );
 
         $insert = $this->configuracion_auxiliar_model->insertGrupoInscripcion($arr_2);

@@ -584,9 +584,12 @@ class Evaluacion_model extends CI_Model {
           $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
 
           $res['success'] = $convocatoria;
+          $res['status'] = 200;
           $res['data'] = ['records' => $items, 'convocatoria' => $convocatoria];
           $res['message'] = 'successfully';
       } catch (\Exception $e) {
+        $res['status'] = 500;
+
           $res['message'] = $e->getMessage();
       }
       return $res;

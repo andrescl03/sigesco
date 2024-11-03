@@ -547,11 +547,22 @@ class Configuracion_auxiliar_model extends CI_Model
   {
     $sql = $this->db
     ->select("*")
-    ->from("postulaciones")
+    ->from("auxiliar_postulaciones")
     ->where($data)
     ->get();
 
     return $sql->num_rows();
   }
 
+  public function ultimoGrupoInscripcion() {
+    return $this->db
+      ->select("*")
+      ->from("grupo_inscripcion")
+      ->where(['gin_estado' => 1, 'procesos_pro_id' => 2])
+      ->order_by('gin_id', 'DESC')
+      ->limit(1)
+      ->get()
+      ->row();
+    // echo $this->db->last_query(); exit(); 
+  }
 }

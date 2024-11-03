@@ -54,11 +54,11 @@
                                     </div>
 
                                     <div class="col-sm-12">
-                                        <div class="table-responsive">
+                                        <div class="table-responsive table-auxiliar">
                                             <table class="table table-hover" id="tableIndexAdjudicacion"
                                                 style="width:100%; margin:0px;">
                                                 <thead>
-                                                    <tr class="cabecera_tabla_2">
+                                                    <tr>
                                                         <th class="text-center">ID</th>
                                                         <th class="text-center">CÓDIGO DE PLAZA</th>
                                                         <th class="text-center">DOCUMENTO</th>

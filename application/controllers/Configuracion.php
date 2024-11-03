@@ -468,12 +468,19 @@ class Configuracion extends CI_Controller
             exit();
         }
 
+        $gin_correlative = 1;
+        $ultimoGrupoInscripcion = $this->configuracion_model->ultimoGrupoInscripcion();
+        if ($ultimoGrupoInscripcion) {
+            $gin_correlative = intval($ultimoGrupoInscripcion->gin_correlative) + 1;
+        }
+
+
         $arr_2 = array(
             "procesos_pro_id"  => $idProceso,
             "periodos_per_id" => $idPeriodo,
             "especialidades_esp_id"  => $idEspecialidad,
-            "gin_estado"      => 1
-
+            "gin_estado"      => 1,
+            "gin_correlative" => $gin_correlative
         );
 
         $insert = $this->configuracion_model->insertGrupoInscripcion($arr_2);

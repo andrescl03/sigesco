@@ -76,10 +76,10 @@
                                     </div>
 
                                     <div class="col-sm-12">
-                                        <div class="table-responsive">
+                                        <div class="table-responsive table-docente">
                                             <table class="table table-hover" id="tableIndex" style="width:100%; margin:0px;">
                                                 <thead>
-                                                    <tr class="cabecera_tabla_2">
+                                                    <tr>
                                                         <th class="text-center">#</th>
                                                         <th class="text-center">ESPECIALISTA</th>
                                                         <th class="text-center">N° DOCUMENTO</th>

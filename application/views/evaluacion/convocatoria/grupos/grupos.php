@@ -34,9 +34,9 @@
                                                             Reporte General Final
                                                         </a>
 
-                                                        <button data-id="<?= $datos[0]['con_id'] ?>" type="button" id="btn-procesar-expedientes" class="btn btn-sm btn-danger btn-procesar-expedientes mb-2">
+                                                          <!-- <button data-id="<?= $datos[0]['con_id'] ?>" type="button" id="btn-procesar-expedientes" class="btn btn-sm btn-danger btn-procesar-expedientes mb-2">
                                                             Procesar expedientes de la MPV para esta convocatoria
-                                                        </button>
+                                                        </button>-->
                                                     <?php } ?>
                                                 </div>
                                                 <div class="col-sm-4">
@@ -55,10 +55,10 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-12" id="">
-                                    <div class="table-responsive">
+                                    <div class="table-responsive table-docente">
                                         <table id="tb_listarConvocatorias" class="table  table-hover table-sm" cellspacing="0" width="100%" style="font-size:13px; vertical-align: middle;">
                                             <thead>
-                                                <tr class="cabecera_tabla_2">
+                                                <tr>
                                                     <th class="text-center">#</th>
                                                     <th class="text-center">GRUPOS DE INSCRIPCIÓN</th>
                                                     <th class="text-center">ASIGNACIÓN</th>

@@ -647,7 +647,7 @@ class EvaluacionAuxiliar extends CI_Controller {
         $hoja->setCellValue('F3', 'ESPECIALISTA')->getStyle('F3')->getFont()->setSize(15)->setBold(true);
         if ($convocatoria->con_tipo == 2) {
             $hoja->setCellValue('G3', 'PRELACIÓN')->getStyle('G3')->getFont()->setSize(15)->setBold(true);
-        
+        }
         $hoja->setCellValue('H3', 'NÚMERO TRAMITE')->getStyle('H3')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('I3', 'ESTADO')->getStyle('I3')->getFont()->setSize(15)->setBold(true);
         $hoja->setCellValue('J3', ($convocatoria->con_tipo == 2 ? "" : "ORDEN DE MERITO"))->getStyle('J3')->getFont()->setSize(15)->setBold(true);
@@ -860,5 +860,5 @@ class EvaluacionAuxiliar extends CI_Controller {
 
         $objWriter->save('php://output');
     }
-}
+ 
 }

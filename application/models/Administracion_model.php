@@ -182,7 +182,7 @@ class Administracion_model extends CI_Model {
 
      public function buscar_permisosxtipo($tus_id){ //_____//
         $sql=$this->db
-            ->select("tus.tus_id,  tus.tus_usuariodescrip, tus.tus_estado, modu.mdl_id, modu.mdl_nombre,   modu.mdl_ruta, modu.mdl_icono, modu.mdl_hijode, modu.mdl_estado,per.per_estado")
+            ->select("tus.tus_id,  tus.tus_usuariodescrip, tus.tus_estado, modu.mdl_id, modu.mdl_nombre,   modu.mdl_ruta, modu.mdl_icono, modu.mdl_hijode, modu.mdl_estado,per.per_estado, modu.mdl_orden")
             ->from("permisos per")
             ->join('tipo_usuarios tus', 'tus.tus_id=per.tipo_usuarios_tus_id')
             ->join('modulos modu', 'modu.mdl_id=per.modulos_mdl_id')

@@ -1138,4 +1138,17 @@ CREATE TABLE `auxiliar_plazas` (
 	INDEX `tipo_convocatoria` (`tipo_id`) USING BTREE
 );
 
+/** AUXILIARES 26-10-2024  ***/
 
+ALTER TABLE grupo_inscripcion ADD COLUMN gin_correlative INT(11) NULL DEFAULT '0';
+
+/*
+	admin/auxiliares/periodos
+	admin/auxiliares/procesos
+	admin/auxiliares/grupoinscripcion
+	admin/auxiliares/plazas
+	admin/auxiliares/colegios
+	admin/auxiliares/convocatorias
+	admin/auxiliares/evaluaciones
+	admin/auxiliares/adjudicaciones
+*/

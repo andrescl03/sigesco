@@ -173,7 +173,7 @@ class Bonificaciones_auxiliar_model extends CI_Model {
       return $response;
   }
 
-  public function create(                                    )
+  public function create()
   {
       $response = $this->tools->responseDefault();
       try {

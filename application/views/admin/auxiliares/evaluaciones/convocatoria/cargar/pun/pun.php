@@ -1,8 +1,8 @@
-<div class="table-responsive">
+<div class="table-responsive table-auxiliar">
     <table id="tb_listarEvaluacionPunEvaluar" class="table   table-sm" cellspacing="0" width="100%"
         style="font-size:13px; vertical-align: middle;">
         <thead>
-            <tr class="cabecera_tabla_2">
+            <tr>
                 <th class="text-center">#</th>
                 <?php if (in_array("convocatorias/cargarexpedientes", $this->session->userdata("sigesco_rutas"))) { ?>
                 <th class="text-center">

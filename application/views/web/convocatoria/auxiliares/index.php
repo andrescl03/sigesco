@@ -5,16 +5,16 @@
     ?>
     <!-- Tarjeta con la lista de convocatorias -->
     <div class="card card-custom">
-        <div class="card-header bg-warning ">
+        <div class="card-header">
             <div class="card-title">
-                <h1 class="card-label text-white"><b>LISTA DE CONVOCATORIAS PARA EL PROCESO DE CONTRATACIÓN AUXILIAR - <?php echo $anioActual; ?></b></h1>
+                <h1 class="card-label text-dark"><b>LISTA DE CONVOCATORIAS PARA EL PROCESO DE CONTRATACIÓN AUXILIAR - <?php echo $anioActual; ?></b></h1>
             </div>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="table-responsive">
                     <table class="table table-hover">
-                        <thead  class="text-white bg-warning">
+                        <thead  class="text-white bg-auxiliar">
                             <tr>
                                 <th class="text-center">NÚMERO</th>
                                 <th class="text-center">FECHA INICIO DE POSTULACIÓN</th>
