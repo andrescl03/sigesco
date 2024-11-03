@@ -34,10 +34,10 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-12" id="view_listarPlazas">
-                                    <div class="table-responsive">
+                                    <div class="table-responsive table-docente">
                                         <table id="tableIndex" class="table  table-hover table-sm" cellspacing="0" width="100%" style="font-size:13px; vertical-align: middle;">
                                             <thead>
-                                                <tr class="cabecera_tabla_2">
+                                                <tr>
                                                     <th class="text-center">#</th>
                                                     <th class="text-center">PRELACIÓN</th>
                                                     <th class="text-center">MODALIDAD</th>

@@ -286,7 +286,18 @@ class Adjudicaciones_auxiliar_model extends CI_Model
               WHERE AD.id IS NULL OR AD.deleted_at IS NOT NULL";
       $plazas = []; // $this->db->query($sql)->result_object();
 
-      $sql = "SELECT * FROM usuarios";
+      $sql = "SELECT 
+                u.usu_id, u.usu_dni,
+                u.usu_nombre,
+                u.usu_apellidos 
+              FROM modulos as m 
+              INNER JOIN permisos as p ON p.modulos_mdl_id=m.mdl_id 
+              INNER JOIN tipo_usuarios as tu ON tu.tus_id=p.tipo_usuarios_tus_id 
+              INNER JOIN usuarios as u ON u.tipo_usuarios_tus_id=tu.tus_id
+              WHERE u.usu_estado = 1 AND m.mdl_estado = 1 
+              AND p.per_estado = 1 AND tu.tus_estado = 1 
+              AND m.mdl_ruta = 'admin/auxiliares/evaluaciones' 
+              ORDER BY u.usu_nombre asc, u.usu_apellidos";
       $usuarios = $this->db->query($sql)->result_object();
 
       $sigesco_id = $this->session->userdata("sigesco_id");   

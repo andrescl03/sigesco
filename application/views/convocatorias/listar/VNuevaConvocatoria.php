@@ -70,7 +70,7 @@
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-2 mb-2 mt-1"><b>Tipo de convocatoriaa:</b></div>
+            <div class="col-md-2 mb-2 mt-1"><b>Tipo de convocatoria:</b></div>
             <div class="col-md-10 mb-2">
                 <select class="form-select form-select-sm" name="opt_tipoConvocatoriaModal" id="opt_tipoConvocatoriaModal">
                     <option value="">Elegir...</option>

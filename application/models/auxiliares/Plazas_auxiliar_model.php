@@ -148,7 +148,7 @@ class Plazas_auxiliar_model extends CI_Model {
           $sql = "SELECT 
                     plz.* , tc.*, niv.*, moda.*
                   FROM auxiliar_plazas plz
-                  INNER JOIN tipo_convocatoria tc ON plz.tipo_convocatoria = tc.tipo_id
+                  INNER JOIN auxiliar_tipo_convocatoria tc ON plz.tipo_convocatoria = tc.tipo_id
                   INNER JOIN niveles niv ON plz.nivel_id = niv.niv_id
                   INNER JOIN modalidades moda  ON moda.mod_id = niv.modalidad_mod_id
                   WHERE plz.deleted_at IS NULL 
@@ -500,7 +500,7 @@ class Plazas_auxiliar_model extends CI_Model {
     $response = $this->tools->responseDefault();
     try {
 
-        $PATH_FILE  = 'archivos/pun/';
+        $PATH_FILE  = __DIR__ . "/../../../public/uploads/auxiliares/plazas/";
 
         if (!is_dir($PATH_FILE)) {
             mkdir($PATH_FILE, 0777, true);
@@ -512,7 +512,7 @@ class Plazas_auxiliar_model extends CI_Model {
         }
         $config["upload_path"]       = $PATH_FILE;
         $config["allowed_types"]     = "xlsx";
-        $config["file_name"]         = $name . "." . $extension;
+        $config["file_name"]         =  $name . "." . $extension;
         $config["overwrite"]         = true; //sobreescribir
         $config["max_size"]         = 0;
         $config["max_filename"]     = 0;
