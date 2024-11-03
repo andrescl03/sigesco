@@ -1152,3 +1152,6 @@ ALTER TABLE grupo_inscripcion ADD COLUMN gin_correlative INT(11) NULL DEFAULT '0
 	admin/auxiliares/evaluaciones
 	admin/auxiliares/adjudicaciones
 */
+
+/*** 03/11/2024 *****/
+UPDATE grupo_inscripcion SET gin_correlative = gin_id WHERE procesos_pro_id = 1;

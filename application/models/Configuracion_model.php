@@ -163,7 +163,7 @@ class Configuracion_model extends CI_Model
       ->join("especialidades esp", "niv.niv_id = esp.niveles_niv_id", "inner")
       ->join("grupo_inscripcion gin", "esp.esp_id = gin.especialidades_esp_id", "inner")
       ->where(array("gin.gin_estado" => 1, "gin.periodos_per_id" => $idPer, "gin.procesos_pro_id" => $idPro))
-      ->order_by("mod.mod_id asc, niv.niv_id asc, esp.esp_id asc")
+      ->order_by("gin.gin_correlative asc, mod.mod_id asc, niv.niv_id asc, esp.esp_id asc")
       ->get();
     // echo $this->db->last_query(); exit(); 
     return $sql->result_array();
