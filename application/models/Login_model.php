@@ -11,7 +11,7 @@ class Login_model extends CI_Model {
         ->join('tipo_usuarios tu','tu.tus_id=usu.tipo_usuarios_tus_id')
         ->from("usuarios usu")        
         ->where(array("usu.usu_dni"=>$usuario,"usu.usu_pass"=>$pass, "usu.usu_estado"=>1))       
-        // ->where(array("usu.usu_dni"=>$usuario, "usu.usu_estado"=>1))       
+         //->where(array("usu.usu_dni"=>$usuario, "usu.usu_estado"=>1))       
         ->get();
        // echo $this->db->last_query(); exit(); 
         return $sql->row();

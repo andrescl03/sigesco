@@ -545,4 +545,15 @@ class Configuracion_model extends CI_Model
     return $sql->num_rows();
   }
 
+  public function ultimoGrupoInscripcion() {
+    return $this->db
+      ->select("*")
+      ->from("grupo_inscripcion")
+      ->where(['gin_estado' => 1, 'procesos_pro_id' => 1])
+      ->order_by('gin_id', 'DESC')
+      ->limit(1)
+      ->get()
+      ->row();
+  }
+
 }

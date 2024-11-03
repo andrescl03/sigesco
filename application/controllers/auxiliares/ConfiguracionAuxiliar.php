@@ -463,7 +463,6 @@ class ConfiguracionAuxiliar extends CI_Controller
             "especialidades_esp_id"  => $idEspecialidad,
             "gin_estado"      => 1,
             "gin_correlative" => $gin_correlative
-
         );
 
         $insert = $this->configuracion_auxiliar_model->insertGrupoInscripcion($arr_2);

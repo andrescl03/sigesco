@@ -34,9 +34,9 @@
                                                             Reporte General Final
                                                         </a>
 
-                                                        <button data-id="<?= $datos[0]['con_id'] ?>" type="button" id="btn-procesar-expedientes" class="btn btn-sm btn-danger btn-procesar-expedientes mb-2">
+                                                          <!-- <button data-id="<?= $datos[0]['con_id'] ?>" type="button" id="btn-procesar-expedientes" class="btn btn-sm btn-danger btn-procesar-expedientes mb-2">
                                                             Procesar expedientes de la MPV para esta convocatoria
-                                                        </button>
+                                                        </button>-->
                                                     <?php } ?>
                                                 </div>
                                                 <div class="col-sm-4">

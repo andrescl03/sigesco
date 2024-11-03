@@ -156,7 +156,6 @@ class Plazas_auxiliar_model extends CI_Model {
                   ORDER BY plz.plz_id DESC";
                   
           $items = $this->db->query($sql)->result_object();
-
           $recordsTotal = count($items);
 
           $sql .= " LIMIT {$start}, {$length}";
