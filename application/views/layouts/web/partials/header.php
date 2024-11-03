@@ -1,7 +1,7 @@
 <?php 
 function isAllowedBaseRoute($url, $baseRoutes) {
     foreach ($baseRoutes as $baseRoute) {
-        if (strpos($url, $baseRoute) === 0) {
+        if (strpos($url, $baseRoute) !== false) {
             return true;
         }
     }
