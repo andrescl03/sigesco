@@ -48,7 +48,7 @@
                                                                 </div>
                                                             </div>
                                                             <?php
-                                                            if (in_array($this->session->userdata("sigesco_tus_iduser"), array('3')) && $any == 'preliminar') { ?>
+                                                            if (in_array($this->session->userdata("sigesco_tus_iduser"), array('3','2')) && $any == 'preliminar') { ?>
                                                                 <button  data-id="<?= $datos[0]['con_numero'] ?>" type="button" id="btn-procesar-expedientes-preliminar-final" class="btn btn-sm btn-success btn-procesar-expedientes-preliminar-final mb-2">
                                                                     Procesar expedientes con estado CUMPLE a etapa FINAL
                                                                 </button>
@@ -76,10 +76,10 @@
                                     </div>
 
                                     <div class="col-sm-12">
-                                        <div class="table-responsive table-docente">
+                                        <div class="table-responsive">
                                             <table class="table table-hover" id="tableIndex" style="width:100%; margin:0px;">
                                                 <thead>
-                                                    <tr>
+                                                    <tr class="cabecera_tabla_2">
                                                         <th class="text-center">#</th>
                                                         <th class="text-center">ESPECIALISTA</th>
                                                         <th class="text-center">N° DOCUMENTO</th>

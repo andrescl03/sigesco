@@ -47,6 +47,7 @@ class Configuracion_auxiliar_model extends CI_Model
     $sql = $this->db
       ->select("*")
       ->from("auxiliar_tipo_convocatoria")
+      ->where("deleted_at IS null")
       ->get();
     // echo $this->db->last_query(); exit(); 
     return $sql->result_array();

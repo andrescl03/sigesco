@@ -650,6 +650,14 @@ class Evaluacion_auxiliar_model extends CI_Model {
 
     try {
       $dni_especialista = $this->session->userdata("sigesco_dni");
+      $idrol = $this->session->userdata("sigesco_tus_iduser");
+
+
+      $sqlRoleCondition  = '';
+
+      if($idrol == 3){
+        $sqlRoleCondition =  " AND epe.epe_especialistaAsignado  = $dni_especialista " ; 
+      }
 
       $sql = "SELECT 
       pos.*,
@@ -659,16 +667,16 @@ class Evaluacion_auxiliar_model extends CI_Model {
       usu.usu_dni,
       pep.plantilla AS prerequisito_plantilla,
       pep.estado as prerequisito_estado
-    FROM auxiliar_postulaciones pos
-    INNER JOIN auxiliar_evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
-    INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
-    INNER JOIN auxiliar_postulacion_evaluaciones pep ON pep.postulacion_id = pos.id AND pep.promedio = 0  
-    WHERE pos.deleted_at IS NULL 
-    AND pos.convocatoria_id = $convocatoria_id
-    AND pos.inscripcion_id = $inscripcion_id
-    AND pep.estado = 1
-    AND pos.estado = 'revisado'
-    AND epe.epe_especialistaAsignado  = $dni_especialista ";
+      FROM auxiliar_postulaciones pos
+      INNER JOIN auxiliar_evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
+      INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
+      INNER JOIN auxiliar_postulacion_evaluaciones pep ON pep.postulacion_id = pos.id AND pep.promedio = 0  
+      WHERE pos.deleted_at IS NULL 
+      AND pos.convocatoria_id = $convocatoria_id
+      AND pos.inscripcion_id = $inscripcion_id
+      AND pep.estado = 1
+      AND pos.estado = 'revisado' $sqlRoleCondition ";
+
 
       $items = $this->db->query($sql)->result_object();
 
