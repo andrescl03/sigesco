@@ -1322,7 +1322,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
         $this->pdf->Ln(10);
         // $this->Cell(20, 4,utf8_decode('De conformida con el resultado obtenido en el Proceso para Contratación de Auxiliars, regulado por la Norma Técnica aprobada con R.M. Nº 023-2015-MINEDU, se adjunta el cargo vacante a:'),'',0, 'L', 0);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('De conformidad con el resultado obtenido en el Proceso para Contratación de Auxiliars, regulado por la Norma Técnica aprobada con D.S. N° 0020-2023-MINEDU, se adjudica el cargo vacante a:'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode('De conformidad con el resultado obtenido en el Proceso para Contratación de Auxiliares, regulado por R.V.M. N° 005-2024-MINEDU / O.M. 016-2024-MINEDU/VMGPDIGEDD, se adjudica el cargo vacante a:'), 0);
         $this->pdf->Ln(3);
 
         $this->pdf->Ln(5);
@@ -1355,7 +1355,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
           $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
           $this->pdf->Cell(0, 7, utf8_decode(strtoupper($this->numeroALetras($postulante->puntaje))), '', 0, 'L', 0);
    */
-        $this->pdf->Ln(4);
+  /*       $this->pdf->Ln(4);
 
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, utf8_decode('Etapa de contratación'), '', 0, 'L', 0);
@@ -1369,7 +1369,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
         if ($plaza->tipo_convocatoria == 2) {
             $this->pdf->Cell(40, 7, 'Tercera Etapa', '', 0, 'L', 0);
         }
-
+ */
 
 
 
@@ -1412,7 +1412,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
         //        $this->pdf->Cell(0, 7, utf8_decode($datos [0] ['especialidad']), '', 0, 'L', 0);
         //        
         //        -----
-        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+ /*        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, utf8_decode('Área Curricular / Especialidad'), '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
         $y = $this->pdf->GetY();
@@ -1421,13 +1421,13 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
         $this->pdf->MultiCell(0, 4, utf8_decode($plaza->especialidad), 0, 'L', 0);
         $y = $this->pdf->GetY();
         $x = $this->pdf->GetX();
-        $this->pdf->SetXY($x, $y - 1.5);
+        $this->pdf->SetXY($x, $y - 1.5); */
 
-        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
+ /*        $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
 
         $this->pdf->Cell(90, 7, utf8_decode('o campo de conocimiento'), '', 0, 'L', 0);
 
-
+ */
         $nivel_nombre = @$postulante->nivel_nombre;
 
         if ($plaza->nivel_id == 1) {
