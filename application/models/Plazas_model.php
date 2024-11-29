@@ -189,13 +189,14 @@ class Plazas_model extends CI_Model {
       $tipo_convocatoria  = $this->input->post("tipo_convocatoria", true);
       $colegio_id = $this->input->post("colegio_id", true);
       $especialidad = $this->input->post("especialidad", true);
-      $especialidad_general = $this->input->post("especialidad_general", true);
+      // $especialidad_general = $this->input->post("especialidad_general", true);
       $jornada  = $this->input->post("jornada", true);
       $tipo_vacante = $this->input->post("tipo_vacante", true);
       $motivo_vacante  = $this->input->post("motivo_vacante", true);
       $codigo_plaza  = $this->input->post("codigo_plaza", true);
       $mod_id  = $this->input->post("mod_id", true);
       $niv_id  = $this->input->post("niv_id", true);
+      $esp_id  = $this->input->post("esp_id", true);
       $cargo  = $this->input->post("cargo", true);
       $fecha_inicio  = $this->input->post("fecha_inicio", true);
       $fecha_fin  = $this->input->post("fecha_fin", true);
@@ -224,10 +225,21 @@ class Plazas_model extends CI_Model {
               ORDER BY e2.mod_nombre ASC";
       $colegio = $this->db->query($sql)->row();
 
+      $sql = "SELECT 
+                *
+              FROM especialidades
+              WHERE esp_id = {$esp_id};";
+      $mespecialidad = $this->db->query($sql)->row();
+      $especialidad_general = "";
+      if ($mespecialidad) {
+        $especialidad_general = $mespecialidad->esp_descripcion;
+      }
+
       $data = [
         'codigo_plaza' => $codigo_plaza,
         'colegio_id' => $colegio_id,
         'especialidad' => $especialidad,
+        'especialidad_general_id' => $esp_id,
         'especialidad_general' => $especialidad_general,
         'tipo_convocatoria' => $tipo_convocatoria,
         'jornada' => $jornada,
@@ -277,13 +289,14 @@ class Plazas_model extends CI_Model {
       $tipo_convocatoria  = $this->input->post("tipo_convocatoria", true);
       $ie = $this->input->post("ie", true);
       $especialidad = $this->input->post("especialidad", true);
-      $especialidad_general = $this->input->post("especialidad_general", true);
+      // $especialidad_general = $this->input->post("especialidad_general", true);
       $jornada  = $this->input->post("jornada", true);
       $tipo_vacante = $this->input->post("tipo_vacante", true);
       $motivo_vacante  = $this->input->post("motivo_vacante", true);
       $codigo_plaza  = $this->input->post("codigo_plaza", true);
       $mod_id  = $this->input->post("mod_id", true);
       $niv_id  = $this->input->post("niv_id", true);
+      $esp_id  = $this->input->post("esp_id", true);
       $colegio_id = $this->input->post("colegio_id", true);
       $cargo  = $this->input->post("cargo", true);
       $fecha_inicio  = $this->input->post("fecha_inicio", true);
@@ -314,11 +327,22 @@ class Plazas_model extends CI_Model {
               ORDER BY e2.mod_nombre ASC";
       $colegio = $this->db->query($sql)->row();
 
+      $sql = "SELECT 
+            *
+          FROM especialidades
+          WHERE esp_id = {$esp_id};";
+      $mespecialidad = $this->db->query($sql)->row();
+      $especialidad_general = "";
+      if ($mespecialidad) {
+        $especialidad_general = $mespecialidad->esp_descripcion;
+      }
+
       $data = [
         'codigo_plaza' => $codigo_plaza,
         'colegio_id' => $colegio_id,
         'ie'=>@$colegio->mod_nombre,
         'especialidad' => $especialidad,
+        'especialidad_general_id' => $esp_id,
         'especialidad_general' => $especialidad_general,
         'tipo_convocatoria' => $tipo_convocatoria,
         'jornada' => $jornada,
@@ -407,10 +431,15 @@ class Plazas_model extends CI_Model {
                     *
                   FROM niveles";
           $niveles = $this->db->query($sql)->result_object();
+
+          $sql = "SELECT 
+                    *
+                  FROM especialidades";
+          $especialidades = $this->db->query($sql)->result_object();
        
           $response['success'] = true;
           $response['status']  = 200;
-          $response['data']    = compact('plaza', 'plaza_adjudicaciones', 'modalidades', 'niveles', 'colegios');
+          $response['data']    = compact('plaza', 'plaza_adjudicaciones', 'modalidades', 'niveles', 'colegios', 'especialidades');
           $response['message'] = 'Se proceso correctamente';
       } catch (\Exception $e) {
           $response['message'] = $e->getMessage();
@@ -432,10 +461,15 @@ class Plazas_model extends CI_Model {
                     *
                   FROM niveles";
           $niveles = $this->db->query($sql)->result_object();
+
+          $sql = "SELECT 
+                  *
+                FROM especialidades";
+          $especialidades = $this->db->query($sql)->result_object();
        
           $response['success'] = true;
           $response['status']  = 200;
-          $response['data']    = compact('modalidades', 'niveles');
+          $response['data']    = compact('modalidades', 'niveles', 'especialidades');
           $response['message'] = 'Se proceso correctamente';
       } catch (\Exception $e) {
           $response['message'] = $e->getMessage();

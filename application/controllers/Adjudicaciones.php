@@ -57,6 +57,18 @@ class Adjudicaciones extends CI_Controller {
             ->set_output(json_encode($this->adjudicaciones_model->resource()));
     }
 
+    public function searching() {
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($this->adjudicaciones_model->searching()));
+    }
+
+    public function paginationAssignment() {
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($this->adjudicaciones_model->paginationAssignment()));
+    }
+
     public function datedefault() {
         $this->output
             ->set_content_type('application/json')
@@ -148,7 +160,7 @@ class Adjudicaciones extends CI_Controller {
         if ($this->input->post()) {
             $this->output
                 ->set_content_type('application/json')
-                ->set_output(json_encode($this->configuracion_model->listarGruposInscripcionDataTable(true,true)));
+                ->set_output(json_encode($this->adjudicaciones_model->listarGruposInscripcionDataTable(true,true)));
         } else {
             show_404();
         }    

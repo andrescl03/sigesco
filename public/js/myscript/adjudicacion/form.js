@@ -34,7 +34,17 @@ const AppAdjudicacionAdmin = () => {
                     usuarioFirmas: [],
                     dataTableModalidades: {},
                     dataTablePlazas: {},
-                    dataTablePostulantes: {}
+                    dataTablePostulantes: {},
+                    
+                    modalidadesData: [],
+                    nivelesData: [],
+                    especialidadesData: [],
+
+                    assignment: {},
+
+                    modalidad_id: 0,
+                    nivel_id: 0,
+                    especialidad_id: 0,
                  }
             },
             mounted: function () {
@@ -59,7 +69,9 @@ const AppAdjudicacionAdmin = () => {
                         self.usuarios = response.usuarios;
                         self.usuarioFirmas = response.usuario_firmas;
                         self.firmasReload();
-
+                        self.listModalidades();
+                        self.listPostulantes();
+                        self.listPlazas();
                         dom.querySelector('input[name="fecha_registro"]').value = now;
                         if (self.edit) {
                             if (Object.keys(response.adjudicacion).length > 0) {
@@ -87,15 +99,28 @@ const AppAdjudicacionAdmin = () => {
                 },
                 clicks: () => {
 
+                    const inputSearchs = dom.querySelectorAll('.input-search');
+                    inputSearchs.forEach(input => {
+                        input.addEventListener('search', (e) => {
+                            self.dataTablePostulantes.search(e.target.value.trim()).draw();
+                        });
+                    });
+
                     const btnSearchs = dom.querySelectorAll('.btn-search');
                     btnSearchs.forEach(btn => {
                         btn.addEventListener('click', (e) => {
                             const input = dom.querySelector('#txtBuscador');
                             if (input) {
-                                sweet2.loading({text:'Buscando...'});
                                 self.dataTablePlazas.search(input.value.trim()).draw();
                             }
                         });                        
+                    });
+
+                    const inputSearchs1 = dom.querySelectorAll('.input-search-1');
+                    inputSearchs1.forEach(input => {
+                        input.addEventListener('search', (e) => {
+                            self.dataTablePostulantes.search(e.target.value.trim()).draw();
+                        });
                     });
 
                     const btnSearchs1 = dom.querySelectorAll('.btn-search-1');
@@ -103,7 +128,6 @@ const AppAdjudicacionAdmin = () => {
                         btn.addEventListener('click', (e) => {
                             const input = dom.querySelector('#txtBuscador1');
                             if (input) {
-                                sweet2.loading({text:'Buscando...'});
                                 self.dataTablePostulantes.search(input.value.trim()).draw();
                             }
                         });                        
@@ -114,10 +138,16 @@ const AppAdjudicacionAdmin = () => {
                         btn.addEventListener('click', (e) => {
                             const input = dom.querySelector('#txtBuscador2');
                             if (input) {
-                                sweet2.loading({text:'Buscando...'});
                                 self.dataTableModalidades.search(input.value.trim()).draw();
                             }
                         });                        
+                    });
+
+                    const inputSearchs2 = dom.querySelectorAll('.input-search-2');
+                    inputSearchs2.forEach(input => {
+                        input.addEventListener('search', (e) => {
+                            self.dataTableModalidades.search(e.target.value.trim()).draw();
+                        });
                     });
 
                     const btnUsuarioFirmaAdds = document.querySelectorAll('.btn-usuario-firma-add');
@@ -306,13 +336,100 @@ const AppAdjudicacionAdmin = () => {
                         });
                     });
 
+                    
+                    const selectModalidades = document.querySelectorAll('.select-modalidades');
+                    selectModalidades.forEach(select => {
+                        select.addEventListener('change', (e) => {
+                            self.modalidad_id = e.target.value;
+                            self.nivel_id = 0;
+                            self.especialidad_id = 0;
+                            nivelSelectRender();
+                            especialidadSelectRender();
+                            self.listModalidades();
+                        });
+                    });
+                
+                    const selectNiveles = document.querySelectorAll('.select-niveles');
+                    selectNiveles.forEach(select => {
+                        select.addEventListener('change', (e) => {
+                            self.nivel_id = e.target.value;
+                            self.especialidad_id = 0;
+                            self.listModalidades();
+                            especialidadSelectRender();
+                        });
+                    });
+            
+                    const selectEspecialidades = document.querySelectorAll('.select-especialidades');
+                    selectEspecialidades.forEach(select => {
+                        select.addEventListener('change', (e) => {
+                            self.especialidad_id = e.target.value;
+                            self.listModalidades();
+                        });
+                    });
+
+                    const modalidadSelectRender = () => {
+                        self.modalidades = [];
+                        self.modalidadesData.forEach(o => {
+                            self.modalidades.push(o);
+                        });
+                        const selects = document.querySelectorAll('.select-modalidades');
+                        selects.forEach(select => {
+                            select.innerHTML = `<option value="0" hidden selected>[SELECCIONE]</option>`;
+                            select.innerHTML = `<option value="0">[TODOS]</option>`;
+                            self.modalidades.forEach(o => {
+                                select.innerHTML += `<option value="${o.mod_id}" ${o.mod_id == self.modalidad_id ? 'selected' : ''}>${o.mod_nombre}</option>`;
+                            });
+                        });
+                    }
+
+                    const nivelSelectRender = () => {
+                        self.niveles = [];
+                        self.nivelesData.forEach(o => {
+                            if (o.modalidad_mod_id === self.modalidad_id) {
+                                self.niveles.push(o);
+                            }
+                        });
+                        const selects = document.querySelectorAll('.select-niveles');
+                        selects.forEach(select => {
+                            select.innerHTML = `<option value="0" hidden selected>[SELECCIONE]</option>`;
+                            if (self.modalidad_id > 0) {
+                                select.innerHTML = `<option value="0">[TODOS]</option>`;
+                            }
+                            self.niveles.forEach(o => {
+                                select.innerHTML += `<option value="${o.niv_id}" ${o.niv_id == self.nivel_id ? 'selected' : ''}>${o.niv_descripcion}</option>`;
+                            });
+                        });
+                    }
+
+                    const especialidadSelectRender = () => {
+                        self.especialidades = [];
+                        self.especialidadesData.forEach(o => {
+                            if (o.niveles_niv_id === self.nivel_id) {
+                                self.especialidades.push(o);
+                            }
+                        });
+                        const selects = document.querySelectorAll('.select-especialidades');
+                        selects.forEach(select => {
+                            select.innerHTML = `<option value="0" hidden selected>[SELECCIONE]</option>`;
+                            if (self.nivel_id > 0) {
+                                select.innerHTML = `<option value="0">[TODOS]</option>`;
+                            }
+                            self.especialidades.forEach(o => {
+                                select.innerHTML += `<option value="${o.esp_id}" ${o.esp_id == self.especialidad_id ? 'selected' : ''}>${o.esp_descripcion}</option>`;
+                            });
+                        });
+                    }
+
                     const btnFiltro = document.querySelectorAll('.btn-filtro-busqueda');
                     btnFiltro.forEach(btn => {
-                        btn.addEventListener('click', (e) => {
+                        btn.addEventListener('click', async (e) => {
+                            const response = await self.getSearching(e.target);
+                            self.modalidadesData = response.modalidades;
+                            self.nivelesData = response.niveles;
+                            self.especialidadesData = response.especialidades;
+                            modalidadSelectRender();
                             self.modalFiltroBusqueda.show();
-                            setTimeout(() => {
-                                self.listModalidades();                                
-                            }, 250);
+                            sweet2.loading(false);
                             return;
                         });
                     });
@@ -349,6 +466,7 @@ const AppAdjudicacionAdmin = () => {
                             }
                             if (isvalid) {
                                 if (isvalid > 0) {
+                                    console.log(self.postulacion, self.postulaciones, isvalid);
                                     self.postulacion = self.postulaciones.find((o) => { return o.id === isvalid });
                                     self.docenteRender();
                                     self.modalDocentes.hide();
@@ -472,12 +590,6 @@ const AppAdjudicacionAdmin = () => {
                         btn.addEventListener('click', (e) => {
                             let isvalid = false; 
                             const radios = document.querySelectorAll("input[name='check_modalidad']");
-                            const tipo_postulacion_convocatoria =  document.querySelector("select[name='tipo_postulacion_convocatoria']");
-
-                            if(tipo_postulacion_convocatoria.value == 0){
-                                sweet2.show({type:'error', text:'Debe de seleccionar un tipo de postulacion'});
-                                return;
-                            }
                             if (radios) {
                                 radios.forEach(radio => {
                                     if (radio.checked) {
@@ -488,11 +600,12 @@ const AppAdjudicacionAdmin = () => {
                             }
                             if (isvalid) {
                                 if (isvalid > 0) {
-                                    self.modalidades = self.modalidades.find((o) => { return o.esp_id === isvalid });
-                                    self.tipo_postulacion = tipo_postulacion_convocatoria.value;
-                                    self.tipo_postulacion_name =  tipo_postulacion_convocatoria.options[tipo_postulacion_convocatoria.value].text;
-                                    self.modalidadRender();
-                                    self.modalFiltroBusqueda.hide();
+                                    const result = self.assignmentRender(isvalid);
+                                    if (result) {
+                                        self.modalFiltroBusqueda.hide();
+                                        self.listPostulantes();
+                                        self.listPlazas();
+                                    }
                                 }
                             } else {
                                 sweet2.show({type:'error', text:'Debe de seleccionar una modalidad'});
@@ -686,8 +799,7 @@ const AppAdjudicacionAdmin = () => {
                         });
                     });
                 },
-                listPlazas: (_callback = ()=>{}) => {
-
+                listPlazas: () => {
                     if (Object.keys(self.dataTablePlazas).length == 0) {
                         self.dataTablePlazas = $('#tablePlazas').DataTable({
                             language: {
@@ -723,18 +835,17 @@ const AppAdjudicacionAdmin = () => {
                             "retrieve": true,
                             "dom": '<l<t>ip>',	
                             "ajax": {
-                            "url": window.AppMain.url + 'adjudicaciones/plazas',
-                            "method": "POST",
-                            "dataType": "json",
-                            "data": {
-                            }
+                                "url": window.AppMain.url + 'adjudicaciones/plazas',
+                                "method": "POST",
+                                "dataType": "json",
+                                "data": function(d) {
+                                    d.especialidad_id = self.assignment ? self.assignment.especialidad_id : 0;
+                                },
                             },
                             "fnDrawCallback": function(oSettings, json) {
-                                sweet2.loading(false);
                                 const response = oSettings.json;
                                 if (response.success) {
                                     self.plazas = response.data;
-                                    _callback();
                                 }
                             },
                             "columnDefs": [
@@ -813,10 +924,8 @@ const AppAdjudicacionAdmin = () => {
                     } else {
                         self.dataTablePlazas.ajax.reload();
                     }
-                    sweet2.loading();
                 },
-
-                listModalidades: (_callback = ()=>{}) => {
+                listModalidades: () => {
 
                     if (Object.keys(self.dataTableModalidades).length == 0) {
 
@@ -854,18 +963,19 @@ const AppAdjudicacionAdmin = () => {
                             "retrieve": true,
                             "dom": '<l<t>ip>',	
                             "ajax": {
-                            "url": window.AppMain.url + 'adjudicaciones/listarGruposInscripcion',
-                            "method": "POST",
-                            "dataType": "json",
-                            "data": {
-                            }
-                            },
-                            "fnDrawCallback": function(oSettings, json) {
-                                sweet2.loading(false);
-                                const response = oSettings.json;
-                                if (response.success) {
-                                    self.modalidades = response.data;
-                                    _callback();
+                                "url": window.AppMain.url + 'adjudicaciones/listarGruposInscripcion',
+                                "method": "POST",
+                                "dataType": "json",
+                                "data": function(d) {
+                                    d.modalidad_id = self.modalidad_id;
+                                    d.especialidad_id = self.especialidad_id;
+                                    d.nivel_id = self.nivel_id;
+                                },
+                                "beforeSend": function() {
+                                    sweet2.loading();
+                                }, 
+                                "complete": function() { 
+                                    sweet2.loading(false);
                                 }
                             },
                             "columnDefs": [
@@ -906,7 +1016,7 @@ const AppAdjudicacionAdmin = () => {
                                     "data": "esp_id",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
-                                        return ` <input class="form-check-input" name="check_modalidad" type="radio" value="${row.esp_id}">`;
+                                        return ` <input class="form-check-input" name="check_modalidad" type="radio" value="${row.esp_id}" style="cursor:pointer;">`;
                                     }
                                 }
                             ]
@@ -914,12 +1024,8 @@ const AppAdjudicacionAdmin = () => {
                     } else {
                         self.dataTableModalidades.ajax.reload();
                     }
-                // sweet2.loading();
                 },
-
-                listPostulantes: (_callback = ()=>{}) => {
-
-
+                listPostulantes: () => {
                     if (Object.keys(self.dataTablePostulantes).length == 0) {
                      
                         self.dataTablePostulantes = $('#tablePostulantes').DataTable({
@@ -956,20 +1062,23 @@ const AppAdjudicacionAdmin = () => {
                             "retrieve": true,
                             "dom": '<l<t>ip>',	
                             "ajax": {
-                            "url": window.AppMain.url + 'adjudicaciones/postulantes',
-                            "method": "POST",
-                            "dataType": "json",
-                            data: function(d) {
-                                d.esp_id = self.modalidades ? self.modalidades.esp_id : 0;
-                                d.tipo_postulacion_id = self.tipo_postulacion ? self.tipo_postulacion : 0;
-                            }
+                                "url": window.AppMain.url + 'adjudicaciones/postulantes',
+                                "method": "POST",
+                                "dataType": "json",
+                                "data": function(d) {
+                                    d.especialidad_id = self.assignment ? self.assignment.especialidad_id : 0;
+                                },
+                                "beforeSend": function() {
+                                    sweet2.loading();
+                                }, 
+                                "complete": function() { 
+                                    sweet2.loading(false);
+                                }
                             },
                             "fnDrawCallback": function(oSettings, json) {
-                                sweet2.loading(false);
                                 const response = oSettings.json;
                                 if (response.success) {
                                     self.postulaciones = response.data;
-                                    _callback();
                                 }
                             },
                             "columnDefs": [
@@ -977,32 +1086,41 @@ const AppAdjudicacionAdmin = () => {
                                     "targets": 0,
                                     "data": "id",
                                     "render": function ( data, type, row, meta ) {
-                                        return meta.row + meta.settings._iDisplayStart + 1;
+                                        // return meta.row + meta.settings._iDisplayStart + 1;
+                                        return row.con_code;
                                     }
                                 },
                                 {
                                     "targets": 1,
+                                    "data": "con_tipo",
+                                    "className": "text-center",
+                                    "render": function ( data, type, row, meta ) {
+                                        return `${row.con_tipo_nombre}`;
+                                    }
+                                },
+                                {
+                                    "targets": 2,
                                     "data": "apellido_paterno",
                                     "render": function ( data, type, row, meta ) {
                                         return `${row.apellido_paterno} ${row.apellido_materno} ${row.nombre}`;
                                     }
                                 },
                                 {
-                                    "targets": 2,
+                                    "targets": 3,
                                     "data": "numero_documento",
                                     "render": function ( data, type, row, meta ) {
                                         return row.numero_documento;                                    
                                     }
                                 },
                                 {
-                                    "targets": 3,
+                                    "targets": 4,
                                     "data": "modalidad_nombre",
                                     "render": function ( data, type, row, meta ) {
                                         return row.modalidad_nombre;
                                     }
                                 },
                                 {
-                                    "targets": 4,
+                                    "targets": 5,
                                     "data": "nivel_nombre",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
@@ -1010,7 +1128,7 @@ const AppAdjudicacionAdmin = () => {
                                     }
                                 },
                                 {
-                                    "targets": 5,
+                                    "targets": 6,
                                     "data": "especialidad_nombre",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
@@ -1018,7 +1136,7 @@ const AppAdjudicacionAdmin = () => {
                                     }
                                 },
                                 {
-                                    "targets": 6,
+                                    "targets": 7,
                                     "data": "puntaje",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
@@ -1026,7 +1144,7 @@ const AppAdjudicacionAdmin = () => {
                                     }
                                 },
                                 {
-                                    "targets": 7,
+                                    "targets": 8,
                                     "data": "prelacion",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
@@ -1034,7 +1152,7 @@ const AppAdjudicacionAdmin = () => {
                                     }
                                 },
                                 {
-                                    "targets": 8,
+                                    "targets": 9,
                                     "data": "fecha_registro",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
@@ -1042,7 +1160,7 @@ const AppAdjudicacionAdmin = () => {
                                     }
                                 },
                                 {
-                                    "targets": 9,
+                                    "targets": 10,
                                     "data": "estado_adjudicacion",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
@@ -1062,7 +1180,7 @@ const AppAdjudicacionAdmin = () => {
                                     }
                                 },
                                 {
-                                    "targets": 10,
+                                    "targets": 11,
                                     "data": "intentos_adjudicacion",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
@@ -1070,37 +1188,90 @@ const AppAdjudicacionAdmin = () => {
                                     }
                                 },
                                 {
-                                    "targets": 11,
-                                    "data": "fecha_registro",
-                                    "className": "text-center",
-                                    "render": function ( data, type, row, meta ) {
-                                        return `<input class="form-check-input" name="check_docente" type="radio" value="${row.id}">`;
-                                    }
-                                },
-                                {
                                     "targets": 12,
                                     "data": "deleted_at",
-                                    "className": "text-center",
+                                    "className": "text-center  min-width-table-postulant",
                                     "render": function ( data, type, row, meta ) {
-                                        return `<div class="btn-group dropstart">
-                                                    <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa-solid fa-file-signature fa-lg"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item btn-wait-postulante" href="#" data-id="${row.id}"><i class="fa fa-clock-o me-2" aria-hidden="true"></i> En espera</a></li>
-                                                        <li><a class="dropdown-item btn-unlink-postulante" href="#" data-id="${row.id}"><i class="fa fa-user-times me-2" aria-hidden="true"></i> No se presento</a></li>
-                                                    </ul>
-                                                </div>`;
+                                        // <input class="form-check-input fs-4" style="cursor:pointer;" name="check_docente" type="radio" value="${row.id}">
+                                        return `<label class="btn btn-sm btn-light btn-award-postulante mb-2" data-id="${row.id}" for="inputRadio${row.id}"><input class="me-2 shadow-none" name="check_docente" type="radio" id="inputRadio${row.id}" value="${row.id}"> Adjudicar</label>
+                                                <button class="btn btn-sm btn-light btn-wait-postulante mb-2" data-id="${row.id}"><i class="fa fa-clock-o me-2" aria-hidden="true"></i>En espera</button>
+                                                <button class="btn btn-sm btn-light btn-unlink-postulante mb-2" data-id="${row.id}"><i class="fa fa-user-times me-2" aria-hidden="true"></i>No se presento</button>`;
                                     }
                                 }
-                            ]
+                            ],
+                            "createdRow": function(row, data, index) {
+                                // Aquí puedes agregar eventos a los elementos de la fila 
+                                $(row).find('.btn-unlink-postulante').off('click').on('click', function() { 
+                                    var id = $(this).data('id'); 
+                                    sweet2.show({
+                                        type: 'question',
+                                        text: '¿Estás seguro de separar al docente de la adjudicación?',
+                                        showCancelButton: true,
+                                        onOk: () => {
+                                            sweet2.loading();
+                                            const formData = new FormData();
+                                            formData.append('status', 2);
+                                            self.updateStatus(`adjudicaciones/postulantes/${id}/status`, formData)
+                                            .then(({success, data, message}) => {
+                                                if (!success) {
+                                                    throw message;
+                                                }
+                                                sweet2.show({
+                                                    type:'success', 
+                                                    text:message,
+                                                    onOk:()=>{
+                                                        sweet2.loading({text:'Actualizando...'});                                            
+                                                        self.dataTablePostulantes.ajax.reload();
+                                                    }
+                                                });
+                                            })
+                                            .catch(error => sweet2.show({type:'error', text:error}));
+                                        }
+                                    });
+                                }); 
+                                $(row).find('.btn-wait-postulante').off('click').on('click', function() { 
+                                    var id = $(this).data('id'); 
+                                    sweet2.show({
+                                        type: 'question',
+                                        text: '¿Estás seguro de poner en espera al docente?',
+                                        showCancelButton: true,
+                                        onOk: () => {
+                                            sweet2.loading();
+                                            const formData = new FormData();
+                                            formData.append('status', 3);
+                                            self.updateStatus(`adjudicaciones/postulantes/${id}/status`, formData)
+                                            .then(({success, data, message}) => {
+                                                if (!success) {
+                                                    throw message;
+                                                }
+                                                sweet2.show({
+                                                    type:'success', 
+                                                    text:message,
+                                                    onOk:()=>{
+                                                        sweet2.loading({text:'Actualizando...'});                                            
+                                                        self.dataTablePostulantes.ajax.reload();
+                                                    }
+                                                });
+                                            })
+                                            .catch(error => sweet2.show({type:'error', text:error}));
+                                        }
+                                    })
+                                }); 
+
+                                $(row).find('.btn-award-postulante').off('click').on('click', function() { 
+                                    var id = Number($(this).data('id'));
+                                    if (id > 0) {
+                                        self.postulacion = self.postulaciones.find((o) => { return Number(o.id) === id });
+                                        self.docenteRender();
+                                        sweet2.show({type:'success', text: 'Se ha seleccionado correctamente'});
+                                    }
+                                });
+                            }
                         });
                     } else {
                         self.dataTablePostulantes.ajax.reload();
                     }
-                    sweet2.loading();
                 },
-                
                 onActionRowsPostulantes: () => {
                     const unlinks = document.querySelectorAll(".btn-unlink-postulante");
                     if (unlinks.length > 0) {
@@ -1180,6 +1351,27 @@ const AppAdjudicacionAdmin = () => {
                         sweet2.loading();
                         $.ajax({
                             url: window.AppMain.url + `admin/adjudicaciones/resource`,
+                            method: 'POST',
+                            dataType: 'json',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function ({success, data, message}) {
+                            resolve(data);
+                        })
+                        .fail(function (xhr, status, error) {
+                            sweet2.show({type:'error', text:error});
+                        });
+                    });
+                },
+                getSearching: () => {
+                    const formData = new FormData();
+                    formData.append('adjudicacion_id', adjudicacion_id);
+                    return new Promise((resolve, reject)=>{
+                        sweet2.loading();
+                        $.ajax({
+                            url: window.AppMain.url + `admin/adjudicaciones/assignment/searching`,
                             method: 'POST',
                             dataType: 'json',
                             data: formData,
@@ -1401,10 +1593,10 @@ const AppAdjudicacionAdmin = () => {
                         <p><strong>Especialidad</strong> ${self.plaza.especialidad}</p>
                         <p><strong>Jornada</strong> ${self.plaza.jornada}</p>
                         <p><strong>Tipo vacante</strong> ${self.plaza.tipo_vacante}</p>
-                        <p><strong>Motivo vacante</strong> ${self.plaza.motivo_vacante}</p>
-                        <p><strong>Tipo de convocatoria</strong>
+                        <p><strong>Motivo vacante</strong> ${self.plaza.motivo_vacante}</p>`;
+                        /*<p><strong>Tipo de convocatoria</strong>
                         <input type="radio" name="tipoConvocatoria" value="1" ${self.plaza.tipo_convocatoria === "1" ? "checked" : ""}> PUN (Prueba Única Nacional)
-                        <input type="radio" name="tipoConvocatoria" value="2" ${self.plaza.tipo_convocatoria === "2" ? "checked" : ""}> Evaluación de Expediente</p>`;
+                        <input type="radio" name="tipoConvocatoria" value="2" ${self.plaza.tipo_convocatoria === "2" ? "checked" : ""}> Evaluación de Expediente</p>`;*/
                     }
                     const divs = dom.querySelectorAll('.list-plaza');
                     divs.forEach(div => {
@@ -1435,6 +1627,34 @@ const AppAdjudicacionAdmin = () => {
                             }
                         });
                     });
+                },
+                assignmentRender: (especialidad_id) => {
+                    let html = `No hay registro para mostrar`;
+                    const especialidad = self.especialidadesData.find(o => o.esp_id == especialidad_id);
+                    if (especialidad) {
+                        const nivel = self.nivelesData.find(o => o.niv_id == especialidad.niveles_niv_id);
+                        if (nivel) {
+                            const modalidad = self.modalidadesData.find(o => o.mod_id == nivel.modalidad_mod_id);
+                            if (modalidad) {
+                                html = `
+                                    <p><strong>Modalidad:</strong> ${modalidad.mod_abreviatura}</p>
+                                    <p><strong>Nivel:</strong> ${nivel.niv_descripcion}</p>
+                                    <p><strong>Especialidad:</strong> ${especialidad.esp_descripcion}</p>             
+                                `;
+                                self.assignment = {
+                                    modalidad_id: modalidad.mod_id,
+                                    nivel_id: nivel.niv_id,
+                                    especialidad_id: especialidad.esp_id
+                                };
+                            }
+                            const divs = dom.querySelectorAll('.list-modalidades');
+                            divs.forEach(div => {
+                                div.innerHTML = html;
+                            });
+                            return true;
+                        }
+                    }
+                    return false;
                 },
                 modalidadRender: () => {
                     let html = `No hay registro para mostrar`;

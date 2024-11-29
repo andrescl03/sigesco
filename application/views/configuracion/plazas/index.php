@@ -246,16 +246,17 @@ $niveles = $data['niveles'];
                                     </select>
                                 </div>
 
+                                <div class="col-md-2 mb-2 mt-1"><b>Especialidad general:</b></div>
+                                <div class="col-md-10 mb-2">
+                                    <select class="form-select form-select-sm select-especialidad-general" name="esp_id">
+                                        <option value="" hidden selected>Elegir...</option>
+                                    </select>
+                                </div>
+
                                 <div class="col-md-2 mb-2 mt-1"><b>Especialidad:</b></div>
                                 <div class="col-md-10 mb-2">
                                     <input class="form-control form-control-sm" name="especialidad" type="text"
                                         required />
-                                </div>
-
-                                <div class="col-md-2 mb-2 mt-1"><b>Especialidad general:</b></div>
-                                <div class="col-md-10 mb-2">
-                                    <input class="form-control form-control-sm" name="especialidad_general"
-                                        type="text" />
                                 </div>
 
                                 <div class="col-md-2 mb-2 mt-1"><b>Jornada :</b></div>
