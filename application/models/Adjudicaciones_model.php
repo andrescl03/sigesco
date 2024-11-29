@@ -838,7 +838,7 @@ class Adjudicaciones_model extends CI_Model
                   AND (AD.id IS NULL OR AD.estado = 0)
                   $sqlEspecialidad
                   $filterText
-                  ORDER BY C.con_tipo ASC, C.con_numero DESC, EP.prelacion ASC, PE.puntaje DESC";
+                  ORDER BY C.con_tipo ASC, C.con_numero ASC, EP.prelacion ASC, PE.puntaje DESC";
 
           $items = $this->db->query($sql)->result_object();
           $recordsTotal = count($items);
