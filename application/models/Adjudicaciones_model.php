@@ -801,6 +801,7 @@ class Adjudicaciones_model extends CI_Model
                                     OR M.mod_nombre LIKE('%{$value}%')
                                     OR N.niv_descripcion LIKE('%{$value}%')
                                     OR E.esp_descripcion LIKE('%{$value}%')
+                                    OR LOWER(CONCAT('CONV-', LPAD(C.con_numero, 4, '0'), '-', C.con_anio) LIKE('%{$value}%'))
                                   ) ";
               }
           }

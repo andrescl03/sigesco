@@ -916,10 +916,21 @@ const AppAdjudicacionAdmin = () => {
                                     "data": "deleted_at",
                                     "className": "text-center",
                                     "render": function ( data, type, row, meta ) {
-                                        return ` <input class="form-check-input" name="check_plaza" type="radio" value="${row.plz_id}">`;
+                                        // return ` <input class="form-check-input" name="check_plaza" type="radio" value="${row.plz_id}">`;
+                                        return `<label class="btn btn-sm btn-light btn-award-plaza mb-2" data-id="${row.plz_id}" for="input2Radio${row.plz_id}" style="cursor:pointer;"><input class="me-2 shadow-none" name="check_plaza" type="radio" id="input2Radio${row.plz_id}" value="${row.plz_id}"> Agregar</label>`;
                                     }
                                 }
-                            ]
+                            ],                            
+                            "createdRow": function(row, data, index) {
+                                $(row).find('.btn-award-plaza').off('click').on('click', function() { 
+                                    var id = Number($(this).data('id'));
+                                    if (id > 0) {
+                                        self.plaza = self.plazas.find((o) => { return Number(o.plz_id) === id });
+                                        self.plazaRender();
+                                        sweet2.show({type:'success', text: 'Se ha seleccionado correctamente'});
+                                    }
+                                });
+                            }
                         });
                     } else {
                         self.dataTablePlazas.ajax.reload();
