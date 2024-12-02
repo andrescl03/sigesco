@@ -57,6 +57,18 @@ class AdjudicacionesAuxiliar extends CI_Controller {
             ->set_output(json_encode($this->adjudicaciones_auxiliar_model->resource()));
     }
 
+    public function searching() {
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($this->adjudicaciones_auxiliar_model->searching()));
+    }
+
+    public function paginationAssignment() {
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($this->adjudicaciones_auxiliar_model->paginationAssignment()));
+    }
+
     public function datedefault() {
         $this->output
             ->set_content_type('application/json')

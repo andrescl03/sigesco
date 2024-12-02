@@ -124,3 +124,5 @@ $route['admin/auxiliares/plazas/exportar'] = 'auxiliares/plazasAuxiliar/reporte_
 $route['admin/auxiliares/colegios'] = 'auxiliares/configuracionAuxiliar/colegios';
 $route['admin/auxiliares/colegios/VListarColegios'] = 'auxiliares/configuracionAuxiliar/VListarColegios';
 
+$route['admin/auxiliares/adjudicaciones/assignment/searching'] = 'adjudicaciones/searching';
+$route['admin/auxiliares/adjudicaciones/assignment/pagination'] = 'adjudicaciones/paginationAssignment';

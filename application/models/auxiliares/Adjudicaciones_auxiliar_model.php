@@ -319,6 +319,33 @@ class Adjudicaciones_auxiliar_model extends CI_Model
     return $responseponse;
   }
 
+  public function searching() {
+    $responseponse = $this->tools->responseDefault();
+    try {
+
+      $adjudicacion_id = $this->input->post("adjudicacion_id", true);
+     
+      $sql = "SELECT*FROM modalidades";
+      $modalidades = $this->db->query($sql)->result_object();
+
+      $sql = "SELECT*FROM niveles";
+      $niveles = $this->db->query($sql)->result_object();
+
+      $sql = "SELECT*FROM especialidades";
+      $especialidades = $this->db->query($sql)->result_object();
+
+      $responseponse['success'] = true;
+      $responseponse['data']  = compact('modalidades', 'niveles', 'especialidades');
+      $responseponse['status']  = 200;
+      $responseponse['message'] = 'detail';
+    } catch (\Exception $e) {
+      $responseponse['message'] = $e->getMessage();
+    }
+    return $responseponse;
+  }
+
+  
+
   public function store()
   {
     $responseponse = $this->tools->responseDefault();
@@ -693,23 +720,22 @@ class Adjudicaciones_auxiliar_model extends CI_Model
     $response = $this->tools->responseDefault();
     try {
 
-        $draw   = $this->input->post("draw", true);
-        $length = $this->input->post("length", true);
-        $start  = $this->input->post("start", true);
-        $search = $this->input->post("search", true);
-        $esp_id = $this->input->post("esp_id", true);
-        $tipo_postulacion_id = $this->input->post("tipo_postulacion_id", true);
+      $draw   = $this->input->post("draw", true);
+      $length = $this->input->post("length", true);
+      $start  = $this->input->post("start", true);
+      $search = $this->input->post("search", true);
+      $especialidad_id = $this->input->post("especialidad_id", true);
 
+      if (intval($especialidad_id) > 0) {
         $filterText = '';
 
-       $sqlEspecialidad = $esp_id ? " AND esp_id = $esp_id " : '';
-       $sqlTipoPostulacion = $tipo_postulacion_id ? " AND con_tipo = $tipo_postulacion_id " : '';
+        $sqlEspecialidad = $especialidad_id ? " AND esp_id = $especialidad_id " : '';
 
-      if ($search) {
+        if ($search) {
             $value = $search['value'];
             if (strlen($value) > 0) {
                 $filterText = " AND (
-                                     P.id LIKE('%{$value}%')
+                                    P.id LIKE('%{$value}%')
                                   OR P.numero_documento LIKE('%{$value}%')
                                   OR P.nombre LIKE('%{$value}%')
                                   OR P.apellido_paterno LIKE('%{$value}%') 
@@ -718,25 +744,31 @@ class Adjudicaciones_auxiliar_model extends CI_Model
                                   OR M.mod_nombre LIKE('%{$value}%')
                                   OR N.niv_descripcion LIKE('%{$value}%')
                                   OR E.esp_descripcion LIKE('%{$value}%')
+                                  OR LOWER(CONCAT('CONV-', LPAD(C.con_numero, 4, '0'), '-', C.con_anio) LIKE('%{$value}%'))
                                 ) ";
             }
         }
 
+
         $sql = "SELECT
-                    P.*,
-                    M.mod_id AS modalidad_id,
-                    M.mod_nombre AS modalidad_nombre,
-                    N.niv_id AS nivel_id,
-                    N.niv_descripcion AS nivel_nombre,
-                    E.esp_id AS especialidad_id,
-                    E.esp_descripcion AS especialidad_nombre,
-                    GI.gin_id AS inscripcion_id,
-                    C.con_tipo as con_tipo,
-                    PE.puntaje,
-                    EP.prelacion
+                      P.*,
+                      M.mod_id AS modalidad_id,
+                      M.mod_nombre AS modalidad_nombre,
+                      N.niv_id AS nivel_id,
+                      N.niv_descripcion AS nivel_nombre,
+                      E.esp_id AS especialidad_id,
+                      E.esp_descripcion AS especialidad_nombre,
+                      GI.gin_id AS inscripcion_id,
+                      C.con_tipo,
+                      TC.descripcion AS con_tipo_nombre,
+                      PE.puntaje,
+                      EP.prelacion,
+                      C.con_numero,
+                      C.con_anio
                 FROM auxiliar_postulaciones P
                 LEFT JOIN auxiliar_postulacion_evaluaciones PE ON PE.postulacion_id = P.id AND PE.promedio = 1
                 INNER JOIN auxiliar_convocatorias C ON C.con_id = P.convocatoria_id
+                INNER JOIN auxiliar_tipo_convocatoria TC ON TC.tipo_id = C.con_tipo
                 INNER JOIN auxiliar_convocatorias_detalle CD ON CD.convocatorias_con_id = C.con_id
                 INNER JOIN grupo_inscripcion GI ON GI.gin_id = CD.grupo_inscripcion_gin_id AND GI.gin_id = P.inscripcion_id
                 INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
@@ -750,24 +782,34 @@ class Adjudicaciones_auxiliar_model extends CI_Model
                 AND intentos_adjudicacion <  2
                 AND (AD.id IS NULL OR AD.estado = 0)
                 $sqlEspecialidad
-                $sqlTipoPostulacion
                 $filterText
-                ORDER BY EP.prelacion ASC, PE.puntaje DESC";
+                ORDER BY C.con_tipo ASC, C.con_numero ASC, EP.prelacion ASC, PE.puntaje DESC";
 
-        $items = $this->db->query($sql)->result_object();
-         $recordsTotal = count($items);
+            
 
-        $sql .= " LIMIT {$start}, {$length}";
+            $items = $this->db->query($sql)->result_object();
+            $recordsTotal = count($items);
 
-        $items = $this->db->query($sql)->result_object();
+            $sql .= " LIMIT {$start}, {$length}";
 
-        $recordsFiltered = ($recordsTotal / $length) * $length;
+            $items = $this->db->query($sql)->result_object();
 
-        $response['success'] = true;
-        $response['data'] = $items;
-        $response['recordsTotal'] = $recordsTotal;
-        $response['recordsFiltered'] = $recordsFiltered;
-        $response['message'] = 'successfully';
+            foreach ($items as $k => $v) {
+              $items[$k]->con_code = "CONV-".sprintf('%04d', $v->con_numero)."-".$v->con_anio; 
+            }
+
+            $recordsFiltered = ($recordsTotal / $length) * $length;
+            } else {
+            $items = [];
+            $recordsTotal = 0;
+            $recordsFiltered = 0;            
+          }
+
+          $response['success'] = true;
+          $response['data'] = $items;
+          $response['recordsTotal'] = $recordsTotal;
+          $response['recordsFiltered'] = $recordsFiltered;
+          $response['message'] = 'successfully';
     } catch (\Exception $e) {
         $response['message'] = $e->getMessage();
     }
