@@ -210,9 +210,9 @@
                                                                 </table>
                                                             </div>
 
-                                                            <div class="col-md-3 mt-4 offset-9">
+                                                            <!-- <div class="col-md-3 mt-4 offset-9">
                                                                     <button type="button" class="btn w-100 btn btn-success btn-plaza-add">Agregar</button>
-                                                            </div>   
+                                                            </div>    -->
                                                         </div>
                                                          <div class="col-md-12 list-plaza">
                                                             No hay registro para mostrar
