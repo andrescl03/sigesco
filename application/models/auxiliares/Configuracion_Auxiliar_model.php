@@ -127,8 +127,11 @@ class Configuracion_auxiliar_model extends CI_Model
                 MDA.mod_nombre
               FROM especialidades AS ESP
               INNER JOIN niveles AS NIV ON NIV.niv_id = ESP.niveles_niv_id
-              INNER JOIN modalidades AS MDA ON MDA.mod_id = NIV.modalidad_mod_id";
-      $especialidades = $this->db->query($sql)->result_object();
+              INNER JOIN modalidades AS MDA ON MDA.mod_id = NIV.modalidad_mod_id
+              INNER JOIN grupo_inscripcion AS GI ON GI.especialidades_esp_id = ESP.esp_id
+              WHERE GI.procesos_pro_id = 2
+              AND GI.periodos_per_id = ?";
+      $especialidades = $this->db->query($sql, ['periodo_id'=>$id])->result_object();
 
       $response['success'] = true;
       $response['data']    = compact('fichas', 'periodo', 'especialidades', 'tipo_convocatorias');

@@ -84,6 +84,8 @@ $route['configuracion/periodos/(:num)/detail'] = 'configuracion/detallePeriodo/$
 $route['configuracion/periodos/(:num)/update'] = 'configuracion/guardarPeriodo/$1';
 $route['configuracion/periodos/(:num)/remove'] = 'configuracion/eliminarPeriodo/$1';
 
+$route['configuracion/periodos/graficos/postulantes'] = 'reportegrafico/postulantes_adjudicados';
+
 $route['postulaciones/(:num)/ficha'] = 'postulaciones/ficha/$1';
 $route['postulaciones/(:num)/fichas'] = 'postulaciones/fichas/$1';
 

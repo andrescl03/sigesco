@@ -92,6 +92,12 @@
                                                             <input type="text" class="form-control" placeholder="" name="name" minlength="3" maxlength="200" required>
                                                         </div>
                                                     </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb-3">
+                                                            <label class="form-label">Adjudicación conformidad</label>
+                                                            <textarea class="form-control" name="adjudicacion_acta_conformidad" rows="3"></textarea>
+                                                        </div>
+                                                    </div>
                                                     <div class="row mt-3">
                                                         <div class="col-md-12 mb-3 text-end">
                                                             <button type="button" class="btn btn-danger float-start btn-remove-periodo">Eliminar</button>

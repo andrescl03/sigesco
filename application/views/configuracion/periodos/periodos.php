@@ -49,6 +49,50 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-12 mt-5">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mx-auto text-center">Cantidad de docentes adjudicados por grupo de inscripción</h5>
+                </div>
+                <div class="card-body">
+                    <form class="form-postulant-inscription">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <label for="" class="form-label col-sm-4 my-auto text-center">Fecha Inicio</label>
+                                    <div class="col-sm-8">
+                                        <input type="date" class="form-control" name="fecha_inicio"/>                           
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <label for="" class="form-label col-sm-4 my-auto text-center">Fecha Final</label>
+                                    <div class="col-sm-8">
+                                        <input type="date" class="form-control" name="fecha_final"/> 
+                                    </div>
+                                </div>                      
+                            </div>
+                            <div class="col-sm-2 my-auto text-center">
+                                <button type="submit" class="btn btn-primary">
+                                    Filtrar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="chartdiv" style="height:600px; width:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style>
+                .amcharts-amexport-item.amcharts-amexport-item-level-0 {
+                    min-width: 120px !important;
+                }
+            </style>
+        </div>
     </div>
 
     <div class="modal fade" id="modal_agregarPeriodos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -88,7 +132,7 @@
     
 
 
-    
+
     <div class="row justify-content-center mt-3">
     <div class="col-md-10">
         <div class="card ">
