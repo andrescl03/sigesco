@@ -256,6 +256,12 @@
         <script src='<?php echo base_url()?>public/js/sha1/sha1.js'></script>    
         <script defer src="<?php echo base_url()?>public/js/jquery.validate/jquery.validate-1.19.3.min.js"></script>
         <script src="<?php echo base_url() ?>/public/js/utilities/sweetalert2.js"></script>
+
+        <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/plugins/regression.js"></script>
+
         <?php echo $this->layout->js?>    
     </body>
 </html>
