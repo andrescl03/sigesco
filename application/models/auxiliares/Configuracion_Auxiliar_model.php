@@ -295,7 +295,9 @@ class Configuracion_auxiliar_model extends CI_Model
           $orden  = $this->input->post("orden", true);
           $ids  = $this->input->post("ids", true);
 
-          $total_ids = count(@$ids);
+        //  $total_ids = count(@$ids);
+          $total_ids = is_array($ids) ? count($ids) : 0;
+
           if ($total_ids == 0) {
             throw new Exception("Deber seleccionar al menos una especialidad");
           }
@@ -362,7 +364,9 @@ class Configuracion_auxiliar_model extends CI_Model
           $orden  = $this->input->post("orden", true);
           $ids  = $this->input->post("ids", true);
 
-          $total_ids = count(@$ids);
+          //$total_ids = count(@$ids);
+          $total_ids = is_array($ids) ? count($ids) : 0;
+
           if ($total_ids == 0) {
             throw new Exception("Deber seleccionar al menos una especialidad");
           }
