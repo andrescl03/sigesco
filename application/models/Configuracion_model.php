@@ -117,8 +117,11 @@ class Configuracion_model extends CI_Model
                 MDA.mod_nombre
               FROM especialidades AS ESP
               INNER JOIN niveles AS NIV ON NIV.niv_id = ESP.niveles_niv_id
-              INNER JOIN modalidades AS MDA ON MDA.mod_id = NIV.modalidad_mod_id";
-      $especialidades = $this->db->query($sql)->result_object();
+              INNER JOIN modalidades AS MDA ON MDA.mod_id = NIV.modalidad_mod_id
+              INNER JOIN grupo_inscripcion AS GI ON GI.especialidades_esp_id = ESP.esp_id
+              WHERE GI.procesos_pro_id = 1
+              AND GI.periodos_per_id = ?";
+      $especialidades = $this->db->query($sql, ['periodo_id'=>$id])->result_object();
 
       $response['success'] = true;
       $response['data']    = compact('fichas', 'periodo', 'especialidades', 'tipo_convocatorias');
@@ -263,7 +266,8 @@ class Configuracion_model extends CI_Model
         case 'edicion':
           $name  = $this->input->post("name", true);
           $anio  = $this->input->post("anio", true);
-          $this->db->update('periodos', ['per_nombre' => $name, 'per_anio' => $anio], array('per_id' => $id));
+          $adjudicacion_acta_conformidad  = $this->input->post("adjudicacion_acta_conformidad", true);
+          $this->db->update('periodos', ['per_nombre' => $name, 'per_anio' => $anio, 'per_adjudicacion_acta_conformidad' => $adjudicacion_acta_conformidad], array('per_id' => $id));
           break;
         case 'actualizadetalleficha':
           $anexo_id  = $this->input->post("anexo_id", true);

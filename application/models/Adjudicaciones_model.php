@@ -595,9 +595,23 @@ class Adjudicaciones_model extends CI_Model
       $sql = "SELECT * FROM adjudicaciones WHERE id = ? AND deleted_at IS NULL";
       $adjudicacion = $this->db->query($sql, compact('adjudicacion_id'))->row();
       if (!is_null($adjudicacion) && is_object($adjudicacion)) {
-
+          $postulacion_id = $adjudicacion->postulacion_id;
+          $sql = "SELECT
+                  t3.*
+                FROM postulaciones t1
+                JOIN grupo_inscripcion t2 ON t1.inscripcion_id = t2.gin_id
+                JOIN periodos t3 ON t3.per_id = t2.periodos_per_id
+                WHERE t1.id = ?;";
+          $adjudicacion->periodo = $this->db->query($sql, ['id' => $postulacion_id])->row();
           $sql = "SELECT * FROM plazas WHERE plz_id = ?";
           $adjudicacion->plaza = $this->db->query($sql, ['plaza_id' => $adjudicacion->plaza_id])->row();
+          $adjudicacion->localie = null;
+          if ($adjudicacion->plaza) {
+            $ie = $adjudicacion->plaza->ie;
+            $sql = "SELECT t2.* FROM modularie t1 JOIN localie t2 ON t1.localie_loc_id = t2.loc_id WHERE t1.mod_nombre LIKE ('%$ie%')";
+            $adjudicacion->localie = $this->db->query($sql)->row();
+          }
+
           $sql = "SELECT
                       P.*,
                       M.mod_id AS modalidad_id,
