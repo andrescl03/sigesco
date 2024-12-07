@@ -49,40 +49,167 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 mt-5">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mx-auto text-center">Cantidad de docentes adjudicados por grupo de inscripción</h5>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mt-4">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="card-title mx-auto text-center">Reporte de docentes adjudicados</h5>
                 </div>
                 <div class="card-body">
                     <form class="form-postulant-inscription">
                         <div class="row">
-                            <div class="col-sm-4">
-                                <div class="row">
-                                    <label for="" class="form-label col-sm-4 my-auto text-center">Fecha Inicio</label>
-                                    <div class="col-sm-8">
-                                        <input type="date" class="form-control" name="fecha_inicio"/>                           
-                                    </div>
+                            <div class="col-lg-2">
+                            </div>
+                            <div class="col-lg-3 mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">Fecha Inicio</span>
+                                    <input type="date" class="form-control" name="fecha_inicio"/>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="row">
-                                    <label for="" class="form-label col-sm-4 my-auto text-center">Fecha Final</label>
-                                    <div class="col-sm-8">
-                                        <input type="date" class="form-control" name="fecha_final"/> 
-                                    </div>
-                                </div>                      
+                            <div class="col-lg-3 mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">Fecha Final</span>
+                                    <input type="date" class="form-control" name="fecha_final"/> 
+                                </div>                     
                             </div>
-                            <div class="col-sm-2 my-auto text-center">
-                                <button type="submit" class="btn btn-primary">
-                                    Filtrar
+                            <div class="col-lg-3 my-auto mb-3">
+                                <button type="submit" class="btn btn-danger px-5">
+                                    <i class="fa fa-search me-2" aria-hidden="true"></i>Filtrar
                                 </button>
                             </div>
                         </div>
                     </form>
                     <div class="row">
                         <div class="col-sm-12">
-                            <div id="chartdiv" style="height:600px; width:100%;"></div>
+                            <div class="d-flex justify-content-center" id="loadingchartdiv1">
+                                <div class="spinner-border text-danger" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div> <span class="ms-2 my-auto fs-6">Cargando...</span>
+                            </div>
+                            <div id="chartdiv1" style="height:500px; width:100%;" class="d-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style>
+                .amcharts-amexport-item.amcharts-amexport-item-level-0 {
+                    min-width: 120px !important;
+                }
+            </style>
+        </div>
+        <div class="col-lg-12 mt-4">
+            <div class="card border-warning">
+                <div class="card-header bg-warning">
+                    <h5 class="card-title mx-auto text-center">Reporte de plazas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="d-flex justify-content-center" id="loadingchartdiv4">
+                                <div class="spinner-border text-warning" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div> <span class="ms-2 my-auto fs-6">Cargando...</span>
+                            </div>
+                            <div id="chartdiv4" style="height:500px; width:100%;" class="d-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style>
+                .amcharts-amexport-item.amcharts-amexport-item-level-0 {
+                    min-width: 120px !important;
+                }
+            </style>
+        </div>
+        <div class="col-lg-12 mt-4">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mx-auto text-center">Reporte de evaluaciones en estado (cumple, no cumple y observado )</h5>
+                </div>
+                <div class="card-body">
+                    <form class="form-postulant-inscription">
+                        <div class="row">
+                            <div class="col-lg-6 mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">Especialista</span>
+                                    <select name=""  class="form-control select-especialista-estado">
+                                        <option value="">TODOS</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">Convocatoria</span>
+                                    <select name=""  class="form-control select-convocatoria-estado">
+                                        <option value="">TODOS</option>
+                                    </select>
+                                </div>                    
+                            </div>
+                            <div class="col-lg-6 my-auto mb-3">
+                                <button type="submit" class="btn btn-success px-5">
+                                    <i class="fa fa-search me-2" aria-hidden="true"></i>Filtrar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="d-flex justify-content-center" id="loadingchartdiv3">
+                                <div class="spinner-border text-success" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div> <span class="ms-2 my-auto fs-6">Cargando...</span>
+                            </div>
+                            <div id="chartdiv3" style="height:700px; width:100%;" class="d-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style>
+                .amcharts-amexport-item.amcharts-amexport-item-level-0 {
+                    min-width: 120px !important;
+                }
+            </style>
+        </div>
+        <div class="col-lg-12 mt-4">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mx-auto text-center">Reporte de sin evaluar, preliminar y evaluados</h5>
+                </div>
+                <div class="card-body">
+                    <form class="form-evaluation">
+                        <div class="row">
+                            <div class="col-lg-6 mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">Convocatoria</span>
+                                    <select name="convocatoria_id"  class="form-control select-convocatoria-evaluation">
+                                        <option value="">TODOS</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">Grupo de inscripción</span>
+                                    <select name="inscripcion_id"  class="form-control select-inscription-evaluation">
+                                        <option value="">TODOS</option>
+                                    </select>
+                                </div>                    
+                            </div>
+                            <div class="col-lg-6 my-auto mb-3">
+                                <button type="submit" class="btn btn-info text-white px-5">
+                                    <i class="fa fa-search me-2" aria-hidden="true"></i>Filtrar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="d-flex justify-content-center" id="loadingchartdiv2">
+                                <div class="spinner-border text-info" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div> <span class="ms-2 my-auto fs-6">Cargando...</span>
+                            </div>
+                            <div id="chartdiv2" style="height:400px; width:100%;" class="d-none"></div>
                         </div>
                     </div>
                 </div>
