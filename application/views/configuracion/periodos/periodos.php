@@ -59,7 +59,13 @@
                 <div class="card-body">
                     <form class="form-postulant-inscription">
                         <div class="row">
-                            <div class="col-lg-2">
+                            <div class="col-lg-3 mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">Periodo</span>
+                                    <select name="periodo_id" class="form-control select-periodo-adjudicado">
+                                        <option value="">TODOS</option>
+                                    </select>
+                                </div>                    
                             </div>
                             <div class="col-lg-3 mb-3">
                                 <div class="input-group">
@@ -73,7 +79,7 @@
                                     <input type="date" class="form-control" name="fecha_final"/> 
                                 </div>                     
                             </div>
-                            <div class="col-lg-3 my-auto mb-3">
+                            <div class="col-lg-3 my-auto mb-3 text-end">
                                 <button type="submit" class="btn btn-danger px-5">
                                     <i class="fa fa-search me-2" aria-hidden="true"></i>Filtrar
                                 </button>
@@ -104,6 +110,23 @@
                     <h5 class="card-title mx-auto text-center">Reporte de plazas</h5>
                 </div>
                 <div class="card-body">
+                <form class="form-plaza">
+                        <div class="row">
+                            <div class="col-lg-3 mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">Periodo</span>
+                                    <select name="periodo_id" class="form-control select-periodo-plaza">
+                                        <option value="">TODOS</option>
+                                    </select>
+                                </div>                    
+                            </div>
+                            <div class="col-lg-3 my-auto mb-3">
+                                <button type="submit" class="btn btn-success px-5">
+                                    <i class="fa fa-search me-2" aria-hidden="true"></i>Filtrar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="d-flex justify-content-center" id="loadingchartdiv4">
@@ -128,25 +151,42 @@
                     <h5 class="card-title mx-auto text-center">Reporte de evaluaciones en estado (cumple, no cumple y observado )</h5>
                 </div>
                 <div class="card-body">
-                    <form class="form-postulant-inscription">
+                    <form class="form-evaluation-estado">
                         <div class="row">
-                            <div class="col-lg-6 mb-3">
+                            <div class="col-lg-3 mb-3">
                                 <div class="input-group">
-                                    <span class="input-group-text">Especialista</span>
-                                    <select name=""  class="form-control select-especialista-estado">
-                                        <option value="">TODOS</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text">Convocatoria</span>
-                                    <select name=""  class="form-control select-convocatoria-estado">
+                                    <span class="input-group-text">Periodo</span>
+                                    <select name="periodo_id" class="form-control select-periodo-evaluation-estado">
                                         <option value="">TODOS</option>
                                     </select>
                                 </div>                    
                             </div>
-                            <div class="col-lg-6 my-auto mb-3">
+                            <div class="col-lg-3 mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">Convocatoria</span>
+                                    <select name="convocatoria_id" class="form-control select-evaluation-convocatoria-estado">
+                                        <option value="">TODOS</option>
+                                    </select>
+                                </div>                    
+                            </div>
+                            <div class="col-lg-3 mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">Especialista</span>
+                                    <select name="especialista_id" class="form-control select-evaluation-especialista-estado">
+                                        <option value="">TODOS</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">Evaluación</span>
+                                    <select name="modulo" class="form-control">
+                                        <option value="preliminar">PRELIMINAR</option>
+                                        <option value="final">FINAL</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 my-auto mb-3">
                                 <button type="submit" class="btn btn-success px-5">
                                     <i class="fa fa-search me-2" aria-hidden="true"></i>Filtrar
                                 </button>
@@ -179,7 +219,15 @@
                 <div class="card-body">
                     <form class="form-evaluation">
                         <div class="row">
-                            <div class="col-lg-6 mb-3">
+                            <div class="col-lg-3 mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">Periodo</span>
+                                    <select name="periodo_id" class="form-control select-periodo-evaluation">
+                                        <option value="">TODOS</option>
+                                    </select>
+                                </div>                    
+                            </div>
+                            <div class="col-lg-3 mb-3">
                                 <div class="input-group">
                                     <span class="input-group-text">Convocatoria</span>
                                     <select name="convocatoria_id"  class="form-control select-convocatoria-evaluation">
@@ -187,7 +235,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-6 mb-3">
+                            <div class="col-lg-3 mb-3">
                                 <div class="input-group">
                                     <span class="input-group-text">Grupo de inscripción</span>
                                     <select name="inscripcion_id"  class="form-control select-inscription-evaluation">
@@ -195,7 +243,7 @@
                                     </select>
                                 </div>                    
                             </div>
-                            <div class="col-lg-6 my-auto mb-3">
+                            <div class="col-lg-3 my-auto mb-3 text-end">
                                 <button type="submit" class="btn btn-info text-white px-5">
                                     <i class="fa fa-search me-2" aria-hidden="true"></i>Filtrar
                                 </button>

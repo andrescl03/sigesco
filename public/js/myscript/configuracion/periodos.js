@@ -20,11 +20,12 @@ $(document).ready(function () {
   });
 
   act.lan();
-
-  graficoPostulantesAdjudicados();
-  graficoReporteEvaluados();
-  graficoReporteEstados();
-  graficoPlazaDisponibles();
+  setTimeout(() => {	
+	  graficoPostulantesAdjudicados();
+	  graficoReporteEvaluados();
+	  graficoReporteEstados();
+	  graficoPlazaDisponibles();
+  }, 100);
 });
 
 var createPeriodo = function () {
@@ -152,7 +153,8 @@ var loadingPanelChart = (chart, loading) => {
 var graficoPostulantesAdjudicados = function () {
   var chart = {};
   var title = "";
-
+  var periodo_id = 0;
+  var periodos = [];
   var getData = (formData) => {
     return new Promise((resolve, reject) => {
       $.ajax({
@@ -313,10 +315,20 @@ var graficoPostulantesAdjudicados = function () {
             sweet2.show({ type: "error", text: "Error al obtener los datos" });
           });
       });
+	  let phtml = ``;
+	  const pselects = document.querySelectorAll(".select-periodo-adjudicado");
+	  pselects.forEach((select) => {
+		  periodos.forEach(periodo => {
+			  phtml += `<option value="${periodo.per_id}" ${periodo.per_id == periodo_id ? 'selected' : ''}>${periodo.per_anio}</option>`;
+		  });
+		  select.innerHTML = phtml;	
+	  });
     });
   };
 
   getData(null).then(({ data }) => {
+	periodo_id = data.periodo_id;
+	periodos = data.periodos;
     // Asignar colores aleatorios a cada entrada de datos
     data.grafico.forEach((item) => {
       item.color = getRandomColor();
@@ -330,6 +342,8 @@ var graficoPostulantesAdjudicados = function () {
 var graficoReporteEvaluados = function () {
   	var chart = {};
 	var convocatorias = [];
+	var periodo_id = 0;
+	var periodos = [];
 	var getData = (formData) => {
 		return new Promise((resolve, reject) => {
 			$.ajax({
@@ -441,6 +455,14 @@ var graficoReporteEvaluados = function () {
 				handleDataModalidades(convocatoria ? convocatoria.con_modalidades : []);
 			});		
 		});
+		let phtml = ``;
+		const pselects = document.querySelectorAll(".select-periodo-evaluation");
+		pselects.forEach((select) => {
+			periodos.forEach(periodo => {
+				phtml += `<option value="${periodo.per_id}" ${periodo.per_id == periodo_id ? 'selected' : ''}>${periodo.per_anio}</option>`;
+			});
+			select.innerHTML = phtml;	
+		});
 	};
 	
 	var handleDataConvocatorias = () => {
@@ -468,6 +490,8 @@ var graficoReporteEvaluados = function () {
 	getData(null).then(({ data }) => {
 		loadingPanelChart('chartdiv2', 'loadingchartdiv2');
 		convocatorias = data.convocatorias;
+		periodo_id = data.periodo_id;
+		periodos = data.periodos;
 		handleDataConvocatorias();
 		buildChart(data.grafico);
 		eventData();
@@ -477,6 +501,8 @@ var graficoReporteEvaluados = function () {
 var graficoReporteEstados = function () {
 	var chart = {};
 	var convocatorias = [];
+	var periodos = [];
+	var periodo_id = 0;
 	var getData = (formData) => {
 		return new Promise((resolve, reject) => {
 			$.ajax({
@@ -606,7 +632,7 @@ var graficoReporteEstados = function () {
 	};
 	
 	var eventData = () => {
-		const forms = document.querySelectorAll(".form-evaluation");
+		const forms = document.querySelectorAll(".form-evaluation-estado");
 		forms.forEach((form) => {
 			form.addEventListener("submit", (event) => {
 			event.preventDefault();
@@ -628,18 +654,27 @@ var graficoReporteEstados = function () {
 				});
 			});
 		});
-		const ceselects = document.querySelectorAll(".select-convocatoria-evaluation");
+		const ceselects = document.querySelectorAll(".select-evaluation-convocatoria-estado");
 		ceselects.forEach((select) => {
 			select.addEventListener("change", (e) => {
 				const convocatoria = convocatorias.find((convocatoria) => { return Number(convocatoria.con_id) === Number(e.target.value); });
-				handleDataModalidades(convocatoria ? convocatoria.con_modalidades : []);
+				handleDataModalidades(convocatoria ? convocatoria.especialistas : []);
 			});		
+		});
+
+		let phtml = ``;
+		const pselects = document.querySelectorAll(".select-periodo-evaluation-estado");
+		pselects.forEach((select) => {
+			periodos.forEach(periodo => {
+				phtml += `<option value="${periodo.per_id}" ${periodo.per_id == periodo_id ? 'selected' : ''}>${periodo.per_anio}</option>`;
+			});
+			select.innerHTML = phtml;	
 		});
 	};
 	
 	var handleDataConvocatorias = () => {
 		let cehtml = `<option value="">TODOS</option>`;
-		const ceselects = document.querySelectorAll(".select-convocatoria-evaluation");
+		const ceselects = document.querySelectorAll(".select-evaluation-convocatoria-estado");
 		ceselects.forEach((select) => {
 			convocatorias.forEach(convocatoria => {
 				cehtml += `<option value="${convocatoria.con_id}">${convocatoria.con_name}</option>`;
@@ -648,12 +683,12 @@ var graficoReporteEstados = function () {
 		});
 	};
 
-	var handleDataModalidades = (modalidades) => {
+	var handleDataModalidades = (especialistas) => {
 		let cehtml = `<option value="">TODO</option>`;
-		const ieselects = document.querySelectorAll(".select-inscription-evaluation");
+		const ieselects = document.querySelectorAll(".select-evaluation-especialista-estado");
 		ieselects.forEach((select) => {
-			modalidades.forEach(modalidad => {
-				cehtml += `<option value="${modalidad.gin_id}">${modalidad.gin_name}</option>`;
+			especialistas.forEach(especialista => {
+				cehtml += `<option value="${especialista.usu_dni}">${especialista.usu_nombre} ${especialista.usu_apellidos}</option>`;
 			});
 			select.innerHTML = cehtml;
 		});
@@ -662,14 +697,18 @@ var graficoReporteEstados = function () {
 	getData(null).then(({ data }) => {
 		loadingPanelChart('chartdiv3', 'loadingchartdiv3');
 		convocatorias = data.convocatorias;
-		// handleDataConvocatorias();
+		periodos = data.periodos;
+		periodo_id = data.periodo_id;
+		handleDataConvocatorias();
 		buildChart(data.grafico);
-		// eventData();
+		eventData();
 	});
 };
 
 var graficoPlazaDisponibles = function () { 
 	var chart = {};
+	var periodo_id = 0;
+	var periodos = [];
 	var getData = (formData) => {
 		return new Promise((resolve, reject) => {
 			$.ajax({
@@ -690,6 +729,46 @@ var graficoPlazaDisponibles = function () {
 				// sweet2.show({type:'error', text:error});
 			});
 		});
+	};	
+	var eventData = () => {
+		const forms = document.querySelectorAll(".form-plaza");
+		forms.forEach((form) => {
+			form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			sweet2.loading();
+			const formData = new FormData(form);
+			getData(formData)
+				.then(({ success, data, message }) => {
+				if (success) {
+					// Asignar colores aleatorios a cada entrada de datos
+					updateData(data.grafico);
+				} else {
+					console.log(message);
+				}
+				sweet2.loading(false);
+				})
+				.catch(() => {
+				sweet2.loading(false);
+				sweet2.show({ type: "error", text: "Error al obtener los datos" });
+				});
+			});
+		});
+		let phtml = ``;
+		const pselects = document.querySelectorAll(".select-periodo-plaza");
+		pselects.forEach((select) => {
+			periodos.forEach(periodo => {
+				phtml += `<option value="${periodo.per_id}" ${periodo.per_id == periodo_id ? 'selected' : ''}>${periodo.per_anio}</option>`;
+			});
+			select.innerHTML = phtml;	
+		});
+	};
+	// Función para actualizar los datos
+	const updateData = (newData) => {
+		// Asignar los nuevos datos
+		chart.data = newData;
+	
+		// Redibujar el gráfico con los nuevos datos
+		chart.invalidateData();
 	};
 	var buildChart = (data = []) => {
 	  	// Apply chart themes
@@ -777,7 +856,10 @@ var graficoPlazaDisponibles = function () {
 		}
 	};
 	getData(null).then(({ data }) => {
+		periodo_id = data.periodo_id;
+		periodos = data.periodos;
 		loadingPanelChart('chartdiv4', 'loadingchartdiv4');
 		buildChart(data.grafico);
+		eventData();
 	});
 };
