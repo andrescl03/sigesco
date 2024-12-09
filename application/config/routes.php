@@ -85,6 +85,9 @@ $route['configuracion/periodos/(:num)/update'] = 'configuracion/guardarPeriodo/$
 $route['configuracion/periodos/(:num)/remove'] = 'configuracion/eliminarPeriodo/$1';
 
 $route['configuracion/periodos/graficos/postulantes'] = 'reporteGrafico/postulantes_adjudicados';
+$route['configuracion/periodos/graficos/evaluados'] = 'reporteGrafico/reporte_evaluados';
+$route['configuracion/periodos/graficos/plazas'] = 'reporteGrafico/plaza_disponibles';
+$route['configuracion/periodos/graficos/estados'] = 'reporteGrafico/reporte_evaluacion_estados';
 
 $route['postulaciones/(:num)/ficha'] = 'postulaciones/ficha/$1';
 $route['postulaciones/(:num)/fichas'] = 'postulaciones/fichas/$1';

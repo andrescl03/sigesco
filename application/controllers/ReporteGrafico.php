@@ -28,15 +28,21 @@ class ReporteGrafico extends CI_Controller {
                 ->set_output(json_encode($this->reportegrafico_model->postulantes_adjudicados($_POST)));
     }
 
-    public function detail($id) {
+    public function plaza_disponibles() {
         return $this->output
                 ->set_content_type('application/json')
-                ->set_output(json_encode($this->reportegrafico_model->detail(compact('id'))));
+                ->set_output(json_encode($this->reportegrafico_model->plaza_disponibles($_POST)));
     }
 
-    public function update($id) {
+    public function reporte_evaluados() {
         return $this->output
                 ->set_content_type('application/json')
-                ->set_output(json_encode($this->reportegrafico_model->update(compact('id'))));
+                ->set_output(json_encode($this->reportegrafico_model->reporte_evaluados($_POST)));
+    }
+
+    public function reporte_evaluacion_estados() {
+        return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($this->reportegrafico_model->reporte_evaluacion_estados($_POST)));
     }
 }
