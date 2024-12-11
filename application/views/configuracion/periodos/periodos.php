@@ -243,7 +243,15 @@
                                     </select>
                                 </div>                    
                             </div>
-                            <div class="col-lg-3 my-auto mb-3 text-end">
+                            <div class="col-lg-3 mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text">Especialista</span>
+                                    <select name="especialista_id" class="form-control select-especialista-evaluation">
+                                        <option value="">TODOS</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 my-auto mb-3">
                                 <button type="submit" class="btn btn-info text-white px-5">
                                     <i class="fa fa-search me-2" aria-hidden="true"></i>Filtrar
                                 </button>

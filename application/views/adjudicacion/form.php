@@ -97,16 +97,6 @@
                                                             <h5 class="col"><span
                                                                     class="badge rounded-pill bg-light text-primary me-1 fs-7">1</span>
                                                                 Docente</h5>
-                                                            <?php if (!$edit) { ?>
-                                                                <!-- <div class="col text-end">
-                                                                    <button type="button"
-                                                                        class="btn btn-sm btn-outline-light btn-docente">
-                                                                        <i
-                                                                            class="fa-solid fa-file-signature fa-lg me-1"></i>
-                                                                        Buscar Docente
-                                                                    </button>
-                                                                </div> -->
-                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">

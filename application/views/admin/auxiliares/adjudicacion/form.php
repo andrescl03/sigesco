@@ -1,7 +1,7 @@
 <style>
     .modal-body {
         font-family: Arial, sans-serif;
-        display: flex;
+        /*display: flex;*/
         justify-content: center;
         align-items: center;
         /*height: 100vh;*/
@@ -32,11 +32,17 @@
     .controls {
         margin: 100px 20px;
     }
+    .dataTables_info {
+        float: left;
+    }
+    .paging_simple_numbers {
+        float: right;
+    }
+    .min-width-table-postulant {
+        min-width: 100px;
+    }
 </style>
-<?php 
-    $edit = isset($data['adjudicacion']) ? true : false; 
-    $tipos = isset($data['tipos']) ? $data['tipos'] : [];
-?>
+<?php $edit = isset($data['adjudicacion']) ? true : false ?>
 <div id="AppFormAdjudicacionAdmin" data-id="<?php echo $edit ? $data['adjudicacion']->id : 0 ?>"
     data-now="<?php echo date('Y-m-d H:i'); ?>">
     <h4 class="mt-3"><b><i class="far fa-object-ungroup fa-sm"></i> <?php echo $edit ? "Editar" : "Crear" ?>
@@ -54,7 +60,7 @@
                         <div class="card-body text-dark">
                             <div class="text-right mb-2">
 
-                                <div class="row">
+                                <div class="row <?= $edit ? 'd-none' : '' ?>">
                                     <div class="col-md-12 mb-3">
                                         <div class="card border border-primary">
                                             <div class="card-header bg-dark text-white">
@@ -91,39 +97,30 @@
                                                             <h5 class="col"><span
                                                                     class="badge rounded-pill bg-light text-primary me-1 fs-7">1</span>
                                                                 Auxiliar</h5>
-                                                            <?php if (!$edit) { ?>
-                                                                <div class="col text-end">
-                                                                    <button type="button"
-                                                                        class="btn btn-sm btn-outline-light btn-docente">
-                                                                        <i
-                                                                            class="fa-solid fa-file-signature fa-lg me-1"></i>
-                                                                        Buscar Auxiliar
-                                                                    </button>
-                                                                </div>
-                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
-                                                        <div class="row mb-3">
+                                                        <div class="row mb-3 <?= $edit ? 'd-none' : '' ?>">
                                                             <div class="col-sm-12">
                                                                 <div class="input-group">
-                                                                    <input type="text"
-                                                                        class="form-control form-control-sm shadow-none"
+                                                                    <input type="search"
+                                                                        class="form-control shadow-none input-search-1"
                                                                         placeholder="Escribe aquí..." id="txtBuscador1">
                                                                     <button type="button"
-                                                                        class="input-group-text btn btn-sm btn-primary shadow-none btn-search-1">Filtrar</button>
+                                                                        class="input-group-text btn btn-primary shadow-none btn-search-1">Buscar</button>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
-                                                                <div class="table-responsive">
+                                                                <div class="">
                                                                     <table
                                                                         class="table table-bordered results table-postulaciones mb-0"
-                                                                        id="tablePostulantes">
+                                                                        id="tablePostulantes" style="width:100%;">
                                                                         <thead>
                                                                             <tr class="cabecera_tabla_2 bg-primary">
-                                                                                <th>Orden de mérito</th>
-                                                                                <th>Auxiliar</th>
-                                                                                <th>Número de Documento</th>
+                                                                                <th>Convocatoría</th>
+                                                                                <th>Tipo</th>
+                                                                                <th>Nombre del Auxiliar</th>
+                                                                                <th>N° de Documento</th>
                                                                                 <th>Modalidad</th>
                                                                                 <th>Nivel</th>
                                                                                 <th>Especialidad</th>
@@ -131,10 +128,8 @@
                                                                                 <th>Prelación</th>
                                                                                 <th>Fecha de Registro</th>
                                                                                 <th class="text-center">Estado</th>
-                                                                                <th class="text-center">Nro de intentos
-                                                                                </th>
-                                                                                <th></th>
-                                                                                <th></th>
+                                                                                <th class="text-center">Nro de intentos</th>
+                                                                                <th>Acciones</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -142,13 +137,11 @@
                                                                     </table>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-3 mt-4 offset-9">
+                                                            <!-- <div class="col-md-3 mt-4 offset-9">
                                                                 <button type="button"
                                                                     class="btn w-100 btn-primary btn-docente-add">Agregar</button>
-                                                            </div>
-
+                                                            </div> -->
                                                         </div>
-
                                                          <div class="col-md-12 list-docente">
                                                             No hay registro para mostrar
                                                         </div>
@@ -164,26 +157,26 @@
                                                                     class="badge rounded-pill bg-light text-success me-1 fs-7">2</span>
                                                                 Plaza</h5>
                                                             <?php if (!$edit) { ?>
-                                                                <div class="col text-end">
+                                                                <!-- <div class="col text-end">
                                                                     <button type="button"
                                                                         class="btn btn-sm btn-outline-light btn-plaza">
                                                                         <i
                                                                             class="fa-solid fa-file-signature fa-lg me-1"></i>
                                                                         Buscar Plaza
                                                                     </button>
-                                                                </div>
+                                                                </div> -->
                                                             <?php } ?>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
-                                                         <div class="row mb-3">
+                                                         <div class="row mb-3 <?= $edit ? 'd-none' : '' ?>">
                                                             <div class="col-sm-12">
                                                                 <div class="input-group">
-                                                                    <input type="text"
-                                                                        class="form-control form-control-sm shadow-none"
+                                                                    <input type="search"
+                                                                        class="form-control shadow-none input-search"
                                                                         placeholder="Escribe aquí..." id="txtBuscador">
                                                                     <button type="button"
-                                                                        class="input-group-text btn btn-sm btn-success shadow-none btn-search">Filtrar</button>
+                                                                        class="input-group-text btn btn-success shadow-none btn-search">Filtrar</button>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
@@ -207,10 +200,9 @@
                                                                 </table>
                                                             </div>
 
-                                                            <div class="col-md-3 mt-4 offset-9">
+                                                            <!-- <div class="col-md-3 mt-4 offset-9">
                                                                     <button type="button" class="btn w-100 btn btn-success btn-plaza-add">Agregar</button>
-                                                            </div>
-                                                            
+                                                            </div>    -->
                                                         </div>
                                                          <div class="col-md-12 list-plaza">
                                                             No hay registro para mostrar
@@ -254,7 +246,7 @@
                                                                     <label for="" class="form-label">Término
                                                                         Contrato</label>
                                                                     <input type="date" name="fecha_final"
-                                                                        class="form-control" placeholder="" required />
+                                                                        class="form-control shadow-none bg-white" placeholder="" readonly />
                                                                 </div>
                                                                 <button type="button"
                                                                     class="btn btn-sm btn-warning text-white btn-obtener-fecha-inicio-fin">
@@ -309,7 +301,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12 mt-3 text-end">
-                                        <a href="<?php echo base_url(); ?>adjudicaciones" type="button"
+                                        <a href="<?php echo base_url(); ?>/admin/auxiliares/adjudicaciones" type="button"
                                             class="btn btn-secondary">
                                             Cancelar
                                         </a>
@@ -399,25 +391,44 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="modalFiltroBusqueda" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+    <div class="modal fade" id="modalFiltroBusqueda" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Asignación de busqueda</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row mb-3">
+                    <div class="row">
+                        <div class="col-lg-4 mb-3">
+                            <label class="form-label">Modalidad</label>
+                            <select class="form-control select-modalidades shadow-none" name="modalidad" required>
+                                <option value="" selected>[SELECCIONE]</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                            <label class="form-label">Nivel</label>
+                            <select class="form-control select-niveles shadow-none" name="nivel" required>
+                                <option value="" selected>[SELECCIONE]</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                            <label class="form-label">Especialidad</label>
+                            <select class="form-control select-especialidades shadow-none" name="especialidad" required>
+                                <option value="" selected>[SELECCIONE]</option>
+                            </select>
+                        </div>                        
+                    </div>
+                    <div class="row">
                         <div class="col-sm-12">
                             <div class="input-group">
-                                <input type="text" class="form-control form-control-sm shadow-none"
+                                <input type="search" class="form-control shadow-none input-search-2"
                                     placeholder="Escribe aquí..." id="txtBuscador2">
                                 <button type="button"
-                                    class="input-group-text btn btn-sm btn-primary shadow-none btn-search-2">Buscar</button>
+                                    class="input-group-text btn btn-primary shadow-none btn-search-2">Buscar</button>
                             </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-12 mb-3">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-modalidades mb-0" id="tableModalidades"
                                     width="100%">
@@ -435,17 +446,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="col-sm-12 mt-2">
-                            <label class="form-label" for="">Seleccione el tipo de postulación</label>
-                            <select name="tipo_postulacion_convocatoria" id="tipo_postulacion_convocatoria" class="form-select form-control-sm">
-                                <option hidden value="0">[SELECCIONE]</option>
-                                <?php foreach ($tipos as $tipo) { ?>
-                                <option value="<?= $tipo->tipo_id ?>">
-                                    <?= $tipo->descripcion ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                     </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

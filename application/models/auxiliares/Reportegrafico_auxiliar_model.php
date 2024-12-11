@@ -1,5 +1,5 @@
 <?php
-class Reportegrafico_model extends CI_Model
+class Reportegrafico_auxiliar_model extends CI_Model
 {
 
     public function __construct()
@@ -53,13 +53,13 @@ class Reportegrafico_model extends CI_Model
                         T6.mod_nombre, 
                         T6.mod_abreviatura,
                         CONCAT(T4.esp_descripcion,' ', T5.niv_descripcion, ' ', T6.mod_abreviatura) AS category
-                    FROM adjudicaciones T1 
-                    JOIN postulaciones T2 ON T2.id = T1.postulacion_id
+                    FROM auxiliar_adjudicaciones T1 
+                    JOIN auxiliar_postulaciones T2 ON T2.id = T1.postulacion_id
                     JOIN grupo_inscripcion T3 ON T3.gin_id = T2.inscripcion_id
                     JOIN especialidades T4 ON T4.esp_id = T3.especialidades_esp_id
                     JOIN niveles T5 ON T5.niv_id = T4.niveles_niv_id
                     JOIN modalidades T6 ON T6.mod_id = T5.modalidad_mod_id
-                    WHERE T3.procesos_pro_id = 1
+                    WHERE T3.procesos_pro_id = 2
                     AND T3.periodos_per_id = $periodo_id
                     $where
                     GROUP BY T4.esp_id;";
@@ -107,13 +107,13 @@ class Reportegrafico_model extends CI_Model
                         T6.mod_nombre, 
                         T6.mod_abreviatura,
                         CONCAT(T4.esp_descripcion,' ', T5.niv_descripcion, ' ', T6.mod_abreviatura) AS category
-                    FROM adjudicaciones T1 
-                    JOIN postulaciones T2 ON T2.id = T1.postulacion_id
+                    FROM auxiliar_adjudicaciones T1 
+                    JOIN auxiliar_postulaciones T2 ON T2.id = T1.postulacion_id
                     JOIN grupo_inscripcion T3 ON T3.gin_id = T2.inscripcion_id
                     JOIN especialidades T4 ON T4.esp_id = T3.especialidades_esp_id
                     JOIN niveles T5 ON T5.niv_id = T4.niveles_niv_id
                     JOIN modalidades T6 ON T6.mod_id = T5.modalidad_mod_id
-                    WHERE T3.procesos_pro_id = 1
+                    WHERE T3.procesos_pro_id = 2
                     AND T3.periodos_per_id = $periodo_id
                     GROUP BY T4.esp_id;";
             $items = $this->db->query($sql)->result_array();
@@ -196,7 +196,7 @@ class Reportegrafico_model extends CI_Model
                     JOIN grupo_inscripcion AS GIN ON GIN.gin_id = POS.inscripcion_id
                     LEFT JOIN evaluacion_pun_exp AS EPE ON POS.id = EPE.postulacion_id
                     WHERE POS.deleted_at IS NULL
-                    AND GIN.procesos_pro_id = 1
+                    AND GIN.procesos_pro_id = 2
                     AND GIN.periodos_per_id = $periodo_id
                     $pwhere
                     GROUP BY POS.id";
@@ -271,11 +271,11 @@ class Reportegrafico_model extends CI_Model
                     INNER JOIN niveles niv ON moda.mod_id = niv.modalidad_mod_id 
                     INNER JOIN especialidades esp ON niv.niv_id = esp.niveles_niv_id 
                     INNER JOIN grupo_inscripcion gin ON esp.esp_id = gin.especialidades_esp_id 
-                    INNER JOIN convocatorias_detalle cde ON gin.gin_id = cde.grupo_inscripcion_gin_id 
-                    INNER JOIN convocatorias con ON con.con_id = cde.convocatorias_con_id 
+                    INNER JOIN auxiliar_convocatorias_detalle cde ON gin.gin_id = cde.grupo_inscripcion_gin_id 
+                    INNER JOIN auxiliar_convocatorias con ON con.con_id = cde.convocatorias_con_id 
                     WHERE cde.cde_estado = 1 
-                    AND gin.periodos_per_id = $periodo_id 
-                    AND gin.procesos_pro_id = 1
+                    AND gin.periodos_per_id = $periodo_id
+                    AND gin.procesos_pro_id = 2
                     ORDER BY con.con_id desc, moda.mod_id asc, niv.niv_id asc, esp.esp_id ASC;";
             $modalidades = $this->db->query($sql)->result_array();
 
@@ -379,17 +379,17 @@ class Reportegrafico_model extends CI_Model
                         con.con_id, 
                         con.con_tipo as convocatoria_tipo_id,
                         CONCAT(esp.esp_descripcion,' ', niv.niv_descripcion, ' ', moda.mod_abreviatura) AS category
-                    FROM postulaciones pos
-                    INNER JOIN evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
+                    FROM auxiliar_postulaciones pos
+                    INNER JOIN auxiliar_evaluacion_pun_exp epe ON epe.postulacion_id = pos.id
                     INNER JOIN usuarios usu ON usu.usu_dni = epe.epe_especialistaAsignado
-                    INNER JOIN convocatorias con ON con.con_id = pos.convocatoria_id
-                    INNER JOIN postulacion_evaluaciones pe ON pos.id = pe.postulacion_id AND pe.promedio = 0
+                    INNER JOIN auxiliar_convocatorias con ON con.con_id = pos.convocatoria_id
+                    INNER JOIN auxiliar_postulacion_evaluaciones pe ON pos.id = pe.postulacion_id AND pe.promedio = 0
                     INNER JOIN grupo_inscripcion gin ON gin.gin_id = pos.inscripcion_id
                     JOIN especialidades esp ON esp.esp_id = gin.especialidades_esp_id
                     JOIN niveles niv ON niv.niv_id = esp.niveles_niv_id
                     JOIN modalidades moda ON moda.mod_id = niv.modalidad_mod_id
                     WHERE pos.deleted_at IS NULL
-                    AND gin.procesos_pro_id = 1
+                    AND gin.procesos_pro_id = 2
                     AND gin.periodos_per_id = $periodo_id";
             $all = $this->db->query($sql)->result_array();
 
@@ -435,7 +435,7 @@ class Reportegrafico_model extends CI_Model
                 $sql = "SELECT
                             *,
                             CONCAT('CONV-', LPAD(con_numero, 4, '0'), '-', con_anio) as con_name
-                        FROM convocatorias
+                        FROM auxiliar_convocatorias
                         WHERE con_id IN (".implode(",", $convocatoria_ids).") ORDER BY con_numero DESC";
                 $convocatorias = $this->db->query($sql)->result_array();
             }
