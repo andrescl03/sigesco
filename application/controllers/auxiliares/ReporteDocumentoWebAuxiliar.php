@@ -1321,7 +1321,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
             $this->pdf->Cell(0, 10, utf8_decode('CONTRATACIÓN POR EVALUACIÓN DE EXPEDIENTE'), 0, 0, 'C');
         }
 
-        $conformidad = !empty($adjudicacion->periodo->per_adjudicacion_acta_conformidad_auxiliar) ? $adjudicacion->periodo->per_adjudicacion_acta_conformidad : "De conformidad con el resultado obtenido en el Proceso para Contratación de Docentes, regulado por la Norma Técnica aprobada con D.S. N° 0020-2023-MINEDU, se adjudica el cargo vacante a:";
+        $conformidad = !empty($adjudicacion->periodo->per_adjudicacion_acta_conformidad_auxiliar) ? $adjudicacion->periodo->per_adjudicacion_acta_conformidad_auxiliar : "De conformidad con el resultado obtenido en el Proceso para Contratación de Docentes, regulado por la Norma Técnica aprobada con D.S. N° 0020-2023-MINEDU, se adjudica el cargo vacante a:";
         $this->pdf->Ln(5);
         $this->pdf->SetFont('Arial', '', 9);
         $this->pdf->Ln(10);
