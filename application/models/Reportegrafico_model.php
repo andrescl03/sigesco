@@ -216,13 +216,15 @@ class Reportegrafico_model extends CI_Model
                 $sql = "SELECT
                             *
                         FROM usuarios
-                        WHERE usu_dni IN (".implode(",", $especialista_dnis).")";
+                        WHERE usu_dni IN ('".implode("','", $especialista_dnis)."')";
                 $especialistas = $this->db->query($sql)->result_array();
             }
 
             $key_especialistas = [];
             foreach ($especialistas as $k => $v) {
-                $key_especialistas[$v['usu_dni']] = $v; 
+                if ($v['usu_dni']) {
+                    $key_especialistas[$v['usu_dni']] = $v; 
+                }
             }
 
             $cantidad_preliminar = 0;
@@ -445,13 +447,15 @@ class Reportegrafico_model extends CI_Model
                 $sql = "SELECT
                             *
                         FROM usuarios
-                        WHERE usu_dni IN (".implode(",", $especialista_dnis).")";
+                        WHERE usu_dni IN ('".implode("','", $especialista_dnis)."')";
                 $especialistas = $this->db->query($sql)->result_array();
             }
 
             $key_especialistas = [];
             foreach ($especialistas as $k => $v) {
-                $key_especialistas[$v['usu_dni']] = $v; 
+                if ($v['usu_dni']) {
+                    $key_especialistas[$v['usu_dni']] = $v; 
+                }
             }
 
             foreach ($convocatorias as $k => $v) {
