@@ -97,27 +97,17 @@
                                                             <h5 class="col"><span
                                                                     class="badge rounded-pill bg-light text-primary me-1 fs-7">1</span>
                                                                 Auxiliar</h5>
-                                                            <?php if (!$edit) { ?>
-                                                               <!--    <div class="col text-end">
-                                                                    <button type="button"
-                                                                        class="btn btn-sm btn-outline-light btn-docente">
-                                                                        <i
-                                                                            class="fa-solid fa-file-signature fa-lg me-1"></i>
-                                                                        Buscar Auxiliar
-                                                                    </button>
-                                                                </div>-->
-                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
-                                                    <div class="row mb-3 <?= $edit ? 'd-none' : '' ?>">
+                                                        <div class="row mb-3 <?= $edit ? 'd-none' : '' ?>">
                                                             <div class="col-sm-12">
                                                                 <div class="input-group">
-                                                                    <input type="text"
-                                                                        class="form-control form-control-sm shadow-none"
+                                                                    <input type="search"
+                                                                        class="form-control shadow-none input-search-1"
                                                                         placeholder="Escribe aquí..." id="txtBuscador1">
                                                                     <button type="button"
-                                                                        class="input-group-text btn btn-sm btn-primary shadow-none btn-search-1">Filtrar</button>
+                                                                        class="input-group-text btn btn-primary shadow-none btn-search-1">Buscar</button>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
@@ -129,7 +119,7 @@
                                                                             <tr class="cabecera_tabla_2 bg-primary">
                                                                                 <th>Convocatoría</th>
                                                                                 <th>Tipo</th>
-                                                                                <th>Nombre del Docente</th>
+                                                                                <th>Nombre del Auxiliar</th>
                                                                                 <th>N° de Documento</th>
                                                                                 <th>Modalidad</th>
                                                                                 <th>Nivel</th>
@@ -147,13 +137,11 @@
                                                                     </table>
                                                                 </div>
                                                             </div>
-                                                           <!--  <div class="col-md-3 mt-4 offset-9">
+                                                            <!-- <div class="col-md-3 mt-4 offset-9">
                                                                 <button type="button"
                                                                     class="btn w-100 btn-primary btn-docente-add">Agregar</button>
                                                             </div> -->
-
                                                         </div>
-
                                                          <div class="col-md-12 list-docente">
                                                             No hay registro para mostrar
                                                         </div>
@@ -169,26 +157,26 @@
                                                                     class="badge rounded-pill bg-light text-success me-1 fs-7">2</span>
                                                                 Plaza</h5>
                                                             <?php if (!$edit) { ?>
-                                                             <!--   <div class="col text-end">
+                                                                <!-- <div class="col text-end">
                                                                     <button type="button"
                                                                         class="btn btn-sm btn-outline-light btn-plaza">
                                                                         <i
                                                                             class="fa-solid fa-file-signature fa-lg me-1"></i>
                                                                         Buscar Plaza
                                                                     </button>
-                                                                </div>-->
+                                                                </div> -->
                                                             <?php } ?>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
-                                                    <div class="row mb-3 <?= $edit ? 'd-none' : '' ?>">
+                                                         <div class="row mb-3 <?= $edit ? 'd-none' : '' ?>">
                                                             <div class="col-sm-12">
                                                                 <div class="input-group">
-                                                                    <input type="text"
-                                                                        class="form-control form-control-sm shadow-none"
+                                                                    <input type="search"
+                                                                        class="form-control shadow-none input-search"
                                                                         placeholder="Escribe aquí..." id="txtBuscador">
                                                                     <button type="button"
-                                                                        class="input-group-text btn btn-sm btn-success shadow-none btn-search">Filtrar</button>
+                                                                        class="input-group-text btn btn-success shadow-none btn-search">Filtrar</button>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
@@ -212,10 +200,9 @@
                                                                 </table>
                                                             </div>
 
-                                                          <!--  <div class="col-md-3 mt-4 offset-9">
+                                                            <!-- <div class="col-md-3 mt-4 offset-9">
                                                                     <button type="button" class="btn w-100 btn btn-success btn-plaza-add">Agregar</button>
-                                                            </div>   -->
-                                                            
+                                                            </div>    -->
                                                         </div>
                                                          <div class="col-md-12 list-plaza">
                                                             No hay registro para mostrar
@@ -314,7 +301,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12 mt-3 text-end">
-                                        <a href="<?php echo base_url(); ?>adjudicaciones" type="button"
+                                        <a href="<?php echo base_url(); ?>/admin/auxiliares/adjudicaciones" type="button"
                                             class="btn btn-secondary">
                                             Cancelar
                                         </a>
@@ -402,7 +389,8 @@
         </div>
     </div>
 
- 
+
+    <!-- Modal -->
     <div class="modal fade" id="modalFiltroBusqueda" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">

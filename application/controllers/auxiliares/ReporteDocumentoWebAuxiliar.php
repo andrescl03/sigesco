@@ -1279,6 +1279,11 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
         $firmas = $adjudicacion->firmas;
         $tipo_documento = $postulante->tipo_documento == 1 ? 'DNI' : 'C.E';
         // echo json_encode($firmas); exit;
+        $loc_distrito = "SAN JUAN DE LURIGANCHO / AGUSTINO";
+        if ($adjudicacion && $adjudicacion->localie->loc_distrito) {
+            $loc_distrito = $adjudicacion->localie->loc_distrito;
+        }
+
         $this->db->reconnect();
 
         if (empty($adjudicacion)) {
@@ -1316,13 +1321,13 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
             $this->pdf->Cell(0, 10, utf8_decode('CONTRATACIÓN POR EVALUACIÓN DE EXPEDIENTE'), 0, 0, 'C');
         }
 
-
+        $conformidad = !empty($adjudicacion->periodo->per_adjudicacion_acta_conformidad_auxiliar) ? $adjudicacion->periodo->per_adjudicacion_acta_conformidad_auxiliar : "De conformidad con el resultado obtenido en el Proceso para Contratación de Docentes, regulado por la Norma Técnica aprobada con D.S. N° 0020-2023-MINEDU, se adjudica el cargo vacante a:";
         $this->pdf->Ln(5);
         $this->pdf->SetFont('Arial', '', 9);
         $this->pdf->Ln(10);
         // $this->Cell(20, 4,utf8_decode('De conformida con el resultado obtenido en el Proceso para Contratación de Auxiliars, regulado por la Norma Técnica aprobada con R.M. Nº 023-2015-MINEDU, se adjunta el cargo vacante a:'),'',0, 'L', 0);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
-        $this->pdf->MultiCell(180, 5, utf8_decode('De conformidad con el resultado obtenido en el Proceso para Contratación de Auxiliares, regulado por R.V.M. N° 005-2024-MINEDU / O.M. 016-2024-MINEDU/VMGPDIGEDD, se adjudica el cargo vacante a:'), 0);
+        $this->pdf->MultiCell(180, 5, utf8_decode($conformidad), 0);
         $this->pdf->Ln(3);
 
         $this->pdf->Ln(5);
@@ -1506,7 +1511,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'Distrito', '', 0, 'L', 0);
         $this->pdf->Cell(10, 7, ':', '', 0, 'C', 0);
-        $this->pdf->Cell(0, 7, utf8_decode('SAN JUAN DE LURIGANCHO / AGUSTINO'), '', 0, 'L', 0);
+        $this->pdf->Cell(0, 7, strtoupper(utf8_decode($loc_distrito)), '', 0, 'L', 0);
         $this->pdf->Ln(4);
         $this->pdf->Cell(5, 7, '', '', 0, 'C', 0);
         $this->pdf->Cell(40, 7, 'Provincia', '', 0, 'L', 0);
@@ -1802,6 +1807,11 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
         $plaza = $adjudicacion->plaza;
         $firmas = $adjudicacion->firmas;
         $tipo_documento = $postulante->tipo_documento == 1 ? 'DNI' : 'C.E';
+
+        $loc_distrito = "San Juan de Lurigancho y El Agustino";
+        if ($adjudicacion && $adjudicacion->localie->loc_distrito) {
+            $loc_distrito = $adjudicacion->localie->loc_distrito;
+        }
 
         $this->db->reconnect();
 
@@ -2476,7 +2486,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
         $this->pdf->SetFont('Times', 'BI', 13);
 
         $this->pdf->Ln(2);
-        $this->pdf->Cell(200, 7, utf8_decode('Unidad de Gestión Educativa Local Nº 05 - San Juan de Lurigancho y El Agustino'), 0, 0, 'C', 0);
+        $this->pdf->Cell(200, 7, utf8_decode('Unidad de Gestión Educativa Local Nº 05 - ' . $loc_distrito), 0, 0, 'C', 0);
         $this->pdf->Ln(6);
         $this->pdf->SetFont('Arial', 'IB', 9);
         $this->pdf->Cell(200, 5, utf8_decode('"Año del Bicentenario, de la consolidación de nuestra Independencia,'), 0, 0, 'C', 0);
@@ -2496,7 +2506,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
         $cellHeight = 4.4;
         $this->pdf->SetFont('Arial', '', $fontSize);
         //          $this->pdf->Cell(10, $cellHeight, utf8_decode( '' ), 0, 0, 'J', 0);
-        $this->pdf->Cell(144, 5, utf8_decode('San Juan de Lurigancho y El Agustino,'), 0, 0, 'C', 0);
+        $this->pdf->Cell(144, 5, utf8_decode($loc_distrito).",", 0, 0, 'C', 0);
         $this->pdf->Ln(10);
         $this->pdf->SetFont('Arial', '', $fontSize);
         //          $this->pdf->Cell(10, $cellHeight, utf8_decode( '' ), 0, 0, 'J', 0);
@@ -2850,7 +2860,7 @@ class ReporteDocumentoWebAuxiliar extends CI_Controller
         $this->pdf->Cell(170, $cellHeight, utf8_decode('Directora del Programa Sectorial II'), 0, 0, 'C', 0);
         $this->pdf->Ln(4);
 
-        $this->pdf->Cell(170, $cellHeight, utf8_decode('Unidad de Gestión Educativa Local Nº 05 - San Juan de Lurigancho y El Agustino'), 0, 0, 'C', 0);
+        $this->pdf->Cell(170, $cellHeight, utf8_decode('Unidad de Gestión Educativa Local Nº 05 - '.$loc_distrito), 0, 0, 'C', 0);
 
         $this->pdf->Ln(7);
 

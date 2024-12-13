@@ -15,6 +15,7 @@ const AppPlazaIndex = () => {
                     dataNiveles: JSON.parse($('#AppIndexPlaza').attr('data-niveles')),
                     any: 0,
                     id_tipo_perfil: '',
+                    especialidades: [],
                     niveles: [],
                     modalidades: []
                 }
@@ -29,7 +30,7 @@ const AppPlazaIndex = () => {
                 initialize: () => {
                     self.clicks();
                     self.pagination(self.onActionRows);
-                    self.listaModalidades(),
+                    self.listaModalidades();
                     choiceCboxColegio = new Choices(document.querySelector(".choices-single"));
                  },
                 listaModalidades: () => {
@@ -84,6 +85,7 @@ const AppPlazaIndex = () => {
                                 }
                                 sweet2.loading(false);
                                 self.any = 0;
+                                self.especialidades = data.especialidades;
                                 self.modalidades = data.modalidades;
                                 self.niveles = data.niveles;
                                 self.colegios = data.colegios;
@@ -230,6 +232,21 @@ const AppPlazaIndex = () => {
                             });
                         })
                     });
+                 
+                    const modalidadSelects = dom.querySelectorAll('.select-modalidad');
+                    modalidadSelects.forEach(select => {
+                        select.addEventListener('change', (e) => {
+                            self.listNiveles(e.target.value);
+                        });
+                    });
+        
+                    const nivelSelects = dom.querySelectorAll('.select-nivel');
+                    nivelSelects.forEach(select => {
+                        select.addEventListener('change', (e) => {
+                            self.listEspecialidades(e.target.value);
+                        });
+                    });
+                    
                 },
                 pagination: (_callback = ()=>{}) => {
                     self.table = $('#tableIndex').DataTable({
@@ -633,6 +650,7 @@ const AppPlazaIndex = () => {
                                 self.any = id;
                                 self.modalidades = data.modalidades;
                                 self.niveles = data.niveles;
+                                self.especialidades = data.especialidades;
                                 self.colegios = data.colegios;
                                 self.setPlaza(data.plaza);
                                 self.modalPlaza.show();             
@@ -683,7 +701,7 @@ const AppPlazaIndex = () => {
                     dom.querySelector('select[name="tipo_convocatoria"]').value = plaza.tipo_convocatoria;
                     choiceCboxColegio.setChoiceByValue(plaza.colegio_id);
                     dom.querySelector('input[name="especialidad"]').value = plaza.especialidad;
-                    dom.querySelector('input[name="especialidad_general"]').value = plaza.especialidad_general;
+                    // dom.querySelector('input[name="especialidad_general"]').value = plaza.especialidad_general;
                     dom.querySelector('input[name="jornada"]').value = plaza.jornada;
                     dom.querySelector('select[name="tipo_vacante"]').value = plaza.tipo_vacante;
                     dom.querySelector('input[name="motivo_vacante"]').value = plaza.motivo_vacante;
@@ -691,7 +709,7 @@ const AppPlazaIndex = () => {
                     dom.querySelector('input[name="fecha_inicio"]').value = plaza.fecha_inicio;
                     dom.querySelector('input[name="fecha_fin"]').value = plaza.fecha_fin;
                     
-                    self.listModalidades(plaza.mod_id, plaza.nivel_id);
+                    self.listModalidades(plaza.mod_id, plaza.nivel_id, plaza.especialidad_general_id);
                 }
             },
             renders: {
@@ -725,7 +743,7 @@ const AppPlazaIndex = () => {
                         tbody.innerHTML = html;
                     });
                 },
-                listModalidades: (mod_id = 0, niv_id = 0) => {
+                listModalidades: (mod_id = 0, niv_id = 0, esp_id = 0) => {
                     const selects = dom.querySelectorAll('.select-modalidad');
                     selects.forEach(select => {
                         let html = `<option value="" hidden selected>Elegir...</option>`;
@@ -735,14 +753,15 @@ const AppPlazaIndex = () => {
                             });
                         }
                         select.innerHTML = html;
-                        select.addEventListener('change', (e) => {
-                            self.listNiveles(e.target.value);
-                        });
+                        // select.addEventListener('change', (e) => {
+                        //     self.listNiveles(e.target.value);
+                        // });
                     });
                     dom.querySelector('select[name="mod_id"]').value = Number(mod_id) > 0 ? mod_id : '';
-                    self.listNiveles(mod_id, niv_id);
+                    self.listNiveles(mod_id, niv_id, esp_id);
+                    self.listEspecialidades(niv_id, esp_id);
                 },
-                listNiveles: (mod_id = 0, niv_id = 0) => {
+                listNiveles: (mod_id = 0, niv_id = 0, esp_id = 0) => {
                     const niveles = [];
                     if (Number(mod_id) > 0) {
                         self.niveles.forEach(n => {
@@ -762,6 +781,28 @@ const AppPlazaIndex = () => {
                         select.innerHTML = html;
                     });
                     dom.querySelector('select[name="niv_id"]').value = Number(niv_id) > 0 ? niv_id : '';
+                    self.listEspecialidades(niv_id, esp_id);
+                },
+                listEspecialidades: (niv_id = 0, esp_id = 0) => {
+                    const especialidades = [];
+                    if (Number(niv_id) > 0) {
+                        self.especialidades.forEach(n => {
+                            if (niv_id == n.niveles_niv_id) {
+                                especialidades.push(n);
+                            }
+                        });
+                    }
+                    const selects = dom.querySelectorAll('.select-especialidad-general');
+                    selects.forEach(select => {
+                        let html = `<option value="" hidden selected>Elegir...</option>`;
+                        if (especialidades.length > 0) {
+                            especialidades.forEach(n => {
+                                html += `<option value="${n.esp_id}">${n.esp_descripcion}</option>`;
+                            });
+                        }
+                        select.innerHTML = html;
+                    });
+                    dom.querySelector('select[name="esp_id"]').value = Number(esp_id) > 0 ? esp_id : '';
                 }
             },
             utilities: {

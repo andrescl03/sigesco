@@ -226,6 +226,7 @@ var graficoPostulantesAdjudicados = function () {
     // Configurar el eje Y (valores)
     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.title.text = "Cantidad de adjudicados";
+	valueAxis.min = 0; // Asegúrate de que el eje comience en 0
 
     // Configurar la serie de barras
     var series = chart.series.push(new am4charts.ColumnSeries());
@@ -344,6 +345,7 @@ var graficoReporteEvaluados = function () {
 	var convocatorias = [];
 	var periodo_id = 0;
 	var periodos = [];
+	var inscriptions = [];
 	var getData = (formData) => {
 		return new Promise((resolve, reject) => {
 			$.ajax({
@@ -381,6 +383,8 @@ var graficoReporteEvaluados = function () {
 		categoryAxis.title.text = "Módulos";
 		var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 		valueAxis.title.text = "Evaluados";
+		valueAxis.min = 0; // Asegúrate de que el eje comience en 0
+
 		// Crear serie
 		var series = chart.series.push(new am4charts.ColumnSeries());
 		series.dataFields.valueY = "value";
@@ -452,9 +456,19 @@ var graficoReporteEvaluados = function () {
 		ceselects.forEach((select) => {
 			select.addEventListener("change", (e) => {
 				const convocatoria = convocatorias.find((convocatoria) => { return Number(convocatoria.con_id) === Number(e.target.value); });
-				handleDataModalidades(convocatoria ? convocatoria.con_modalidades : []);
+				inscriptions = convocatoria ? convocatoria.con_modalidades : [];
+				handleDataModalidades(inscriptions);
 			});		
 		});
+		const ciselects = document.querySelectorAll(".select-inscription-evaluation");
+		ciselects.forEach((select) => {
+			select.addEventListener("change", (e) => {
+				console.log(inscriptions);
+				const inscription = inscriptions.find((inscription) => { return Number(inscription.esp_id) === Number(e.target.value); });
+				handleDataEspecialistas(inscription ? inscription.especialistas : []);
+			});		
+		});
+
 		let phtml = ``;
 		const pselects = document.querySelectorAll(".select-periodo-evaluation");
 		pselects.forEach((select) => {
@@ -477,11 +491,22 @@ var graficoReporteEvaluados = function () {
 	};
 
 	var handleDataModalidades = (modalidades) => {
-		let cehtml = `<option value="">TODO</option>`;
+		let cehtml = `<option value="">TODOS</option>`;
 		const ieselects = document.querySelectorAll(".select-inscription-evaluation");
 		ieselects.forEach((select) => {
 			modalidades.forEach(modalidad => {
 				cehtml += `<option value="${modalidad.gin_id}">${modalidad.gin_name}</option>`;
+			});
+			select.innerHTML = cehtml;
+		});
+	};
+
+	var handleDataEspecialistas = (modalidades) => {
+		let cehtml = `<option value="">TODOS</option>`;
+		const ieselects = document.querySelectorAll(".select-especialista-evaluation");
+		ieselects.forEach((select) => {
+			modalidades.forEach(modalidad => {
+				cehtml += `<option value="${modalidad.usu_dni}">${modalidad.usu_apellidos} ${modalidad.usu_nombre}</option>`;
 			});
 			select.innerHTML = cehtml;
 		});
@@ -565,6 +590,7 @@ var graficoReporteEstados = function () {
 
 		var  valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 		valueAxis.title.text = "Cantidad de plazas";
+		valueAxis.min = 0; // Asegúrate de que el eje comience en 0
 
 		// Create series
 		var series1 = chart.series.push(new am4charts.ColumnSeries());
@@ -684,7 +710,7 @@ var graficoReporteEstados = function () {
 	};
 
 	var handleDataModalidades = (especialistas) => {
-		let cehtml = `<option value="">TODO</option>`;
+		let cehtml = `<option value="">TODOS</option>`;
 		const ieselects = document.querySelectorAll(".select-evaluation-especialista-estado");
 		ieselects.forEach((select) => {
 			especialistas.forEach(especialista => {
@@ -811,6 +837,7 @@ var graficoPlazaDisponibles = function () {
 
 		var  valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 		valueAxis.title.text = "Cantidad de plazas";
+		valueAxis.min = 0; // Asegúrate de que el eje comience en 0
 
 		// Create series
 		var series2 = chart.series.push(new am4charts.ColumnSeries());

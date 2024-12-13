@@ -279,6 +279,7 @@ const AppEditarPeriodoAdmin = () => { // JS Pure
             setFormPeriodo: () => {
                 dom.querySelector('input[name="name"]').value = self.periodo.per_nombre;
                 dom.querySelector('input[name="anio"]').value = self.periodo.per_anio;
+                dom.querySelector('textarea[name="adjudicacion_acta_conformidad"]').value = self.periodo.per_adjudicacion_acta_conformidad_auxiliar;
                 const selectFichas = dom.querySelectorAll('.select-tipo');
                 let htmlSelect = `<option value="" selected hidden>[SELECCIONE]</option>`;
                 self.tipo_convocatorias.forEach(tipo => {

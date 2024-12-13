@@ -344,8 +344,6 @@ class Adjudicaciones_auxiliar_model extends CI_Model
     return $responseponse;
   }
 
-  
-
   public function store()
   {
     $responseponse = $this->tools->responseDefault();
@@ -359,7 +357,20 @@ class Adjudicaciones_auxiliar_model extends CI_Model
       $fecha_inicio  = $this->input->post("fecha_inicio", true);
       $fecha_final  = $this->input->post("fecha_final", true);
       $fecha_registro  = $this->input->post("fecha_registro", true);
-      $tipo_convocatoria  = $this->input->post("tipo_convocatoria", true);
+
+      $sql = "SELECT * FROM postulaciones WHERE id = ? AND deleted_at IS NULL";
+      $postulante = $this->db->query($sql, compact('postulacion_id'))->row();
+      if (!$postulante) {
+        throw new Exception("No sé encuentra registrado el postulante");
+      }
+
+      $convocatoria_id = $postulante->convocatoria_id;
+      $sql = "SELECT * FROM convocatorias WHERE con_id = ?";
+      $convocatoria = $this->db->query($sql, compact('convocatoria_id'))->row();
+      if (!$convocatoria) {
+        throw new Exception("No sé encuentra registrado la convocatoria");
+      }
+      $tipo_convocatoria = $convocatoria->con_tipo;
 
       $this->db->insert('auxiliar_adjudicaciones', [
         'postulacion_id' => $postulacion_id,
@@ -547,9 +558,23 @@ class Adjudicaciones_auxiliar_model extends CI_Model
       $sql = "SELECT * FROM auxiliar_adjudicaciones WHERE id = ? AND deleted_at IS NULL";
       $adjudicacion = $this->db->query($sql, compact('adjudicacion_id'))->row();
       if (!is_null($adjudicacion) && is_object($adjudicacion)) {
-
+          $postulacion_id = $adjudicacion->postulacion_id;
+          $sql = "SELECT
+                  t3.*
+                FROM postulaciones t1
+                JOIN grupo_inscripcion t2 ON t1.inscripcion_id = t2.gin_id
+                JOIN periodos t3 ON t3.per_id = t2.periodos_per_id
+                WHERE t1.id = ?;";
+          $adjudicacion->periodo = $this->db->query($sql, ['id' => $postulacion_id])->row();  
           $sql = "SELECT * FROM auxiliar_plazas WHERE plz_id = ?";
           $adjudicacion->plaza = $this->db->query($sql, ['plaza_id' => $adjudicacion->plaza_id])->row();
+          $adjudicacion->localie = null;
+          if ($adjudicacion->plaza) {
+            $ie = $adjudicacion->plaza->ie;
+            $sql = "SELECT t2.* FROM modularie t1 JOIN localie t2 ON t1.localie_loc_id = t2.loc_id WHERE t1.mod_nombre LIKE ('%$ie%')";
+            $adjudicacion->localie = $this->db->query($sql)->row();
+          }
+
           $sql = "SELECT
                       P.*,
                       M.mod_id AS modalidad_id,
@@ -664,46 +689,52 @@ class Adjudicaciones_auxiliar_model extends CI_Model
         $length = $this->input->post("length", true);
         $start  = $this->input->post("start", true);
         $search = $this->input->post("search", true);
+        $especialidad_id = $this->input->post("especialidad_id", true);
+        if (intval($especialidad_id) > 0) {
+          $filterText = '';
+          if ($search) {
+              $value = $search['value'];
 
-        $filterText = '';
-        if ($search) {
-            $value = $search['value'];
+              if (strlen($value) > 0) {
+                  $filterText = " AND (
+                                      plz_id LIKE('%{$value}%')
+                                    OR plz.ie LIKE('%{$value}%') 
+                                    OR plz.codigo_plaza LIKE('%{$value}%')
+                                    OR plz.especialidad LIKE('%{$value}%')
+                                    OR plz.jornada LIKE('%{$value}%')
+                                    OR plz.nivel LIKE('%{$value}%')
+                                    OR plz.tipo_vacante LIKE('%{$value}%')
+                                  ) ";
 
-            if (strlen($value) > 0) {
-                $filterText = " AND (
-                                    plz_id LIKE('%{$value}%')
-                                  OR plz.ie LIKE('%{$value}%') 
-                                  OR plz.codigo_plaza LIKE('%{$value}%')
-                                  OR plz.especialidad LIKE('%{$value}%')
-                                  OR plz.jornada LIKE('%{$value}%')
-                                  OR plz.nivel LIKE('%{$value}%')
-                                  OR plz.tipo_vacante LIKE('%{$value}%')
-                                ) ";
+              }
+          }
 
-            }
+          $sql = "SELECT 
+                    plz.* , tc.*
+                  FROM auxiliar_plazas plz
+                  LEFT JOIN auxiliar_adjudicaciones adj ON adj.plaza_id = plz.plz_id
+                  INNER JOIN auxiliar_tipo_convocatoria tc ON plz.tipo_convocatoria = tc.tipo_id
+                  WHERE plz.deleted_at IS NULL 
+                  AND (adj.id IS NULL OR adj.estado = 0)
+                  $filterText
+                  GROUP BY plz.plz_id
+                  ORDER BY plz.plz_id DESC";
+
+          $items = $this->db->query($sql)->result_object();
+
+
+          $recordsTotal = count($items);
+
+          $sql .= " LIMIT {$start}, {$length}";
+
+          $items = $this->db->query($sql)->result_object();
+
+          $recordsFiltered = ($recordsTotal / $length) * $length;
+        } else {
+          $items = [];
+          $recordsTotal = 0;
+          $recordsFiltered = 0;    
         }
-
-        $sql = "SELECT 
-                  plz.* , tc.*
-                FROM auxiliar_plazas plz
-                LEFT JOIN auxiliar_adjudicaciones adj ON adj.plaza_id = plz.plz_id
-                INNER JOIN auxiliar_tipo_convocatoria tc ON plz.tipo_convocatoria = tc.tipo_id
-                WHERE plz.deleted_at IS NULL 
-                AND (adj.id IS NULL OR adj.estado = 0)
-                $filterText
-                GROUP BY plz.plz_id
-                ORDER BY plz.plz_id DESC";
-
-        $items = $this->db->query($sql)->result_object();
-
-
-        $recordsTotal = count($items);
-
-        $sql .= " LIMIT {$start}, {$length}";
-
-        $items = $this->db->query($sql)->result_object();
-
-        $recordsFiltered = ($recordsTotal / $length) * $length;
 
         $response['success'] = true;
         $response['data'] = $items;
@@ -720,37 +751,37 @@ class Adjudicaciones_auxiliar_model extends CI_Model
     $response = $this->tools->responseDefault();
     try {
 
-      $draw   = $this->input->post("draw", true);
-      $length = $this->input->post("length", true);
-      $start  = $this->input->post("start", true);
-      $search = $this->input->post("search", true);
-      $especialidad_id = $this->input->post("especialidad_id", true);
+        $draw   = $this->input->post("draw", true);
+        $length = $this->input->post("length", true);
+        $start  = $this->input->post("start", true);
+        $search = $this->input->post("search", true);
+        $esp_id = $this->input->post("esp_id", true);
+        $especialidad_id = $this->input->post("especialidad_id", true);
 
-      if (intval($especialidad_id) > 0) {
-        $filterText = '';
+        if (intval($especialidad_id) > 0) {
+          $filterText = '';
 
-        $sqlEspecialidad = $especialidad_id ? " AND esp_id = $especialidad_id " : '';
+          $sqlEspecialidad = $esp_id ? " AND esp_id = $esp_id " : '';
 
-        if ($search) {
-            $value = $search['value'];
-            if (strlen($value) > 0) {
-                $filterText = " AND (
-                                    P.id LIKE('%{$value}%')
-                                  OR P.numero_documento LIKE('%{$value}%')
-                                  OR P.nombre LIKE('%{$value}%')
-                                  OR P.apellido_paterno LIKE('%{$value}%') 
-                                  OR P.apellido_materno LIKE('%{$value}%')
-                                  OR P.numero_expediente LIKE('%{$value}%')
-                                  OR M.mod_nombre LIKE('%{$value}%')
-                                  OR N.niv_descripcion LIKE('%{$value}%')
-                                  OR E.esp_descripcion LIKE('%{$value}%')
-                                  OR LOWER(CONCAT('CONV-', LPAD(C.con_numero, 4, '0'), '-', C.con_anio) LIKE('%{$value}%'))
-                                ) ";
-            }
-        }
+          if ($search) {
+              $value = $search['value'];
+              if (strlen($value) > 0) {
+                  $filterText = " AND (
+                                      P.id LIKE('%{$value}%')
+                                    OR P.numero_documento LIKE('%{$value}%')
+                                    OR P.nombre LIKE('%{$value}%')
+                                    OR P.apellido_paterno LIKE('%{$value}%') 
+                                    OR P.apellido_materno LIKE('%{$value}%')
+                                    OR P.numero_expediente LIKE('%{$value}%')
+                                    OR M.mod_nombre LIKE('%{$value}%')
+                                    OR N.niv_descripcion LIKE('%{$value}%')
+                                    OR E.esp_descripcion LIKE('%{$value}%')
+                                    OR LOWER(CONCAT('CONV-', LPAD(C.con_numero, 4, '0'), '-', C.con_anio) LIKE('%{$value}%'))
+                                  ) ";
+              }
+          }
 
-
-        $sql = "SELECT
+          $sql = "SELECT
                       P.*,
                       M.mod_id AS modalidad_id,
                       M.mod_nombre AS modalidad_nombre,
@@ -759,57 +790,51 @@ class Adjudicaciones_auxiliar_model extends CI_Model
                       E.esp_id AS especialidad_id,
                       E.esp_descripcion AS especialidad_nombre,
                       GI.gin_id AS inscripcion_id,
-                      C.con_tipo,
-                      TC.descripcion AS con_tipo_nombre,
+                      C.con_tipo as con_tipo,
                       PE.puntaje,
-                      EP.prelacion,
-                      C.con_numero,
-                      C.con_anio
-                FROM auxiliar_postulaciones P
-                LEFT JOIN auxiliar_postulacion_evaluaciones PE ON PE.postulacion_id = P.id AND PE.promedio = 1
-                INNER JOIN auxiliar_convocatorias C ON C.con_id = P.convocatoria_id
-                INNER JOIN auxiliar_tipo_convocatoria TC ON TC.tipo_id = C.con_tipo
-                INNER JOIN auxiliar_convocatorias_detalle CD ON CD.convocatorias_con_id = C.con_id
-                INNER JOIN grupo_inscripcion GI ON GI.gin_id = CD.grupo_inscripcion_gin_id AND GI.gin_id = P.inscripcion_id
-                INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
-                INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
-                INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
-                LEFT JOIN auxiliar_adjudicaciones AD ON AD.postulacion_id = P.id AND AD.deleted_at IS NULL
-                LEFT JOIN auxiliar_especialidad_prelaciones EP ON EP.id = PE.prelacion_id             
-                WHERE P.deleted_at IS NULL
-                AND P.estado = 'finalizado'
-                AND P.estado_adjudicacion IN (0,2, 3) 
-                AND intentos_adjudicacion <  2
-                AND (AD.id IS NULL OR AD.estado = 0)
-                $sqlEspecialidad
-                $filterText
-                ORDER BY C.con_tipo ASC, C.con_numero ASC, EP.prelacion ASC, PE.puntaje DESC";
+                      EP.prelacion
+                  FROM auxiliar_postulaciones P
+                  LEFT JOIN auxiliar_postulacion_evaluaciones PE ON PE.postulacion_id = P.id AND PE.promedio = 1
+                  INNER JOIN auxiliar_convocatorias C ON C.con_id = P.convocatoria_id
+                  INNER JOIN auxiliar_convocatorias_detalle CD ON CD.convocatorias_con_id = C.con_id
+                  INNER JOIN grupo_inscripcion GI ON GI.gin_id = CD.grupo_inscripcion_gin_id AND GI.gin_id = P.inscripcion_id
+                  INNER JOIN especialidades E ON E.esp_id = GI.especialidades_esp_id
+                  INNER JOIN niveles N ON N.niv_id = E.niveles_niv_id
+                  INNER JOIN modalidades M ON M.mod_id = N.modalidad_mod_id
+                  LEFT JOIN auxiliar_adjudicaciones AD ON AD.postulacion_id = P.id AND AD.deleted_at IS NULL
+                  LEFT JOIN auxiliar_especialidad_prelaciones EP ON EP.id = PE.prelacion_id             
+                  WHERE P.deleted_at IS NULL
+                  AND P.estado = 'finalizado'
+                  AND P.estado_adjudicacion IN (0,2, 3) 
+                  AND intentos_adjudicacion <  2
+                  AND (AD.id IS NULL OR AD.estado = 0)
+                  $sqlEspecialidad
+                  $filterText
+                  ORDER BY EP.prelacion ASC, PE.puntaje DESC";
 
-            
+          $items = $this->db->query($sql)->result_object();
+          $recordsTotal = count($items);
 
-            $items = $this->db->query($sql)->result_object();
-            $recordsTotal = count($items);
+          $sql .= " LIMIT {$start}, {$length}";
 
-            $sql .= " LIMIT {$start}, {$length}";
+          $items = $this->db->query($sql)->result_object();
 
-            $items = $this->db->query($sql)->result_object();
-
-            foreach ($items as $k => $v) {
-              $items[$k]->con_code = "CONV-".sprintf('%04d', $v->con_numero)."-".$v->con_anio; 
-            }
-
-            $recordsFiltered = ($recordsTotal / $length) * $length;
-            } else {
-            $items = [];
-            $recordsTotal = 0;
-            $recordsFiltered = 0;            
+          foreach ($items as $k => $v) {
+            $items[$k]->con_code = "CONV-".sprintf('%04d', $v->con_numero)."-".$v->con_anio; 
           }
 
-          $response['success'] = true;
-          $response['data'] = $items;
-          $response['recordsTotal'] = $recordsTotal;
-          $response['recordsFiltered'] = $recordsFiltered;
-          $response['message'] = 'successfully';
+          $recordsFiltered = ($recordsTotal / $length) * $length;
+        } else {
+          $items = [];
+          $recordsTotal = 0;
+          $recordsFiltered = 0;            
+        }
+
+        $response['success'] = true;
+        $response['data'] = $items;
+        $response['recordsTotal'] = $recordsTotal;
+        $response['recordsFiltered'] = $recordsFiltered;
+        $response['message'] = 'successfully';
     } catch (\Exception $e) {
         $response['message'] = $e->getMessage();
     }

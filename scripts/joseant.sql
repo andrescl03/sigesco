@@ -1164,3 +1164,9 @@ ALTER TABLE plazas ADD COLUMN `especialidad_general_id` INT(11) NULL DEFAULT '0'
 
 /**** 04/12/2024 ****/
 ALTER TABLE periodos ADD COLUMN per_adjudicacion_acta_conformidad TEXT DEFAULT NULL;
+
+
+/*** 10-12-2024 ***/
+
+ALTER TABLE auxiliar_plazas ADD COLUMN `especialidad_general_id` INT(11) NULL DEFAULT '0' after especialidad_general;
+ALTER TABLE periodos ADD COLUMN per_adjudicacion_acta_conformidad_auxiliar TEXT DEFAULT NULL;

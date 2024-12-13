@@ -276,7 +276,8 @@ class Configuracion_auxiliar_model extends CI_Model
         case 'edicion':
           $name  = $this->input->post("name", true);
           $anio  = $this->input->post("anio", true);
-          $this->db->update('periodos', ['per_nombre' => $name, 'per_anio' => $anio], array('per_id' => $id));
+          $adjudicacion_acta_conformidad  = $this->input->post("adjudicacion_acta_conformidad", true);
+          $this->db->update('periodos', ['per_nombre' => $name, 'per_anio' => $anio, 'per_adjudicacion_acta_conformidad_auxiliar' => $adjudicacion_acta_conformidad], array('per_id' => $id));
           break;
         case 'actualizadetalleficha':
           $anexo_id  = $this->input->post("anexo_id", true);
