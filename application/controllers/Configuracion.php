@@ -44,6 +44,22 @@ class Configuracion extends CI_Controller
         $this->layout->view('periodos/VListarPeriodos', compact('datos'));
     }
 
+
+    public function reportes()
+    {   // TIENE SOLO 2 SEGMENTOS    
+        if (!in_array($this->uri->slash_segment(1) . $this->uri->segment(2), $this->session->userdata("sigesco_rutas"))) {
+            var_dump($this->session->userdata("sigesco_rutas"));
+            var_dump($this->uri->slash_segment(1) . $this->uri->segment(2));exit;
+            redirect(base_url() . "inicio/index", 'refresh');
+        }
+        if (!empty($this->uri->segment(3))) redirect(base_url() . "configuracion/reportes", 'refresh');
+
+        $this->layout->js(array(base_url() . "public/js/myscript/configuracion/reportes.js?t=" . date("mdYHis")));
+        $this->layout->view("reportes/reportes");
+    }
+
+
+
     public function editarPeriodo()
     {   // TIENE SOLO 2 SEGMENTOS    
         if (!in_array($this->uri->slash_segment(1) . $this->uri->segment(2), $this->session->userdata("sigesco_rutas"))) {
@@ -103,6 +119,7 @@ class Configuracion extends CI_Controller
         $this->layout->setLayout("template_ajax");
         $this->layout->view('procesos/VListarProcesos', compact('datos'));
     }
+    
 
     public function grupoinscripcion()
     {   // TIENE SOLO 2 SEGMENTOS    
@@ -149,6 +166,8 @@ class Configuracion extends CI_Controller
         $this->layout->view("pun/pun", compact('periodos', 'procesos'));
     }
 
+    
+
     public function VListarPun()
     {
         $tipoCarga  = $this->input->post("tipoCarga", true);
@@ -172,6 +191,36 @@ class Configuracion extends CI_Controller
         $procesos = $this->configuracion_model->listarProcesosActivos();
         $this->layout->setLayout("template_ajax");
         $this->layout->view('pun/VCargarPun', compact('periodos', 'procesos'));
+    }
+
+    public function postulantes()
+    {   // TIENE SOLO 2 SEGMENTOS    
+        if (!in_array($this->uri->slash_segment(1) . $this->uri->segment(2), $this->session->userdata("sigesco_rutas"))) {
+            redirect(base_url() . "inicio/index", 'refresh');
+        }
+        if (!empty($this->uri->segment(3))) redirect(base_url() . "configuracion/postulantes", 'refresh');
+
+        $periodos = $this->configuracion_model->listarPeriodosActivos();
+        $procesos = $this->configuracion_model->listarProcesosActivos();
+        $this->layout->js(array(base_url() . "public/js/myscript/configuracion/postulantes.js?t=" . date("mdYHis")));
+        $this->layout->view("postulantes/postulantes", compact('periodos', 'procesos'));
+    }
+
+    public function VListarPostulantes()
+    {
+        $tipoCarga  = $this->input->post("tipoCarga", true);
+
+        if ($tipoCarga == 0) { // carga default
+            $idPer = $this->session->userdata("sigesco_default_periodo");
+            $idPro = $this->session->userdata("sigesco_default_proceso");
+        } else {
+            $idPer  = $this->input->post("idPer", true);
+            $idPro  = $this->input->post("idPro", true);
+        }
+
+        $datos = $this->configuracion_model->listarPostulantes($idPer, $idPro);
+        $this->layout->setLayout("template_ajax");
+        $this->layout->view('postulantes/VListarPostulantes', compact('datos'));
     }
 
 

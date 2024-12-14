@@ -28,7 +28,18 @@ class ConfiguracionAuxiliar extends CI_Controller
     {   // TIENE SOLO 2 SEGMENTOS    
         $this->layout->js(array(base_url() . "public/admin/auxiliares/periodos/periodos.js?t=" . date("mdYHis")));
         $this->layout->view("/admin/auxiliares/periodos/periodos");
+        
     }
+
+    public function reportes()
+    {   // TIENE SOLO 2 SEGMENTOS    
+
+        $this->layout->js(array(base_url() . "public/admin/auxiliares/reportes/reportes.js?t=" . date("mdYHis")));
+        $this->layout->view("/admin/auxiliares/reportes/reportes");
+        
+    }
+
+
 
     public function VListarPeriodos()
     {

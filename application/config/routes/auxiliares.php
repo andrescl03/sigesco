@@ -26,10 +26,10 @@ $route['admin/auxiliares/periodos/(:num)'] = 'auxiliares/configuracionAuxiliar/e
 $route['admin/auxiliares/periodos/(:num)/detail'] = 'auxiliares/configuracionAuxiliar/detallePeriodo/$1';
 $route['admin/auxiliares/periodos/(:num)/update'] = 'auxiliares/configuracionAuxiliar/guardarPeriodo/$1';
 $route['admin/auxiliares/periodos/(:num)/remove'] = 'auxiliares/configuracionAuxiliar/eliminarPeriodo/$1';
-$route['admin/auxiliares/periodos/graficos/postulantes'] = 'auxiliares/reportegraficoAuxiliar/postulantes_adjudicados';
-$route['admin/auxiliares/periodos/graficos/evaluados'] = 'auxiliares/reportegraficoAuxiliar/reporte_evaluados';
-$route['admin/auxiliares/periodos/graficos/plazas'] = 'auxiliares/reportegraficoAuxiliar/plaza_disponibles';
-$route['admin/auxiliares/periodos/graficos/estados'] = 'auxiliares/reportegraficoAuxiliar/reporte_evaluacion_estados';
+$route['admin/auxiliares/periodos/graficos/postulantes'] = 'auxiliares/reporteGraficoAuxiliar/postulantes_adjudicados';
+$route['admin/auxiliares/periodos/graficos/evaluados'] = 'auxiliares/reporteGraficoAuxiliar/reporte_evaluados';
+$route['admin/auxiliares/periodos/graficos/plazas'] = 'auxiliares/reporteGraficoAuxiliar/plaza_disponibles';
+$route['admin/auxiliares/periodos/graficos/estados'] = 'auxiliares/reporteGraficoAuxiliar/reporte_evaluacion_estados';
 $route['admin/auxiliares/procesos'] = 'auxiliares/configuracionAuxiliar/procesos';
 $route['admin/auxiliares/procesos/VListarProcesos'] = 'auxiliares/configuracionAuxiliar/VListarProcesos';
 $route['admin/auxiliares/prelaciones'] = 'auxiliares/prelacionesAuxiliar/index';
@@ -126,6 +126,8 @@ $route['admin/auxiliares/plazas/(:num)/remove'] = 'auxiliares/plazasAuxiliar/rem
 $route['admin/auxiliares/plazas/(:num)/edit'] = 'auxiliares/plazasAuxiliar/edit/$1';
 $route['admin/auxiliares/plazas/postulantes/liberar'] = 'auxiliares/plazasAuxiliar/liberar';
 $route['admin/auxiliares/plazas/exportar'] = 'auxiliares/plazasAuxiliar/reporte_plazas';
+
+$route['admin/auxiliares/reportes'] = 'auxiliares/configuracionAuxiliar/reportes';
 
 $route['admin/auxiliares/colegios'] = 'auxiliares/configuracionAuxiliar/colegios';
 $route['admin/auxiliares/colegios/VListarColegios'] = 'auxiliares/configuracionAuxiliar/VListarColegios';

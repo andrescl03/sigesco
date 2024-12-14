@@ -76,6 +76,24 @@ class Configuracion_model extends CI_Model
   }
 
 
+  
+  public function listarPostulantes($idPer, $idPro)
+  {
+    $sql = $this->db
+      ->select("*")
+      ->from("modalidades mod")
+      ->join("niveles niv", "mod.mod_id = niv.modalidad_mod_id", "inner")
+      ->join("especialidades esp", "niv.niv_id = esp.niveles_niv_id", "inner")
+      ->join("grupo_inscripcion gin", "esp.esp_id = gin.especialidades_esp_id", "inner")
+      ->join("postulaciones cpe", "gin.gin_id = cpe.inscripcion_id", "inner")
+      ->where(array("gin.gin_estado" => 1,  "gin.periodos_per_id" => $idPer, "gin.procesos_pro_id" => $idPro))
+      ->order_by("mod.mod_id asc, niv.niv_id asc, esp.esp_id asc")
+      ->get();
+    // echo $this->db->last_query(); exit(); 
+    return $sql->result_array();
+  }
+
+
   public function detallePeriodo($id)
   {
     $response = $this->tools->responseDefault();
